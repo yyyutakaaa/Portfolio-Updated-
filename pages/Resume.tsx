@@ -6,6 +6,15 @@ import { useLanguage } from '../contexts/LanguageContext';
 const Resume: React.FC = () => {
   const { t } = useLanguage();
 
+  const handleDownload = () => {
+    const link = document.createElement('a');
+    link.href = '/CV - Mehdi Oulad Khlie.pdf';
+    link.download = 'CV - Mehdi Oulad Khlie.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="max-w-4xl mx-auto space-y-8">
       
@@ -17,7 +26,7 @@ const Resume: React.FC = () => {
         </div>
         <button 
             className="flex items-center gap-2 bg-white text-bg px-5 py-2.5 font-mono text-sm font-bold uppercase hover:bg-gray-200 transition-colors"
-            onClick={() => alert("PDF Download functionaliteit zou hier worden geïmplementeerd")}
+            onClick={handleDownload}
         >
             <Download size={16} />
             {t.resume.download}

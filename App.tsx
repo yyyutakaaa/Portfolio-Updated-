@@ -1,5 +1,6 @@
 import React from 'react';
 import { HashRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { Analytics } from '@vercel/analytics/react';
 import Layout from './components/Layout';
 import Home from './pages/Home';
 import Resume from './pages/Resume';
@@ -26,6 +27,7 @@ const App: React.FC = () => {
             <Route path="/resume" element={<Resume />} />
           </Routes>
         </Layout>
+        <Analytics />
       </HashRouter>
     </LanguageProvider>
   );

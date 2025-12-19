@@ -64,13 +64,18 @@ const Home: React.FC = () => {
 
         {/* Certification */}
         <Tile className="md:col-span-1 min-h-[140px]" label={t.home.certified.label} delay={300} highlight>
-           <div className="flex flex-col h-full justify-between">
+           <a 
+             href="https://www.credly.com/badges/39769716-9d80-4a83-a62f-f642da9e7b40/public_url"
+             target="_blank"
+             rel="noopener noreferrer"
+             className="flex flex-col h-full justify-between cursor-pointer hover:opacity-80 transition-opacity"
+           >
               <Award className="text-white mb-4" size={32} />
               <div>
                 <div className="font-bold text-white leading-tight">{t.home.certified.title}</div>
                 <div className="text-xs font-mono text-textDim mt-1">{t.home.certified.subtitle}</div>
               </div>
-           </div>
+           </a>
         </Tile>
 
         {/* Skills - Takes up full width on mobile, 2 cols on desktop */}
@@ -131,11 +136,11 @@ const Home: React.FC = () => {
            <div className="space-y-6">
               {t.home.projects.items.map((project, index) => (
                 <div key={index}>
-                  <a href={project.url} target="_blank" rel="noopener noreferrer" className="group block cursor-pointer">
+                  <a href={project.url} target="_blank" rel="noopener noreferrer" className="group/project block cursor-pointer">
                     <div className="flex justify-between items-start mb-2">
                        <div className="flex items-center gap-2">
-                         <h3 className="text-white font-bold group-hover:text-blue-400 transition-colors">{project.title}</h3>
-                         <ExternalLink size={12} className="text-textDim opacity-0 group-hover:opacity-100 transition-opacity" />
+                         <h3 className="text-white font-bold group-hover/project:text-blue-400 transition-colors">{project.title}</h3>
+                         <ExternalLink size={12} className="text-textDim opacity-0 group-hover/project:opacity-100 transition-opacity" />
                        </div>
                        <span className="text-[10px] font-mono border border-border px-1 text-textDim text-right ml-2 shrink-0">{project.stack}</span>
                     </div>

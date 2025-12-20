@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { LayoutGrid, FileText, Github, Linkedin, Mail, Globe, Instagram } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
+import logo from '/inverted-image.png';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -20,7 +21,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <nav className="fixed top-0 left-0 right-0 z-40 bg-bg/80 backdrop-blur-md border-b border-border">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <img src="/favicon.png" alt="logo" className="w-20 h-20 invert" />
+            <img src={logo} alt="logo" className="w-20 h-20" />
             <span className="font-mono font-bold tracking-tighter text-lg">MEHDI.DEV</span>
           </div>
           

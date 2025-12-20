@@ -151,6 +151,15 @@ export const translations = {
       contact: {
         title: "Contact Info"
       }
+    },
+    privacy: {
+      title: "Privacybeleid",
+      lastUpdated: "Laatst bijgewerkt: 20 december 2025",
+      p1: "Deze website verzamelt, bewaart of verwerkt geen persoonlijke informatie. Er worden geen cookies, analysetools, volgsystemen of diensten van derden gebruikt.",
+      p2: "Indien u rechtstreeks contact met mij opneemt (bijvoorbeeld per e-mail), wordt de door u verstrekte informatie alleen gebruikt om op uw bericht te reageren en wordt deze niet met derden gedeeld.",
+      contactTitle: "Contacteer Ons",
+      contactText: "Als u vragen heeft over dit privacybeleid, kunt u contact met ons opnemen:",
+      byEmail: "Via e-mail: mehdi.ouladkhlie@outlook.be"
     }
   },
   en: {
@@ -303,6 +312,15 @@ export const translations = {
       contact: {
         title: "Contact Info"
       }
+    },
+    privacy: {
+      title: "Privacy Policy",
+      lastUpdated: "Last updated: December 20, 2025",
+      p1: "This website does not collect, store, or process any personal information. No cookies, analytics tools, tracking scripts, or third‑party services are used.",
+      p2: "If you contact me directly (for example by email), any information you provide will be used only to respond to your message and will not be shared with third parties.",
+      contactTitle: "Contact Us",
+      contactText: "If you have any questions about this Privacy Policy, You can contact us:",
+      byEmail: "By email: mehdi.ouladkhlie@outlook.be"
     }
   }
 };

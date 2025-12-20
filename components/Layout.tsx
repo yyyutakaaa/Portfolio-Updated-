@@ -86,7 +86,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           <div className="text-xs font-mono text-textDim">
             © {new Date().getFullYear()} MEHDI OULAD KHLIE. DESIGNED IN BELGIUM.
           </div>
-          <div className="text-xs font-mono text-textDim flex items-center gap-2">
+          <div className="text-xs font-mono text-textDim flex items-center gap-4">
+            <NavLink to="/privacy" className="hover:text-white transition-colors">PRIVACY</NavLink>
+            <div className="w-[1px] h-3 bg-border" />
             <span>STATUS:</span>
             <span className="text-green-500">●</span>
             <span>{t.nav.status.toUpperCase()}</span>

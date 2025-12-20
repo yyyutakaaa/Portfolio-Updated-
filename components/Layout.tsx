@@ -20,7 +20,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <nav className="fixed top-0 left-0 right-0 z-40 bg-bg/80 backdrop-blur-md border-b border-border">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-3 h-3 bg-white rounded-full animate-pulse" />
+            <img src="/favicon.png" alt="logo" className="w-20 h-20 invert" />
             <span className="font-mono font-bold tracking-tighter text-lg">MEHDI.DEV</span>
           </div>
           

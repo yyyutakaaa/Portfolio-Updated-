@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { LayoutGrid, FileText, Github, Linkedin, Mail, Globe, Instagram } from 'lucide-react';
+import { LayoutGrid, FileText, MessageSquare, Github, Linkedin, Mail, Globe, Instagram } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import logo from '/inverted-image.png';
 
@@ -26,23 +26,32 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           </div>
           
           <div className="flex items-center gap-6">
-            <NavLink 
-              to="/" 
-              className={({ isActive }) => 
+            <NavLink
+              to="/"
+              className={({ isActive }) =>
                 `flex items-center gap-2 text-sm font-mono uppercase tracking-wider transition-colors hover:text-white ${isActive ? 'text-white' : 'text-textDim'}`
               }
             >
               <LayoutGrid size={14} />
               <span className="hidden sm:inline">{t.nav.portfolio}</span>
             </NavLink>
-            <NavLink 
-              to="/resume" 
-              className={({ isActive }) => 
+            <NavLink
+              to="/resume"
+              className={({ isActive }) =>
                 `flex items-center gap-2 text-sm font-mono uppercase tracking-wider transition-colors hover:text-white ${isActive ? 'text-white' : 'text-textDim'}`
               }
             >
               <FileText size={14} />
               <span className="hidden sm:inline">{t.nav.resume}</span>
+            </NavLink>
+            <NavLink
+              to="/contact"
+              className={({ isActive }) =>
+                `flex items-center gap-2 text-sm font-mono uppercase tracking-wider transition-colors hover:text-white ${isActive ? 'text-white' : 'text-textDim'}`
+              }
+            >
+              <MessageSquare size={14} />
+              <span className="hidden sm:inline">{t.nav.contact}</span>
             </NavLink>
           </div>
 

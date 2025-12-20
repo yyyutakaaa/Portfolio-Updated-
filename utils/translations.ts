@@ -5,6 +5,7 @@ export const translations = {
     nav: {
       portfolio: "Portfolio",
       resume: "CV / Ervaring",
+      contact: "Contact",
       status: "Open voor werk",
     },
     home: {
@@ -166,6 +167,7 @@ export const translations = {
     nav: {
       portfolio: "Portfolio",
       resume: "CV / Resume",
+      contact: "Contact",
       status: "Open to work",
     },
     home: {

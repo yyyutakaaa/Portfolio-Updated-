@@ -12,6 +12,14 @@ export const translations = {
       role: "Aspirant Systeem- & Netwerkbeheerder",
       location: "EVERGEM, BE",
       localTime: "Lokale tijd",
+      featuredProject: {
+        label: "Nieuw Project",
+        title: "SilentStream",
+        description: "Een krachtige Windows-applicatie voor intelligente audio-ruisonderdrukking en routing.",
+        stack: "RUST / WINDOWS / EGUI",
+        features: ["AI Ruisonderdrukking", "Microfoon Routing", "System Tray Integratie"],
+        cta: "Bekijk op GitHub"
+      },
       profile: {
         title: "Profiel",
         text: React.createElement(React.Fragment, null,
@@ -174,6 +182,14 @@ export const translations = {
       role: "Aspiring System & Network Administrator",
       location: "EVERGEM, BE",
       localTime: "Local Time",
+      featuredProject: {
+        label: "New Project",
+        title: "SilentStream",
+        description: "A powerful Windows application for intelligent audio noise suppression and routing.",
+        stack: "RUST / WINDOWS / EGUI",
+        features: ["AI Noise Suppression", "Microphone Routing", "System Tray Integration"],
+        cta: "View on GitHub"
+      },
       profile: {
         title: "Profile",
         text: React.createElement(React.Fragment, null,

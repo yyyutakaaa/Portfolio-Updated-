@@ -7,6 +7,17 @@ import { useLanguage } from '../contexts/LanguageContext';
 const Home: React.FC = () => {
   const { t } = useLanguage();
 
+  const [mousePos, setMousePos] = React.useState({ x: 0, y: 0 });
+  const [isHovering, setIsHovering] = React.useState(false);
+
+  /* Mouse move handler tracks viewport coordinates now for fixed positioning */
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    setMousePos({
+      x: e.clientX,
+      y: e.clientY
+    });
+  };
+
   return (
     <div className="space-y-12">
       {/* Header Section */}
@@ -34,9 +45,17 @@ const Home: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 auto-rows-min">
 
         {/* Featured Project Banner - SilentStream */}
-        <Tile className="md:col-span-4 min-h-[350px] relative overflow-visible z-10 group/banner" label={t.home.featuredProject.label} delay={0} highlight>
-          {/* Base Background - Dark Stylish Gradient - Needs border radius since overflow is visible */}
-          <div className="absolute inset-0 bg-gradient-to-br from-[#050505] via-[#0a0f16] to-[#050505] rounded-lg" />
+        <Tile
+          className="md:col-span-4 min-h-[350px] relative overflow-hidden cursor-none z-10 group/banner"
+          label={t.home.featuredProject.label}
+          delay={0}
+          highlight
+          onMouseMove={handleMouseMove}
+          onMouseEnter={() => setIsHovering(true)}
+          onMouseLeave={() => setIsHovering(false)}
+        >
+          {/* Base Background - Dark Stylish Gradient */}
+          <div className="absolute inset-0 bg-gradient-to-br from-[#050505] via-[#0a0f16] to-[#050505]" />
 
           {/* Content Container - Dims and blurs slightly on hover */}
           <div className="relative z-10 flex flex-col md:flex-row gap-8 items-start md:items-center h-full justify-between p-4 transition-all duration-500 group-hover/banner:opacity-10 group-hover/banner:blur-[2px]">
@@ -76,7 +95,7 @@ const Home: React.FC = () => {
                 href="https://github.com/yyyutakaaa/SilentStream"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 bg-white text-black px-8 py-4 rounded-sm font-bold uppercase tracking-wider hover:bg-gray-200 transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)]"
+                className="inline-flex items-center gap-2 bg-white text-black px-8 py-4 rounded-sm font-bold uppercase tracking-wider hover:bg-gray-200 transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)] pointer-events-auto"
               >
                 {t.home.featuredProject.cta}
                 <ExternalLink size={18} />
@@ -84,24 +103,26 @@ const Home: React.FC = () => {
             </div>
           </div>
 
-          {/* Hover Floating Image (Text Balloon Style) */}
-          <div className="absolute top-1/2 right-[-50px] -translate-y-1/2 z-50 hidden md:block pointer-events-none 
-                         opacity-0 translate-x-12 scale-90 
-                         group-hover/banner:opacity-100 group-hover/banner:translate-x-0 group-hover/banner:scale-100 
-                         transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]">
-            <div className="relative bg-surfaceHighlight p-2 rounded-xl shadow-[0_30px_60px_rgba(0,0,0,0.8)]">
-              {/* The arrow pointing left */}
-              <div className="absolute top-1/2 -left-2 -translate-y-1/2 w-4 h-4 bg-surfaceHighlight transform rotate-45" />
+        </Tile>
 
-              {/* The Image */}
+        {/* Hover Floating Image (Cursor Follower) - Moved OUTSIDE Tile to avoid transform context issues */}
+        {isHovering && (
+          <div
+            className="fixed z-[9999] pointer-events-none"
+            style={{
+              left: mousePos.x + 20,
+              top: mousePos.y + 20,
+            }}
+          >
+            <div className="bg-surfaceHighlight p-2 rounded-xl shadow-[0_30px_60px_rgba(0,0,0,0.8)]">
               <img
                 src="/silentstream-preview.png"
                 alt="SilentStream Preview"
-                className="max-w-[600px] w-auto h-auto rounded-lg shadow-inner bg-black"
+                className="max-w-[400px] w-auto h-auto rounded-lg shadow-inner bg-black"
               />
             </div>
           </div>
-        </Tile>
+        )}
 
         {/* Intro / Bio */}
         <Tile className="md:col-span-3 md:row-span-2 min-h-[300px]" label={t.home.profile.title} delay={100}>

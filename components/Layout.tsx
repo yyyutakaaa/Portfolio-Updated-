@@ -24,7 +24,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             <img src={logo} alt="logo" className="w-20 h-20" />
             <span className="font-mono font-bold tracking-tighter text-lg">MEHDI.DEV</span>
           </div>
-          
+
           <div className="flex items-center gap-6">
             <NavLink
               to="/"
@@ -56,7 +56,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           </div>
 
           <div className="flex items-center gap-4 border-l border-border pl-6">
-            <button 
+            <button
               onClick={toggleLanguage}
               className="flex items-center gap-2 text-xs font-mono text-textDim hover:text-white transition-colors uppercase"
             >
@@ -96,7 +96,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             © {new Date().getFullYear()} MEHDI OULAD KHLIE. DESIGNED IN BELGIUM.
           </div>
           <div className="text-xs font-mono text-textDim flex items-center gap-4">
-            <NavLink to="/privacy" className="hover:text-white transition-colors">PRIVACY</NavLink>
+            <NavLink to="/visibility-spoofer-privacy" className="hover:text-white transition-colors">PRIVACY</NavLink>
             <div className="w-[1px] h-3 bg-border" />
             <span>STATUS:</span>
             <span className="text-green-500">●</span>

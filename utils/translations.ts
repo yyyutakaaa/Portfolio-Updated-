@@ -61,6 +61,12 @@ export const translations = {
         label: "Persoonlijke Projecten",
         items: [
           {
+            title: "Visibility Spoofer",
+            stack: "JAVASCRIPT / CHROME EXTENSION",
+            desc: "Chrome-extensie die de Page Visibility API spooft — houdt elk tabblad altijd 'zichtbaar' en gefocust. Bevat anti-detectie engine, dynamische iframe-bescherming en zero console output.",
+            url: "https://github.com/yyyutakaaa/Visibility-Spoofer"
+          },
+          {
             title: "FuelTracker PWA",
             stack: "VUE.JS / TAILWIND / PWA",
             desc: "Een moderne PWA voor het berekenen van brandstofkosten en CO₂-uitstoot met real-time adressuggesties en interactieve kaarten (Leaflet/OSM).",
@@ -305,6 +311,12 @@ export const translations = {
       projects: {
         label: "Personal Projects",
         items: [
+          {
+            title: "Visibility Spoofer",
+            stack: "JAVASCRIPT / CHROME EXTENSION",
+            desc: "Chrome extension that spoofs the Page Visibility API — keeps every tab always 'visible' and focused. Features anti-detection engine, dynamic iframe protection and zero console output.",
+            url: "https://github.com/yyyutakaaa/Visibility-Spoofer"
+          },
           {
             title: "FuelTracker PWA",
             stack: "VUE.JS / TAILWIND / PWA",

@@ -231,6 +231,15 @@ const Home: React.FC = () => {
                   <div className="flex justify-between items-start mb-2">
                     <div className="flex items-center gap-2">
                       <h3 className="text-white font-bold group-hover/project:text-blue-400 transition-colors">{project.title}</h3>
+                      {index === 0 && (
+                        <span className="bg-green-500/10 border border-green-500/30 text-green-400 px-1.5 py-0.5 text-[9px] font-mono rounded uppercase tracking-wider flex items-center gap-1">
+                          <span className="relative flex h-1.5 w-1.5">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-500"></span>
+                          </span>
+                          NEW
+                        </span>
+                      )}
                       <ExternalLink size={12} className="text-textDim opacity-0 group-hover/project:opacity-100 transition-opacity" />
                     </div>
                     <span className="text-[10px] font-mono border border-border px-1 text-textDim text-right ml-2 shrink-0">{project.stack}</span>

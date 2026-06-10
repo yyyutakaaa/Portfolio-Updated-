@@ -5,6 +5,22 @@
 body {
   background-color: #050505;
   color: #e0e0e0;
+  overflow-x: hidden;
+}
+
+html,
+body,
+#root {
+  min-width: 0;
+}
+
+:where(a, button, input, textarea, [tabindex]):focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
+}
+
+:where(input, textarea):focus-visible {
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.12);
 }
 
 /* Noise texture overlay */
@@ -42,4 +58,15 @@ body {
 ::selection {
   background-color: white;
   color: black;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
 }

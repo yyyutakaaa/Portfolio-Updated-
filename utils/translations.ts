@@ -169,86 +169,85 @@ export const translations = {
     },
     privacy: {
       title: "Privacy Policy",
-      lastUpdated: "LAST UPDATED: FEBRUARY 22, 2026",
+      lastUpdated: "LAST UPDATED: JUNE 10, 2026",
       backToHome: "Terug naar Home",
-      introParagraph: "This Privacy Policy describes the policies and procedures of the developer (\"I\", \"me\", \"my\") regarding the Visibility Spoofer Chrome extension (\"the Extension\", \"the Service\") and explains your privacy rights and how the law protects you.",
-      interpretation: {
-        heading: "Interpretation and Definitions",
-        subHeading1: "Interpretation",
-        text1: "The words whose initial letters are capitalized have meanings defined under the following conditions. The following definitions shall have the same meaning regardless of whether they appear in singular or in plural.",
-        subHeading2: "Definitions",
-        definitions: [
-          { term: "Developer", meaning: "refers to the individual developer, based in Belgium." },
-          { term: "Country", meaning: "refers to Belgium." },
-          { term: "Device", meaning: "means any device that can access the Service such as a computer, a cell phone or a digital tablet." },
-          { term: "Extension", meaning: "refers to the Visibility Spoofer Chrome browser extension." },
-          { term: "Personal Data", meaning: "is any information that relates to an identified or identifiable individual." },
-          { term: "Service", meaning: "refers to the Extension." },
-          { term: "You", meaning: "means the individual accessing or using the Service." }
-        ]
-      },
-      noCollection: {
-        heading: "No Collection of Personal Data",
-        text1: "Visibility Spoofer does not collect, store, transmit, or share any personal data or usage data of any kind. The Extension operates entirely within your local browser and does not communicate with any external servers or third parties.",
-        text2: "Specifically, the Extension does not collect:",
-        items: [
-          "Personal identification information (name, email address, phone number, etc.)",
-          "Browsing history or web activity",
-          "IP addresses or device identifiers",
-          "Location data",
-          "Authentication or verification data",
-          "Financial or payment information",
-          "Personal communications",
-          "Cookies or tracking technologies",
-          "Analytics or usage statistics",
-          "Website content or user-generated content"
-        ]
-      },
-      howItWorks: {
-        heading: "How the Extension Works",
-        text: "The Extension injects a script into web pages at the time they load in order to override the browser's Page Visibility API. This causes websites to always perceive the tab as active and focused. All processing happens exclusively within your local browser environment. No data is read, recorded, or transmitted at any point during this process."
-      },
-      noTracking: {
-        heading: "No Use of Tracking Technologies",
-        text: "The Extension does not use cookies, web beacons, pixel tags, analytics scripts, or any other tracking technologies. No session data or persistent data is written to your device by the Extension."
-      },
-      noThirdParty: {
-        heading: "No Third-Party Sharing",
-        text: "Since no data is collected, no data is shared with or sold to any third party, including advertisers, analytics providers, business partners, or affiliates."
-      },
-      gdpr: {
-        heading: "GDPR – General Data Protection Regulation",
-        text1: "As the developer of this Extension is based in Belgium (European Union), I am committed to complying with the General Data Protection Regulation (GDPR). Since no personal data is collected, processed, or stored by the Extension, there is no data processing activity subject to GDPR obligations.",
-        text2: "Under the GDPR, you have the following rights. While these rights are not applicable in practice since I collect no data, I acknowledge them fully:",
-        rights: [
-          { name: "The right to access", desc: "You have the right to request copies of any personal data I hold about you." },
-          { name: "The right to rectification", desc: "You have the right to request correction of any inaccurate personal data." },
-          { name: "The right to erasure", desc: "You have the right to request deletion of your personal data." },
-          { name: "The right to restrict processing", desc: "You have the right to request that I restrict the processing of your personal data." },
-          { name: "The right to data portability", desc: "You have the right to request transfer of your personal data to another organization or directly to you." },
-          { name: "The right to object", desc: "You have the right to object to my processing of your personal data." }
-        ],
-        text3: "Since no personal data is collected, none of the above rights are triggered in practice. If you have any concerns, you may contact me at any time."
-      },
-      children: {
-        heading: "Children's Privacy",
-        text: "The Extension does not collect any data from any user, including children under the age of 16. The Extension is safe for use by anyone. If you are a parent or guardian and have concerns about the use of this Extension by a child, feel free to contact me."
-      },
-      security: {
-        heading: "Security",
-        text: "Since no personal data is collected or transmitted, there is no personal data at risk. The Extension does not establish any network connections, does not write data to external storage, and does not interact with any server infrastructure."
-      },
-      links: {
-        heading: "Links to Other Websites",
-        text: "The Extension or website may contain links to other websites not operated by me. I strongly advise you to review the Privacy Policy of every site you visit. I have no control over and assume no responsibility for the content or privacy practices of any third-party sites."
-      },
-      changes: {
-        heading: "Changes to This Privacy Policy",
-        text: "I may update this Privacy Policy from time to time. I will notify you of any changes by posting the new Privacy Policy on this page and updating the \"Last updated\" date. You are advised to review this Privacy Policy periodically for any changes."
-      },
+      introParagraph: "Deze privacyverklaring legt uit welke gegevens via deze portfolio website kunnen worden verwerkt, waarom dat gebeurt en welke externe diensten daarbij betrokken kunnen zijn.",
+      sections: [
+        {
+          heading: "Wie Beheert Deze Website",
+          paragraphs: [
+            "Deze website is de persoonlijke portfolio van Mehdi Oulad Khlie. De website wordt gebruikt om projecten, ervaring, contactgegevens en professionele profielen te tonen.",
+            "Voor vragen over deze privacyverklaring of over gegevens die je via de website verstuurt, kun je contact opnemen via de contactpagina."
+          ]
+        },
+        {
+          heading: "Gegevens Via Het Contactformulier",
+          paragraphs: [
+            "Wanneer je het contactformulier gebruikt, worden de gegevens die je zelf invult verzonden zodat ik op je bericht kan reageren.",
+            "Het formulier verwerkt de volgende gegevens:"
+          ],
+          items: [
+            "Naam",
+            "E-mailadres",
+            "Onderwerp",
+            "Berichtinhoud",
+            "Technische verzendgegevens die door de formulierdienst kunnen worden verwerkt, zoals tijdstip, IP-adres, browser- of netwerkgegevens"
+          ]
+        },
+        {
+          heading: "Web3Forms",
+          paragraphs: [
+            "Het contactformulier verstuurt berichten via Web3Forms, een externe formulierdienst. Daardoor worden formulierinzendingen naar Web3Forms verzonden voordat ze bij mij aankomen.",
+            "Gebruik het formulier alleen als je akkoord bent dat de ingevulde gegevens door Web3Forms worden verwerkt voor het afleveren van je bericht."
+          ]
+        },
+        {
+          heading: "Externe Links En Diensten",
+          paragraphs: [
+            "Deze website bevat links naar externe diensten zoals GitHub, LinkedIn, Instagram, Credly en projectrepositories. Als je zo'n link opent, geldt het privacybeleid van die externe dienst.",
+            "De website kan externe resources laden, zoals lettertypen of hosting-assets. Deze externe partijen kunnen technische gegevens verwerken die nodig zijn om hun dienst te leveren."
+          ]
+        },
+        {
+          heading: "Cookies En Analytics",
+          paragraphs: [
+            "In de huidige codebase is geen analytics-provider geconfigureerd en de website plaatst zelf geen marketingcookies.",
+            "Als analytics later worden toegevoegd, kan een analytics-provider technische gebruiksgegevens verwerken, zoals bezochte pagina's, apparaat- of browserinformatie en algemene interactiedata. Deze privacyverklaring moet dan worden bijgewerkt."
+          ]
+        },
+        {
+          heading: "Bewaartermijn",
+          paragraphs: [
+            "Berichten die via het contactformulier binnenkomen, worden alleen bewaard zolang dat redelijk nodig is om je vraag te beantwoorden, opvolging te doen of relevante communicatie bij te houden.",
+            "Je kunt vragen om eerdere communicatie te laten verwijderen, tenzij er een legitieme reden is om die nog te bewaren."
+          ]
+        },
+        {
+          heading: "Jouw Rechten",
+          paragraphs: [
+            "Afhankelijk van de toepasselijke privacywetgeving kun je vragen om inzage, correctie of verwijdering van persoonsgegevens die je via deze website hebt verstrekt.",
+            "Omdat dit een persoonlijke portfolio is, worden gegevens beperkt gehouden tot wat nodig is voor contact en professionele communicatie."
+          ]
+        },
+        {
+          heading: "Beveiliging",
+          paragraphs: [
+            "Ik ga zorgvuldig om met gegevens die via de website worden verstuurd, maar geen enkele online verzending of externe dienst kan absolute beveiliging garanderen.",
+            "Stuur daarom geen gevoelige gegevens, wachtwoorden, financiële informatie of vertrouwelijke documenten via het contactformulier."
+          ]
+        },
+        {
+          heading: "Wijzigingen",
+          paragraphs: [
+            "Deze privacyverklaring kan worden aangepast wanneer de website, het contactformulier of gebruikte externe diensten veranderen.",
+            "De datum bovenaan deze pagina geeft aan wanneer de tekst voor het laatst is bijgewerkt."
+          ]
+        }
+      ],
       contact: {
-        heading: "Contact Me",
-        text: "If you have any questions about this Privacy Policy, you can contact me by visiting:"
+        heading: "Contact",
+        text: "Heb je vragen over deze privacyverklaring, neem dan contact op via:",
+        url: "https://www.mehdioul.dev/#/contact"
       }
     }
   },
@@ -420,86 +419,85 @@ export const translations = {
     },
     privacy: {
       title: "Privacy Policy",
-      lastUpdated: "LAST UPDATED: FEBRUARY 22, 2026",
+      lastUpdated: "LAST UPDATED: JUNE 10, 2026",
       backToHome: "Back to Home",
-      introParagraph: "This Privacy Policy describes the policies and procedures of the developer (\"I\", \"me\", \"my\") regarding the Visibility Spoofer Chrome extension (\"the Extension\", \"the Service\") and explains your privacy rights and how the law protects you.",
-      interpretation: {
-        heading: "Interpretation and Definitions",
-        subHeading1: "Interpretation",
-        text1: "The words whose initial letters are capitalized have meanings defined under the following conditions. The following definitions shall have the same meaning regardless of whether they appear in singular or in plural.",
-        subHeading2: "Definitions",
-        definitions: [
-          { term: "Developer", meaning: "refers to the individual developer, based in Belgium." },
-          { term: "Country", meaning: "refers to Belgium." },
-          { term: "Device", meaning: "means any device that can access the Service such as a computer, a cell phone or a digital tablet." },
-          { term: "Extension", meaning: "refers to the Visibility Spoofer Chrome browser extension." },
-          { term: "Personal Data", meaning: "is any information that relates to an identified or identifiable individual." },
-          { term: "Service", meaning: "refers to the Extension." },
-          { term: "You", meaning: "means the individual accessing or using the Service." }
-        ]
-      },
-      noCollection: {
-        heading: "No Collection of Personal Data",
-        text1: "Visibility Spoofer does not collect, store, transmit, or share any personal data or usage data of any kind. The Extension operates entirely within your local browser and does not communicate with any external servers or third parties.",
-        text2: "Specifically, the Extension does not collect:",
-        items: [
-          "Personal identification information (name, email address, phone number, etc.)",
-          "Browsing history or web activity",
-          "IP addresses or device identifiers",
-          "Location data",
-          "Authentication or verification data",
-          "Financial or payment information",
-          "Personal communications",
-          "Cookies or tracking technologies",
-          "Analytics or usage statistics",
-          "Website content or user-generated content"
-        ]
-      },
-      howItWorks: {
-        heading: "How the Extension Works",
-        text: "The Extension injects a script into web pages at the time they load in order to override the browser's Page Visibility API. This causes websites to always perceive the tab as active and focused. All processing happens exclusively within your local browser environment. No data is read, recorded, or transmitted at any point during this process."
-      },
-      noTracking: {
-        heading: "No Use of Tracking Technologies",
-        text: "The Extension does not use cookies, web beacons, pixel tags, analytics scripts, or any other tracking technologies. No session data or persistent data is written to your device by the Extension."
-      },
-      noThirdParty: {
-        heading: "No Third-Party Sharing",
-        text: "Since no data is collected, no data is shared with or sold to any third party, including advertisers, analytics providers, business partners, or affiliates."
-      },
-      gdpr: {
-        heading: "GDPR – General Data Protection Regulation",
-        text1: "As the developer of this Extension is based in Belgium (European Union), I am committed to complying with the General Data Protection Regulation (GDPR). Since no personal data is collected, processed, or stored by the Extension, there is no data processing activity subject to GDPR obligations.",
-        text2: "Under the GDPR, you have the following rights. While these rights are not applicable in practice since I collect no data, I acknowledge them fully:",
-        rights: [
-          { name: "The right to access", desc: "You have the right to request copies of any personal data I hold about you." },
-          { name: "The right to rectification", desc: "You have the right to request correction of any inaccurate personal data." },
-          { name: "The right to erasure", desc: "You have the right to request deletion of your personal data." },
-          { name: "The right to restrict processing", desc: "You have the right to request that I restrict the processing of your personal data." },
-          { name: "The right to data portability", desc: "You have the right to request transfer of your personal data to another organization or directly to you." },
-          { name: "The right to object", desc: "You have the right to object to my processing of your personal data." }
-        ],
-        text3: "Since no personal data is collected, none of the above rights are triggered in practice. If you have any concerns, you may contact me at any time."
-      },
-      children: {
-        heading: "Children's Privacy",
-        text: "The Extension does not collect any data from any user, including children under the age of 16. The Extension is safe for use by anyone. If you are a parent or guardian and have concerns about the use of this Extension by a child, feel free to contact me."
-      },
-      security: {
-        heading: "Security",
-        text: "Since no personal data is collected or transmitted, there is no personal data at risk. The Extension does not establish any network connections, does not write data to external storage, and does not interact with any server infrastructure."
-      },
-      links: {
-        heading: "Links to Other Websites",
-        text: "The Extension or website may contain links to other websites not operated by me. I strongly advise you to review the Privacy Policy of every site you visit. I have no control over and assume no responsibility for the content or privacy practices of any third-party sites."
-      },
-      changes: {
-        heading: "Changes to This Privacy Policy",
-        text: "I may update this Privacy Policy from time to time. I will notify you of any changes by posting the new Privacy Policy on this page and updating the \"Last updated\" date. You are advised to review this Privacy Policy periodically for any changes."
-      },
+      introParagraph: "This privacy policy explains what data may be processed through this portfolio website, why it may be processed, and which external services may be involved.",
+      sections: [
+        {
+          heading: "Who Runs This Website",
+          paragraphs: [
+            "This website is the personal portfolio of Mehdi Oulad Khlie. It is used to present projects, experience, contact details, and professional profiles.",
+            "For questions about this privacy policy or about data you submit through the website, you can contact me through the contact page."
+          ]
+        },
+        {
+          heading: "Data Submitted Through The Contact Form",
+          paragraphs: [
+            "When you use the contact form, the information you choose to submit is sent so I can read and respond to your message.",
+            "The form processes the following data:"
+          ],
+          items: [
+            "Name",
+            "Email address",
+            "Subject",
+            "Message content",
+            "Technical delivery data that may be processed by the form provider, such as timestamp, IP address, browser data, or network data"
+          ]
+        },
+        {
+          heading: "Web3Forms",
+          paragraphs: [
+            "The contact form sends messages through Web3Forms, an external form service. This means form submissions are sent to Web3Forms before they are delivered to me.",
+            "Only use the form if you agree that the submitted information may be processed by Web3Forms for message delivery."
+          ]
+        },
+        {
+          heading: "External Links And Services",
+          paragraphs: [
+            "This website links to external services such as GitHub, LinkedIn, Instagram, Credly, and project repositories. When you open one of those links, the privacy policy of that external service applies.",
+            "The website may load external resources, such as fonts or hosting assets. Those external parties may process technical data needed to provide their service."
+          ]
+        },
+        {
+          heading: "Cookies And Analytics",
+          paragraphs: [
+            "No analytics provider is configured in the current codebase, and the website itself does not set marketing cookies.",
+            "If analytics are added later, an analytics provider may process technical usage data, such as visited pages, device or browser information, and general interaction data. This privacy policy should be updated if that happens."
+          ]
+        },
+        {
+          heading: "Retention",
+          paragraphs: [
+            "Messages received through the contact form are kept only as long as reasonably needed to answer your question, follow up, or keep relevant communication records.",
+            "You can ask for previous communication to be deleted unless there is a legitimate reason to keep it."
+          ]
+        },
+        {
+          heading: "Your Rights",
+          paragraphs: [
+            "Depending on applicable privacy law, you may ask to access, correct, or delete personal data you have submitted through this website.",
+            "Because this is a personal portfolio, data is kept limited to what is needed for contact and professional communication."
+          ]
+        },
+        {
+          heading: "Security",
+          paragraphs: [
+            "I take reasonable care with data submitted through the website, but no online transmission or external service can guarantee absolute security.",
+            "Do not send sensitive data, passwords, financial information, or confidential documents through the contact form."
+          ]
+        },
+        {
+          heading: "Changes",
+          paragraphs: [
+            "This privacy policy may be updated when the website, contact form, or external services change.",
+            "The date at the top of this page shows when the text was last updated."
+          ]
+        }
+      ],
       contact: {
-        heading: "Contact Me",
-        text: "If you have any questions about this Privacy Policy, you can contact me by visiting:"
+        heading: "Contact",
+        text: "If you have questions about this privacy policy, contact me through:",
+        url: "https://www.mehdioul.dev/#/contact"
       }
     }
   }

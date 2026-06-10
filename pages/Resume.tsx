@@ -27,8 +27,9 @@ const Resume: React.FC = () => {
         <button 
             className="flex items-center gap-2 bg-white text-bg px-5 py-2.5 font-mono text-sm font-bold uppercase hover:bg-gray-200 transition-colors"
             onClick={handleDownload}
+            aria-label="Download CV PDF"
         >
-            <Download size={16} />
+            <Download size={16} aria-hidden="true" />
             {t.resume.download}
         </button>
       </div>
@@ -115,16 +116,16 @@ const Resume: React.FC = () => {
           <Tile label={t.resume.contact.title} className="h-fit">
              <div className="space-y-4 text-sm font-mono text-textDim">
                 <div className="flex items-center gap-3">
-                   <Globe size={14} />
+                   <Globe size={14} aria-hidden="true" />
                    <span>Evergem, België</span>
                 </div>
                 <div className="flex items-center gap-3">
                    <span className="w-3.5 text-center">@</span>
-                   <a href="mailto:mehdi.ouladkhlie@outlook.be" className="hover:text-white transition-colors">mehdi.ouladkhlie@outlook.be</a>
+                   <a href="mailto:mehdi.ouladkhlie@outlook.be" aria-label="Send email to Mehdi" className="hover:text-white transition-colors">mehdi.ouladkhlie@outlook.be</a>
                 </div>
                 <div className="flex items-center gap-3">
                    <span className="w-3.5 text-center">#</span>
-                   <span>+32 468 54 94 78</span>
+                   <span>+32 465 13 66 79</span>
                 </div>
              </div>
           </Tile>

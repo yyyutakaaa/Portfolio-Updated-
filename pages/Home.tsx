@@ -7,16 +7,43 @@ import { useLanguage } from '../contexts/LanguageContext';
 const Home: React.FC = () => {
   const { t } = useLanguage();
 
-  const [mousePos, setMousePos] = React.useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = React.useState(false);
+  const previewRef = React.useRef<HTMLDivElement>(null);
+  const previewFrameRef = React.useRef<number | null>(null);
+  const previewPositionRef = React.useRef({ x: 0, y: 0 });
 
-  /* Mouse move handler tracks viewport coordinates now for fixed positioning */
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    setMousePos({
-      x: e.clientX,
-      y: e.clientY
+  const updatePreviewPosition = React.useCallback((x: number, y: number) => {
+    previewPositionRef.current = { x, y };
+
+    if (previewFrameRef.current !== null) {
+      return;
+    }
+
+    previewFrameRef.current = window.requestAnimationFrame(() => {
+      const { x: nextX, y: nextY } = previewPositionRef.current;
+      if (previewRef.current) {
+        previewRef.current.style.transform = `translate3d(${nextX + 20}px, ${nextY + 20}px, 0)`;
+      }
+      previewFrameRef.current = null;
     });
-  };
+  }, []);
+
+  React.useEffect(() => {
+    return () => {
+      if (previewFrameRef.current !== null) {
+        window.cancelAnimationFrame(previewFrameRef.current);
+      }
+    };
+  }, []);
+
+  const handleMouseMove = React.useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    updatePreviewPosition(e.clientX, e.clientY);
+  }, [updatePreviewPosition]);
+
+  const handleMouseEnter = React.useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    setIsHovering(true);
+    window.requestAnimationFrame(() => updatePreviewPosition(e.clientX, e.clientY));
+  }, [updatePreviewPosition]);
 
   return (
     <div className="space-y-12">
@@ -46,19 +73,19 @@ const Home: React.FC = () => {
 
         {/* Featured Project Banner - SilentStream */}
         <Tile
-          className="md:col-span-4 min-h-[350px] relative overflow-hidden cursor-none z-10 group/banner"
+          className="md:col-span-4 min-h-[350px] relative overflow-hidden cursor-none z-10 group/banner motion-reduce:cursor-auto"
           label={t.home.featuredProject.label}
           delay={0}
           highlight
           onMouseMove={handleMouseMove}
-          onMouseEnter={() => setIsHovering(true)}
+          onMouseEnter={handleMouseEnter}
           onMouseLeave={() => setIsHovering(false)}
         >
           {/* Base Background - Dark Stylish Gradient */}
           <div className="absolute inset-0 bg-gradient-to-br from-[#050505] via-[#0a0f16] to-[#050505]" />
 
           {/* Content Container - Dims and blurs slightly on hover */}
-          <div className="relative z-10 flex flex-col md:flex-row gap-8 items-start md:items-center h-full justify-between p-4 transition-all duration-500 group-hover/banner:opacity-10 group-hover/banner:blur-[2px]">
+          <div className="relative z-10 flex flex-col md:flex-row gap-8 items-start md:items-center h-full justify-between p-4 transition-all duration-500 group-hover/banner:opacity-10 group-hover/banner:blur-[2px] motion-reduce:transition-none motion-reduce:group-hover/banner:opacity-100 motion-reduce:group-hover/banner:blur-none">
             <div className="flex-1 space-y-6 max-w-2xl">
               <div className="flex flex-wrap gap-2">
                 <span className="bg-[#0b1016] border border-orange-500/30 text-orange-400 px-2 py-1 text-[10px] font-mono rounded uppercase tracking-wider flex items-center gap-1">
@@ -95,10 +122,11 @@ const Home: React.FC = () => {
                 href="https://github.com/yyyutakaaa/SilentStream"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 bg-white text-black px-8 py-4 rounded-sm font-bold uppercase tracking-wider hover:bg-gray-200 transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)] pointer-events-auto"
+                aria-label="View SilentStream on GitHub"
+                className="inline-flex w-full sm:w-auto items-center justify-center gap-2 bg-white text-black px-8 py-4 rounded-sm font-bold uppercase tracking-wider hover:bg-gray-200 transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)] pointer-events-auto"
               >
                 {t.home.featuredProject.cta}
-                <ExternalLink size={18} />
+                <ExternalLink size={18} aria-hidden="true" />
               </a>
             </div>
           </div>
@@ -108,11 +136,9 @@ const Home: React.FC = () => {
         {/* Hover Floating Image (Cursor Follower) - Moved OUTSIDE Tile to avoid transform context issues */}
         {isHovering && (
           <div
-            className="fixed z-[9999] pointer-events-none"
-            style={{
-              left: mousePos.x + 20,
-              top: mousePos.y + 20,
-            }}
+            ref={previewRef}
+            className="fixed left-0 top-0 z-[9999] pointer-events-none will-change-transform motion-reduce:hidden"
+            style={{ transform: 'translate3d(0, 0, 0)' }}
           >
             <div className="bg-surfaceHighlight p-2 rounded-xl shadow-[0_30px_60px_rgba(0,0,0,0.8)]">
               <img
@@ -228,7 +254,7 @@ const Home: React.FC = () => {
             {t.home.projects.items.map((project, index) => (
               <div key={index}>
                 <a href={project.url} target="_blank" rel="noopener noreferrer" className="group/project block cursor-pointer">
-                  <div className="flex justify-between items-start mb-2">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 mb-2">
                     <div className="flex items-center gap-2">
                       <h3 className="text-white font-bold group-hover/project:text-blue-400 transition-colors">{project.title}</h3>
                       {index === 0 && (
@@ -240,9 +266,9 @@ const Home: React.FC = () => {
                           NEW
                         </span>
                       )}
-                      <ExternalLink size={12} className="text-textDim opacity-0 group-hover/project:opacity-100 transition-opacity" />
+                      <ExternalLink size={12} aria-hidden="true" className="text-textDim opacity-0 group-hover/project:opacity-100 transition-opacity" />
                     </div>
-                    <span className="text-[10px] font-mono border border-border px-1 text-textDim text-right ml-2 shrink-0">{project.stack}</span>
+                    <span className="text-[10px] font-mono border border-border px-1 text-textDim text-left sm:text-right sm:ml-2 shrink-0 break-words">{project.stack}</span>
                   </div>
                   <p className="text-sm text-textDim">
                     {project.desc}

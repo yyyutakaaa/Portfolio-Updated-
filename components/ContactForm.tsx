@@ -126,7 +126,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ language }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-6" noValidate>
       {/* Name */}
       <div>
         <label htmlFor="name" className="block text-sm font-mono text-textDim mb-2">
@@ -139,6 +139,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ language }) => {
           value={formData.name}
           onChange={handleChange}
           placeholder={t.namePlaceholder}
+          aria-invalid={status === 'error' && !formData.name}
           className="w-full bg-surface border border-border px-4 py-3 text-textMain placeholder-textDim focus:border-white focus:outline-none transition-colors font-mono text-sm"
           required
         />
@@ -156,6 +157,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ language }) => {
           value={formData.email}
           onChange={handleChange}
           placeholder={t.emailPlaceholder}
+          aria-invalid={status === 'error' && (!formData.email || !validateEmail(formData.email))}
           className="w-full bg-surface border border-border px-4 py-3 text-textMain placeholder-textDim focus:border-white focus:outline-none transition-colors font-mono text-sm"
           required
         />
@@ -173,6 +175,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ language }) => {
           value={formData.subject}
           onChange={handleChange}
           placeholder={t.subjectPlaceholder}
+          aria-invalid={status === 'error' && !formData.subject}
           className="w-full bg-surface border border-border px-4 py-3 text-textMain placeholder-textDim focus:border-white focus:outline-none transition-colors font-mono text-sm"
           required
         />
@@ -189,6 +192,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ language }) => {
           value={formData.message}
           onChange={handleChange}
           placeholder={t.messagePlaceholder}
+          aria-invalid={status === 'error' && !formData.message}
           rows={6}
           className="w-full bg-surface border border-border px-4 py-3 text-textMain placeholder-textDim focus:border-white focus:outline-none transition-colors font-mono text-sm resize-none"
           required
@@ -197,15 +201,15 @@ const ContactForm: React.FC<ContactFormProps> = ({ language }) => {
 
       {/* Status Messages */}
       {status === 'success' && (
-        <div className="flex items-center gap-3 bg-green-500/10 border border-green-500/50 px-4 py-3 text-green-400 font-mono text-sm">
-          <CheckCircle size={20} />
+        <div role="status" aria-live="polite" className="flex items-center gap-3 bg-green-500/10 border border-green-500/50 px-4 py-3 text-green-400 font-mono text-sm">
+          <CheckCircle size={20} aria-hidden="true" />
           <span>{t.success}</span>
         </div>
       )}
 
       {status === 'error' && (
-        <div className="flex items-center gap-3 bg-red-500/10 border border-red-500/50 px-4 py-3 text-red-400 font-mono text-sm">
-          <AlertCircle size={20} />
+        <div role="alert" aria-live="assertive" className="flex items-center gap-3 bg-red-500/10 border border-red-500/50 px-4 py-3 text-red-400 font-mono text-sm">
+          <AlertCircle size={20} aria-hidden="true" />
           <span>{errorMessage}</span>
         </div>
       )}
@@ -214,10 +218,11 @@ const ContactForm: React.FC<ContactFormProps> = ({ language }) => {
       <button
         type="submit"
         disabled={status === 'submitting'}
+        aria-busy={status === 'submitting'}
         className="w-full bg-white text-black px-6 py-4 font-mono text-sm uppercase tracking-wider hover:bg-textMain transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
       >
         {status === 'submitting' ? t.sending : t.send}
-        <Send size={16} />
+        <Send size={16} aria-hidden="true" />
       </button>
     </form>
   );

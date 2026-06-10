@@ -16,6 +16,7 @@ const Tile: React.FC<TileProps> = ({ children, className = '', delay = 0, label,
       className={`
         relative group overflow-hidden bg-surface border border-border p-6 flex flex-col
         transition-all duration-500 hover:border-borderActive animate-reveal opacity-0
+        motion-reduce:animate-none motion-reduce:opacity-100 motion-reduce:transition-none
         ${highlight ? 'bg-surfaceHighlight' : ''}
         ${className}
       `}
@@ -23,7 +24,7 @@ const Tile: React.FC<TileProps> = ({ children, className = '', delay = 0, label,
       {...props}
     >
       {/* Decorative scanline effect on hover */}
-      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent transform -translate-x-full transition-transform duration-700 group-hover:translate-x-full" />
+      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent transform -translate-x-full transition-transform duration-700 group-hover:translate-x-full motion-reduce:hidden" />
 
       {label && (
         <div className="flex items-center gap-2 mb-4">

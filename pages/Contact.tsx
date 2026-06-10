@@ -73,10 +73,11 @@ const Contact: React.FC = () => {
               {/* Email */}
               <a
                 href="mailto:mehdi.ouladkhlie@outlook.be"
+                aria-label={`Email ${content.email}`}
                 className="flex items-start gap-3 group cursor-pointer"
               >
                 <div className="bg-surfaceHighlight p-2 rounded border border-border group-hover:border-white transition-colors">
-                  <Mail size={20} className="text-white" />
+                  <Mail size={20} aria-hidden="true" className="text-white" />
                 </div>
                 <div>
                   <div className="text-xs font-mono text-textDim mb-1">Email</div>
@@ -89,10 +90,11 @@ const Contact: React.FC = () => {
               {/* Phone */}
               <a
                 href="tel:+32465136679"
+                aria-label={`Call ${content.phone}`}
                 className="flex items-start gap-3 group cursor-pointer"
               >
                 <div className="bg-surfaceHighlight p-2 rounded border border-border group-hover:border-white transition-colors">
-                  <Phone size={20} className="text-white" />
+                  <Phone size={20} aria-hidden="true" className="text-white" />
                 </div>
                 <div>
                   <div className="text-xs font-mono text-textDim mb-1">Phone</div>
@@ -105,7 +107,7 @@ const Contact: React.FC = () => {
               {/* Location */}
               <div className="flex items-start gap-3">
                 <div className="bg-surfaceHighlight p-2 rounded border border-border">
-                  <MapPin size={20} className="text-white" />
+                  <MapPin size={20} aria-hidden="true" className="text-white" />
                 </div>
                 <div>
                   <div className="text-xs font-mono text-textDim mb-1">Location</div>
@@ -126,25 +128,28 @@ const Contact: React.FC = () => {
                     href="https://www.linkedin.com/in/mehdi-oulad-khlie-5a43aa30b/"
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label="LinkedIn profile"
                     className="bg-surfaceHighlight p-2 rounded border border-border hover:border-white transition-colors"
                   >
-                    <Linkedin size={20} className="text-white" />
+                    <Linkedin size={20} aria-hidden="true" className="text-white" />
                   </a>
                   <a
                     href="https://github.com/yyyutakaaa"
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label="GitHub profile"
                     className="bg-surfaceHighlight p-2 rounded border border-border hover:border-white transition-colors"
                   >
-                    <Github size={20} className="text-white" />
+                    <Github size={20} aria-hidden="true" className="text-white" />
                   </a>
                   <a
                     href="https://www.instagram.com/y.yutaka.a/"
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label="Instagram profile"
                     className="bg-surfaceHighlight p-2 rounded border border-border hover:border-white transition-colors"
                   >
-                    <Instagram size={20} className="text-white" />
+                    <Instagram size={20} aria-hidden="true" className="text-white" />
                   </a>
                 </div>
               </div>

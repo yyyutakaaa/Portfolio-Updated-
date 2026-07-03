@@ -103,9 +103,19 @@ export const translations = {
       educationTitle: "Opleiding",
       jobs: [
         {
+          role: "Magazijnier (Student)",
+          company: "Sligro Evergem",
+          period: "JUN 2026 - HEDEN",
+          description: [
+            "Sorteer producten per rit, zodat collega's ze kunnen inscannen en bij de juiste klant afleveren.",
+            "Scan er ondertussen ook zelf producten bij wanneer dat nodig is.",
+            "Houd het magazijn overzichtelijk en netjes."
+          ]
+        },
+        {
           role: "Assistent Voorraadbeheer (Student)",
           company: "Thiry Gent - PRIMAMUNDO Group | Evergem",
-          period: "DEC 2024 - HEDEN",
+          period: "DEC 2024 - OKT 2025",
           description: [
             "Verificatie van fysieke voorraadniveaus ten opzichte van digitale systemen.",
             "Direct rapporteren en oplossen van overschotten of tekorten.",
@@ -354,9 +364,19 @@ export const translations = {
       educationTitle: "Education",
       jobs: [
         {
+          role: "Warehouse Assistant (Student)",
+          company: "Sligro Evergem",
+          period: "JUN 2026 - PRESENT",
+          description: [
+            "Sort products by delivery route so colleagues can scan them in and get them to the right customer.",
+            "Also handle scanning myself whenever it's needed.",
+            "Keep the warehouse tidy and organized."
+          ]
+        },
+        {
           role: "Inventory Management Assistant (Student)",
           company: "Thiry Gent - PRIMAMUNDO Group | Evergem",
-          period: "DEC 2024 - PRESENT",
+          period: "DEC 2024 - OCT 2025",
           description: [
             "Verification of physical stock levels against digital systems.",
             "Direct reporting and resolution of surpluses or shortages.",

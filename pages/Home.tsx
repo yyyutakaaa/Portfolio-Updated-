@@ -1,6 +1,6 @@
 import React from 'react';
 import Tile from '../components/Tile';
-import { ArrowRight, Cpu, Network, Server, ShieldCheck, Terminal, GraduationCap, Award, MapPin, ExternalLink } from 'lucide-react';
+import { ArrowRight, Cpu, Network, Server, ShieldCheck, Terminal, GraduationCap, Award, MapPin, ExternalLink, Lock } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 
@@ -71,7 +71,7 @@ const Home: React.FC = () => {
       {/* Bento Grid Layout */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 auto-rows-min">
 
-        {/* Featured Project Banner - SilentStream */}
+        {/* Featured Project Banner - Grimdelve */}
         <Tile
           className="md:col-span-4 min-h-[350px] relative overflow-hidden cursor-none z-10 group/banner motion-reduce:cursor-auto"
           label={t.home.featuredProject.label}
@@ -90,18 +90,27 @@ const Home: React.FC = () => {
               <div className="flex flex-wrap gap-2">
                 <span className="bg-[#0b1016] border border-orange-500/30 text-orange-400 px-2 py-1 text-[10px] font-mono rounded uppercase tracking-wider flex items-center gap-1">
                   <div className="w-2 h-2 rounded-full bg-orange-500"></div>
-                  Rust
+                  2D RPG
                 </span>
                 <span className="bg-[#0b1016] border border-blue-500/30 text-blue-400 px-2 py-1 text-[10px] font-mono rounded uppercase tracking-wider flex items-center gap-1">
                   <div className="w-2 h-2 rounded-full bg-blue-500"></div>
-                  Windows
+                  Solo Dev
                 </span>
               </div>
 
               <div>
-                <h3 className="text-4xl md:text-6xl font-black text-white mb-3 tracking-tight drop-shadow-lg">
-                  {t.home.featuredProject.title}
-                </h3>
+                <div className="flex items-center gap-3 mb-3">
+                  <h3 className="text-4xl md:text-6xl font-black text-white tracking-tight drop-shadow-lg">
+                    {t.home.featuredProject.title}
+                  </h3>
+                  <span className="bg-green-500/10 border border-green-500/30 text-green-400 px-1.5 py-0.5 text-[9px] font-mono rounded uppercase tracking-wider flex items-center gap-1">
+                    <span className="relative flex h-1.5 w-1.5">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75 motion-reduce:hidden"></span>
+                      <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-500"></span>
+                    </span>
+                    NEW
+                  </span>
+                </div>
                 <p className="text-textDim text-sm md:text-lg leading-relaxed max-w-xl">
                   {t.home.featuredProject.description}
                 </p>
@@ -118,16 +127,13 @@ const Home: React.FC = () => {
             </div>
 
             <div className="flex-shrink-0 self-end md:self-center">
-              <a
-                href="https://github.com/yyyutakaaa/SilentStream"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="View SilentStream on GitHub"
-                className="inline-flex w-full sm:w-auto items-center justify-center gap-2 bg-white text-black px-8 py-4 rounded-sm font-bold uppercase tracking-wider hover:bg-gray-200 transition-all shadow-[0_0_20px_rgba(255,255,255,0.1)] pointer-events-auto"
+              <div
+                aria-label="Grimdelve is not public yet"
+                className="inline-flex w-full sm:w-auto items-center justify-center gap-2 border border-dashed border-white/30 text-white/70 px-8 py-4 rounded-sm font-bold uppercase tracking-wider cursor-default select-none"
               >
                 {t.home.featuredProject.cta}
-                <ExternalLink size={18} aria-hidden="true" />
-              </a>
+                <Lock size={16} aria-hidden="true" />
+              </div>
             </div>
           </div>
 
@@ -141,11 +147,10 @@ const Home: React.FC = () => {
             style={{ transform: 'translate3d(0, 0, 0)' }}
           >
             <div className="bg-surfaceHighlight p-2 rounded-xl shadow-[0_30px_60px_rgba(0,0,0,0.8)]">
-              <img
-                src="/silentstream-preview.png"
-                alt="SilentStream Preview"
-                className="max-w-[400px] w-auto h-auto rounded-lg shadow-inner bg-black"
-              />
+              <div className="w-[280px] h-[180px] rounded-lg shadow-inner bg-black border border-dashed border-white/15 flex flex-col items-center justify-center gap-2 text-white/40">
+                <Lock size={22} aria-hidden="true" />
+                <span className="font-mono text-[10px] tracking-[0.2em] uppercase">{t.home.featuredProject.previewLabel}</span>
+              </div>
             </div>
           </div>
         )}

@@ -14,23 +14,24 @@ export const translations = {
       localTime: "Lokale tijd",
       featuredProject: {
         label: "Nieuw Project",
-        title: "SilentStream",
-        description: "Een krachtige Windows-applicatie voor intelligente audio-ruisonderdrukking en routing.",
-        stack: "RUST / WINDOWS / EGUI",
-        features: ["AI Ruisonderdrukking", "Microfoon Routing", "System Tray Integratie"],
-        cta: "Bekijk op GitHub"
+        title: "Grimdelve",
+        description: "Een klein singleplayer RPG waar ik in mijn eigen tijd aan bouw: een dorpje vol NPC's, dagelijkse boss-fights, errands en een talentboom die stiekem groter wordt dan gepland.",
+        stack: "2D RPG / SOLO PROJECT",
+        features: ["Pixel-art dorp", "Dagelijkse boss-fights", "Talentbomen"],
+        cta: "Nog geheim, meer volgt",
+        previewLabel: "PREVIEW GEBLOKKEERD"
       },
       profile: {
         title: "Profiel",
         text: React.createElement(React.Fragment, null,
-          "Ik ben een gemotiveerde student ",
+          "Ik studeer ",
           React.createElement("span", { className: "text-white font-medium" }, "Systeem- en Netwerkbeheer"),
-          " met één duidelijk doel: werken als System Administrator.",
+          " en weet intussen vrij zeker wat ik wil: aan de slag als System Administrator.",
           React.createElement("br", null),
           React.createElement("br", null),
-          "Ik werk graag met Windows omgevingen en heb ruime ervaring met het troubleshooten van hardware en software. Mijn ambitie reikt verder dan mijn diploma; ik focus op specialisatie via ",
+          "Het liefst werk ik in Windows-omgevingen. Ik heb al heel wat pc's en netwerken zien vastlopen en er minstens evenveel weer aan de praat gekregen, van kapotte drivers tot rare netwerkfouten. Daarnaast haal ik mijn ",
           React.createElement("span", { className: "text-white font-mono text-sm border border-border px-1" }, "CCNA"),
-          " en Microsoft-trajecten."
+          " en volg ik Microsoft-trajecten om dat verder uit te bouwen."
         ),
         cta: "Bekijk volledige CV"
       },
@@ -63,13 +64,13 @@ export const translations = {
           {
             title: "Visibility Spoofer",
             stack: "JAVASCRIPT / CHROME EXTENSION",
-            desc: "Chrome-extensie die de Page Visibility API spooft — houdt elk tabblad altijd 'zichtbaar' en gefocust. Bevat anti-detectie engine, dynamische iframe-bescherming en zero console output.",
+            desc: "Chrome-extensie die de Page Visibility API spooft, zodat een tabblad altijd 'zichtbaar' en gefocust blijft, ook op de achtergrond. Met anti-detectie, bescherming voor dynamische iframes en geen console-output.",
             url: "https://github.com/yyyutakaaa/Visibility-Spoofer"
           },
           {
             title: "FuelTracker PWA",
             stack: "VUE.JS / TAILWIND / PWA",
-            desc: "Een moderne PWA voor het berekenen van brandstofkosten en CO₂-uitstoot met real-time adressuggesties en interactieve kaarten (Leaflet/OSM).",
+            desc: "PWA voor het berekenen van brandstofkosten en CO₂-uitstoot, met real-time adressuggesties en interactieve kaarten (Leaflet/OSM).",
             url: "https://github.com/yyyutakaaa/FuelTracker"
           },
           {
@@ -81,7 +82,7 @@ export const translations = {
           {
             title: "InstaDM-Saver v2.0",
             stack: "PYTHON / CRYPTOGRAPHY",
-            desc: "Professionele tool voor het archiveren van Instagram DM's. Bevat encryptie, rate-limiting, modulaire architectuur en export naar JSON/CSV.",
+            desc: "Tool om Instagram DM's te archiveren, met encryptie, rate-limiting, een modulaire opzet en export naar JSON/CSV.",
             url: "https://github.com/yyyutakaaa/InstaDM-Saver"
           }
         ]
@@ -264,23 +265,24 @@ export const translations = {
       localTime: "Local Time",
       featuredProject: {
         label: "New Project",
-        title: "SilentStream",
-        description: "A powerful Windows application for intelligent audio noise suppression and routing.",
-        stack: "RUST / WINDOWS / EGUI",
-        features: ["AI Noise Suppression", "Microphone Routing", "System Tray Integration"],
-        cta: "View on GitHub"
+        title: "Grimdelve",
+        description: "A small singleplayer RPG I'm building in my spare time: a town full of NPCs, daily boss fights, errands, and a talent tree that keeps growing bigger than planned.",
+        stack: "2D RPG / SOLO PROJECT",
+        features: ["Pixel-art town", "Daily boss fights", "Talent trees"],
+        cta: "Still a secret, more soon",
+        previewLabel: "PREVIEW LOCKED"
       },
       profile: {
         title: "Profile",
         text: React.createElement(React.Fragment, null,
-          "I am a motivated ",
+          "I'm studying ",
           React.createElement("span", { className: "text-white font-medium" }, "System and Network Administration"),
-          " student with one clear goal: working as a System Administrator.",
+          ", and by now I know what I want: to work as a System Administrator.",
           React.createElement("br", null),
           React.createElement("br", null),
-          "I enjoy working with Windows environments and have extensive experience troubleshooting hardware and software. My ambition extends beyond my degree; I focus on specialization via ",
+          "I prefer working in Windows environments. I've watched plenty of PCs and networks fall over and gotten just as many running again, from broken drivers to weird network faults. On the side, I'm working toward my ",
           React.createElement("span", { className: "text-white font-mono text-sm border border-border px-1" }, "CCNA"),
-          " and Microsoft tracks."
+          " and taking Microsoft courses to build on that."
         ),
         cta: "View Full Resume"
       },
@@ -313,13 +315,13 @@ export const translations = {
           {
             title: "Visibility Spoofer",
             stack: "JAVASCRIPT / CHROME EXTENSION",
-            desc: "Chrome extension that spoofs the Page Visibility API — keeps every tab always 'visible' and focused. Features anti-detection engine, dynamic iframe protection and zero console output.",
+            desc: "Chrome extension that spoofs the Page Visibility API, so a tab stays 'visible' and focused even in the background. Includes anti-detection, protection for dynamic iframes, and zero console output.",
             url: "https://github.com/yyyutakaaa/Visibility-Spoofer"
           },
           {
             title: "FuelTracker PWA",
             stack: "VUE.JS / TAILWIND / PWA",
-            desc: "A modern PWA for calculating fuel costs and CO₂ emissions featuring real-time address autocomplete and interactive maps (Leaflet/OSM).",
+            desc: "A PWA for calculating fuel costs and CO₂ emissions, with real-time address autocomplete and interactive maps (Leaflet/OSM).",
             url: "https://github.com/yyyutakaaa/FuelTracker"
           },
           {
@@ -331,7 +333,7 @@ export const translations = {
           {
             title: "InstaDM-Saver v2.0",
             stack: "PYTHON / CRYPTOGRAPHY",
-            desc: "Professional tool for fetching and archiving Instagram DMs. Features encryption, rate-limiting, modular architecture, and JSON/CSV exports.",
+            desc: "A tool for fetching and archiving Instagram DMs, with encryption, rate-limiting, a modular setup, and JSON/CSV export.",
             url: "https://github.com/yyyutakaaa/InstaDM-Saver"
           }
         ]

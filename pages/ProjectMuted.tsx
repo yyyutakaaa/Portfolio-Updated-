@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
-import { ArrowLeft, Download, Github, Mic, CheckCircle2, AlertTriangle, Terminal } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Download, Github, Mic, CheckCircle2, AlertTriangle, Terminal, Cpu } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const GITHUB_URL = 'https://github.com/yyyutakaaa/Muted';
@@ -84,6 +84,59 @@ const ProjectMuted: React.FC = () => {
             </li>
           ))}
         </ol>
+      </section>
+
+      {/* Deep dive - Under the hood */}
+      <section className="mb-12 opacity-0 animate-reveal" style={{ animationDelay: '125ms' }}>
+        <h2 className="text-xl font-bold text-white mb-6 border-b border-border pb-2 flex items-center gap-2">
+          <Cpu size={18} className="text-purple-400" aria-hidden="true" />
+          {m.deepDive.title}
+        </h2>
+
+        {/* Signal path */}
+        <div className="bg-surface border border-border rounded-lg p-5 mb-8">
+          <h3 className="text-sm font-mono uppercase tracking-wider text-textDim mb-3">{m.deepDive.signalPathTitle}</h3>
+          <p className="text-sm text-textDim leading-relaxed mb-5">{m.deepDive.signalPathIntro}</p>
+          <div className="flex flex-wrap items-center gap-2">
+            {m.deepDive.signalPath.map((node: string, i: number) => (
+              <React.Fragment key={i}>
+                <span
+                  className={`text-xs font-mono px-3 py-2 rounded border ${
+                    i === 1
+                      ? 'bg-purple-500/10 border-purple-500/40 text-purple-300'
+                      : 'bg-black/40 border-border text-textDim'
+                  }`}
+                >
+                  {node}
+                </span>
+                {i < m.deepDive.signalPath.length - 1 && (
+                  <ArrowRight size={14} className="text-textDim/50 shrink-0" aria-hidden="true" />
+                )}
+              </React.Fragment>
+            ))}
+          </div>
+        </div>
+
+        {/* Frame math stat tiles */}
+        <h3 className="text-sm font-mono uppercase tracking-wider text-textDim mb-3">{m.deepDive.frameMathTitle}</h3>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
+          {m.deepDive.frameMath.map((stat: { value: string; label: string }, i: number) => (
+            <div key={i} className="bg-gradient-to-br from-surface to-black/40 border border-border rounded-lg p-4 text-center">
+              <div className="text-2xl md:text-3xl font-black text-white tracking-tight">{stat.value}</div>
+              <div className="text-[10px] font-mono uppercase tracking-wider text-textDim mt-1">{stat.label}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Deep dive points */}
+        <div className="space-y-5">
+          {m.deepDive.points.map((point: { title: string; body: string }, i: number) => (
+            <div key={i} className="border-l-2 border-purple-500/40 pl-4">
+              <h3 className="text-white font-bold text-sm mb-1">{point.title}</h3>
+              <p className="text-sm text-textDim leading-relaxed">{point.body}</p>
+            </div>
+          ))}
+        </div>
       </section>
 
       {/* Features */}

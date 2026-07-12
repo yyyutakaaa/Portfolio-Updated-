@@ -110,6 +110,41 @@ export const translations = {
       tagline: "Schone microfoon. Duidelijke stem.",
       screenshotAlt: "Screenshot van de Muted-app met RNNoise-filter, voice gate en virtuele-kabel-instellingen",
       intro: "Muted is een Windows-app die ik gebouwd heb nadat ik het beu was om mijn koelventilator te horen tijdens elke Discord-call. De app haalt achtergrondgeluid uit je microfoon voordat het bij Discord, Teams of je spelletje aankomt, en dat gebeurt volledig lokaal op je pc: er gaat niets naar de cloud en er wordt niets opgenomen.",
+      deepDive: {
+        title: "Onder de motorkap",
+        signalPathTitle: "De signaalketen",
+        signalPathIntro: "Windows laat een app bestaande microfoons en luidsprekers gebruiken, maar zonder een ondertekende kernel-driver mag een app geen nieuw apparaat aanmaken. Muted werkt daarom met wat er al is: het neemt je echte microfoon, maakt die schoon en geeft het resultaat door aan een virtuele kabel waar je apps naar kunnen luisteren.",
+        signalPath: ["Microfoon", "Muted (gain · RNNoise · mix · gate · drift)", "Virtuele kabel in", "Gekoppelde kabel-uitgang", "Discord / Teams / game"],
+        frameMathTitle: "De cijfers waar het op draait",
+        frameMath: [
+          { value: "48 kHz", label: "samplerate" },
+          { value: "480", label: "samples per frame" },
+          { value: "10 ms", label: "per frame" },
+          { value: "20 ms", label: "RNNoise-vertraging" }
+        ],
+        points: [
+          {
+            title: "Geen eigen driver",
+            body: "Windows laat een gewone app geen nieuwe microfoon toevoegen aan de apparatenlijst van Discord; daar heb je een ondertekende kernel-driver en een heel ondertekeningsproces voor nodig. Muted slaat dat helemaal over en leent een virtuele audiokabel die al geïnstalleerd is, en voert daar schone audio in. Alles blijft in één gewone user-mode app, er draait niets in de kernel."
+          },
+          {
+            title: "De opnamethread blijft uit de weg",
+            body: "De thread die je microfoon uitleest doet maar één ding: de audio naar een buffer kopiëren en verder gaan. Geen filtering, geen locks, geen geheugenallocatie op dat pad. Een tweede thread haalt telkens precies 480 samples op, 10 ms audio, wat de framegrootte is waar RNNoise op rekent."
+          },
+          {
+            title: "Eén frame, van begin tot eind",
+            body: "Elk frame krijgt eerst input-gain en splitst dan in tweeën. Eén kopie blijft onaangeroerd, de andere gaat door RNNoise. Omdat RNNoise zelf ongeveer 20 ms vertraging toevoegt, wordt de onaangeroerde kopie evenveel vertraagd zodat ze sample voor sample gelijklopen. Ze worden gemengd volgens een verhouding die jij instelt, een optionele voice gate knipt de stiltes weg op basis van RNNoise's eigen stemdetectie, en daarna volgt de output-gain."
+          },
+          {
+            title: "Twee klokken die het oneens zijn",
+            body: "Je microfoon en de virtuele kabel zijn aparte apparaten, elk met zijn eigen klok, en tijdens een lange call lopen ze uit elkaar. Als Muted precies evenveel samples zou wegschrijven als het inleest, zou de buffer langzaam leeglopen of overstromen. Daarom stuurt het honderd keer per seconde één sample meer of minder door, afhankelijk van hoe vol de buffer zit. Eén sample hoor je niet, maar het houdt alles urenlang synchroon."
+          },
+          {
+            title: "Het start niet in je luidsprekers",
+            body: "Eén controle heeft niets met geluidskwaliteit te maken. Als Muteds uitgang ooit op je luidsprekers terechtkwam in plaats van op een virtuele kabel, zou het je eigen stem terug de microfoon in voeren en een lus vormen. Daarom checkt het eerst of de uitgang echt een virtuele kabel is, en weigert het te starten als dat niet zo is."
+          }
+        ]
+      },
       howItWorksTitle: "Hoe het werkt",
       howItWorks: [
         "De app vangt je microfoon op 48kHz mono via WASAPI.",
@@ -418,6 +453,41 @@ export const translations = {
       tagline: "Clean mic. Clear voice.",
       screenshotAlt: "Screenshot of the Muted app showing the RNNoise filter, voice gate, and virtual cable settings",
       intro: "Muted is a Windows app I built after getting tired of hearing my PC's cooling fan on every Discord call. It strips background noise from your mic before it reaches Discord, Teams, or your game, all processed locally on your PC: nothing goes to the cloud, nothing gets recorded.",
+      deepDive: {
+        title: "Under the hood",
+        signalPathTitle: "The signal path",
+        signalPathIntro: "Windows lets an app use microphones and speakers that already exist, but it won't let one publish a brand-new device without a signed kernel driver. Muted works with what's there instead: it takes your real mic, cleans it up, and hands the result to a virtual cable your apps can listen to.",
+        signalPath: ["Microphone", "Muted (gain · RNNoise · mix · gate · drift)", "Virtual cable in", "Cable's paired output", "Discord / Teams / game"],
+        frameMathTitle: "The numbers it runs on",
+        frameMath: [
+          { value: "48 kHz", label: "sample rate" },
+          { value: "480", label: "samples per frame" },
+          { value: "10 ms", label: "per frame" },
+          { value: "20 ms", label: "RNNoise delay" }
+        ],
+        points: [
+          {
+            title: "No driver of its own",
+            body: "Windows won't let a normal app add a new microphone to Discord's device list; that needs a signed kernel driver and a whole signing process. Muted skips all of it and borrows a virtual audio cable that's already installed, feeding clean audio into it. Everything stays in one regular user-mode app, nothing runs in the kernel."
+          },
+          {
+            title: "The capture thread stays out of the way",
+            body: "The thread reading your mic does one thing: copy the audio into a buffer and move on. No filtering, no locks, no memory allocation on that path. A second thread pulls exactly 480 samples at a time, 10 ms of audio, which is the frame size RNNoise expects."
+          },
+          {
+            title: "One frame, start to finish",
+            body: "Each frame gets input gain, then splits in two. One copy stays untouched, the other goes through RNNoise. Because RNNoise adds about 20 ms of its own delay, the untouched copy is held back by the same amount so the two line up sample for sample. They're blended by a ratio you set, an optional voice gate trims the gaps using RNNoise's own voice detection, and then output gain is applied."
+          },
+          {
+            title: "Two clocks that don't agree",
+            body: "Your mic and the virtual cable are separate devices, each with its own clock, and over a long call they drift apart. If Muted wrote exactly as many samples as it read, the buffer would slowly run dry or overflow. So a hundred times a second it emits one sample more or fewer depending on how full the buffer is. You can't hear a single sample, but it keeps everything aligned for hours."
+          },
+          {
+            title: "It won't start into your speakers",
+            body: "One check has nothing to do with sound quality. If Muted's output ever landed on your speakers instead of a virtual cable, it would feed your own voice back into the mic and loop. So it verifies the output really is a virtual cable before it starts, and refuses to run if it isn't."
+          }
+        ]
+      },
       howItWorksTitle: "How it works",
       howItWorks: [
         "The app captures your mic at 48kHz mono through WASAPI.",

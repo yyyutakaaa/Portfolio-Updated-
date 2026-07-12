@@ -71,11 +71,77 @@ const Home: React.FC = () => {
       {/* Bento Grid Layout */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 auto-rows-min">
 
-        {/* Featured Project Banner - Grimdelve */}
+        {/* Featured Project Banner - Muted */}
+        <Link
+          to="/projects/muted"
+          className="md:col-span-4 block z-10 group/banner"
+          aria-label={`${t.home.featuredProject.title} - ${t.home.featuredProject.cta}`}
+        >
+          <Tile
+            className="min-h-[350px] relative overflow-hidden cursor-pointer"
+            label={t.home.featuredProject.label}
+            delay={0}
+            highlight
+          >
+            {/* Base Background - Dark Stylish Gradient */}
+            <div className="absolute inset-0 bg-gradient-to-br from-[#050505] via-[#0a0f16] to-[#050505]" />
+
+            <div className="relative z-10 flex flex-col md:flex-row gap-8 items-start md:items-center h-full justify-between p-4">
+              <div className="flex-1 space-y-6 max-w-2xl">
+                <div className="flex flex-wrap gap-2">
+                  <span className="bg-[#0b1016] border border-purple-500/30 text-purple-400 px-2 py-1 text-[10px] font-mono rounded uppercase tracking-wider flex items-center gap-1">
+                    <div className="w-2 h-2 rounded-full bg-purple-500"></div>
+                    Windows App
+                  </span>
+                  <span className="bg-[#0b1016] border border-blue-500/30 text-blue-400 px-2 py-1 text-[10px] font-mono rounded uppercase tracking-wider flex items-center gap-1">
+                    <div className="w-2 h-2 rounded-full bg-blue-500"></div>
+                    Solo Dev
+                  </span>
+                </div>
+
+                <div>
+                  <div className="flex items-center gap-3 mb-3">
+                    <h3 className="text-4xl md:text-6xl font-black text-white tracking-tight drop-shadow-lg">
+                      {t.home.featuredProject.title}
+                    </h3>
+                    <span className="bg-green-500/10 border border-green-500/30 text-green-400 px-1.5 py-0.5 text-[9px] font-mono rounded uppercase tracking-wider flex items-center gap-1">
+                      <span className="relative flex h-1.5 w-1.5">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75 motion-reduce:hidden"></span>
+                        <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-500"></span>
+                      </span>
+                      NEW
+                    </span>
+                  </div>
+                  <p className="text-textDim text-sm md:text-lg leading-relaxed max-w-xl">
+                    {t.home.featuredProject.description}
+                  </p>
+                </div>
+
+                <div className="flex flex-wrap gap-3">
+                  {t.home.featuredProject.features.map((feature, i) => (
+                    <div key={i} className="flex items-center gap-2 text-xs font-mono text-textDim bg-surface/50 px-3 py-1.5 rounded border border-border">
+                      <ShieldCheck size={12} className="text-green-400" />
+                      {feature}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex-shrink-0 self-end md:self-center">
+                <div className="inline-flex w-full sm:w-auto items-center justify-center gap-2 border border-white text-white px-8 py-4 rounded-sm font-bold uppercase tracking-wider group-hover/banner:bg-white group-hover/banner:text-black transition-colors">
+                  {t.home.featuredProject.cta}
+                  <ArrowRight size={16} aria-hidden="true" />
+                </div>
+              </div>
+            </div>
+          </Tile>
+        </Link>
+
+        {/* Second Project Banner - Grimdelve */}
         <Tile
           className="md:col-span-4 min-h-[350px] relative overflow-hidden cursor-none z-10 group/banner motion-reduce:cursor-auto"
-          label={t.home.featuredProject.label}
-          delay={0}
+          label={t.home.secondProject.label}
+          delay={50}
           highlight
           onMouseMove={handleMouseMove}
           onMouseEnter={handleMouseEnter}
@@ -101,23 +167,16 @@ const Home: React.FC = () => {
               <div>
                 <div className="flex items-center gap-3 mb-3">
                   <h3 className="text-4xl md:text-6xl font-black text-white tracking-tight drop-shadow-lg">
-                    {t.home.featuredProject.title}
+                    {t.home.secondProject.title}
                   </h3>
-                  <span className="bg-green-500/10 border border-green-500/30 text-green-400 px-1.5 py-0.5 text-[9px] font-mono rounded uppercase tracking-wider flex items-center gap-1">
-                    <span className="relative flex h-1.5 w-1.5">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75 motion-reduce:hidden"></span>
-                      <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-500"></span>
-                    </span>
-                    NEW
-                  </span>
                 </div>
                 <p className="text-textDim text-sm md:text-lg leading-relaxed max-w-xl">
-                  {t.home.featuredProject.description}
+                  {t.home.secondProject.description}
                 </p>
               </div>
 
               <div className="flex flex-wrap gap-3">
-                {t.home.featuredProject.features.map((feature, i) => (
+                {t.home.secondProject.features.map((feature, i) => (
                   <div key={i} className="flex items-center gap-2 text-xs font-mono text-textDim bg-surface/50 px-3 py-1.5 rounded border border-border">
                     <ShieldCheck size={12} className="text-green-400" />
                     {feature}
@@ -131,7 +190,7 @@ const Home: React.FC = () => {
                 aria-label="Grimdelve is not public yet"
                 className="inline-flex w-full sm:w-auto items-center justify-center gap-2 border border-dashed border-white/30 text-white/70 px-8 py-4 rounded-sm font-bold uppercase tracking-wider cursor-default select-none"
               >
-                {t.home.featuredProject.cta}
+                {t.home.secondProject.cta}
                 <Lock size={16} aria-hidden="true" />
               </div>
             </div>
@@ -149,7 +208,7 @@ const Home: React.FC = () => {
             <div className="bg-surfaceHighlight p-2 rounded-xl shadow-[0_30px_60px_rgba(0,0,0,0.8)]">
               <div className="w-[280px] h-[180px] rounded-lg shadow-inner bg-black border border-dashed border-white/15 flex flex-col items-center justify-center gap-2 text-white/40">
                 <Lock size={22} aria-hidden="true" />
-                <span className="font-mono text-[10px] tracking-[0.2em] uppercase">{t.home.featuredProject.previewLabel}</span>
+                <span className="font-mono text-[10px] tracking-[0.2em] uppercase">{t.home.secondProject.previewLabel}</span>
               </div>
             </div>
           </div>

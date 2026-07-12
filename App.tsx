@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import Resume from './pages/Resume';
 import Contact from './pages/Contact';
 import Privacy from './pages/Privacy';
+import ProjectMuted from './pages/ProjectMuted';
 import { LanguageProvider } from './contexts/LanguageContext';
 
 const ScrollToTop = () => {
@@ -28,6 +29,7 @@ const App: React.FC = () => {
             <Route path="/resume" element={<Resume />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/visibility-spoofer-privacy" element={<Privacy />} />
+            <Route path="/projects/muted" element={<ProjectMuted />} />
           </Routes>
         </Layout>
       </HashRouter>

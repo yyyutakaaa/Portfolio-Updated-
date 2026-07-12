@@ -13,7 +13,15 @@ export const translations = {
       location: "EVERGEM, BE",
       localTime: "Lokale tijd",
       featuredProject: {
-        label: "Nieuw Project",
+        label: "Grootste Project",
+        title: "Muted",
+        description: "Mijn microfoon klonk altijd rammelend door de ventilator van mijn pc, dus bouwde ik hier iets voor. Muted filtert ruis lokaal via RNNoise voordat je stem Discord, Teams of je game bereikt.",
+        stack: "WINDOWS APP / C# .NET 9",
+        features: ["RNNoise-ruisonderdrukking", "100% lokale verwerking", "Voice gate & virtuele kabel"],
+        cta: "Bekijk project"
+      },
+      secondProject: {
+        label: "2de Project",
         title: "Grimdelve",
         description: "Een klein singleplayer RPG waar ik in mijn eigen tijd aan bouw: een dorpje vol NPC's, dagelijkse boss-fights, errands en een talentboom die stiekem groter wordt dan gepland.",
         stack: "2D RPG / SOLO PROJECT",
@@ -94,6 +102,45 @@ export const translations = {
         degree2: "Intermedia / Multimedia",
         degree2desc: "Secundair Diploma behaald"
       }
+    },
+    mutedPage: {
+      back: "Terug naar home",
+      badge: "WINDOWS APP",
+      title: "Muted",
+      tagline: "Schone microfoon. Duidelijke stem.",
+      screenshotAlt: "Screenshot van de Muted-app met RNNoise-filter, voice gate en virtuele-kabel-instellingen",
+      intro: "Muted is een Windows-app die ik gebouwd heb nadat ik het beu was om mijn koelventilator te horen tijdens elke Discord-call. De app haalt achtergrondgeluid uit je microfoon voordat het bij Discord, Teams of je spelletje aankomt, en dat gebeurt volledig lokaal op je pc: er gaat niets naar de cloud en er wordt niets opgenomen.",
+      howItWorksTitle: "Hoe het werkt",
+      howItWorks: [
+        "De app vangt je microfoon op 48kHz mono via WASAPI.",
+        "Elk blokje van 480 samples (20ms) gaat door het RNNoise-model van Xiph, dat getraind is om stemgeluid van ruis te onderscheiden.",
+        "Een optionele voice gate knipt stiltes nog agressiever weg, zodat toetsenbordgeklik of een zoemende ventilator niet doorsijpelt.",
+        "Klokdrift wordt gecorrigeerd, zodat de audio ook bij lange sessies synchroon blijft.",
+        "Het resultaat gaat naar een virtuele audiokabel, die je vervolgens als microfoon selecteert in Discord, Teams of je game."
+      ],
+      featuresTitle: "Kernfuncties",
+      features: [
+        "Ruisonderdrukking in real-time met het officiële RNNoise-model",
+        "Alles draait lokaal: geen account, geen cloud, geen opnames",
+        "Instelbare dry/wet-mix voor audiokwaliteit",
+        "Voice gate voor extra stille stiltes",
+        "Automatische detectie van aangesloten audioapparaten",
+        "Minimaliseert naar de systeemtray en kan automatisch opstarten"
+      ],
+      stackTitle: "Gebruikte technologie",
+      stack: ["C# (.NET 9 Desktop Runtime)", "WPF voor de interface", "NAudio + native RNNoise DLL voor audioverwerking", "PowerShell / Visual Studio 2022 C++ build pipeline"],
+      installTitle: "Aan de slag",
+      installSteps: [
+        "Installeer een ondertekende virtuele audiokabel, bijvoorbeeld VB-CABLE.",
+        "Herstart Windows als dat gevraagd wordt.",
+        "Open Muted en stel je microfoon in als input en de kabel als output.",
+        "Kies in Discord, Teams of je game de opnamekant van de kabel als microfoon."
+      ],
+      limitationsTitle: "Belangrijk om te weten",
+      limitations: "RNNoise onderdrukt ruis, maar canceled geen echo. Als je last hebt van galm of echo, gebruik dan een headset of een aparte AEC-oplossing.",
+      downloadCta: "Download de pre-release (.exe)",
+      downloadNote: "v0.1.0 — alleen Windows, nog in ontwikkeling",
+      githubCta: "Bekijk de broncode op GitHub"
     },
     resume: {
       title: "Curriculum Vitae",
@@ -274,7 +321,15 @@ export const translations = {
       location: "EVERGEM, BE",
       localTime: "Local Time",
       featuredProject: {
-        label: "New Project",
+        label: "Flagship Project",
+        title: "Muted",
+        description: "My mic always picked up my PC's fan noise, so I built something for it. Muted filters noise locally through RNNoise before your voice reaches Discord, Teams, or your game.",
+        stack: "WINDOWS APP / C# .NET 9",
+        features: ["RNNoise noise suppression", "100% local processing", "Voice gate & virtual cable"],
+        cta: "View project"
+      },
+      secondProject: {
+        label: "2nd Project",
         title: "Grimdelve",
         description: "A small singleplayer RPG I'm building in my spare time: a town full of NPCs, daily boss fights, errands, and a talent tree that keeps growing bigger than planned.",
         stack: "2D RPG / SOLO PROJECT",
@@ -355,6 +410,45 @@ export const translations = {
         degree2: "Intermedia / Multimedia",
         degree2desc: "Secondary Diploma Obtained"
       }
+    },
+    mutedPage: {
+      back: "Back to home",
+      badge: "WINDOWS APP",
+      title: "Muted",
+      tagline: "Clean mic. Clear voice.",
+      screenshotAlt: "Screenshot of the Muted app showing the RNNoise filter, voice gate, and virtual cable settings",
+      intro: "Muted is a Windows app I built after getting tired of hearing my PC's cooling fan on every Discord call. It strips background noise from your mic before it reaches Discord, Teams, or your game, all processed locally on your PC: nothing goes to the cloud, nothing gets recorded.",
+      howItWorksTitle: "How it works",
+      howItWorks: [
+        "The app captures your mic at 48kHz mono through WASAPI.",
+        "Every 480-sample chunk (20ms) runs through Xiph's RNNoise model, trained to tell voice apart from noise.",
+        "An optional voice gate cuts silence more aggressively so keyboard clatter or fan hum doesn't leak through.",
+        "Clock drift gets corrected so audio stays in sync during long sessions.",
+        "The cleaned output goes to a virtual audio cable, which you then select as your mic in Discord, Teams, or your game."
+      ],
+      featuresTitle: "Core features",
+      features: [
+        "Real-time noise suppression using the official RNNoise model",
+        "Runs entirely locally: no account, no cloud, no recordings",
+        "Adjustable dry/wet mix for audio quality",
+        "Voice gate for extra-quiet silences",
+        "Automatic detection of connected audio devices",
+        "Minimizes to the system tray and can autostart"
+      ],
+      stackTitle: "Tech stack",
+      stack: ["C# (.NET 9 Desktop Runtime)", "WPF for the interface", "NAudio + native RNNoise DLL for audio processing", "PowerShell / Visual Studio 2022 C++ build pipeline"],
+      installTitle: "Getting started",
+      installSteps: [
+        "Install a signed virtual audio cable, e.g. VB-CABLE.",
+        "Restart Windows if prompted.",
+        "Open Muted and set your mic as input and the cable as output.",
+        "In Discord, Teams, or your game, pick the cable's recording side as your microphone."
+      ],
+      limitationsTitle: "Worth knowing",
+      limitations: "RNNoise suppresses noise but doesn't cancel echo. If you're dealing with room echo, use a headset or a dedicated AEC solution.",
+      downloadCta: "Download the pre-release (.exe)",
+      downloadNote: "v0.1.0 — Windows only, still in development",
+      githubCta: "View source on GitHub"
     },
     resume: {
       title: "Curriculum Vitae",

@@ -13,6 +13,7 @@ interface ContactFormProps {
 }
 
 const ContactForm: React.FC<ContactFormProps> = ({ language }) => {
+  const successTimerRef = React.useRef<number | null>(null);
   const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
@@ -60,6 +61,12 @@ const ContactForm: React.FC<ContactFormProps> = ({ language }) => {
 
   const t = translations[language];
 
+  React.useEffect(() => () => {
+    if (successTimerRef.current !== null) {
+      window.clearTimeout(successTimerRef.current);
+    }
+  }, []);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
       ...formData,
@@ -78,16 +85,23 @@ const ContactForm: React.FC<ContactFormProps> = ({ language }) => {
     if (!formData.name || !formData.email || !formData.subject || !formData.message) {
       setStatus('error');
       setErrorMessage(t.required);
+      const firstEmptyField = (['name', 'email', 'subject', 'message'] as const).find((field) => !formData[field]);
+      if (firstEmptyField) {
+        window.requestAnimationFrame(() => document.getElementById(firstEmptyField)?.focus());
+      }
       return;
     }
 
     if (!validateEmail(formData.email)) {
       setStatus('error');
       setErrorMessage(t.invalidEmail);
+      window.requestAnimationFrame(() => document.getElementById('email')?.focus());
       return;
     }
 
     setStatus('submitting');
+    const controller = new AbortController();
+    const requestTimeout = window.setTimeout(() => controller.abort(), 12000);
 
     try {
       // Web3Forms API call
@@ -96,6 +110,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ language }) => {
         headers: {
           'Content-Type': 'application/json',
         },
+        signal: controller.signal,
         body: JSON.stringify({
           access_key: 'c1a66ebb-b015-4db3-b8e8-96d4d6dc3551',
           name: formData.name,
@@ -114,7 +129,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ language }) => {
         setFormData({ name: '', email: '', subject: '', message: '' });
 
         // Reset success message after 5 seconds
-        setTimeout(() => setStatus('idle'), 5000);
+        successTimerRef.current = window.setTimeout(() => setStatus('idle'), 5000);
       } else {
         setStatus('error');
         setErrorMessage(t.error);
@@ -122,6 +137,8 @@ const ContactForm: React.FC<ContactFormProps> = ({ language }) => {
     } catch (error) {
       setStatus('error');
       setErrorMessage(t.error);
+    } finally {
+      window.clearTimeout(requestTimeout);
     }
   };
 
@@ -129,43 +146,47 @@ const ContactForm: React.FC<ContactFormProps> = ({ language }) => {
     <form onSubmit={handleSubmit} className="space-y-6" noValidate>
       {/* Name */}
       <div>
-        <label htmlFor="name" className="block text-sm font-mono text-textDim mb-2">
+        <label htmlFor="name" className="block text-[11px] uppercase tracking-[0.12em] font-mono text-textDim mb-2">
           {t.name}
         </label>
         <input
           type="text"
           id="name"
           name="name"
+          autoComplete="name"
           value={formData.name}
           onChange={handleChange}
           placeholder={t.namePlaceholder}
           aria-invalid={status === 'error' && !formData.name}
-          className="w-full bg-surface border border-border px-4 py-3 text-textMain placeholder-textDim focus:border-white focus:outline-none transition-colors font-mono text-sm"
+          aria-describedby={status === 'error' && !formData.name ? 'form-error' : undefined}
+          className="form-control w-full bg-surfaceHighlight/60 border border-border px-4 py-3.5 text-textMain placeholder-textDim focus:border-accent focus:outline-none font-mono text-sm"
           required
         />
       </div>
 
       {/* Email */}
       <div>
-        <label htmlFor="email" className="block text-sm font-mono text-textDim mb-2">
+        <label htmlFor="email" className="block text-[11px] uppercase tracking-[0.12em] font-mono text-textDim mb-2">
           {t.email}
         </label>
         <input
           type="email"
           id="email"
           name="email"
+          autoComplete="email"
           value={formData.email}
           onChange={handleChange}
           placeholder={t.emailPlaceholder}
           aria-invalid={status === 'error' && (!formData.email || !validateEmail(formData.email))}
-          className="w-full bg-surface border border-border px-4 py-3 text-textMain placeholder-textDim focus:border-white focus:outline-none transition-colors font-mono text-sm"
+          aria-describedby={status === 'error' && (!formData.email || !validateEmail(formData.email)) ? 'form-error' : undefined}
+          className="form-control w-full bg-surfaceHighlight/60 border border-border px-4 py-3.5 text-textMain placeholder-textDim focus:border-accent focus:outline-none font-mono text-sm"
           required
         />
       </div>
 
       {/* Subject */}
       <div>
-        <label htmlFor="subject" className="block text-sm font-mono text-textDim mb-2">
+        <label htmlFor="subject" className="block text-[11px] uppercase tracking-[0.12em] font-mono text-textDim mb-2">
           {t.subject}
         </label>
         <input
@@ -176,14 +197,15 @@ const ContactForm: React.FC<ContactFormProps> = ({ language }) => {
           onChange={handleChange}
           placeholder={t.subjectPlaceholder}
           aria-invalid={status === 'error' && !formData.subject}
-          className="w-full bg-surface border border-border px-4 py-3 text-textMain placeholder-textDim focus:border-white focus:outline-none transition-colors font-mono text-sm"
+          aria-describedby={status === 'error' && !formData.subject ? 'form-error' : undefined}
+          className="form-control w-full bg-surfaceHighlight/60 border border-border px-4 py-3.5 text-textMain placeholder-textDim focus:border-accent focus:outline-none font-mono text-sm"
           required
         />
       </div>
 
       {/* Message */}
       <div>
-        <label htmlFor="message" className="block text-sm font-mono text-textDim mb-2">
+        <label htmlFor="message" className="block text-[11px] uppercase tracking-[0.12em] font-mono text-textDim mb-2">
           {t.message}
         </label>
         <textarea
@@ -193,22 +215,23 @@ const ContactForm: React.FC<ContactFormProps> = ({ language }) => {
           onChange={handleChange}
           placeholder={t.messagePlaceholder}
           aria-invalid={status === 'error' && !formData.message}
+          aria-describedby={status === 'error' && !formData.message ? 'form-error' : undefined}
           rows={6}
-          className="w-full bg-surface border border-border px-4 py-3 text-textMain placeholder-textDim focus:border-white focus:outline-none transition-colors font-mono text-sm resize-none"
+          className="form-control w-full bg-surfaceHighlight/60 border border-border px-4 py-3.5 text-textMain placeholder-textDim focus:border-accent focus:outline-none font-mono text-sm resize-none"
           required
         />
       </div>
 
       {/* Status Messages */}
       {status === 'success' && (
-        <div role="status" aria-live="polite" className="flex items-center gap-3 bg-green-500/10 border border-green-500/50 px-4 py-3 text-green-400 font-mono text-sm">
+        <div role="status" aria-live="polite" className="flex items-center gap-3 rounded-xl bg-accent/10 border border-accent/40 px-4 py-3 text-accent font-mono text-sm">
           <CheckCircle size={20} aria-hidden="true" />
           <span>{t.success}</span>
         </div>
       )}
 
       {status === 'error' && (
-        <div role="alert" aria-live="assertive" className="flex items-center gap-3 bg-red-500/10 border border-red-500/50 px-4 py-3 text-red-400 font-mono text-sm">
+        <div id="form-error" role="alert" aria-live="assertive" className="flex items-center gap-3 rounded-xl bg-red-500/10 border border-red-500/50 px-4 py-3 text-red-400 font-mono text-sm">
           <AlertCircle size={20} aria-hidden="true" />
           <span>{errorMessage}</span>
         </div>
@@ -219,7 +242,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ language }) => {
         type="submit"
         disabled={status === 'submitting'}
         aria-busy={status === 'submitting'}
-        className="w-full bg-white text-black px-6 py-4 font-mono text-sm uppercase tracking-wider hover:bg-textMain transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+        className="w-full bg-accent text-bg px-6 py-4 rounded-full font-mono text-sm font-medium uppercase tracking-wider hover:bg-textMain disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
       >
         {status === 'submitting' ? t.sending : t.send}
         <Send size={16} aria-hidden="true" />

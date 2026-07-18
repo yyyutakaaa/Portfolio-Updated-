@@ -39,11 +39,11 @@ const Contact: React.FC = () => {
   const content = contactInfo[language];
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-14 md:space-y-20">
       {/* Header Section */}
-      <header className="mb-16 mt-8">
+      <header className="page-header mb-16 mt-8">
         <div className="border-b border-border pb-6">
-          <h1 className="text-4xl md:text-7xl font-black uppercase tracking-tighter leading-[0.9] mb-4">
+          <h1 className="text-5xl md:text-8xl font-extrabold uppercase tracking-[-0.055em] leading-[0.86] mb-5">
             {content.title}
           </h1>
           <h2 className="text-lg md:text-xl text-textDim font-mono">
@@ -76,12 +76,12 @@ const Contact: React.FC = () => {
                 aria-label={`Email ${content.email}`}
                 className="flex items-start gap-3 group cursor-pointer"
               >
-                <div className="bg-surfaceHighlight p-2 rounded border border-border group-hover:border-white transition-colors">
-                  <Mail size={20} aria-hidden="true" className="text-white" />
+                <div className="bg-accent/5 p-2.5 rounded-xl border border-border group-hover:border-accent transition-colors">
+                  <Mail size={20} aria-hidden="true" className="text-accent" />
                 </div>
                 <div>
                   <div className="text-xs font-mono text-textDim mb-1">Email</div>
-                  <div className="text-sm text-white group-hover:text-blue-400 transition-colors break-all">
+                  <div className="text-sm text-textMain group-hover:text-accent transition-colors break-all">
                     {content.email}
                   </div>
                 </div>
@@ -93,12 +93,12 @@ const Contact: React.FC = () => {
                 aria-label={`Call ${content.phone}`}
                 className="flex items-start gap-3 group cursor-pointer"
               >
-                <div className="bg-surfaceHighlight p-2 rounded border border-border group-hover:border-white transition-colors">
-                  <Phone size={20} aria-hidden="true" className="text-white" />
+                <div className="bg-accent/5 p-2.5 rounded-xl border border-border group-hover:border-accent transition-colors">
+                  <Phone size={20} aria-hidden="true" className="text-accent" />
                 </div>
                 <div>
                   <div className="text-xs font-mono text-textDim mb-1">Phone</div>
-                  <div className="text-sm text-white group-hover:text-blue-400 transition-colors">
+                  <div className="text-sm text-textMain group-hover:text-accent transition-colors">
                     {content.phone}
                   </div>
                 </div>
@@ -106,12 +106,12 @@ const Contact: React.FC = () => {
 
               {/* Location */}
               <div className="flex items-start gap-3">
-                <div className="bg-surfaceHighlight p-2 rounded border border-border">
-                  <MapPin size={20} aria-hidden="true" className="text-white" />
+                <div className="bg-accent/5 p-2.5 rounded-xl border border-border">
+                  <MapPin size={20} aria-hidden="true" className="text-accent" />
                 </div>
                 <div>
                   <div className="text-xs font-mono text-textDim mb-1">Location</div>
-                  <div className="text-sm text-white">
+                  <div className="text-sm text-textMain">
                     {content.location}
                   </div>
                 </div>
@@ -129,27 +129,27 @@ const Contact: React.FC = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label="LinkedIn profile"
-                    className="bg-surfaceHighlight p-2 rounded border border-border hover:border-white transition-colors"
+                    className="bg-surfaceHighlight p-2.5 rounded-xl border border-border hover:border-accent hover:text-accent transition-colors"
                   >
-                    <Linkedin size={20} aria-hidden="true" className="text-white" />
+                    <Linkedin size={20} aria-hidden="true" className="text-textMain" />
                   </a>
                   <a
                     href="https://github.com/yyyutakaaa"
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label="GitHub profile"
-                    className="bg-surfaceHighlight p-2 rounded border border-border hover:border-white transition-colors"
+                    className="bg-surfaceHighlight p-2.5 rounded-xl border border-border hover:border-accent hover:text-accent transition-colors"
                   >
-                    <Github size={20} aria-hidden="true" className="text-white" />
+                    <Github size={20} aria-hidden="true" className="text-textMain" />
                   </a>
                   <a
                     href="https://www.instagram.com/y.yutaka.a/"
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label="Instagram profile"
-                    className="bg-surfaceHighlight p-2 rounded border border-border hover:border-white transition-colors"
+                    className="bg-surfaceHighlight p-2.5 rounded-xl border border-border hover:border-accent hover:text-accent transition-colors"
                   >
-                    <Instagram size={20} aria-hidden="true" className="text-white" />
+                    <Instagram size={20} aria-hidden="true" className="text-textMain" />
                   </a>
                 </div>
               </div>
@@ -159,11 +159,8 @@ const Contact: React.FC = () => {
           {/* Availability */}
           <Tile label={content.availability} delay={300} highlight>
             <div className="space-y-3">
-              <div className="flex items-center gap-2 text-sm font-mono text-green-400">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-                </span>
+              <div className="flex items-center gap-2 text-sm font-mono text-accent">
+                <span className="status-dot" />
                 {content.availableText}
               </div>
               <p className="text-xs text-textDim leading-relaxed">

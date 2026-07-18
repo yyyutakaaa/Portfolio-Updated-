@@ -9,27 +9,47 @@ interface TileProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const Tile: React.FC<TileProps> = ({ children, className = '', delay = 0, label, highlight = false, ...props }) => {
-  const style = { animationDelay: `${delay}ms` };
+  const tileRef = React.useRef<HTMLDivElement>(null);
+  const [isRevealed, setIsRevealed] = React.useState(false);
+
+  React.useEffect(() => {
+    const tile = tileRef.current;
+    if (!tile || !('IntersectionObserver' in window)) {
+      setIsRevealed(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setIsRevealed(true);
+        observer.disconnect();
+      }
+    }, { rootMargin: '0px 0px 18% 0px', threshold: 0.02 });
+
+    observer.observe(tile);
+    return () => observer.disconnect();
+  }, []);
+
+  const style = { '--reveal-delay': `${Math.min(delay, 160)}ms` } as React.CSSProperties;
 
   return (
     <div
+      ref={tileRef}
+      data-reveal
+      data-revealed={isRevealed ? 'true' : 'false'}
       className={`
-        relative group overflow-hidden bg-surface border border-border p-6 flex flex-col
-        transition-all duration-500 hover:border-borderActive animate-reveal opacity-0
-        motion-reduce:animate-none motion-reduce:opacity-100 motion-reduce:transition-none
-        ${highlight ? 'bg-surfaceHighlight' : ''}
+        tile relative group overflow-hidden p-6 md:p-7 flex flex-col
+        ${highlight ? 'tile--highlight' : ''}
         ${className}
       `}
       style={style}
       {...props}
     >
       {/* Decorative scanline effect on hover */}
-      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent transform -translate-x-full transition-transform duration-700 group-hover:translate-x-full motion-reduce:hidden" />
-
       {label && (
-        <div className="flex items-center gap-2 mb-4">
-          <span className="text-[10px] font-mono text-textDim uppercase tracking-[0.2em]">{label}</span>
-          <div className="h-[1px] flex-grow bg-border" />
+        <div className="tile-label flex items-center gap-3 mb-6">
+          <span className="text-[11px] font-mono text-textDim uppercase tracking-[0.18em]">{label}</span>
+          <div className="h-px flex-grow bg-border" />
         </div>
       )}
 

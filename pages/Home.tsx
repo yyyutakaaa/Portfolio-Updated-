@@ -7,54 +7,16 @@ import { useLanguage } from '../contexts/LanguageContext';
 const Home: React.FC = () => {
   const { t } = useLanguage();
 
-  const [isHovering, setIsHovering] = React.useState(false);
-  const previewRef = React.useRef<HTMLDivElement>(null);
-  const previewFrameRef = React.useRef<number | null>(null);
-  const previewPositionRef = React.useRef({ x: 0, y: 0 });
-
-  const updatePreviewPosition = React.useCallback((x: number, y: number) => {
-    previewPositionRef.current = { x, y };
-
-    if (previewFrameRef.current !== null) {
-      return;
-    }
-
-    previewFrameRef.current = window.requestAnimationFrame(() => {
-      const { x: nextX, y: nextY } = previewPositionRef.current;
-      if (previewRef.current) {
-        previewRef.current.style.transform = `translate3d(${nextX + 20}px, ${nextY + 20}px, 0)`;
-      }
-      previewFrameRef.current = null;
-    });
-  }, []);
-
-  React.useEffect(() => {
-    return () => {
-      if (previewFrameRef.current !== null) {
-        window.cancelAnimationFrame(previewFrameRef.current);
-      }
-    };
-  }, []);
-
-  const handleMouseMove = React.useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    updatePreviewPosition(e.clientX, e.clientY);
-  }, [updatePreviewPosition]);
-
-  const handleMouseEnter = React.useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    setIsHovering(true);
-    window.requestAnimationFrame(() => updatePreviewPosition(e.clientX, e.clientY));
-  }, [updatePreviewPosition]);
-
   return (
-    <div className="space-y-12">
+    <div className="space-y-16 md:space-y-24">
       {/* Header Section */}
-      <header className="mb-16 mt-8">
-        <div className="flex justify-between items-end border-b border-border pb-6">
+      <header className="portfolio-hero mb-16 mt-8">
+        <div className="hero-frame relative flex justify-between items-end border-b border-border pb-7">
           <div>
-            <h1 className="text-4xl md:text-7xl font-black uppercase tracking-tighter leading-[0.9] mb-4">
+            <h1 className="portfolio-name text-5xl sm:text-7xl md:text-[clamp(5rem,10vw,9rem)] font-extrabold uppercase tracking-[-0.065em] leading-[0.82] mb-7">
               Mehdi<br />Oulad Khlie
             </h1>
-            <h2 className="text-lg md:text-xl text-textDim font-mono">
+            <h2 className="text-sm md:text-base text-textDim font-mono uppercase tracking-[0.08em]">
               {t.home.role}
             </h2>
           </div>
@@ -65,6 +27,7 @@ const Home: React.FC = () => {
             </div>
             <div>UTC+1 // {t.home.localTime.toUpperCase()}</div>
           </div>
+          <span className="hero-signal" aria-hidden="true" />
         </div>
       </header>
 
@@ -75,40 +38,36 @@ const Home: React.FC = () => {
         <Link
           to="/projects/muted"
           className="md:col-span-4 block z-10 group/banner"
-          aria-label={`${t.home.featuredProject.title} - ${t.home.featuredProject.cta}`}
         >
           <Tile
-            className="min-h-[350px] relative overflow-hidden cursor-pointer"
+            className="project-panel min-h-[360px] relative overflow-hidden cursor-pointer"
             label={t.home.featuredProject.label}
             delay={0}
             highlight
           >
             {/* Base Background - Dark Stylish Gradient */}
-            <div className="absolute inset-0 bg-gradient-to-br from-[#050505] via-[#0a0f16] to-[#050505]" />
+            <div className="project-wash absolute inset-0" />
 
             <div className="relative z-10 flex flex-col md:flex-row gap-8 items-start md:items-center h-full justify-between p-4">
               <div className="flex-1 space-y-6 max-w-2xl">
                 <div className="flex flex-wrap gap-2">
-                  <span className="bg-[#0b1016] border border-purple-500/30 text-purple-400 px-2 py-1 text-[10px] font-mono rounded uppercase tracking-wider flex items-center gap-1">
-                    <div className="w-2 h-2 rounded-full bg-purple-500"></div>
+                  <span className="project-tag border border-accent/30 text-accent px-3 py-1.5 text-[10px] font-mono rounded-full uppercase tracking-wider flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-accent"></div>
                     Windows App
                   </span>
-                  <span className="bg-[#0b1016] border border-blue-500/30 text-blue-400 px-2 py-1 text-[10px] font-mono rounded uppercase tracking-wider flex items-center gap-1">
-                    <div className="w-2 h-2 rounded-full bg-blue-500"></div>
+                  <span className="project-tag border border-borderActive text-textDim px-3 py-1.5 text-[10px] font-mono rounded-full uppercase tracking-wider flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-textDim"></div>
                     Solo Dev
                   </span>
                 </div>
 
                 <div>
                   <div className="flex items-center gap-3 mb-3">
-                    <h3 className="text-4xl md:text-6xl font-black text-white tracking-tight drop-shadow-lg">
+                    <h3 className="text-5xl md:text-7xl font-extrabold text-textMain tracking-[-0.055em] leading-none">
                       {t.home.featuredProject.title}
                     </h3>
-                    <span className="bg-green-500/10 border border-green-500/30 text-green-400 px-1.5 py-0.5 text-[9px] font-mono rounded uppercase tracking-wider flex items-center gap-1">
-                      <span className="relative flex h-1.5 w-1.5">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75 motion-reduce:hidden"></span>
-                        <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-500"></span>
-                      </span>
+                    <span className="border border-accent/30 text-accent px-2 py-1 text-[9px] font-mono rounded-full uppercase tracking-wider flex items-center gap-1.5">
+                      <span className="status-dot" />
                       NEW
                     </span>
                   </div>
@@ -119,8 +78,8 @@ const Home: React.FC = () => {
 
                 <div className="flex flex-wrap gap-3">
                   {t.home.featuredProject.features.map((feature, i) => (
-                    <div key={i} className="flex items-center gap-2 text-xs font-mono text-textDim bg-surface/50 px-3 py-1.5 rounded border border-border">
-                      <ShieldCheck size={12} className="text-green-400" />
+                    <div key={i} className="flex items-center gap-2 text-xs font-mono text-textDim px-3 py-1.5 rounded-full border border-border">
+                      <ShieldCheck size={12} className="text-accent" />
                       {feature}
                     </div>
                   ))}
@@ -128,7 +87,7 @@ const Home: React.FC = () => {
               </div>
 
               <div className="flex-shrink-0 self-end md:self-center">
-                <div className="inline-flex w-full sm:w-auto items-center justify-center gap-2 border border-white text-white px-8 py-4 rounded-sm font-bold uppercase tracking-wider group-hover/banner:bg-white group-hover/banner:text-black transition-colors">
+                <div className="project-cta inline-flex w-full sm:w-auto items-center justify-center gap-2 border border-accent text-accent px-8 py-4 rounded-full font-bold uppercase tracking-wider group-hover/banner:bg-accent group-hover/banner:text-bg">
                   {t.home.featuredProject.cta}
                   <ArrowRight size={16} aria-hidden="true" />
                 </div>
@@ -139,34 +98,31 @@ const Home: React.FC = () => {
 
         {/* Second Project Banner - Grimdelve */}
         <Tile
-          className="md:col-span-4 min-h-[350px] relative overflow-hidden cursor-none z-10 group/banner motion-reduce:cursor-auto"
+          className="project-panel md:col-span-4 min-h-[350px] relative overflow-hidden z-10 group/banner"
           label={t.home.secondProject.label}
           delay={50}
           highlight
-          onMouseMove={handleMouseMove}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={() => setIsHovering(false)}
         >
           {/* Base Background - Dark Stylish Gradient */}
-          <div className="absolute inset-0 bg-gradient-to-br from-[#050505] via-[#0a0f16] to-[#050505]" />
+          <div className="project-wash project-wash--muted absolute inset-0" />
 
           {/* Content Container - Dims and blurs slightly on hover */}
-          <div className="relative z-10 flex flex-col md:flex-row gap-8 items-start md:items-center h-full justify-between p-4 transition-all duration-500 group-hover/banner:opacity-10 group-hover/banner:blur-[2px] motion-reduce:transition-none motion-reduce:group-hover/banner:opacity-100 motion-reduce:group-hover/banner:blur-none">
+          <div className="relative z-10 flex flex-col md:flex-row gap-8 items-start md:items-center h-full justify-between p-4">
             <div className="flex-1 space-y-6 max-w-2xl">
               <div className="flex flex-wrap gap-2">
-                <span className="bg-[#0b1016] border border-orange-500/30 text-orange-400 px-2 py-1 text-[10px] font-mono rounded uppercase tracking-wider flex items-center gap-1">
-                  <div className="w-2 h-2 rounded-full bg-orange-500"></div>
+                <span className="project-tag border border-accent/30 text-accent px-3 py-1.5 text-[10px] font-mono rounded-full uppercase tracking-wider flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-accent"></div>
                   2D RPG
                 </span>
-                <span className="bg-[#0b1016] border border-blue-500/30 text-blue-400 px-2 py-1 text-[10px] font-mono rounded uppercase tracking-wider flex items-center gap-1">
-                  <div className="w-2 h-2 rounded-full bg-blue-500"></div>
+                <span className="project-tag border border-borderActive text-textDim px-3 py-1.5 text-[10px] font-mono rounded-full uppercase tracking-wider flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-textDim"></div>
                   Solo Dev
                 </span>
               </div>
 
               <div>
                 <div className="flex items-center gap-3 mb-3">
-                  <h3 className="text-4xl md:text-6xl font-black text-white tracking-tight drop-shadow-lg">
+                  <h3 className="text-5xl md:text-7xl font-extrabold text-textMain tracking-[-0.055em] leading-none">
                     {t.home.secondProject.title}
                   </h3>
                 </div>
@@ -177,8 +133,8 @@ const Home: React.FC = () => {
 
               <div className="flex flex-wrap gap-3">
                 {t.home.secondProject.features.map((feature, i) => (
-                  <div key={i} className="flex items-center gap-2 text-xs font-mono text-textDim bg-surface/50 px-3 py-1.5 rounded border border-border">
-                    <ShieldCheck size={12} className="text-green-400" />
+                  <div key={i} className="flex items-center gap-2 text-xs font-mono text-textDim px-3 py-1.5 rounded-full border border-border">
+                    <ShieldCheck size={12} className="text-accent" />
                     {feature}
                   </div>
                 ))}
@@ -188,7 +144,7 @@ const Home: React.FC = () => {
             <div className="flex-shrink-0 self-end md:self-center">
               <div
                 aria-label="Grimdelve is not public yet"
-                className="inline-flex w-full sm:w-auto items-center justify-center gap-2 border border-dashed border-white/30 text-white/70 px-8 py-4 rounded-sm font-bold uppercase tracking-wider cursor-default select-none"
+                className="inline-flex w-full sm:w-auto items-center justify-center gap-2 border border-dashed border-borderActive text-textDim px-8 py-4 rounded-full font-bold uppercase tracking-wider cursor-default select-none"
               >
                 {t.home.secondProject.cta}
                 <Lock size={16} aria-hidden="true" />
@@ -198,30 +154,14 @@ const Home: React.FC = () => {
 
         </Tile>
 
-        {/* Hover Floating Image (Cursor Follower) - Moved OUTSIDE Tile to avoid transform context issues */}
-        {isHovering && (
-          <div
-            ref={previewRef}
-            className="fixed left-0 top-0 z-[9999] pointer-events-none will-change-transform motion-reduce:hidden"
-            style={{ transform: 'translate3d(0, 0, 0)' }}
-          >
-            <div className="bg-surfaceHighlight p-2 rounded-xl shadow-[0_30px_60px_rgba(0,0,0,0.8)]">
-              <div className="w-[280px] h-[180px] rounded-lg shadow-inner bg-black border border-dashed border-white/15 flex flex-col items-center justify-center gap-2 text-white/40">
-                <Lock size={22} aria-hidden="true" />
-                <span className="font-mono text-[10px] tracking-[0.2em] uppercase">{t.home.secondProject.previewLabel}</span>
-              </div>
-            </div>
-          </div>
-        )}
-
         {/* Intro / Bio */}
         <Tile className="md:col-span-3 md:row-span-2 min-h-[300px]" label={t.home.profile.title} delay={100}>
           <div className="flex flex-col justify-between h-full">
-            <p className="text-lg md:text-2xl font-light leading-relaxed text-textMain max-w-2xl">
+            <p className="text-xl md:text-3xl font-medium leading-[1.45] tracking-[-0.025em] text-textMain max-w-3xl">
               {t.home.profile.text}
             </p>
             <div className="mt-8">
-              <Link to="/resume" className="inline-flex items-center gap-2 text-white border border-white px-6 py-3 hover:bg-white hover:text-black transition-colors font-mono text-sm uppercase">
+              <Link to="/resume" className="inline-flex items-center gap-2 text-accent border border-accent px-6 py-3 rounded-full hover:bg-accent hover:text-bg font-mono text-sm uppercase">
                 {t.home.profile.cta} <ArrowRight size={16} />
               </Link>
             </div>
@@ -231,13 +171,10 @@ const Home: React.FC = () => {
         {/* Location / Status */}
         <Tile className="md:col-span-1 min-h-[140px]" label={t.home.status.label} delay={200}>
           <div className="h-full flex flex-col justify-center">
-            <div className="text-3xl font-bold text-white mb-1">2027</div>
+            <div className="text-3xl font-bold text-textMain mb-1">2027</div>
             <div className="text-xs font-mono text-textDim">{t.home.status.gradYear}</div>
-            <div className="mt-4 flex items-center gap-2 text-xs font-mono text-green-400">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-              </span>
+            <div className="mt-4 flex items-center gap-2 text-xs font-mono text-accent">
+              <span className="status-dot" />
               {t.home.status.available}
             </div>
           </div>
@@ -251,9 +188,9 @@ const Home: React.FC = () => {
             rel="noopener noreferrer"
             className="flex flex-col h-full justify-between cursor-pointer hover:opacity-80 transition-opacity"
           >
-            <Award className="text-white mb-4" size={32} />
+            <Award className="text-textMain mb-4" size={32} />
             <div>
-              <div className="font-bold text-white leading-tight">{t.home.certified.title}</div>
+              <div className="font-bold text-textMain leading-tight">{t.home.certified.title}</div>
               <div className="text-xs font-mono text-textDim mt-1">{t.home.certified.subtitle}</div>
             </div>
           </a>
@@ -263,7 +200,7 @@ const Home: React.FC = () => {
         <Tile className="md:col-span-2 md:row-span-2" label={t.home.skills.label} delay={400}>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
             <div className="space-y-4">
-              <div className="flex items-center gap-3 text-white font-mono text-sm border-b border-border pb-2">
+              <div className="flex items-center gap-3 text-textMain font-mono text-sm border-b border-border pb-2">
                 <Server size={16} />
                 <span>{t.home.skills.sysAdmin}</span>
               </div>
@@ -275,7 +212,7 @@ const Home: React.FC = () => {
             </div>
 
             <div className="space-y-4">
-              <div className="flex items-center gap-3 text-white font-mono text-sm border-b border-border pb-2">
+              <div className="flex items-center gap-3 text-textMain font-mono text-sm border-b border-border pb-2">
                 <Network size={16} />
                 <span>{t.home.skills.networking}</span>
               </div>
@@ -287,7 +224,7 @@ const Home: React.FC = () => {
             </div>
 
             <div className="space-y-4">
-              <div className="flex items-center gap-3 text-white font-mono text-sm border-b border-border pb-2">
+              <div className="flex items-center gap-3 text-textMain font-mono text-sm border-b border-border pb-2">
                 <ShieldCheck size={16} />
                 <span>{t.home.skills.cloudOps}</span>
               </div>
@@ -299,7 +236,7 @@ const Home: React.FC = () => {
             </div>
 
             <div className="space-y-4">
-              <div className="flex items-center gap-3 text-white font-mono text-sm border-b border-border pb-2">
+              <div className="flex items-center gap-3 text-textMain font-mono text-sm border-b border-border pb-2">
                 <Terminal size={16} />
                 <span>{t.home.skills.softSkills}</span>
               </div>
@@ -320,13 +257,10 @@ const Home: React.FC = () => {
                 <a href={project.url} target="_blank" rel="noopener noreferrer" className="group/project block cursor-pointer">
                   <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 mb-2">
                     <div className="flex items-center gap-2">
-                      <h3 className="text-white font-bold group-hover/project:text-blue-400 transition-colors">{project.title}</h3>
+                        <h3 className="text-textMain font-bold group-hover/project:text-accent transition-colors">{project.title}</h3>
                       {index === 0 && (
-                        <span className="bg-green-500/10 border border-green-500/30 text-green-400 px-1.5 py-0.5 text-[9px] font-mono rounded uppercase tracking-wider flex items-center gap-1">
-                          <span className="relative flex h-1.5 w-1.5">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-500"></span>
-                          </span>
+                        <span className="border border-accent/30 text-accent px-2 py-1 text-[9px] font-mono rounded-full uppercase tracking-wider flex items-center gap-1.5">
+                          <span className="status-dot" />
                           NEW
                         </span>
                       )}
@@ -352,11 +286,11 @@ const Home: React.FC = () => {
           <div className="flex flex-col md:flex-row gap-8">
             <div className="flex-1 flex gap-4 items-start">
               <div className="bg-surfaceHighlight p-3 rounded border border-border">
-                <GraduationCap className="text-white" size={24} />
+                <GraduationCap className="text-textMain" size={24} />
               </div>
               <div>
-                <div className="text-xs font-mono text-blue-400 mb-1">{t.home.education.expected}</div>
-                <h3 className="text-xl font-bold text-white">{t.home.education.degree1}</h3>
+                <div className="text-xs font-mono text-accent mb-1">{t.home.education.expected}</div>
+                <h3 className="text-xl font-bold text-textMain">{t.home.education.degree1}</h3>
                 <p className="text-sm text-textDim mt-1">HOGENT • Gent</p>
               </div>
             </div>

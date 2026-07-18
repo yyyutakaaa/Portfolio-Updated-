@@ -33,12 +33,12 @@ export const translations = {
         title: "Profiel",
         text: React.createElement(React.Fragment, null,
           "Ik studeer ",
-          React.createElement("span", { className: "text-white font-medium" }, "Systeem- en Netwerkbeheer"),
+          React.createElement("span", { className: "text-textMain font-semibold" }, "Systeem- en Netwerkbeheer"),
           " en weet intussen vrij zeker wat ik wil: aan de slag als System Administrator.",
           React.createElement("br", null),
           React.createElement("br", null),
           "Het liefst werk ik in Windows-omgevingen. Ik heb al heel wat pc's en netwerken zien vastlopen en er minstens evenveel weer aan de praat gekregen, van kapotte drivers tot rare netwerkfouten. Daarnaast haal ik mijn ",
-          React.createElement("span", { className: "text-white font-mono text-sm border border-border px-1" }, "CCNA"),
+          React.createElement("span", { className: "text-textMain font-mono text-sm border border-borderActive bg-surfaceHighlight/70 rounded-sm px-1.5" }, "CCNA"),
           " en volg ik Microsoft-trajecten om dat verder uit te bouwen."
         ),
         cta: "Bekijk volledige CV"
@@ -376,12 +376,12 @@ export const translations = {
         title: "Profile",
         text: React.createElement(React.Fragment, null,
           "I'm studying ",
-          React.createElement("span", { className: "text-white font-medium" }, "System and Network Administration"),
+          React.createElement("span", { className: "text-textMain font-semibold" }, "System and Network Administration"),
           ", and by now I know what I want: to work as a System Administrator.",
           React.createElement("br", null),
           React.createElement("br", null),
           "I prefer working in Windows environments. I've watched plenty of PCs and networks fall over and gotten just as many running again, from broken drivers to weird network faults. On the side, I'm working toward my ",
-          React.createElement("span", { className: "text-white font-mono text-sm border border-border px-1" }, "CCNA"),
+          React.createElement("span", { className: "text-textMain font-mono text-sm border border-borderActive bg-surfaceHighlight/70 rounded-sm px-1.5" }, "CCNA"),
           " and taking Microsoft courses to build on that."
         ),
         cta: "View Full Resume"

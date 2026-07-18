@@ -13,20 +13,20 @@ const Privacy: React.FC = () => {
       <Link
         to="/"
         aria-label={p.backToHome}
-        className="inline-flex items-center gap-2 text-textDim hover:text-white transition-colors font-mono text-sm uppercase tracking-wider mb-8 group"
+        className="inline-flex items-center gap-2 text-textDim hover:text-textMain transition-colors font-mono text-sm uppercase tracking-wider mb-8 group"
       >
         <ArrowLeft size={14} aria-hidden="true" className="group-hover:-translate-x-1 transition-transform" />
         {p.backToHome}
       </Link>
 
       {/* Header */}
-      <header className="mb-10 opacity-0 animate-reveal" style={{ animationDelay: '0ms' }}>
+      <header className="detail-hero mb-14">
         <div className="flex items-start sm:items-center gap-4 mb-4">
-          <div className="bg-gradient-to-br from-emerald-500/20 to-sky-500/20 p-4 rounded-xl border border-emerald-500/20 shrink-0">
-            <Shield className="text-emerald-400" size={32} aria-hidden="true" />
+          <div className="bg-accent/10 p-4 rounded-2xl border border-accent/20 shrink-0">
+            <Shield className="text-accent" size={32} aria-hidden="true" />
           </div>
           <div className="min-w-0">
-            <h1 className="text-3xl md:text-5xl font-black uppercase tracking-tighter text-white break-words">
+            <h1 className="text-3xl md:text-5xl font-black uppercase tracking-tighter text-textMain break-words">
               {p.title}
             </h1>
             <p className="text-xs font-mono text-textDim mt-1">{p.lastUpdated}</p>
@@ -40,10 +40,9 @@ const Privacy: React.FC = () => {
         {p.sections.map((section, index) => (
           <section
             key={section.heading}
-            className="opacity-0 animate-reveal"
-            style={{ animationDelay: `${100 + index * 75}ms` }}
+            className="detail-section"
           >
-            <h2 className="text-xl font-bold text-white mb-4 border-b border-border pb-2 break-words">
+            <h2 className="text-xl font-bold text-textMain mb-4 border-b border-border pb-2 break-words">
               {section.heading}
             </h2>
 
@@ -65,12 +64,12 @@ const Privacy: React.FC = () => {
           </section>
         ))}
 
-        <section className="opacity-0 animate-reveal" style={{ animationDelay: `${100 + p.sections.length * 75}ms` }}>
-          <h2 className="text-xl font-bold text-white mb-4 border-b border-border pb-2">{p.contact.heading}</h2>
+        <section className="detail-section">
+          <h2 className="text-xl font-bold text-textMain mb-4 border-b border-border pb-2">{p.contact.heading}</h2>
           <p className="text-textDim mb-3">{p.contact.text}</p>
           <a
             href={p.contact.url}
-            className="text-sky-400 hover:text-sky-300 transition-colors break-all"
+            className="text-accent hover:text-textMain transition-colors break-all"
           >
             {p.contact.url}
           </a>

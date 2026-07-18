@@ -12,24 +12,25 @@ export default {
   theme: {
     extend: {
       colors: {
-        bg: '#050505',
-        surface: '#0a0a0a',
-        surfaceHighlight: '#121212',
-        border: 'rgba(255, 255, 255, 0.08)',
-        borderActive: 'rgba(255, 255, 255, 0.25)',
-        textMain: '#e0e0e0',
-        textDim: '#888888',
+        bg: 'rgb(var(--color-bg-rgb) / <alpha-value>)',
+        surface: 'rgb(var(--color-surface-rgb) / <alpha-value>)',
+        surfaceHighlight: 'rgb(var(--color-surface-highlight-rgb) / <alpha-value>)',
+        border: 'var(--color-border)',
+        borderActive: 'var(--color-border-active)',
+        textMain: 'rgb(var(--color-text-main-rgb) / <alpha-value>)',
+        textDim: 'rgb(var(--color-text-dim-rgb) / <alpha-value>)',
+        accent: 'rgb(var(--color-accent-rgb) / <alpha-value>)',
       },
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
-        mono: ['JetBrains Mono', 'monospace'],
+        sans: ['Manrope Variable', 'Manrope', 'Arial', 'sans-serif'],
+        mono: ['IBM Plex Mono', 'ui-monospace', 'monospace'],
       },
       animation: {
-        'reveal': 'reveal 0.8s cubic-bezier(0.2, 1, 0.3, 1) forwards',
+        'reveal': 'reveal 0.72s cubic-bezier(0.16, 1, 0.3, 1) forwards',
       },
       keyframes: {
         reveal: {
-          '0%': { opacity: '0', transform: 'translateY(20px)' },
+          '0%': { opacity: '0', transform: 'translateY(24px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         }
       }

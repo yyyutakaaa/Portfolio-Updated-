@@ -22,12 +22,11 @@ export const translations = {
       },
       secondProject: {
         label: "2de Project",
-        title: "Grimdelve",
-        description: "Een klein singleplayer RPG waar ik in mijn eigen tijd aan bouw: een dorpje vol NPC's, dagelijkse boss-fights, errands en een talentboom die stiekem groter wordt dan gepland.",
-        stack: "2D RPG / SOLO PROJECT",
-        features: ["Pixel-art dorp", "Dagelijkse boss-fights", "Talentbomen"],
-        cta: "Nog geheim, meer volgt",
-        previewLabel: "PREVIEW GEBLOKKEERD"
+        title: "Sets",
+        description: "Een offline-first workout logger, gebouwd voor na de training, niet ervoor. Loggen schrijft altijd eerst naar je toestel; zonder verbinding wacht de sessie gewoon tot je weer online bent.",
+        stack: "PWA / VANILLA JS + SUPABASE",
+        features: ["Offline-first met automatische sync", "Live 1RM & PR-detectie", "Installeerbaar als PWA"],
+        cta: "Bekijk Sets"
       },
       profile: {
         title: "Profiel",
@@ -176,6 +175,78 @@ export const translations = {
       downloadCta: "Download de pre-release (.exe)",
       downloadNote: "v0.1.0 — alleen Windows, nog in ontwikkeling",
       githubCta: "Bekijk de broncode op GitHub"
+    },
+    setsPage: {
+      back: "Terug naar home",
+      badge: "PWA",
+      title: "Sets",
+      tagline: "Train. Noteer het. Klaar.",
+      intro: "Sets is een minimalistische logger voor kracht- en cardiotraining. De filosofie is simpel: je gaat naar de gym, je traint, en je schrijft achteraf op wat je deed. Geen abonnementspop-ups, geen laadschermen. Gewoon een schone PWA.",
+      deepDive: {
+        title: "Onder de motorkap",
+        signalPathTitle: "Hoe een sessie wordt opgeslagen",
+        signalPathIntro: "Gyms zitten vaak in een kelder zonder bereik, dus is de app offline-first: een workout loggen schrijft altijd eerst naar je toestel. Zonder verbinding gaat de sessie in een wachtrij en wordt ze automatisch verstuurd zodra je weer online bent.",
+        signalPath: ["Workout", "Lokale write (localStorage)", "Outbox bij offline", "Supabase (cloud sync)"],
+        frameMathTitle: "De cijfers waar het op draait",
+        frameMath: [
+          { value: "32 kB", label: "Tailwind CSS, precompiled" },
+          { value: "0 ms", label: "leeslatentie uit cache" },
+          { value: "3", label: "SQL-migraties" },
+          { value: "Epley", label: "1RM-formule" }
+        ],
+        points: [
+          {
+            title: "Alles rendert uit cache",
+            body: "Elk scherm leest uit een lokale cache per gebruiker (localStorage), dus de app voelt nooit traag aan, ook niet met een slechte verbinding. Bij het inloggen en na elke sync wordt die cache ververst vanuit Supabase."
+          },
+          {
+            title: "Sessies overleven een crash",
+            body: "De actieve workout wordt bij elke wijziging automatisch opgeslagen. Killt iOS de app halverwege een sessie op de achtergrond, dan biedt Sets bij de volgende opstart gewoon aan om verder te gaan waar je gebleven was."
+          },
+          {
+            title: "Guest mode is geen doodlopende straat",
+            body: "Trainen zonder account slaat gewoon op als een lokaal 'guest'-profiel. Log je later in, dan worden die workouts meegenomen naar je account in plaats van te verdwijnen."
+          },
+          {
+            title: "Wie het laatst synct, wint",
+            body: "Er is geen conflictresolutie. Bewerk je dezelfde sessie op twee toestellen die allebei offline waren, dan overschrijft de sync die het laatst binnenkomt de andere. Voor een logboek van je eigen trainingen is dat een afweging die ik kan verantwoorden."
+          }
+        ]
+      },
+      howItWorksTitle: "Snel loggen",
+      howItWorks: [
+        "De app toont je gewichten en reps van de vorige sessie meteen als placeholder in de invoervelden.",
+        "Elke set berekent live je geschatte 1RM met de Epley-formule; versla je je record, dan gloeit het veld goud op.",
+        "Cardio krijgt eigen velden voor tijd, afstand en calorieën.",
+        "Tik op het setnummer om het te taggen als warm-up, working set, drop set of tot falen; warm-ups tellen niet mee voor volume of PR's.",
+        "RPE per set is optioneel te activeren en verfijnt de 1RM-schatting op basis van reps in reserve."
+      ],
+      featuresTitle: "Kernfuncties",
+      features: [
+        "Dashboard met trainingsvolume, PR's en trendgrafieken van de laatste 7 sessies",
+        "Bronze-, silver- en goldbadges met hardware-versnelde gloed-effecten",
+        "Instelbare plaatcalculator per gym en per eenheid",
+        "Gewichten in kg of lbs door de hele app, met kg als opslageenheid",
+        "Licht/donker thema en volledige Nederlandse en Engelse vertaling",
+        "Backup als JSON via de instellingen, of via de SetsDB-console"
+      ],
+      stackTitle: "Gebruikte technologie",
+      stack: [
+        "Vanilla ES6+ JavaScript, zonder bundler",
+        "Tailwind CSS, precompiled tot één static bestand",
+        "Supabase voor auth, database en cloud-sync (met row-level security)",
+        "PWA met een offline-first localStorage-cache en outbox"
+      ],
+      installTitle: "Installeren als PWA",
+      installSteps: [
+        "Open sets.ink in Safari (iOS) of Chrome (Android).",
+        "Tik op het deel-icoon en kies 'Zet op beginscherm'.",
+        "De app opent voortaan volledig scherm, zonder browserbalk, alsof het een native app is."
+      ],
+      limitationsTitle: "Belangrijk om te weten",
+      limitations: "Guest-data blijft alleen op je toestel tot je inlogt: de app opnieuw installeren zonder account verliest die historie. En omdat er geen conflictresolutie is, wint bij het bewerken van dezelfde sessie op twee offline toestellen gewoon wie het laatst synct.",
+      openCta: "Open Sets",
+      openNote: "sets.ink — gratis te gebruiken, installeerbaar als PWA"
     },
     resume: {
       title: "Curriculum Vitae",
@@ -365,12 +436,11 @@ export const translations = {
       },
       secondProject: {
         label: "2nd Project",
-        title: "Grimdelve",
-        description: "A small singleplayer RPG I'm building in my spare time: a town full of NPCs, daily boss fights, errands, and a talent tree that keeps growing bigger than planned.",
-        stack: "2D RPG / SOLO PROJECT",
-        features: ["Pixel-art town", "Daily boss fights", "Talent trees"],
-        cta: "Still a secret, more soon",
-        previewLabel: "PREVIEW LOCKED"
+        title: "Sets",
+        description: "An offline-first workout logger, built for after training, not during it. Logging always writes to your device first; without a connection the session just waits until you're back online.",
+        stack: "PWA / VANILLA JS + SUPABASE",
+        features: ["Offline-first with automatic sync", "Live 1RM & PR detection", "Installable as a PWA"],
+        cta: "View Sets"
       },
       profile: {
         title: "Profile",
@@ -519,6 +589,78 @@ export const translations = {
       downloadCta: "Download the pre-release (.exe)",
       downloadNote: "v0.1.0 — Windows only, still in development",
       githubCta: "View source on GitHub"
+    },
+    setsPage: {
+      back: "Back to home",
+      badge: "PWA",
+      title: "Sets",
+      tagline: "Train. Log it. Done.",
+      intro: "Sets is a minimalist logger for strength and cardio training. The philosophy is simple: you go to the gym, you train, and you write down what you did afterward. No subscription prompts, no loading screens. Just a clean PWA.",
+      deepDive: {
+        title: "Under the hood",
+        signalPathTitle: "How a session gets saved",
+        signalPathIntro: "Gyms tend to be basements with no signal, so the app is offline-first: logging a workout always writes to your device first. Without a connection the session gets queued and pushed to the cloud automatically once you're back online.",
+        signalPath: ["Workout", "Local write (localStorage)", "Outbox if offline", "Supabase (cloud sync)"],
+        frameMathTitle: "The numbers it runs on",
+        frameMath: [
+          { value: "32 kB", label: "precompiled Tailwind CSS" },
+          { value: "0 ms", label: "read latency from cache" },
+          { value: "3", label: "SQL migrations" },
+          { value: "Epley", label: "1RM formula" }
+        ],
+        points: [
+          {
+            title: "Everything renders from cache",
+            body: "Every screen reads from a per-user local cache (localStorage), so the app never feels slow, even on a bad connection. That cache gets refreshed from Supabase on login and after every sync."
+          },
+          {
+            title: "Sessions survive a crash",
+            body: "The active workout autosaves on every change. If iOS kills the app in the background mid-session, Sets just offers to resume where you left off on next launch."
+          },
+          {
+            title: "Guest mode isn't a dead end",
+            body: "Training without an account saves to a local 'guest' profile. Sign in later and those workouts get migrated into your account instead of disappearing."
+          },
+          {
+            title: "Last sync wins",
+            body: "There's no conflict resolution. Edit the same session on two devices that were both offline, and whichever one syncs last overwrites the other. For a personal training log, that's a trade-off I can live with."
+          }
+        ]
+      },
+      howItWorksTitle: "Fast logging",
+      howItWorks: [
+        "The app shows your weights and reps from the last session directly as placeholders in the inputs.",
+        "Every set calculates your estimated 1RM live using the Epley formula; beat your record and the field glows gold.",
+        "Cardio gets its own fields for time, distance, and calories.",
+        "Tap a set's number to tag it as warm-up, working, drop set, or to-failure; warm-ups are excluded from volume and PR detection.",
+        "RPE per set is optional and sharpens the 1RM estimate using reps in reserve."
+      ],
+      featuresTitle: "Core features",
+      features: [
+        "Dashboard with training volume, PRs, and trend charts from the last 7 sessions",
+        "Bronze, silver, and gold badges with hardware-accelerated glow effects",
+        "Configurable plate calculator per gym and per unit",
+        "Weights in kg or lbs throughout the app, with kg as the canonical storage unit",
+        "Light/dark theme and full Dutch and English translations",
+        "JSON backup from the settings sheet, or through the SetsDB console"
+      ],
+      stackTitle: "Tech stack",
+      stack: [
+        "Vanilla ES6+ JavaScript, no bundler",
+        "Tailwind CSS, precompiled into a single static file",
+        "Supabase for auth, database, and cloud sync (with row-level security)",
+        "PWA with an offline-first localStorage cache and outbox"
+      ],
+      installTitle: "Installing as a PWA",
+      installSteps: [
+        "Open sets.ink in Safari (iOS) or Chrome (Android).",
+        "Tap the share icon and choose Add to Home Screen.",
+        "From then on it opens full-screen, no browser bar, like a native app."
+      ],
+      limitationsTitle: "Worth knowing",
+      limitations: "Guest data stays on your device until you sign in: reinstalling without an account loses that history. And since there's no conflict resolution, editing the same session on two offline devices means whichever one syncs last wins.",
+      openCta: "Open Sets",
+      openNote: "sets.ink — free to use, installable as a PWA"
     },
     resume: {
       title: "Curriculum Vitae",

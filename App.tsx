@@ -8,6 +8,7 @@ const Resume = React.lazy(() => import('./pages/Resume'));
 const Contact = React.lazy(() => import('./pages/Contact'));
 const Privacy = React.lazy(() => import('./pages/Privacy'));
 const ProjectMuted = React.lazy(() => import('./pages/ProjectMuted'));
+const ProjectSets = React.lazy(() => import('./pages/ProjectSets'));
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -32,6 +33,7 @@ const App: React.FC = () => {
               <Route path="/contact" element={<Contact />} />
               <Route path="/visibility-spoofer-privacy" element={<Privacy />} />
               <Route path="/projects/muted" element={<ProjectMuted />} />
+              <Route path="/projects/sets" element={<ProjectSets />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </Suspense>

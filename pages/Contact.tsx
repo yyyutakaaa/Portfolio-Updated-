@@ -1,11 +1,10 @@
 import React from 'react';
-import Tile from '../components/Tile';
 import ContactForm from '../components/ContactForm';
-import { Mail, Linkedin, Github, MapPin, Phone, Instagram } from 'lucide-react';
+import Reveal from '../components/Reveal';
 import { useLanguage } from '../contexts/LanguageContext';
 
 const Contact: React.FC = () => {
-  const { language, t } = useLanguage();
+  const { language } = useLanguage();
 
   const contactInfo = {
     nl: {
@@ -13,7 +12,8 @@ const Contact: React.FC = () => {
       subtitle: 'Laten we verbinden',
       description: 'Heb je een vraag, een project in gedachten, of wil je gewoon in contact komen? Ik sta altijd open voor nieuwe kansen en samenwerkingen. Vul het formulier in of neem rechtstreeks contact met me op via onderstaande kanalen.',
       formTitle: 'Stuur een bericht',
-      infoTitle: 'Contact informatie',
+      infoTitle: 'Contactgegevens',
+      socialTitle: 'Elders',
       location: 'Gent, België',
       phone: '+32 465 13 66 79',
       email: 'mehdi.ouladkhlie@outlook.be',
@@ -26,7 +26,8 @@ const Contact: React.FC = () => {
       subtitle: 'Let\'s connect',
       description: 'Have a question, a project in mind, or just want to get in touch? I\'m always open to new opportunities and collaborations. Fill out the form or reach out directly through the channels below.',
       formTitle: 'Send a message',
-      infoTitle: 'Contact information',
+      infoTitle: 'Contact details',
+      socialTitle: 'Elsewhere',
       location: 'Ghent, Belgium',
       phone: '+32 465 13 66 79',
       email: 'mehdi.ouladkhlie@outlook.be',
@@ -38,137 +39,86 @@ const Contact: React.FC = () => {
 
   const content = contactInfo[language];
 
-  return (
-    <div className="space-y-14 md:space-y-20">
-      {/* Header Section */}
-      <header className="page-header mb-16 mt-8">
-        <div className="border-b border-border pb-6">
-          <h1 className="text-5xl md:text-8xl font-extrabold uppercase tracking-[-0.055em] leading-[0.86] mb-5">
-            {content.title}
-          </h1>
-          <h2 className="text-lg md:text-xl text-textDim font-mono">
-            {content.subtitle}
-          </h2>
-        </div>
-      </header>
+  const socials = [
+    { label: 'LinkedIn', url: 'https://www.linkedin.com/in/mehdi-oulad-khlie-5a43aa30b/' },
+    { label: 'GitHub', url: 'https://github.com/yyyutakaaa' },
+    { label: 'Instagram', url: 'https://www.instagram.com/y.yutaka.a/' },
+  ];
 
-      {/* Intro Text */}
-      <div className="max-w-2xl">
-        <p className="text-lg md:text-xl font-light leading-relaxed text-textMain">
+  return (
+    <div className="space-y-20 md:space-y-28">
+
+      <header>
+        <span className="eyebrow">{content.subtitle}</span>
+        <h1 className="display mt-7 text-[clamp(3.25rem,11vw,8rem)]">{content.title}</h1>
+        <p className="lede mt-12 max-w-prose border-t border-border pt-8 text-textDim">
           {content.description}
         </p>
-      </div>
+      </header>
 
-      {/* Contact Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* Contact Form - Takes 2 columns on desktop */}
-        <Tile className="md:col-span-2" label={content.formTitle} delay={100}>
-          <ContactForm language={language} />
-        </Tile>
+      <div className="grid gap-16 md:grid-cols-12 md:gap-14">
 
-        {/* Contact Info Sidebar */}
-        <div className="space-y-6">
-          <Tile label={content.infoTitle} delay={200}>
-            <div className="space-y-6">
-              {/* Email */}
-              <a
-                href="mailto:mehdi.ouladkhlie@outlook.be"
-                aria-label={`Email ${content.email}`}
-                className="flex items-start gap-3 group cursor-pointer"
-              >
-                <div className="bg-accent/5 p-2.5 rounded-xl border border-border group-hover:border-accent transition-colors">
-                  <Mail size={20} aria-hidden="true" className="text-accent" />
-                </div>
-                <div>
-                  <div className="text-xs font-mono text-textDim mb-1">Email</div>
-                  <div className="text-sm text-textMain group-hover:text-accent transition-colors break-all">
+        <Reveal className="md:col-span-7">
+          <h2 className="eyebrow">{content.formTitle}</h2>
+          <div className="mt-8 border-t border-border pt-8">
+            <ContactForm language={language} />
+          </div>
+        </Reveal>
+
+        <Reveal delay={80} className="space-y-12 md:col-span-4 md:col-start-9">
+          <div>
+            <h2 className="eyebrow">{content.infoTitle}</h2>
+            <dl className="mt-8 divide-y divide-border border-t border-border">
+              <div className="py-4">
+                <dt className="text-xs uppercase tracking-[0.14em] text-textDim">Email</dt>
+                <dd className="mt-1">
+                  <a href={`mailto:${content.email}`} className="hover:text-textDim">
                     {content.email}
-                  </div>
-                </div>
-              </a>
-
-              {/* Phone */}
-              <a
-                href="tel:+32465136679"
-                aria-label={`Call ${content.phone}`}
-                className="flex items-start gap-3 group cursor-pointer"
-              >
-                <div className="bg-accent/5 p-2.5 rounded-xl border border-border group-hover:border-accent transition-colors">
-                  <Phone size={20} aria-hidden="true" className="text-accent" />
-                </div>
-                <div>
-                  <div className="text-xs font-mono text-textDim mb-1">Phone</div>
-                  <div className="text-sm text-textMain group-hover:text-accent transition-colors">
-                    {content.phone}
-                  </div>
-                </div>
-              </a>
-
-              {/* Location */}
-              <div className="flex items-start gap-3">
-                <div className="bg-accent/5 p-2.5 rounded-xl border border-border">
-                  <MapPin size={20} aria-hidden="true" className="text-accent" />
-                </div>
-                <div>
-                  <div className="text-xs font-mono text-textDim mb-1">Location</div>
-                  <div className="text-sm text-textMain">
-                    {content.location}
-                  </div>
-                </div>
+                  </a>
+                </dd>
               </div>
+              <div className="py-4">
+                <dt className="text-xs uppercase tracking-[0.14em] text-textDim">{language === 'nl' ? 'Telefoon' : 'Phone'}</dt>
+                <dd className="mt-1">
+                  <a href="tel:+32465136679" className="hover:text-textDim">{content.phone}</a>
+                </dd>
+              </div>
+              <div className="py-4">
+                <dt className="text-xs uppercase tracking-[0.14em] text-textDim">{language === 'nl' ? 'Locatie' : 'Location'}</dt>
+                <dd className="mt-1">{content.location}</dd>
+              </div>
+            </dl>
+          </div>
 
-              {/* Divider */}
-              <div className="w-full h-[1px] bg-border my-4" />
-
-              {/* Social Links */}
-              <div>
-                <div className="text-xs font-mono text-textDim mb-3">Social</div>
-                <div className="flex gap-3">
+          <div>
+            <h2 className="eyebrow">{content.socialTitle}</h2>
+            <ul className="mt-8 divide-y divide-border border-t border-border">
+              {socials.map((social) => (
+                <li key={social.label}>
                   <a
-                    href="https://www.linkedin.com/in/mehdi-oulad-khlie-5a43aa30b/"
+                    href={social.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label="LinkedIn profile"
-                    className="bg-surfaceHighlight p-2.5 rounded-xl border border-border hover:border-accent hover:text-accent transition-colors"
+                    className="flex items-center justify-between py-4 hover:text-textDim"
                   >
-                    <Linkedin size={20} aria-hidden="true" className="text-textMain" />
+                    {social.label}
+                    <span aria-hidden="true" className="text-textDim">↗</span>
                   </a>
-                  <a
-                    href="https://github.com/yyyutakaaa"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="GitHub profile"
-                    className="bg-surfaceHighlight p-2.5 rounded-xl border border-border hover:border-accent hover:text-accent transition-colors"
-                  >
-                    <Github size={20} aria-hidden="true" className="text-textMain" />
-                  </a>
-                  <a
-                    href="https://www.instagram.com/y.yutaka.a/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Instagram profile"
-                    className="bg-surfaceHighlight p-2.5 rounded-xl border border-border hover:border-accent hover:text-accent transition-colors"
-                  >
-                    <Instagram size={20} aria-hidden="true" className="text-textMain" />
-                  </a>
-                </div>
-              </div>
-            </div>
-          </Tile>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-          {/* Availability */}
-          <Tile label={content.availability} delay={300} highlight>
-            <div className="space-y-3">
-              <div className="flex items-center gap-2 text-sm font-mono text-accent">
-                <span className="status-dot" />
-                {content.availableText}
-              </div>
-              <p className="text-xs text-textDim leading-relaxed">
-                {content.responseTime}
-              </p>
-            </div>
-          </Tile>
-        </div>
+          <div className="border-t border-border pt-8">
+            <h2 className="eyebrow">{content.availability}</h2>
+            <p className="mt-5 flex items-center gap-2.5 text-sm">
+              <span className="dot" aria-hidden="true" />
+              {content.availableText}
+            </p>
+            <p className="mt-3 text-sm text-textDim">{content.responseTime}</p>
+          </div>
+        </Reveal>
+
       </div>
     </div>
   );

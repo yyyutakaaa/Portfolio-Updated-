@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import Tile from '../components/Tile';
-import { Briefcase, Download, Languages, Globe, GraduationCap } from 'lucide-react';
+import { Download } from 'lucide-react';
+import Panel from '../components/Panel';
+import Reveal from '../components/Reveal';
 import { useLanguage } from '../contexts/LanguageContext';
 
 const Resume: React.FC = () => {
@@ -39,123 +40,112 @@ const Resume: React.FC = () => {
   };
 
   return (
-    <div className="resume-page max-w-5xl mx-auto space-y-10">
-      
+    <div className="resume-page mx-auto max-w-5xl">
+
       {/* Header */}
-      <div className="resume-header page-header flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-16 border-b border-border pb-8">
+      <header className="resume-header mb-20 flex flex-col gap-8 border-b border-border pb-10 md:flex-row md:items-end md:justify-between">
         <div>
-          <h1 className="text-4xl md:text-7xl font-extrabold uppercase tracking-[-0.055em] leading-[0.9]">{t.resume.title}</h1>
-          <p className="text-textDim font-mono mt-2">{t.resume.subtitle}</p>
+          <h1 className="display text-[clamp(2.75rem,8vw,5.5rem)]">{t.resume.title}</h1>
+          <p className="mt-4 text-textDim">{t.resume.subtitle}</p>
         </div>
-        <button 
-            className="flex items-center gap-2 bg-accent text-bg px-6 py-3 rounded-full font-mono text-sm font-bold uppercase hover:bg-textMain disabled:cursor-wait disabled:opacity-70"
-            onClick={handleDownload}
-            disabled={isGeneratingPdf}
-            aria-label="Generate CV PDF"
-            aria-busy={isGeneratingPdf}
+        <button
+          type="button"
+          className="button-outline print-hidden shrink-0 self-start md:self-auto"
+          onClick={handleDownload}
+          disabled={isGeneratingPdf}
+          aria-label="Generate CV PDF"
+          aria-busy={isGeneratingPdf}
         >
-            <Download size={16} aria-hidden="true" />
-            {isGeneratingPdf ? 'PDF…' : t.resume.download}
+          <Download size={15} strokeWidth={1.4} aria-hidden="true" />
+          {isGeneratingPdf ? 'PDF…' : t.resume.download}
         </button>
-      </div>
+      </header>
 
-      <div className="resume-grid grid grid-cols-1 md:grid-cols-3 gap-6">
-        
-        {/* Main Content Column (Experience & Education) */}
-        <div className="resume-main md:col-span-2 space-y-12">
-           
-           {/* Experience Section */}
-           <div>
-              <div className="flex items-center gap-3 mb-6">
-                  <Briefcase className="text-textMain" size={20} />
-                  <h2 className="text-xl font-bold uppercase tracking-wider">{t.resume.experienceTitle}</h2>
-              </div>
+      <div className="resume-grid grid grid-cols-1 gap-14 md:grid-cols-3 md:gap-16">
 
-              <div className="resume-timeline space-y-6 relative border-l border-border ml-3 pl-8 pb-4">
-                  {t.resume.jobs.map((job, index) => (
-                    <div className={`resume-entry relative ${index > 0 ? 'mt-12' : ''}`} key={index}>
-                      <div className="absolute -left-[37px] top-1 h-4 w-4 rounded-full border-2 border-border bg-bg group-hover:border-textMain transition-colors" />
-                      <div className="flex flex-col sm:flex-row sm:items-baseline justify-between mb-2">
-                        <h3 className="text-lg font-bold text-textMain">{job.role}</h3>
-                        <span className="font-mono text-xs text-accent">{job.period}</span>
-                      </div>
-                      <div className="font-mono text-sm text-textDim mb-4">{job.company}</div>
-                      <ul className="list-disc list-outside ml-4 space-y-2 text-sm text-textDim marker:text-textMain/50">
-                        {job.description.map((desc, i) => (
-                          <li key={i}>{desc}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  ))}
-              </div>
-           </div>
+        {/* Experience & education */}
+        <div className="resume-main space-y-20 md:col-span-2">
 
-           {/* Education Section */}
-           <div>
-              <div className="flex items-center gap-3 mb-6">
-                  <GraduationCap className="text-textMain" size={20} />
-                  <h2 className="text-xl font-bold uppercase tracking-wider">{t.resume.educationTitle}</h2>
-              </div>
+          <Reveal as="section">
+            <h2 className="eyebrow">{t.resume.experienceTitle}</h2>
 
-              <div className="resume-timeline space-y-6 relative border-l border-border ml-3 pl-8 pb-4">
-                  {t.resume.educationList.map((edu, index) => (
-                    <div className={`resume-entry relative ${index > 0 ? 'mt-8' : ''}`} key={index}>
-                      <div className="absolute -left-[37px] top-1 h-4 w-4 rounded-full border-2 border-border bg-bg" />
-                      <div className="flex flex-col sm:flex-row sm:items-baseline justify-between mb-1">
-                        <h3 className="text-lg font-bold text-textMain">{edu.degree}</h3>
-                        <span className="font-mono text-xs text-accent">{edu.period}</span>
-                      </div>
-                      <div className="font-mono text-sm text-textMain/80 mb-2">{edu.school}</div>
-                      <p className="text-sm text-textDim">{edu.description}</p>
-                    </div>
-                  ))}
-              </div>
-           </div>
-
-        </div>
-
-        {/* Sidebar Column (Languages & Info) */}
-        <div className="resume-sidebar space-y-6 md:sticky md:top-28 md:self-start">
-          
-          <Tile label={t.resume.languages.title} className="h-fit">
-            <div className="space-y-4">
-              <div className="flex justify-between items-center pb-2 border-b border-border">
-                <span className="font-bold text-textMain">{t.resume.languages.dutch}</span>
-                <span className="font-mono text-xs text-accent">{t.resume.languages.native}</span>
-              </div>
-              <div className="flex justify-between items-center pb-2 border-b border-border">
-                <span className="font-bold text-textMain">{t.resume.languages.arabic}</span>
-                <span className="font-mono text-xs text-accent">{t.resume.languages.native}</span>
-              </div>
-              <div className="flex justify-between items-center pb-2 border-b border-border">
-                <span className="font-bold text-textMain">{t.resume.languages.english}</span>
-                <span className="font-mono text-xs text-accent">{t.resume.languages.fluent}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-textDim">{t.resume.languages.french}</span>
-                <span className="font-mono text-xs text-textDim">{t.resume.languages.basic}</span>
-              </div>
+            <div className="resume-timeline mt-8 border-l border-border pl-8">
+              {t.resume.jobs.map((job, index) => (
+                <div className={`resume-entry relative ${index > 0 ? 'mt-12' : ''}`} key={`${job.company}-${job.period}`}>
+                  <span className="resume-dot absolute -left-[33px] top-3 h-[7px] w-[7px] rounded-full bg-border" aria-hidden="true" />
+                  <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+                    <h3 className="serif text-2xl leading-snug">{job.role}</h3>
+                    <span className="meta shrink-0">{job.period}</span>
+                  </div>
+                  <div className="mt-1 text-sm text-textDim">{job.company}</div>
+                  <ul className="mt-4 space-y-2 text-sm text-textDim">
+                    {job.description.map((desc) => (
+                      <li key={desc} className="flex gap-3">
+                        <span className="text-textDim/60">—</span>
+                        <span>{desc}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
             </div>
-          </Tile>
+          </Reveal>
 
-          <Tile label={t.resume.contact.title} className="h-fit">
-             <div className="space-y-4 text-sm font-mono text-textDim">
-                <div className="flex items-center gap-3">
-                   <Globe size={14} aria-hidden="true" />
-                   <span>Evergem, België</span>
+          <Reveal as="section">
+            <h2 className="eyebrow">{t.resume.educationTitle}</h2>
+
+            <div className="resume-timeline mt-8 border-l border-border pl-8">
+              {t.resume.educationList.map((edu, index) => (
+                <div className={`resume-entry relative ${index > 0 ? 'mt-10' : ''}`} key={`${edu.school}-${edu.period}`}>
+                  <span className="resume-dot absolute -left-[33px] top-3 h-[7px] w-[7px] rounded-full bg-border" aria-hidden="true" />
+                  <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+                    <h3 className="serif text-2xl leading-snug">{edu.degree}</h3>
+                    <span className="meta shrink-0">{edu.period}</span>
+                  </div>
+                  <div className="mt-1 text-sm text-textDim">{edu.school}</div>
+                  <p className="mt-3 text-sm text-textDim">{edu.description}</p>
                 </div>
-                <div className="flex items-center gap-3">
-                   <span className="w-3.5 text-center">@</span>
-                   <a href="mailto:mehdi.ouladkhlie@outlook.be" aria-label="Send email to Mehdi" className="hover:text-textMain transition-colors">mehdi.ouladkhlie@<wbr />outlook.be</a>
-                </div>
-                <div className="flex items-center gap-3">
-                   <span className="w-3.5 text-center">#</span>
-                   <span>+32 465 13 66 79</span>
-                </div>
-             </div>
-          </Tile>
+              ))}
+            </div>
+          </Reveal>
 
         </div>
+
+        {/* Sidebar */}
+        <aside className="resume-sidebar space-y-6 md:sticky md:top-28 md:self-start">
+          <Panel label={t.resume.languages.title}>
+            <dl className="divide-y divide-border">
+              <div className="flex items-baseline justify-between gap-4 pb-3">
+                <dt>{t.resume.languages.dutch}</dt>
+                <dd className="meta">{t.resume.languages.native}</dd>
+              </div>
+              <div className="flex items-baseline justify-between gap-4 py-3">
+                <dt>{t.resume.languages.arabic}</dt>
+                <dd className="meta">{t.resume.languages.native}</dd>
+              </div>
+              <div className="flex items-baseline justify-between gap-4 py-3">
+                <dt>{t.resume.languages.english}</dt>
+                <dd className="meta">{t.resume.languages.fluent}</dd>
+              </div>
+              <div className="flex items-baseline justify-between gap-4 pt-3">
+                <dt className="text-textDim">{t.resume.languages.french}</dt>
+                <dd className="meta">{t.resume.languages.basic}</dd>
+              </div>
+            </dl>
+          </Panel>
+
+          <Panel label={t.resume.contact.title} delay={80}>
+            <div className="space-y-3 text-sm text-textDim">
+              <p>Evergem, België</p>
+              <p>
+                <a href="mailto:mehdi.ouladkhlie@outlook.be" aria-label="Send email to Mehdi" className="hover:text-textMain">
+                  mehdi.ouladkhlie@<wbr />outlook.be
+                </a>
+              </p>
+              <p>+32 465 13 66 79</p>
+            </div>
+          </Panel>
+        </aside>
 
       </div>
     </div>

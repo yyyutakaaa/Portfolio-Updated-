@@ -22,18 +22,12 @@ export default {
         accent: 'rgb(var(--color-accent-rgb) / <alpha-value>)',
       },
       fontFamily: {
-        sans: ['Manrope Variable', 'Manrope', 'Arial', 'sans-serif'],
-        mono: ['IBM Plex Mono', 'ui-monospace', 'monospace'],
+        sans: ['Manrope Variable', 'Manrope', 'Helvetica Neue', 'Arial', 'sans-serif'],
+        serif: ['Cormorant Garamond Variable', 'Cormorant Garamond', 'Georgia', 'serif'],
       },
-      animation: {
-        'reveal': 'reveal 0.72s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+      maxWidth: {
+        prose: '68ch',
       },
-      keyframes: {
-        reveal: {
-          '0%': { opacity: '0', transform: 'translateY(24px)' },
-          '100%': { opacity: '1', transform: 'translateY(0)' },
-        }
-      }
     }
   },
   plugins: [],

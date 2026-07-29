@@ -98,13 +98,18 @@ const Home: React.FC = () => {
             </div>
           </article>
 
-          {/* Grimdelve */}
+          {/* Sets */}
           <article className="grid items-center gap-10 md:grid-cols-12 md:gap-14">
-            <div className="panel panel--quiet flex aspect-[16/10] items-center justify-center md:order-2 md:col-span-7">
+            <Link
+              to="/projects/sets"
+              tabIndex={-1}
+              aria-hidden="true"
+              className="panel panel--quiet flex aspect-[16/10] items-center justify-center md:order-2 md:col-span-7"
+            >
               <span className="display text-5xl text-textDim md:text-6xl">
                 {t.home.secondProject.title}
               </span>
-            </div>
+            </Link>
 
             <div className="md:order-1 md:col-span-5">
               <span className="eyebrow">{t.home.secondProject.label}</span>
@@ -122,9 +127,10 @@ const Home: React.FC = () => {
                 ))}
               </ul>
 
-              <p className="serif mt-9 text-lg italic text-textDim">
+              <Link to="/projects/sets" className="link-quiet mt-9">
                 {t.home.secondProject.cta}
-              </p>
+                <ArrowRight size={15} strokeWidth={1.4} aria-hidden="true" />
+              </Link>
             </div>
           </article>
 

@@ -181,35 +181,36 @@ export const translations = {
       badge: "PWA",
       title: "Sets",
       tagline: "Train. Noteer het. Klaar.",
-      intro: "Sets is een minimalistische logger voor kracht- en cardiotraining. De filosofie is simpel: je gaat naar de gym, je traint, en je schrijft achteraf op wat je deed. Geen abonnementspop-ups, geen laadschermen. Gewoon een schone PWA.",
+      intro: "Sets is een simpele app om je krachttraining en cardio bij te houden. Je gaat naar de gym, je traint, en achteraf noteer je wat je deed. Geen abonnement, geen laadschermen die je ophouden — je zet 'm in een paar tikken op je telefoon en je bent klaar.",
       deepDive: {
         title: "Onder de motorkap",
+        intro: "Dit stuk hoef je niet te lezen om de app te snappen. Het is puur voor wie benieuwd is hoe het er vanbinnen uitziet.",
         signalPathTitle: "Hoe een sessie wordt opgeslagen",
-        signalPathIntro: "Gyms zitten vaak in een kelder zonder bereik, dus is de app offline-first: een workout loggen schrijft altijd eerst naar je toestel. Zonder verbinding gaat de sessie in een wachtrij en wordt ze automatisch verstuurd zodra je weer online bent.",
+        signalPathIntro: "Gyms zitten vaak in een kelder zonder bereik. Log je daar een workout, dan wordt die meteen op je toestel bewaard, verbinding of niet. Kom je later weer online, dan stuurt de app alles automatisch door naar de cloud, zonder dat jij er iets voor hoeft te doen.",
         signalPath: ["Workout", "Lokale write (localStorage)", "Outbox bij offline", "Supabase (cloud sync)"],
-        frameMathTitle: "De cijfers waar het op draait",
+        frameMathTitle: "Wat dat in de praktijk betekent",
         frameMath: [
-          { value: "32 kB", label: "Tailwind CSS, precompiled" },
-          { value: "0 ms", label: "leeslatentie uit cache" },
-          { value: "3", label: "SQL-migraties" },
-          { value: "Epley", label: "1RM-formule" }
+          { value: "Meteen", label: "je ziet je data zonder te wachten" },
+          { value: "Altijd", label: "beschikbaar, ook zonder wifi in de gym" },
+          { value: "Live", label: "je 1RM verschijnt terwijl je nog aan het typen bent" },
+          { value: "Auto", label: "je workout bewaart zichzelf bij elke wijziging" }
         ],
         points: [
           {
-            title: "Alles rendert uit cache",
-            body: "Elk scherm leest uit een lokale cache per gebruiker (localStorage), dus de app voelt nooit traag aan, ook niet met een slechte verbinding. Bij het inloggen en na elke sync wordt die cache ververst vanuit Supabase."
+            title: "Alles voelt meteen aan",
+            body: "Elk scherm toont meteen je gegevens, ook met slecht bereik, omdat de app een kopie op je toestel bewaart. Log je in of kom je weer online, dan wordt die kopie op de achtergrond bijgewerkt."
           },
           {
-            title: "Sessies overleven een crash",
-            body: "De actieve workout wordt bij elke wijziging automatisch opgeslagen. Killt iOS de app halverwege een sessie op de achtergrond, dan biedt Sets bij de volgende opstart gewoon aan om verder te gaan waar je gebleven was."
+            title: "Een crash kost je niets",
+            body: "De workout waar je mee bezig bent, wordt bij elke wijziging automatisch bewaard. Sluit iOS de app halverwege een sessie af, dan biedt Sets bij de volgende opstart gewoon aan om verder te gaan waar je gebleven was."
           },
           {
-            title: "Guest mode is geen doodlopende straat",
-            body: "Trainen zonder account slaat gewoon op als een lokaal 'guest'-profiel. Log je later in, dan worden die workouts meegenomen naar je account in plaats van te verdwijnen."
+            title: "Ook zonder account kun je gewoon trainen",
+            body: "Train je zonder in te loggen? Dan blijft dat gewoon op je toestel staan. Maak je later een account aan, dan neemt de app die workouts mee in plaats van ze kwijt te raken."
           },
           {
-            title: "Wie het laatst synct, wint",
-            body: "Er is geen conflictresolutie. Bewerk je dezelfde sessie op twee toestellen die allebei offline waren, dan overschrijft de sync die het laatst binnenkomt de andere. Voor een logboek van je eigen trainingen is dat een afweging die ik kan verantwoorden."
+            title: "Bij twijfel wint de laatste",
+            body: "Bewerk je dezelfde training op twee toestellen die allebei offline waren, dan geldt straks de versie die het laatst weer online komt. Voor een persoonlijk trainingslogboek is dat een compromis waar ik prima mee kan leven."
           }
         ]
       },
@@ -224,11 +225,11 @@ export const translations = {
       featuresTitle: "Kernfuncties",
       features: [
         "Dashboard met trainingsvolume, PR's en trendgrafieken van de laatste 7 sessies",
-        "Bronze-, silver- en goldbadges met hardware-versnelde gloed-effecten",
+        "Bronze-, silver- en goldbadges die zachtjes opgloeien wanneer je ze verdient",
         "Instelbare plaatcalculator per gym en per eenheid",
-        "Gewichten in kg of lbs door de hele app, met kg als opslageenheid",
+        "Gewichten in kg of lbs, hoe je maar wil: de app rekent zelf om",
         "Licht/donker thema en volledige Nederlandse en Engelse vertaling",
-        "Backup als JSON via de instellingen, of via de SetsDB-console"
+        "Eén tik in de instellingen en je hebt een backup van al je data"
       ],
       stackTitle: "Gebruikte technologie",
       stack: [
@@ -237,16 +238,16 @@ export const translations = {
         "Supabase voor auth, database en cloud-sync (met row-level security)",
         "PWA met een offline-first localStorage-cache en outbox"
       ],
-      installTitle: "Installeren als PWA",
+      installTitle: "Sets op je telefoon zetten",
       installSteps: [
         "Open sets.ink in Safari (iOS) of Chrome (Android).",
         "Tik op het deel-icoon en kies 'Zet op beginscherm'.",
         "De app opent voortaan volledig scherm, zonder browserbalk, alsof het een native app is."
       ],
       limitationsTitle: "Belangrijk om te weten",
-      limitations: "Guest-data blijft alleen op je toestel tot je inlogt: de app opnieuw installeren zonder account verliest die historie. En omdat er geen conflictresolutie is, wint bij het bewerken van dezelfde sessie op twee offline toestellen gewoon wie het laatst synct.",
+      limitations: "Train je zonder account, dan blijft die data alleen op je telefoon staan; verwijder je de app voor je inlogt, dan ben je die historie kwijt. En bewerk je dezelfde training op twee toestellen die allebei offline waren, dan wint gewoon de versie die het laatst weer online komt.",
       openCta: "Open Sets",
-      openNote: "sets.ink — gratis te gebruiken, installeerbaar als PWA",
+      openNote: "sets.ink — gratis, en in een paar tikken op je telefoon te zetten",
       galleryTitle: "In de app",
       gallery: ["Vandaag", "Workout loggen", "Voeding", "Social", "Progressie", "Geschiedenis"]
     },
@@ -597,35 +598,36 @@ export const translations = {
       badge: "PWA",
       title: "Sets",
       tagline: "Train. Log it. Done.",
-      intro: "Sets is a minimalist logger for strength and cardio training. The philosophy is simple: you go to the gym, you train, and you write down what you did afterward. No subscription prompts, no loading screens. Just a clean PWA.",
+      intro: "Sets is a simple app for tracking strength and cardio training. You go to the gym, you train, and afterward you write down what you did. No subscription, no loading screens holding you up — you add it to your phone in a couple of taps and you're set.",
       deepDive: {
         title: "Under the hood",
+        intro: "None of this is required reading to use the app. It's just for anyone curious what's actually going on under the hood.",
         signalPathTitle: "How a session gets saved",
-        signalPathIntro: "Gyms tend to be basements with no signal, so the app is offline-first: logging a workout always writes to your device first. Without a connection the session gets queued and pushed to the cloud automatically once you're back online.",
+        signalPathIntro: "Gyms tend to be basements with no signal. Log a workout there and it saves straight to your phone, connection or not. Get back online later and the app pushes everything to the cloud on its own, no action needed from you.",
         signalPath: ["Workout", "Local write (localStorage)", "Outbox if offline", "Supabase (cloud sync)"],
-        frameMathTitle: "The numbers it runs on",
+        frameMathTitle: "What that means in practice",
         frameMath: [
-          { value: "32 kB", label: "precompiled Tailwind CSS" },
-          { value: "0 ms", label: "read latency from cache" },
-          { value: "3", label: "SQL migrations" },
-          { value: "Epley", label: "1RM formula" }
+          { value: "Instant", label: "you see your data with no wait" },
+          { value: "Always", label: "available, even with no wifi at the gym" },
+          { value: "Live", label: "your 1RM appears while you're still typing" },
+          { value: "Auto", label: "your workout saves itself as you go" }
         ],
         points: [
           {
-            title: "Everything renders from cache",
-            body: "Every screen reads from a per-user local cache (localStorage), so the app never feels slow, even on a bad connection. That cache gets refreshed from Supabase on login and after every sync."
+            title: "Everything feels instant",
+            body: "Every screen shows your data right away, even on bad signal, because the app keeps a copy on your phone. That copy gets updated in the background whenever you log in or come back online."
           },
           {
-            title: "Sessions survive a crash",
-            body: "The active workout autosaves on every change. If iOS kills the app in the background mid-session, Sets just offers to resume where you left off on next launch."
+            title: "A crash costs you nothing",
+            body: "The workout you're in the middle of autosaves on every change. If iOS kills the app in the background mid-session, Sets just offers to pick up where you left off next time you open it."
           },
           {
-            title: "Guest mode isn't a dead end",
-            body: "Training without an account saves to a local 'guest' profile. Sign in later and those workouts get migrated into your account instead of disappearing."
+            title: "No account, no problem",
+            body: "Train without signing in and it just stays on your phone. Create an account later and those workouts come with you instead of getting left behind."
           },
           {
-            title: "Last sync wins",
-            body: "There's no conflict resolution. Edit the same session on two devices that were both offline, and whichever one syncs last overwrites the other. For a personal training log, that's a trade-off I can live with."
+            title: "Whoever syncs last wins",
+            body: "Edit the same session on two devices that were both offline, and whichever one comes back online last is the version that sticks. For a personal training log, that's a trade-off I'm fine with."
           }
         ]
       },
@@ -640,11 +642,11 @@ export const translations = {
       featuresTitle: "Core features",
       features: [
         "Dashboard with training volume, PRs, and trend charts from the last 7 sessions",
-        "Bronze, silver, and gold badges with hardware-accelerated glow effects",
+        "Bronze, silver, and gold badges that glow softly when you earn them",
         "Configurable plate calculator per gym and per unit",
-        "Weights in kg or lbs throughout the app, with kg as the canonical storage unit",
+        "Weights in kg or lbs, whichever you prefer: the app converts for you",
         "Light/dark theme and full Dutch and English translations",
-        "JSON backup from the settings sheet, or through the SetsDB console"
+        "One tap in Settings backs up all your data"
       ],
       stackTitle: "Tech stack",
       stack: [
@@ -653,16 +655,16 @@ export const translations = {
         "Supabase for auth, database, and cloud sync (with row-level security)",
         "PWA with an offline-first localStorage cache and outbox"
       ],
-      installTitle: "Installing as a PWA",
+      installTitle: "Adding Sets to your phone",
       installSteps: [
         "Open sets.ink in Safari (iOS) or Chrome (Android).",
         "Tap the share icon and choose Add to Home Screen.",
         "From then on it opens full-screen, no browser bar, like a native app."
       ],
       limitationsTitle: "Worth knowing",
-      limitations: "Guest data stays on your device until you sign in: reinstalling without an account loses that history. And since there's no conflict resolution, editing the same session on two offline devices means whichever one syncs last wins.",
+      limitations: "Train without an account and that data stays on your phone only; delete the app before signing in and that history is gone. And if you edit the same session on two devices that were both offline, whichever one comes back online last simply wins.",
       openCta: "Open Sets",
-      openNote: "sets.ink — free to use, installable as a PWA",
+      openNote: "sets.ink — free, and just a couple of taps to add to your phone",
       galleryTitle: "Inside the app",
       gallery: ["Today", "Logging a workout", "Nutrition", "Social", "Progression", "History"]
     },

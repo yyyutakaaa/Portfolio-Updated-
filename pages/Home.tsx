@@ -33,8 +33,8 @@ const Home: React.FC = () => {
         <div className="mt-14 grid gap-8 border-t border-border pt-6 md:grid-cols-12 md:gap-10">
           <p className="lede md:col-span-7 lg:col-span-6">
             {language === 'nl'
-              ? 'Ik bouw en onderhoud de systemen en netwerken waar mensen dagelijks op rekenen — rustig, gestructureerd en zonder ruis.'
-              : 'I build and maintain the systems and networks people rely on every day — calm, structured and without the noise.'}
+              ? 'Ik hou de systemen en netwerken draaiende waar mensen dagelijks op rekenen, het liefst zonder dat iemand het merkt.'
+              : "I keep the systems and networks people rely on every day running, ideally without anyone noticing."}
           </p>
           <div className="flex flex-col gap-3 md:col-span-5 md:items-end lg:col-span-6">
             <span className="meta">{t.home.location}</span>

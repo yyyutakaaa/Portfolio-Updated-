@@ -72,25 +72,25 @@ export const translations = {
           {
             title: "Visibility Spoofer",
             stack: "JAVASCRIPT / CHROME EXTENSION",
-            desc: "Chrome-extensie die de Page Visibility API spooft, zodat een tabblad altijd 'zichtbaar' en gefocust blijft, ook op de achtergrond. Met anti-detectie, bescherming voor dynamische iframes en geen console-output.",
+            desc: "Chrome-extensie die de Page Visibility API spooft, zodat een tabblad altijd 'zichtbaar' en gefocust lijkt, ook op de achtergrond. Zit anti-detectie in, houdt rekening met dynamische iframes, en laat niets achter in de console.",
             url: "https://github.com/yyyutakaaa/Visibility-Spoofer"
           },
           {
             title: "FuelTracker PWA",
             stack: "VUE.JS / TAILWIND / PWA",
-            desc: "PWA voor het berekenen van brandstofkosten en CO₂-uitstoot, met real-time adressuggesties en interactieve kaarten (Leaflet/OSM).",
+            desc: "Een PWA die brandstofkosten en CO₂-uitstoot berekent. Adressuggesties werken real-time en de kaarten draaien op Leaflet/OSM.",
             url: "https://github.com/yyyutakaaa/FuelTracker"
           },
           {
             title: "ShutItDown Server",
             stack: "C# .NET 6 / ASP.NET CORE",
-            desc: "Windows desktop app om een PC op afstand uit te schakelen via een webinterface, beveiligd met PIN-code verificatie en system tray integratie.",
+            desc: "Windows desktop-app om een pc op afstand uit te schakelen via een webinterface. Zit achter een pincode en integreert met de system tray.",
             url: "https://github.com/yyyutakaaa/ShutItDown"
           },
           {
             title: "InstaDM-Saver v2.0",
             stack: "PYTHON / CRYPTOGRAPHY",
-            desc: "Tool om Instagram DM's te archiveren, met encryptie, rate-limiting, een modulaire opzet en export naar JSON/CSV.",
+            desc: "Archiveert je Instagram-DM's: versleuteld, met rate-limiting, een modulaire opzet en export naar JSON of CSV.",
             url: "https://github.com/yyyutakaaa/InstaDM-Saver"
           }
         ]
@@ -220,7 +220,7 @@ export const translations = {
           company: "Lidl België & Luxemburg | Gent",
           period: "AUG 2022 - OKT 2023",
           description: [
-            "Verantwoordelijk voor kassa, voorraadbeheer en de bakkerijafdeling. Focus op efficiëntie en klantvriendelijkheid in een drukke omgeving. Ontwikkeling van sterke multitasking vaardigheden."
+            "Verantwoordelijk voor kassa, voorraadbeheer en de bakkerijafdeling, in een omgeving waar het altijd druk was. Daar leerde ik vooral om snel te schakelen tussen taken zonder dat de klantvriendelijkheid eronder leed."
           ]
         },
         {
@@ -415,25 +415,25 @@ export const translations = {
           {
             title: "Visibility Spoofer",
             stack: "JAVASCRIPT / CHROME EXTENSION",
-            desc: "Chrome extension that spoofs the Page Visibility API, so a tab stays 'visible' and focused even in the background. Includes anti-detection, protection for dynamic iframes, and zero console output.",
+            desc: "A Chrome extension that spoofs the Page Visibility API so a tab always looks 'visible' and focused, even in the background. Has anti-detection built in, handles dynamic iframes, and stays quiet in the console.",
             url: "https://github.com/yyyutakaaa/Visibility-Spoofer"
           },
           {
             title: "FuelTracker PWA",
             stack: "VUE.JS / TAILWIND / PWA",
-            desc: "A PWA for calculating fuel costs and CO₂ emissions, with real-time address autocomplete and interactive maps (Leaflet/OSM).",
+            desc: "A PWA that calculates fuel costs and CO₂ emissions. Address autocomplete runs in real time, and the maps are built on Leaflet/OSM.",
             url: "https://github.com/yyyutakaaa/FuelTracker"
           },
           {
             title: "ShutItDown Server",
             stack: "C# .NET 6 / ASP.NET CORE",
-            desc: "Windows desktop app to remotely shut down your PC via a web interface, secured with PIN code protection and system tray integration.",
+            desc: "A Windows desktop app that shuts your PC down remotely through a web interface. Locked behind a PIN code, with system tray integration.",
             url: "https://github.com/yyyutakaaa/ShutItDown"
           },
           {
             title: "InstaDM-Saver v2.0",
             stack: "PYTHON / CRYPTOGRAPHY",
-            desc: "A tool for fetching and archiving Instagram DMs, with encryption, rate-limiting, a modular setup, and JSON/CSV export.",
+            desc: "Archives your Instagram DMs: encrypted, rate-limited, modular, and exportable to JSON or CSV.",
             url: "https://github.com/yyyutakaaa/InstaDM-Saver"
           }
         ]
@@ -563,7 +563,7 @@ export const translations = {
           company: "Lidl Belgium & Luxembourg | Gent",
           period: "AUG 2022 - OCT 2023",
           description: [
-            "Responsible for checkout, stock management, and the bakery department. Focus on efficiency and customer service in a busy environment. Development of strong multitasking skills."
+            "Responsible for checkout, stock management, and the bakery department in a store that was rarely quiet. Learned to switch between tasks fast without letting customer service slip."
           ]
         },
         {

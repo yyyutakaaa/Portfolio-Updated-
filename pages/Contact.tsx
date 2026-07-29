@@ -10,7 +10,7 @@ const Contact: React.FC = () => {
     nl: {
       title: 'Contact',
       subtitle: 'Laten we verbinden',
-      description: 'Heb je een vraag, een project in gedachten, of wil je gewoon in contact komen? Ik sta altijd open voor nieuwe kansen en samenwerkingen. Vul het formulier in of neem rechtstreeks contact met me op via onderstaande kanalen.',
+      description: 'Heb je een vraag, een project in gedachten, of wil je gewoon eens babbelen? Stuur een bericht via het formulier hieronder, of neem rechtstreeks contact op via een van de kanalen.',
       formTitle: 'Stuur een bericht',
       infoTitle: 'Contactgegevens',
       socialTitle: 'Elders',
@@ -24,7 +24,7 @@ const Contact: React.FC = () => {
     en: {
       title: 'Contact',
       subtitle: 'Let\'s connect',
-      description: 'Have a question, a project in mind, or just want to get in touch? I\'m always open to new opportunities and collaborations. Fill out the form or reach out directly through the channels below.',
+      description: "Have a question, a project in mind, or just want to say hi? Send a message through the form below, or reach out directly through one of the channels.",
       formTitle: 'Send a message',
       infoTitle: 'Contact details',
       socialTitle: 'Elsewhere',

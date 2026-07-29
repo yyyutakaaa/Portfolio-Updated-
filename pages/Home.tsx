@@ -104,11 +104,23 @@ const Home: React.FC = () => {
               to="/projects/sets"
               tabIndex={-1}
               aria-hidden="true"
-              className="panel panel--quiet flex aspect-[16/10] items-center justify-center md:order-2 md:col-span-7"
+              className="plate md:order-2 md:col-span-7"
             >
-              <span className="display text-5xl text-textDim md:text-6xl">
-                {t.home.secondProject.title}
-              </span>
+              <picture>
+                <source
+                  type="image/webp"
+                  srcSet="/sets/preview-800.webp 800w, /sets/preview-1400.webp 1400w"
+                  sizes="(max-width: 767px) calc(100vw - 40px), 640px"
+                />
+                <img
+                  src="/sets/preview.png"
+                  width="1731"
+                  height="909"
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                />
+              </picture>
             </Link>
 
             <div className="md:order-1 md:col-span-5">

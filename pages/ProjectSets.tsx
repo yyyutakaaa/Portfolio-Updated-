@@ -6,6 +6,8 @@ import { useLanguage } from '../contexts/LanguageContext';
 
 const APP_URL = 'https://sets.ink';
 
+const SCREENS = ['dashboard', 'workout', 'nutrition', 'social', 'progression', 'history'];
+
 const ProjectSets: React.FC = () => {
   const { t } = useLanguage();
   const s = t.setsPage;
@@ -37,6 +39,33 @@ const ProjectSets: React.FC = () => {
         </div>
         <p className="mt-5 text-xs text-textDim">{s.openNote}</p>
       </header>
+
+      {/* Screenshot gallery */}
+      <Reveal as="section" className="mt-20">
+        <h2 className="eyebrow">{s.galleryTitle}</h2>
+        <div className="hscroll -mx-5 mt-8 flex snap-x snap-mandatory gap-5 overflow-x-auto px-5 pb-4 sm:-mx-0 sm:px-0">
+          {SCREENS.map((screen: string, i: number) => (
+            <figure key={screen} className="w-[220px] shrink-0 snap-start sm:w-[248px]">
+              <div className="plate">
+                <img
+                  src={`/sets/screens/${screen}-640.webp`}
+                  srcSet={`/sets/screens/${screen}-640.webp 640w, /sets/screens/${screen}-960.webp 960w`}
+                  sizes="248px"
+                  width="1290"
+                  height="2796"
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+              <figcaption className="mt-3 text-sm text-textDim">
+                <span className="index-number mr-2">{String(i + 1).padStart(2, '0')}</span>
+                {s.gallery[i]}
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </Reveal>
 
       {/* Fast logging */}
       <Reveal as="section" className="mt-24">

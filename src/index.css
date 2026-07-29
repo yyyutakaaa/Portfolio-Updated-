@@ -319,6 +319,25 @@ a.panel:hover,
   transform: scale(1.018);
 }
 
+.hscroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scroll-thumb) transparent;
+}
+
+.hscroll::-webkit-scrollbar {
+  height: 6px;
+}
+
+.hscroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.hscroll::-webkit-scrollbar-thumb {
+  border: 0;
+  border-radius: 999px;
+  background: var(--scroll-thumb);
+}
+
 /* --------------------------------------------------------------- links ---- */
 
 .link-quiet {

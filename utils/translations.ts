@@ -246,7 +246,9 @@ export const translations = {
       limitationsTitle: "Belangrijk om te weten",
       limitations: "Guest-data blijft alleen op je toestel tot je inlogt: de app opnieuw installeren zonder account verliest die historie. En omdat er geen conflictresolutie is, wint bij het bewerken van dezelfde sessie op twee offline toestellen gewoon wie het laatst synct.",
       openCta: "Open Sets",
-      openNote: "sets.ink — gratis te gebruiken, installeerbaar als PWA"
+      openNote: "sets.ink — gratis te gebruiken, installeerbaar als PWA",
+      galleryTitle: "In de app",
+      gallery: ["Vandaag", "Workout loggen", "Voeding", "Social", "Progressie", "Geschiedenis"]
     },
     resume: {
       title: "Curriculum Vitae",
@@ -660,7 +662,9 @@ export const translations = {
       limitationsTitle: "Worth knowing",
       limitations: "Guest data stays on your device until you sign in: reinstalling without an account loses that history. And since there's no conflict resolution, editing the same session on two offline devices means whichever one syncs last wins.",
       openCta: "Open Sets",
-      openNote: "sets.ink — free to use, installable as a PWA"
+      openNote: "sets.ink — free to use, installable as a PWA",
+      galleryTitle: "Inside the app",
+      gallery: ["Today", "Logging a workout", "Nutrition", "Social", "Progression", "History"]
     },
     resume: {
       title: "Curriculum Vitae",

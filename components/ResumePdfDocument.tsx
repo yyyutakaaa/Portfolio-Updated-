@@ -28,27 +28,20 @@ export const registerResumePdfFonts = () => {
     ],
   });
 
-  Font.register({
-    family: 'IBM Plex Mono',
-    fonts: [
-      { src: `${fontBaseUrl}IBMPlexMono-Regular.ttf`, fontWeight: 400 },
-      { src: `${fontBaseUrl}IBMPlexMono-Medium.ttf`, fontWeight: 500 },
-    ],
-  });
-
   Font.registerHyphenationCallback((word) => [word]);
 };
 
 registerResumePdfFonts();
 
 const colors = {
-  paper: '#FCFCF8',
+  paper: '#FBFAF7',
   surface: '#FFFFFF',
-  ink: '#17201D',
-  muted: '#4F5B56',
-  accent: '#5F7F17',
-  accentSoft: '#EEF2E4',
-  border: '#D9DED7',
+  ink: '#1C1A17',
+  muted: '#6F685E',
+  accent: '#8A5B40',
+  accentSoft: '#F2EEE8',
+  border: '#DCD7CE',
+  hairline: '#E6E1D9',
   white: '#FFFFFF',
 };
 
@@ -65,50 +58,32 @@ const styles = StyleSheet.create({
     fontSize: 8,
     lineHeight: 1.36,
   },
-  topRule: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    height: 9,
-    backgroundColor: colors.accent,
-  },
   header: {
-    height: 102,
-    paddingTop: 4,
+    height: 104,
+    paddingTop: 6,
     borderBottomWidth: 1,
     borderBottomColor: colors.border,
   },
   eyebrow: {
-    marginBottom: 8,
-    color: colors.accent,
-    fontFamily: 'IBM Plex Mono',
+    marginBottom: 10,
+    color: colors.muted,
     fontWeight: 500,
-    fontSize: 7.1,
-    letterSpacing: 1.6,
+    fontSize: 6.6,
+    letterSpacing: 2.1,
     textTransform: 'uppercase',
   },
   identity: {
     maxWidth: 400,
-    fontSize: 27,
-    fontWeight: 800,
-    lineHeight: 0.94,
-    letterSpacing: -1.05,
+    fontSize: 28,
+    fontWeight: 400,
+    lineHeight: 1,
+    letterSpacing: -0.9,
   },
   subtitle: {
-    marginTop: 9,
+    marginTop: 10,
     color: colors.muted,
-    fontFamily: 'IBM Plex Mono',
-    fontSize: 7.1,
-    letterSpacing: 1.15,
-  },
-  headerAccent: {
-    position: 'absolute',
-    left: 0,
-    bottom: -1,
-    width: 96,
-    height: 2.2,
-    backgroundColor: colors.accent,
+    fontSize: 7.4,
+    letterSpacing: 0.5,
   },
   content: {
     flexDirection: 'row',
@@ -120,12 +95,10 @@ const styles = StyleSheet.create({
   },
   sidebar: {
     width: 157,
-    paddingTop: 15,
-    paddingRight: 14,
-    paddingBottom: 15,
-    paddingLeft: 14,
-    borderRadius: 10,
-    backgroundColor: colors.accentSoft,
+    paddingTop: 4,
+    paddingLeft: 16,
+    borderLeftWidth: 1,
+    borderLeftColor: colors.hairline,
   },
   section: {
     marginBottom: 17,
@@ -136,24 +109,23 @@ const styles = StyleSheet.create({
     marginBottom: 14,
   },
   sectionIndex: {
-    width: 27,
-    color: colors.accent,
-    fontFamily: 'IBM Plex Mono',
-    fontWeight: 500,
+    width: 24,
+    color: colors.muted,
+    fontWeight: 400,
     fontSize: 6.3,
     letterSpacing: 0.7,
   },
   sectionTitle: {
-    fontSize: 10.3,
-    fontWeight: 800,
-    letterSpacing: 0.55,
+    fontSize: 8,
+    fontWeight: 500,
+    letterSpacing: 2,
     textTransform: 'uppercase',
   },
   sectionLine: {
     flexGrow: 1,
     height: 1,
     marginLeft: 10,
-    backgroundColor: colors.border,
+    backgroundColor: colors.hairline,
   },
   timeline: {
     position: 'relative',
@@ -171,14 +143,12 @@ const styles = StyleSheet.create({
   },
   dot: {
     position: 'absolute',
-    left: -31.5,
-    top: 2.5,
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    borderWidth: 1.4,
-    borderColor: colors.accent,
-    backgroundColor: colors.paper,
+    left: -30.5,
+    top: 3.5,
+    width: 5,
+    height: 5,
+    borderRadius: 2.5,
+    backgroundColor: colors.border,
   },
   roleRow: {
     flexDirection: 'row',
@@ -188,15 +158,14 @@ const styles = StyleSheet.create({
   },
   role: {
     flexGrow: 1,
-    fontSize: 9.5,
-    fontWeight: 800,
-    lineHeight: 1.2,
+    fontSize: 9.6,
+    fontWeight: 600,
+    lineHeight: 1.25,
   },
   period: {
     flexShrink: 0,
-    color: colors.accent,
-    fontFamily: 'IBM Plex Mono',
-    fontWeight: 500,
+    color: colors.muted,
+    fontWeight: 400,
     fontSize: 6.45,
     lineHeight: 1.3,
     letterSpacing: 0.15,
@@ -204,10 +173,9 @@ const styles = StyleSheet.create({
   },
   company: {
     marginTop: 3,
-    marginBottom: 5,
+    marginBottom: 6,
     color: colors.muted,
-    fontFamily: 'IBM Plex Mono',
-    fontSize: 7,
+    fontSize: 7.1,
   },
   bullets: {
     gap: 2.5,
@@ -217,8 +185,7 @@ const styles = StyleSheet.create({
   },
   bullet: {
     width: 9,
-    color: colors.accent,
-    fontFamily: 'IBM Plex Mono',
+    color: colors.muted,
     fontSize: 6.2,
   },
   bulletText: {
@@ -235,7 +202,7 @@ const styles = StyleSheet.create({
     paddingLeft: 13,
     borderWidth: 1,
     borderColor: colors.border,
-    borderRadius: 10,
+    borderRadius: 2,
     backgroundColor: colors.surface,
   },
   accentCard: {
@@ -248,18 +215,17 @@ const styles = StyleSheet.create({
     marginBottom: 11,
   },
   cardLabel: {
-    color: colors.ink,
-    fontFamily: 'IBM Plex Mono',
+    color: colors.muted,
     fontWeight: 500,
     fontSize: 6.4,
-    letterSpacing: 1.25,
+    letterSpacing: 2,
     textTransform: 'uppercase',
   },
   cardLine: {
     flexGrow: 1,
     height: 1,
     marginLeft: 8,
-    backgroundColor: '#C8D0C1',
+    backgroundColor: colors.hairline,
   },
   languageRow: {
     flexDirection: 'row',
@@ -268,7 +234,7 @@ const styles = StyleSheet.create({
     paddingTop: 8,
     paddingBottom: 8,
     borderBottomWidth: 1,
-    borderBottomColor: colors.border,
+    borderBottomColor: colors.hairline,
   },
   languageRowLast: {
     borderBottomWidth: 0,
@@ -276,19 +242,18 @@ const styles = StyleSheet.create({
   },
   language: {
     fontSize: 7.8,
-    fontWeight: 600,
+    fontWeight: 500,
   },
   level: {
-    color: colors.accent,
-    fontFamily: 'IBM Plex Mono',
+    color: colors.muted,
     fontSize: 6.1,
+    letterSpacing: 0.5,
   },
   contactItem: { marginBottom: 9 },
   contactValue: {
     color: colors.ink,
-    fontFamily: 'IBM Plex Mono',
-    fontSize: 6.35,
-    lineHeight: 1.4,
+    fontSize: 6.9,
+    lineHeight: 1.45,
   },
   sidebarSection: {
     marginBottom: 21,
@@ -298,7 +263,7 @@ const styles = StyleSheet.create({
     paddingBottom: 12,
     marginBottom: 11,
     borderBottomWidth: 1,
-    borderBottomColor: '#C8D0C1',
+    borderBottomColor: colors.hairline,
   },
   educationItemLast: {
     marginBottom: 0,
@@ -308,22 +273,21 @@ const styles = StyleSheet.create({
   educationDegree: {
     color: colors.ink,
     fontSize: 8.15,
-    fontWeight: 800,
-    lineHeight: 1.25,
+    fontWeight: 600,
+    lineHeight: 1.3,
   },
   educationPeriod: {
     marginTop: 4,
-    color: colors.accent,
-    fontFamily: 'IBM Plex Mono',
+    color: colors.muted,
     fontSize: 6.1,
+    letterSpacing: 0.5,
     lineHeight: 1.3,
   },
   educationSchool: {
     marginTop: 4,
     color: colors.ink,
-    fontFamily: 'IBM Plex Mono',
-    fontSize: 6,
-    lineHeight: 1.35,
+    fontSize: 6.5,
+    lineHeight: 1.4,
   },
   educationDescription: {
     marginTop: 5,
@@ -334,15 +298,14 @@ const styles = StyleSheet.create({
   sidebarNote: {
     marginTop: 4,
     paddingLeft: 3,
-    borderLeftWidth: 2,
-    borderLeftColor: colors.accent,
+    borderLeftWidth: 1,
+    borderLeftColor: colors.border,
   },
   sidebarNoteText: {
     paddingLeft: 8,
     color: colors.muted,
-    fontFamily: 'IBM Plex Mono',
-    fontSize: 5.8,
-    lineHeight: 1.45,
+    fontSize: 6.2,
+    lineHeight: 1.5,
   },
   footer: {
     position: 'absolute',
@@ -352,9 +315,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     color: colors.muted,
-    fontFamily: 'IBM Plex Mono',
-    fontSize: 5.5,
-    letterSpacing: 0.55,
+    fontSize: 5.8,
+    letterSpacing: 1.2,
   },
 });
 
@@ -389,12 +351,10 @@ const ResumePdfDocument: React.FC<ResumePdfDocumentProps> = ({ content }) => {
       creator="mehdioul.dev"
     >
       <Page size="A4" style={styles.page}>
-        <View style={styles.topRule} fixed />
         <View style={styles.header}>
           <Text style={styles.eyebrow}>{content.title} · MEHDI.DEV</Text>
           <Text style={styles.identity}>Mehdi Oulad Khlie</Text>
           <Text style={styles.subtitle}>{content.subtitle}</Text>
-          <View style={styles.headerAccent} />
         </View>
 
         <View style={styles.content}>

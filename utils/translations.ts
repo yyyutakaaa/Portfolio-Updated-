@@ -38,7 +38,7 @@ export const translations = {
           React.createElement("br", null),
           React.createElement("br", null),
           "Het liefst werk ik in Windows-omgevingen. Ik heb al heel wat pc's en netwerken zien vastlopen en er minstens evenveel weer aan de praat gekregen, van kapotte drivers tot rare netwerkfouten. Daarnaast haal ik mijn ",
-          React.createElement("span", { className: "text-textMain font-mono text-sm border border-borderActive bg-surfaceHighlight/70 rounded-sm px-1.5" }, "CCNA"),
+          React.createElement("span", { className: "text-textMain italic serif text-[1.1em]" }, "CCNA"),
           " en volg ik Microsoft-trajecten om dat verder uit te bouwen."
         ),
         cta: "Bekijk volledige CV"
@@ -381,7 +381,7 @@ export const translations = {
           React.createElement("br", null),
           React.createElement("br", null),
           "I prefer working in Windows environments. I've watched plenty of PCs and networks fall over and gotten just as many running again, from broken drivers to weird network faults. On the side, I'm working toward my ",
-          React.createElement("span", { className: "text-textMain font-mono text-sm border border-borderActive bg-surfaceHighlight/70 rounded-sm px-1.5" }, "CCNA"),
+          React.createElement("span", { className: "text-textMain italic serif text-[1.1em]" }, "CCNA"),
           " and taking Microsoft courses to build on that."
         ),
         cta: "View Full Resume"

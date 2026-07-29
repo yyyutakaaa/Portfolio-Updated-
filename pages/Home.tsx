@@ -1,317 +1,257 @@
 import React from 'react';
-import Tile from '../components/Tile';
-import { ArrowRight, Cpu, Network, Server, ShieldCheck, Terminal, GraduationCap, Award, MapPin, ExternalLink, Lock } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { ArrowRight, ArrowUpRight } from 'lucide-react';
+import Section from '../components/Section';
+import Reveal from '../components/Reveal';
 import { useLanguage } from '../contexts/LanguageContext';
 
+const CREDLY_URL = 'https://www.credly.com/badges/39769716-9d80-4a83-a62f-f642da9e7b40/public_url';
+
 const Home: React.FC = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+
+  const skillGroups = [
+    { title: t.home.skills.sysAdmin, items: t.home.skills.items.sysAdmin },
+    { title: t.home.skills.networking, items: t.home.skills.items.networking },
+    { title: t.home.skills.cloudOps, items: t.home.skills.items.cloudOps },
+    { title: t.home.skills.softSkills, items: t.home.skills.items.softSkills },
+  ];
 
   return (
-    <div className="space-y-16 md:space-y-24">
-      {/* Header Section */}
-      <header className="portfolio-hero mb-16 mt-8">
-        <div className="hero-frame relative flex justify-between items-end border-b border-border pb-7">
-          <div>
-            <h1 className="portfolio-name text-5xl sm:text-7xl md:text-[clamp(5rem,10vw,9rem)] font-extrabold uppercase tracking-[-0.065em] leading-[0.82] mb-7">
-              Mehdi<br />Oulad Khlie
-            </h1>
-            <h2 className="text-sm md:text-base text-textDim font-mono uppercase tracking-[0.08em]">
-              {t.home.role}
-            </h2>
+    <div className="space-y-28 md:space-y-40">
+
+      {/* Opening */}
+      <header>
+        <span className="eyebrow">{t.home.role}</span>
+
+        <h1 className="display mt-7 text-[clamp(3.25rem,11.5vw,9rem)]">
+          Mehdi
+          <br />
+          <span className="display-italic">Oulad Khlie</span>
+        </h1>
+
+        <div className="mt-14 grid gap-8 border-t border-border pt-6 md:grid-cols-12 md:gap-10">
+          <p className="lede md:col-span-7 lg:col-span-6">
+            {language === 'nl'
+              ? 'Ik bouw en onderhoud de systemen en netwerken waar mensen dagelijks op rekenen — rustig, gestructureerd en zonder ruis.'
+              : 'I build and maintain the systems and networks people rely on every day — calm, structured and without the noise.'}
+          </p>
+          <div className="flex flex-col gap-3 md:col-span-5 md:items-end lg:col-span-6">
+            <span className="meta">{t.home.location}</span>
+            <span className="flex items-center gap-2.5 text-sm text-textDim">
+              <span className="dot" aria-hidden="true" />
+              {t.nav.status}
+            </span>
           </div>
-          <div className="hidden md:block text-right font-mono text-xs text-textDim">
-            <div className="flex items-center justify-end gap-2">
-              <MapPin size={12} />
-              {t.home.location}
-            </div>
-            <div>UTC+1 // {t.home.localTime.toUpperCase()}</div>
-          </div>
-          <span className="hero-signal" aria-hidden="true" />
         </div>
       </header>
 
-      {/* Bento Grid Layout */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 auto-rows-min">
+      {/* Selected work */}
+      <Section index="01" label={language === 'nl' ? 'Geselecteerd werk' : 'Selected work'}>
+        <div className="space-y-24 md:space-y-32">
 
-        {/* Featured Project Banner - Muted */}
-        <Link
-          to="/projects/muted"
-          className="md:col-span-4 block z-10 group/banner"
-        >
-          <Tile
-            className="project-panel min-h-[360px] relative overflow-hidden cursor-pointer"
-            label={t.home.featuredProject.label}
-            delay={0}
-            highlight
-          >
-            {/* Base Background - Dark Stylish Gradient */}
-            <div className="project-wash absolute inset-0" />
+          {/* Muted */}
+          <article className="group/work grid items-center gap-10 md:grid-cols-12 md:gap-14">
+            <Link
+              to="/projects/muted"
+              tabIndex={-1}
+              aria-hidden="true"
+              className="plate md:col-span-7"
+            >
+              <picture>
+                <source
+                  type="image/webp"
+                  srcSet="/muted-screenshot-800.webp 800w, /muted-screenshot-1400.webp 1400w"
+                  sizes="(max-width: 767px) calc(100vw - 40px), 640px"
+                />
+                <img
+                  src="/muted-screenshot.png"
+                  width="1573"
+                  height="978"
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                />
+              </picture>
+            </Link>
 
-            <div className="relative z-10 flex flex-col md:flex-row gap-8 items-start md:items-center h-full justify-between p-4">
-              <div className="flex-1 space-y-6 max-w-2xl">
-                <div className="flex flex-wrap gap-2">
-                  <span className="project-tag border border-accent/30 text-accent px-3 py-1.5 text-[10px] font-mono rounded-full uppercase tracking-wider flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-accent"></div>
-                    Windows App
-                  </span>
-                  <span className="project-tag border border-borderActive text-textDim px-3 py-1.5 text-[10px] font-mono rounded-full uppercase tracking-wider flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-textDim"></div>
-                    Solo Dev
-                  </span>
-                </div>
+            <div className="md:col-span-5">
+              <span className="eyebrow">{t.home.featuredProject.label}</span>
+              <h3 className="display mt-5 text-5xl md:text-6xl">{t.home.featuredProject.title}</h3>
+              <p className="mt-3 text-sm text-textDim">{t.home.featuredProject.stack}</p>
 
-                <div>
-                  <div className="flex items-center gap-3 mb-3">
-                    <h3 className="text-5xl md:text-7xl font-extrabold text-textMain tracking-[-0.055em] leading-none">
-                      {t.home.featuredProject.title}
-                    </h3>
-                    <span className="border border-accent/30 text-accent px-2 py-1 text-[9px] font-mono rounded-full uppercase tracking-wider flex items-center gap-1.5">
-                      <span className="status-dot" />
-                      NEW
-                    </span>
-                  </div>
-                  <p className="text-textDim text-sm md:text-lg leading-relaxed max-w-xl">
-                    {t.home.featuredProject.description}
-                  </p>
-                </div>
+              <p className="mt-7 text-textDim">{t.home.featuredProject.description}</p>
 
-                <div className="flex flex-wrap gap-3">
-                  {t.home.featuredProject.features.map((feature, i) => (
-                    <div key={i} className="flex items-center gap-2 text-xs font-mono text-textDim px-3 py-1.5 rounded-full border border-border">
-                      <ShieldCheck size={12} className="text-accent" />
-                      {feature}
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="flex-shrink-0 self-end md:self-center">
-                <div className="project-cta inline-flex w-full sm:w-auto items-center justify-center gap-2 border border-accent text-accent px-8 py-4 rounded-full font-bold uppercase tracking-wider group-hover/banner:bg-accent group-hover/banner:text-bg">
-                  {t.home.featuredProject.cta}
-                  <ArrowRight size={16} aria-hidden="true" />
-                </div>
-              </div>
-            </div>
-          </Tile>
-        </Link>
-
-        {/* Second Project Banner - Grimdelve */}
-        <Tile
-          className="project-panel md:col-span-4 min-h-[350px] relative overflow-hidden z-10 group/banner"
-          label={t.home.secondProject.label}
-          delay={50}
-          highlight
-        >
-          {/* Base Background - Dark Stylish Gradient */}
-          <div className="project-wash project-wash--muted absolute inset-0" />
-
-          {/* Content Container - Dims and blurs slightly on hover */}
-          <div className="relative z-10 flex flex-col md:flex-row gap-8 items-start md:items-center h-full justify-between p-4">
-            <div className="flex-1 space-y-6 max-w-2xl">
-              <div className="flex flex-wrap gap-2">
-                <span className="project-tag border border-accent/30 text-accent px-3 py-1.5 text-[10px] font-mono rounded-full uppercase tracking-wider flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-accent"></div>
-                  2D RPG
-                </span>
-                <span className="project-tag border border-borderActive text-textDim px-3 py-1.5 text-[10px] font-mono rounded-full uppercase tracking-wider flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-textDim"></div>
-                  Solo Dev
-                </span>
-              </div>
-
-              <div>
-                <div className="flex items-center gap-3 mb-3">
-                  <h3 className="text-5xl md:text-7xl font-extrabold text-textMain tracking-[-0.055em] leading-none">
-                    {t.home.secondProject.title}
-                  </h3>
-                </div>
-                <p className="text-textDim text-sm md:text-lg leading-relaxed max-w-xl">
-                  {t.home.secondProject.description}
-                </p>
-              </div>
-
-              <div className="flex flex-wrap gap-3">
-                {t.home.secondProject.features.map((feature, i) => (
-                  <div key={i} className="flex items-center gap-2 text-xs font-mono text-textDim px-3 py-1.5 rounded-full border border-border">
-                    <ShieldCheck size={12} className="text-accent" />
+              <ul className="mt-8 space-y-2.5 border-t border-border pt-6 text-sm text-textDim">
+                {t.home.featuredProject.features.map((feature) => (
+                  <li key={feature} className="flex items-baseline gap-3">
+                    <span className="text-textDim/60">—</span>
                     {feature}
-                  </div>
+                  </li>
                 ))}
-              </div>
-            </div>
+              </ul>
 
-            <div className="flex-shrink-0 self-end md:self-center">
-              <div
-                aria-label="Grimdelve is not public yet"
-                className="inline-flex w-full sm:w-auto items-center justify-center gap-2 border border-dashed border-borderActive text-textDim px-8 py-4 rounded-full font-bold uppercase tracking-wider cursor-default select-none"
-              >
-                {t.home.secondProject.cta}
-                <Lock size={16} aria-hidden="true" />
-              </div>
-            </div>
-          </div>
-
-        </Tile>
-
-        {/* Intro / Bio */}
-        <Tile className="md:col-span-3 md:row-span-2 min-h-[300px]" label={t.home.profile.title} delay={100}>
-          <div className="flex flex-col justify-between h-full">
-            <p className="text-xl md:text-3xl font-medium leading-[1.45] tracking-[-0.025em] text-textMain max-w-3xl">
-              {t.home.profile.text}
-            </p>
-            <div className="mt-8">
-              <Link to="/resume" className="inline-flex items-center gap-2 text-accent border border-accent px-6 py-3 rounded-full hover:bg-accent hover:text-bg font-mono text-sm uppercase">
-                {t.home.profile.cta} <ArrowRight size={16} />
+              <Link to="/projects/muted" className="link-quiet mt-9">
+                {t.home.featuredProject.cta}
+                <ArrowRight size={15} strokeWidth={1.4} aria-hidden="true" />
               </Link>
             </div>
+          </article>
+
+          {/* Grimdelve */}
+          <article className="grid items-center gap-10 md:grid-cols-12 md:gap-14">
+            <div className="panel panel--quiet flex aspect-[16/10] items-center justify-center md:order-2 md:col-span-7">
+              <span className="display text-5xl text-textDim md:text-6xl">
+                {t.home.secondProject.title}
+              </span>
+            </div>
+
+            <div className="md:order-1 md:col-span-5">
+              <span className="eyebrow">{t.home.secondProject.label}</span>
+              <h3 className="display mt-5 text-5xl md:text-6xl">{t.home.secondProject.title}</h3>
+              <p className="mt-3 text-sm text-textDim">{t.home.secondProject.stack}</p>
+
+              <p className="mt-7 text-textDim">{t.home.secondProject.description}</p>
+
+              <ul className="mt-8 space-y-2.5 border-t border-border pt-6 text-sm text-textDim">
+                {t.home.secondProject.features.map((feature) => (
+                  <li key={feature} className="flex items-baseline gap-3">
+                    <span className="text-textDim/60">—</span>
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+
+              <p className="serif mt-9 text-lg italic text-textDim">
+                {t.home.secondProject.cta}
+              </p>
+            </div>
+          </article>
+
+        </div>
+      </Section>
+
+      {/* Profile */}
+      <Section index="02" label={t.home.profile.title}>
+        <div className="grid gap-14 md:grid-cols-12 md:gap-16">
+          <div className="md:col-span-7">
+            <div className="lede text-textDim">
+              {t.home.profile.text}
+            </div>
+            <Link to="/resume" className="link-quiet mt-10">
+              {t.home.profile.cta}
+              <ArrowRight size={15} strokeWidth={1.4} aria-hidden="true" />
+            </Link>
           </div>
-        </Tile>
 
-        {/* Location / Status */}
-        <Tile className="md:col-span-1 min-h-[140px]" label={t.home.status.label} delay={200}>
-          <div className="h-full flex flex-col justify-center">
-            <div className="text-3xl font-bold text-textMain mb-1">2027</div>
-            <div className="text-xs font-mono text-textDim">{t.home.status.gradYear}</div>
-            <div className="mt-4 flex items-center gap-2 text-xs font-mono text-accent">
-              <span className="status-dot" />
-              {t.home.status.available}
+          <dl className="divide-y divide-border border-y border-border md:col-span-5 md:self-start">
+            <div className="flex items-baseline justify-between gap-6 py-5">
+              <dt className="meta">{t.home.status.gradYear}</dt>
+              <dd className="serif text-2xl">2027</dd>
             </div>
-          </div>
-        </Tile>
-
-        {/* Certification */}
-        <Tile className="md:col-span-1 min-h-[140px]" label={t.home.certified.label} delay={300} highlight>
-          <a
-            href="https://www.credly.com/badges/39769716-9d80-4a83-a62f-f642da9e7b40/public_url"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex flex-col h-full justify-between cursor-pointer hover:opacity-80 transition-opacity"
-          >
-            <Award className="text-textMain mb-4" size={32} />
-            <div>
-              <div className="font-bold text-textMain leading-tight">{t.home.certified.title}</div>
-              <div className="text-xs font-mono text-textDim mt-1">{t.home.certified.subtitle}</div>
-            </div>
-          </a>
-        </Tile>
-
-        {/* Skills - Takes up full width on mobile, 2 cols on desktop */}
-        <Tile className="md:col-span-2 md:row-span-2" label={t.home.skills.label} delay={400}>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-            <div className="space-y-4">
-              <div className="flex items-center gap-3 text-textMain font-mono text-sm border-b border-border pb-2">
-                <Server size={16} />
-                <span>{t.home.skills.sysAdmin}</span>
-              </div>
-              <ul className="space-y-2 text-sm text-textDim font-mono">
-                {t.home.skills.items.sysAdmin.map((skill, i) => (
-                  <li key={i}>{skill}</li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="space-y-4">
-              <div className="flex items-center gap-3 text-textMain font-mono text-sm border-b border-border pb-2">
-                <Network size={16} />
-                <span>{t.home.skills.networking}</span>
-              </div>
-              <ul className="space-y-2 text-sm text-textDim font-mono">
-                {t.home.skills.items.networking.map((skill, i) => (
-                  <li key={i}>{skill}</li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="space-y-4">
-              <div className="flex items-center gap-3 text-textMain font-mono text-sm border-b border-border pb-2">
-                <ShieldCheck size={16} />
-                <span>{t.home.skills.cloudOps}</span>
-              </div>
-              <ul className="space-y-2 text-sm text-textDim font-mono">
-                {t.home.skills.items.cloudOps.map((skill, i) => (
-                  <li key={i}>{skill}</li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="space-y-4">
-              <div className="flex items-center gap-3 text-textMain font-mono text-sm border-b border-border pb-2">
-                <Terminal size={16} />
-                <span>{t.home.skills.softSkills}</span>
-              </div>
-              <ul className="space-y-2 text-sm text-textDim font-mono">
-                {t.home.skills.items.softSkills.map((skill, i) => (
-                  <li key={i}>{skill}</li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </Tile>
-
-        {/* Projects Section */}
-        <Tile className="md:col-span-2" label={t.home.projects.label} delay={500}>
-          <div className="space-y-6">
-            {t.home.projects.items.map((project, index) => (
-              <div key={index}>
-                <a href={project.url} target="_blank" rel="noopener noreferrer" className="group/project block cursor-pointer">
-                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 mb-2">
-                    <div className="flex items-center gap-2">
-                        <h3 className="text-textMain font-bold group-hover/project:text-accent transition-colors">{project.title}</h3>
-                      {index === 0 && (
-                        <span className="border border-accent/30 text-accent px-2 py-1 text-[9px] font-mono rounded-full uppercase tracking-wider flex items-center gap-1.5">
-                          <span className="status-dot" />
-                          NEW
-                        </span>
-                      )}
-                      <ExternalLink size={12} aria-hidden="true" className="text-textDim opacity-0 group-hover/project:opacity-100 transition-opacity" />
-                    </div>
-                    <span className="text-[10px] font-mono border border-border px-1 text-textDim text-left sm:text-right sm:ml-2 shrink-0 break-words">{project.stack}</span>
-                  </div>
-                  <p className="text-sm text-textDim">
-                    {project.desc}
-                  </p>
+            <div className="flex items-baseline justify-between gap-6 py-5">
+              <dt className="meta">{t.home.certified.label}</dt>
+              <dd className="text-right">
+                <a
+                  href={CREDLY_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="serif text-2xl hover:text-textDim"
+                >
+                  {t.home.certified.title}
                 </a>
-                {/* Add divider if not last item */}
-                {index < t.home.projects.items.length - 1 && (
-                  <div className="w-full h-[1px] bg-border my-6" />
-                )}
-              </div>
-            ))}
-          </div>
-        </Tile>
-
-        {/* Education - Small summary */}
-        <Tile className="md:col-span-4" label={t.home.education.label} delay={600}>
-          <div className="flex flex-col md:flex-row gap-8">
-            <div className="flex-1 flex gap-4 items-start">
-              <div className="bg-surfaceHighlight p-3 rounded border border-border">
-                <GraduationCap className="text-textMain" size={24} />
-              </div>
-              <div>
-                <div className="text-xs font-mono text-accent mb-1">{t.home.education.expected}</div>
-                <h3 className="text-xl font-bold text-textMain">{t.home.education.degree1}</h3>
-                <p className="text-sm text-textDim mt-1">HOGENT • Gent</p>
-              </div>
+                <span className="mt-1 block text-xs uppercase tracking-[0.12em] text-textDim">
+                  {t.home.certified.subtitle}
+                </span>
+              </dd>
             </div>
-
-            <div className="hidden md:block w-[1px] bg-border self-stretch" />
-
-            <div className="flex-1 flex gap-4 items-start">
-              <div className="bg-surfaceHighlight p-3 rounded border border-border">
-                <Cpu className="text-textDim" size={24} />
-              </div>
-              <div>
-                <div className="text-xs font-mono text-textDim mb-1">2018 - 2024</div>
-                <h3 className="text-xl font-bold text-textMain">{t.home.education.degree2}</h3>
-                <p className="text-sm text-textDim mt-1">Vrij Instituut voor Secundair Onderwijs</p>
-                <p className="text-xs text-textDim mt-2">{t.home.education.degree2desc}</p>
-              </div>
+            <div className="flex items-baseline justify-between gap-6 py-5">
+              <dt className="meta">{t.home.status.label}</dt>
+              <dd className="flex items-center gap-2.5 text-sm text-textDim">
+                <span className="dot" aria-hidden="true" />
+                {t.home.status.available}
+              </dd>
             </div>
-          </div>
-        </Tile>
+          </dl>
+        </div>
+      </Section>
 
-      </div>
+      {/* Skills */}
+      <Section index="03" label={t.home.skills.label}>
+        <div className="grid gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
+          {skillGroups.map((group) => (
+            <div key={group.title}>
+              <h3 className="eyebrow">{group.title}</h3>
+              <ul className="mt-5 space-y-3 border-t border-border pt-5 text-sm text-textDim">
+                {group.items.map((skill) => (
+                  <li key={skill}>{skill}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      {/* Other projects */}
+      <Section index="04" label={t.home.projects.label}>
+        <ul className="border-t border-border">
+          {t.home.projects.items.map((project) => (
+            <li key={project.title}>
+              <a
+                href={project.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group/row grid gap-3 border-b border-border py-7 md:grid-cols-12 md:gap-8"
+              >
+                <div className="md:col-span-4">
+                  <h3 className="serif text-2xl leading-snug group-hover/row:text-textDim">{project.title}</h3>
+                  <span className="mt-2 block text-xs uppercase tracking-[0.12em] text-textDim">{project.stack}</span>
+                </div>
+                <p className="text-sm text-textDim md:col-span-7">{project.desc}</p>
+                <span className="text-textDim md:col-span-1 md:flex md:justify-end">
+                  <ArrowUpRight
+                    size={18}
+                    strokeWidth={1.2}
+                    aria-hidden="true"
+                    className="transition-transform duration-500 group-hover/row:-translate-y-1 group-hover/row:translate-x-1"
+                  />
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </Section>
+
+      {/* Education */}
+      <Section index="05" label={t.home.education.label}>
+        <div className="grid gap-12 border-t border-border pt-10 md:grid-cols-2 md:gap-16">
+          <div>
+            <span className="meta">{t.home.education.expected}</span>
+            <h3 className="serif mt-3 text-3xl leading-tight">{t.home.education.degree1}</h3>
+            <p className="mt-3 text-sm text-textDim">HOGENT — Gent</p>
+          </div>
+          <div>
+            <span className="meta">2018 — 2024</span>
+            <h3 className="serif mt-3 text-3xl leading-tight">{t.home.education.degree2}</h3>
+            <p className="mt-3 text-sm text-textDim">Vrij Instituut voor Secundair Onderwijs</p>
+            <p className="mt-2 text-sm text-textDim">{t.home.education.degree2desc}</p>
+          </div>
+        </div>
+      </Section>
+
+      {/* Closing call to action */}
+      <Reveal as="section" className="border-t border-border pt-14">
+        <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
+          <h2 className="display max-w-xl text-4xl md:text-6xl">
+            {language === 'nl' ? 'Iets te bespreken?' : 'Something to discuss?'}
+          </h2>
+          <Link to="/contact" className="button-outline self-start md:self-auto">
+            {t.nav.contact}
+            <ArrowRight size={15} strokeWidth={1.4} aria-hidden="true" />
+          </Link>
+        </div>
+      </Reveal>
+
     </div>
   );
 };

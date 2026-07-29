@@ -1,83 +1,62 @@
 import React from 'react';
-import { useLanguage } from '../contexts/LanguageContext';
-import { Shield, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { ArrowLeft } from 'lucide-react';
+import Reveal from '../components/Reveal';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const Privacy: React.FC = () => {
   const { t } = useLanguage();
   const p = t.privacy;
 
   return (
-    <div className="max-w-4xl mx-auto">
-      {/* Back Button */}
+    <div className="mx-auto max-w-3xl">
+
       <Link
         to="/"
         aria-label={p.backToHome}
-        className="inline-flex items-center gap-2 text-textDim hover:text-textMain transition-colors font-mono text-sm uppercase tracking-wider mb-8 group"
+        className="group mb-14 inline-flex items-center gap-2.5 text-sm text-textDim hover:text-textMain"
       >
-        <ArrowLeft size={14} aria-hidden="true" className="group-hover:-translate-x-1 transition-transform" />
+        <ArrowLeft size={14} strokeWidth={1.4} aria-hidden="true" className="transition-transform duration-500 group-hover:-translate-x-1" />
         {p.backToHome}
       </Link>
 
-      {/* Header */}
-      <header className="detail-hero mb-14">
-        <div className="flex items-start sm:items-center gap-4 mb-4">
-          <div className="bg-accent/10 p-4 rounded-2xl border border-accent/20 shrink-0">
-            <Shield className="text-accent" size={32} aria-hidden="true" />
-          </div>
-          <div className="min-w-0">
-            <h1 className="text-3xl md:text-5xl font-black uppercase tracking-tighter text-textMain break-words">
-              {p.title}
-            </h1>
-            <p className="text-xs font-mono text-textDim mt-1">{p.lastUpdated}</p>
-          </div>
-        </div>
-        <p className="text-textDim text-sm leading-relaxed mt-4">{p.introParagraph}</p>
+      <header className="border-b border-border pb-10">
+        <h1 className="display text-[clamp(2.5rem,7vw,4.5rem)]">{p.title}</h1>
+        <p className="mt-4 text-xs uppercase tracking-[0.14em] text-textDim">{p.lastUpdated}</p>
+        <p className="mt-8 max-w-prose text-textDim">{p.introParagraph}</p>
       </header>
 
-      {/* Sections */}
-      <div className="space-y-10 text-gray-300 text-sm leading-relaxed">
-        {p.sections.map((section, index) => (
-          <section
-            key={section.heading}
-            className="detail-section"
-          >
-            <h2 className="text-xl font-bold text-textMain mb-4 border-b border-border pb-2 break-words">
-              {section.heading}
-            </h2>
-
-            <div className="space-y-3">
+      <div className="mt-16 space-y-14">
+        {p.sections.map((section) => (
+          <Reveal as="section" key={section.heading}>
+            <h2 className="serif text-2xl md:text-3xl">{section.heading}</h2>
+            <div className="mt-5 space-y-4 text-sm text-textDim">
               {section.paragraphs.map((paragraph: string) => (
-                <p key={paragraph} className="text-textDim break-words">
-                  {paragraph}
-                </p>
+                <p key={paragraph} className="break-words">{paragraph}</p>
               ))}
             </div>
 
             {'items' in section && section.items && (
-              <ul className="list-disc pl-5 space-y-2 text-textDim mt-4">
+              <ul className="mt-6 space-y-2.5 border-t border-border pt-6 text-sm text-textDim">
                 {section.items.map((item: string) => (
-                  <li key={item} className="break-words">{item}</li>
+                  <li key={item} className="flex gap-3 break-words">
+                    <span className="text-textDim/60">—</span>
+                    <span>{item}</span>
+                  </li>
                 ))}
               </ul>
             )}
-          </section>
+          </Reveal>
         ))}
 
-        <section className="detail-section">
-          <h2 className="text-xl font-bold text-textMain mb-4 border-b border-border pb-2">{p.contact.heading}</h2>
-          <p className="text-textDim mb-3">{p.contact.text}</p>
-          <a
-            href={p.contact.url}
-            className="text-accent hover:text-textMain transition-colors break-all"
-          >
+        <Reveal as="section">
+          <h2 className="serif text-2xl md:text-3xl">{p.contact.heading}</h2>
+          <p className="mt-5 text-sm text-textDim">{p.contact.text}</p>
+          <a href={p.contact.url} className="link-quiet mt-6 break-all">
             {p.contact.url}
           </a>
-        </section>
+        </Reveal>
       </div>
-
-      {/* Footer spacer */}
-      <div className="h-16" />
     </div>
   );
 };

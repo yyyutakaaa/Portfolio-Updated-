@@ -83,6 +83,7 @@ const ProjectSets: React.FC = () => {
       {/* Under the hood */}
       <Reveal as="section" className="mt-24">
         <h2 className="eyebrow">{s.deepDive.title}</h2>
+        <p className="mt-4 max-w-prose text-sm italic text-textDim">{s.deepDive.intro}</p>
 
         <div className="mt-10">
           <h3 className="serif text-3xl">{s.deepDive.signalPathTitle}</h3>

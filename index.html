@@ -1,73 +1,157 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="nl">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mehdi Oulad Khlie | System & Network Administrator Portfolio</title>
-    <meta name="description" content="Portfolio van Mehdi Oulad Khlie - Aspiring System & Network Administrator gespecialiseerd in Windows Server, Active Directory, Azure en netwerkbeheer. Bekijk mijn projecten en ervaring." />
-    <meta name="keywords" content="Mehdi Oulad Khlie, System Administrator, Network Administrator, Windows Server, Active Directory, Azure, CCNA, IT Portfolio" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#08090B" />
+
+    <title>Mehdi Oulad Khlie — IT-infrastructuur, Microsoft 365 & netwerken</title>
+    <meta
+      name="description"
+      content="Portfolio van Mehdi Oulad Khlie. Windows Server, Entra ID, Intune, Microsoft 365 en netwerksegmentatie — vier cases met architectuurdiagrammen, PowerShell en meetbare resultaten."
+    />
     <meta name="author" content="Mehdi Oulad Khlie" />
-
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://www.mehdioul.dev/" />
-    <meta property="og:title" content="Mehdi Oulad Khlie | System & Network Administrator" />
-    <meta property="og:description" content="Portfolio van Mehdi Oulad Khlie - Aspiring System & Network Administrator. Bekijk mijn projecten, skills en professionele ervaring." />
-    <meta property="og:image" content="https://www.mehdioul.dev/og-image.png" />
-    <meta property="og:image:alt" content="Mehdi Oulad Khlie portfolio preview" />
-
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://www.mehdioul.dev/" />
-    <meta property="twitter:title" content="Mehdi Oulad Khlie | System & Network Administrator" />
-    <meta property="twitter:description" content="Portfolio van Mehdi Oulad Khlie - Aspiring System & Network Administrator. Bekijk mijn projecten, skills en professionele ervaring." />
-    <meta property="twitter:image" content="https://www.mehdioul.dev/og-image.png" />
-    <meta property="twitter:image:alt" content="Mehdi Oulad Khlie portfolio preview" />
-
-    <link rel="icon" type="image/png" sizes="64x64" href="/favicon-64.png" />
     <link rel="canonical" href="https://www.mehdioul.dev/" />
 
-    <script>
-      try {
-        document.documentElement.dataset.theme = localStorage.getItem('mehdi-theme') === 'dark' ? 'dark' : 'light';
-      } catch (_) {
-        document.documentElement.dataset.theme = 'light';
-      }
-    </script>
+    <!-- Lettertypen staan op dezelfde host: geen externe verbinding, geen shift. -->
+    <link
+      rel="preload"
+      href="/fonts/inter-tight-latin-var.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/jetbrains-mono-latin-var.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <link rel="icon" type="image/png" sizes="64x64" href="/favicon-64.png" />
+    <link rel="apple-touch-icon" href="/favicon-64.png" />
+
+    <meta property="og:type" content="profile" />
+    <meta property="og:locale" content="nl_BE" />
+    <meta property="og:site_name" content="Mehdi Oulad Khlie" />
+    <meta property="og:url" content="https://www.mehdioul.dev/" />
+    <meta
+      property="og:title"
+      content="Mehdi Oulad Khlie — IT-infrastructuur, Microsoft 365 & netwerken"
+    />
+    <meta
+      property="og:description"
+      content="Vier cases uit eigen beheer: een hybride homelab, Conditional Access zonder lockouts, vijf VLANs achter één firewall en onboarding in één commando."
+    />
+    <meta property="og:image" content="https://www.mehdioul.dev/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="Donkere portfoliopagina met de regel 'Ik bouw en beveilig infrastructuur' en een netwerktopologie van punten en lijnen."
+    />
+    <meta property="profile:first_name" content="Mehdi" />
+    <meta property="profile:last_name" content="Oulad Khlie" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Mehdi Oulad Khlie — IT-infrastructuur, Microsoft 365 & netwerken"
+    />
+    <meta
+      name="twitter:description"
+      content="Vier cases uit eigen beheer: een hybride homelab, Conditional Access zonder lockouts, vijf VLANs achter één firewall en onboarding in één commando."
+    />
+    <meta name="twitter:image" content="https://www.mehdioul.dev/og-image.png" />
+    <meta
+      name="twitter:image:alt"
+      content="Donkere portfoliopagina met de regel 'Ik bouw en beveilig infrastructuur' en een netwerktopologie van punten en lijnen."
+    />
 
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "Person",
         "name": "Mehdi Oulad Khlie",
+        "givenName": "Mehdi",
+        "familyName": "Oulad Khlie",
         "url": "https://www.mehdioul.dev/",
         "image": "https://www.mehdioul.dev/og-image.png",
-        "jobTitle": "Aspiring System & Network Administrator",
         "email": "mailto:mehdi.ouladkhlie@outlook.be",
-        "telephone": "+32 465 13 66 79",
+        "jobTitle": "IT-infrastructuur in opleiding",
+        "description": "Student Systeem- en Netwerkbeheer met focus op Microsoft 365, Entra ID, Windows Server, endpoint management en netwerksegmentatie.",
+        "nationality": "BE",
         "address": {
           "@type": "PostalAddress",
           "addressLocality": "Evergem",
+          "addressRegion": "Oost-Vlaanderen",
           "addressCountry": "BE"
         },
-        "knowsAbout": [
-          "Windows Server",
-          "Active Directory",
-          "Network Administration",
-          "Microsoft 365",
-          "Azure",
-          "CCNA"
+        "alumniOf": [
+          {
+            "@type": "EducationalOrganization",
+            "name": "HOGENT",
+            "url": "https://www.hogent.be/"
+          },
+          {
+            "@type": "EducationalOrganization",
+            "name": "Vrij Instituut voor Secundair Onderwijs (VISO) Gent"
+          }
         ],
+        "knowsAbout": [
+          "Microsoft Entra ID",
+          "Conditional Access",
+          "Microsoft Intune",
+          "Windows Autopilot",
+          "Microsoft 365",
+          "Exchange Online",
+          "Windows Server",
+          "Hyper-V",
+          "Netwerksegmentatie",
+          "VLAN",
+          "Firewalling",
+          "PowerShell",
+          "Microsoft Graph API"
+        ],
+        "knowsLanguage": [
+          { "@type": "Language", "name": "Nederlands" },
+          { "@type": "Language", "name": "Engels" },
+          { "@type": "Language", "name": "Frans" },
+          { "@type": "Language", "name": "Arabisch" }
+        ],
+        "hasCredential": [
+          {
+            "@type": "EducationalOccupationalCredential",
+            "name": "MS-900 Microsoft 365 Fundamentals",
+            "credentialCategory": "certificate",
+            "recognizedBy": { "@type": "Organization", "name": "Microsoft" }
+          }
+        ],
+        "seeks": {
+          "@type": "Demand",
+          "name": "Stageplaats IT-infrastructuur vanaf februari 2027"
+        },
         "sameAs": [
           "https://github.com/yyyutakaaa",
-          "https://www.linkedin.com/in/mehdi-oulad-khlie-5a43aa30b/",
-          "https://www.instagram.com/y.yutaka.a/"
+          "https://www.linkedin.com/in/mehdi-oulad-khlie-5a43aa30b/"
         ]
       }
     </script>
-</head>
+  </head>
+
   <body>
     <div id="root"></div>
-    <script type="module" src="/index.tsx"></script>
+    <noscript>
+      <p style="padding: 2rem; font-family: system-ui, sans-serif; color: #f2f4f7">
+        Deze portfolio gebruikt JavaScript voor de topologie en de navigatie. Zet JavaScript aan,
+        of mail rechtstreeks naar
+        <a style="color: #38e1d0" href="mailto:mehdi.ouladkhlie@outlook.be"
+          >mehdi.ouladkhlie@outlook.be</a
+        >.
+      </p>
+    </noscript>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

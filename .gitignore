@@ -26,3 +26,6 @@ dist-ssr
 # User requested ignores
 .claude
 package-lock.json
+
+# Prerender-tussenbuild
+dist-ssr

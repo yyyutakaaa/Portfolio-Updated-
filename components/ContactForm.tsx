@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Send, CheckCircle, AlertCircle } from 'lucide-react';
+import MagneticButton from './MagneticButton';
 
 interface FormData {
   name: string;
@@ -238,15 +239,17 @@ const ContactForm: React.FC<ContactFormProps> = ({ language }) => {
       )}
 
       {/* Submit Button */}
-      <button
-        type="submit"
-        disabled={status === 'submitting'}
-        aria-busy={status === 'submitting'}
-        className="button-solid w-full disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
-      >
-        {status === 'submitting' ? t.sending : t.send}
-        <Send size={15} strokeWidth={1.4} aria-hidden="true" />
-      </button>
+      <MagneticButton className="w-full sm:w-auto">
+        <button
+          type="submit"
+          disabled={status === 'submitting'}
+          aria-busy={status === 'submitting'}
+          className="button-solid w-full disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
+        >
+          {status === 'submitting' ? t.sending : t.send}
+          <Send size={15} strokeWidth={1.4} aria-hidden="true" />
+        </button>
+      </MagneticButton>
     </form>
   );
 };

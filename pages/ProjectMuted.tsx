@@ -2,10 +2,33 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Download } from 'lucide-react';
 import Reveal from '../components/Reveal';
+import RevealText from '../components/RevealText';
+import ProjectPlate from '../components/ProjectPlate';
+import AnimatedCounter from '../components/AnimatedCounter';
+import MagneticButton from '../components/MagneticButton';
 import { useLanguage } from '../contexts/LanguageContext';
 
 const GITHUB_URL = 'https://github.com/yyyutakaaa/Muted';
 const DOWNLOAD_URL = 'https://github.com/yyyutakaaa/Muted/releases/download/v0.1.0/Muted-Setup-0.1.0.exe';
+
+interface FrameStat {
+  value: string;
+  label: string;
+}
+
+/** Splits a stat string like "48 kHz" into a numeric part + unit suffix so it
+ * can drive AnimatedCounter. Returns null for non-numeric values (left as
+ * plain static text by the caller). */
+const parseStatValue = (value: string): { num: number; decimals: number; suffix: string } | null => {
+  const match = value.match(/^(\d+(?:\.\d+)?)(.*)$/);
+  if (!match) return null;
+  const [, numStr, rest] = match;
+  return {
+    num: parseFloat(numStr),
+    decimals: numStr.includes('.') ? numStr.split('.')[1].length : 0,
+    suffix: rest,
+  };
+};
 
 const ProjectMuted: React.FC = () => {
   const { t } = useLanguage();
@@ -26,15 +49,17 @@ const ProjectMuted: React.FC = () => {
       {/* Header */}
       <header className="border-b border-border pb-12">
         <span className="eyebrow">{m.badge}</span>
-        <h1 className="display mt-6 text-[clamp(3rem,10vw,7rem)]">{m.title}</h1>
+        <RevealText as="h1" lines={[m.title]} className="display mt-6 text-[clamp(3rem,10vw,7rem)]" />
         <p className="serif mt-4 text-2xl italic text-textDim">{m.tagline}</p>
         <p className="lede mt-10 max-w-prose text-textDim">{m.intro}</p>
 
         <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
-          <a href={DOWNLOAD_URL} className="button-solid">
-            <Download size={15} strokeWidth={1.4} aria-hidden="true" />
-            {m.downloadCta}
-          </a>
+          <MagneticButton>
+            <a href={DOWNLOAD_URL} className="button-solid">
+              <Download size={15} strokeWidth={1.4} aria-hidden="true" />
+              {m.downloadCta}
+            </a>
+          </MagneticButton>
           <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="button-outline">
             {m.githubCta}
           </a>
@@ -43,7 +68,7 @@ const ProjectMuted: React.FC = () => {
       </header>
 
       {/* Screenshot */}
-      <Reveal className="plate mt-16">
+      <ProjectPlate to="/projects/muted" cursorLabel="Muted" className="mt-16">
         <picture>
           <source
             type="image/webp"
@@ -58,7 +83,7 @@ const ProjectMuted: React.FC = () => {
             decoding="async"
           />
         </picture>
-      </Reveal>
+      </ProjectPlate>
 
       {/* How it works */}
       <Reveal as="section" className="mt-24">
@@ -97,12 +122,21 @@ const ProjectMuted: React.FC = () => {
         <div className="mt-16">
           <h3 className="serif text-3xl">{m.deepDive.frameMathTitle}</h3>
           <dl className="mt-8 grid grid-cols-2 border-t border-border sm:grid-cols-4">
-            {m.deepDive.frameMath.map((stat: { value: string; label: string }) => (
-              <div key={stat.label} className="border-b border-border py-6 pr-6">
-                <dt className="display text-4xl">{stat.value}</dt>
-                <dd className="mt-2 text-xs uppercase tracking-[0.14em] text-textDim">{stat.label}</dd>
-              </div>
-            ))}
+            {m.deepDive.frameMath.map((stat: FrameStat) => {
+              const parsed = parseStatValue(stat.value);
+              return (
+                <div key={stat.label} className="border-b border-border py-6 pr-6">
+                  <dt className="display text-4xl">
+                    {parsed ? (
+                      <AnimatedCounter value={parsed.num} decimals={parsed.decimals} suffix={parsed.suffix} />
+                    ) : (
+                      stat.value
+                    )}
+                  </dt>
+                  <dd className="mt-2 text-xs uppercase tracking-[0.14em] text-textDim">{stat.label}</dd>
+                </div>
+              );
+            })}
           </dl>
         </div>
 

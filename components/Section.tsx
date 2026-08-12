@@ -2,6 +2,7 @@ import React from 'react';
 import Reveal from './Reveal';
 
 interface SectionProps {
+  id?: string;
   index?: string;
   label?: string;
   title?: React.ReactNode;
@@ -14,8 +15,8 @@ interface SectionProps {
  * Editorial section: a hairline rule, a numbered eyebrow and an optional
  * serif heading. No cards, no fills — the whitespace does the work.
  */
-const Section: React.FC<SectionProps> = ({ index, label, title, intro, className = '', children }) => (
-  <Reveal as="section" className={className}>
+const Section: React.FC<SectionProps> = ({ id, index, label, title, intro, className = '', children }) => (
+  <Reveal as="section" id={id} className={className}>
     {(index || label) && (
       <div className="flex items-baseline gap-5 border-t border-border pt-5">
         {index && <span className="index-number">{index}</span>}

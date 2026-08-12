@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react';
 import Reveal from '../components/Reveal';
+import RevealText from '../components/RevealText';
+import MagneticButton from '../components/MagneticButton';
 import { useLanguage } from '../contexts/LanguageContext';
 
 const APP_URL = 'https://sets.ink';
@@ -27,15 +29,17 @@ const ProjectSets: React.FC = () => {
       {/* Header */}
       <header className="border-b border-border pb-12">
         <span className="eyebrow">{s.badge}</span>
-        <h1 className="display mt-6 text-[clamp(3rem,10vw,7rem)]">{s.title}</h1>
+        <RevealText as="h1" lines={[s.title]} className="display mt-6 text-[clamp(3rem,10vw,7rem)]" />
         <p className="serif mt-4 text-2xl italic text-textDim">{s.tagline}</p>
         <p className="lede mt-10 max-w-prose text-textDim">{s.intro}</p>
 
         <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
-          <a href={APP_URL} target="_blank" rel="noopener noreferrer" className="button-solid">
-            {s.openCta}
-            <ArrowUpRight size={15} strokeWidth={1.4} aria-hidden="true" />
-          </a>
+          <MagneticButton>
+            <a href={APP_URL} target="_blank" rel="noopener noreferrer" className="button-solid">
+              {s.openCta}
+              <ArrowUpRight size={15} strokeWidth={1.4} aria-hidden="true" />
+            </a>
+          </MagneticButton>
         </div>
         <p className="mt-5 text-xs text-textDim">{s.openNote}</p>
       </header>

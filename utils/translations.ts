@@ -171,7 +171,7 @@ export const translations = {
         "Kies in Discord, Teams of je game de opnamekant van de kabel als microfoon."
       ],
       limitationsTitle: "Belangrijk om te weten",
-      limitations: "RNNoise onderdrukt ruis, maar canceled geen echo. Als je last hebt van galm of echo, gebruik dan een headset of een aparte AEC-oplossing.",
+      limitations: "RNNoise onderdrukt ruis, maar filtert geen echo weg. Als je last hebt van galm of echo, gebruik dan een headset of een aparte AEC-oplossing.",
       downloadCta: "Download de pre-release (.exe)",
       downloadNote: "v0.1.0 — alleen Windows, nog in ontwikkeling",
       githubCta: "Bekijk de broncode op GitHub"

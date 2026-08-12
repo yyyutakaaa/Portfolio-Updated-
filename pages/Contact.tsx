@@ -1,6 +1,7 @@
 import React from 'react';
 import ContactForm from '../components/ContactForm';
 import Reveal from '../components/Reveal';
+import RevealText from '../components/RevealText';
 import { useLanguage } from '../contexts/LanguageContext';
 
 const Contact: React.FC = () => {
@@ -50,7 +51,11 @@ const Contact: React.FC = () => {
 
       <header>
         <span className="eyebrow">{content.subtitle}</span>
-        <h1 className="display mt-7 text-[clamp(3.25rem,11vw,8rem)]">{content.title}</h1>
+        <RevealText
+          as="h1"
+          lines={[content.title]}
+          className="display mt-7 text-[clamp(3.25rem,11vw,8rem)]"
+        />
         <p className="lede mt-12 max-w-prose border-t border-border pt-8 text-textDim">
           {content.description}
         </p>
@@ -70,22 +75,22 @@ const Contact: React.FC = () => {
             <h2 className="eyebrow">{content.infoTitle}</h2>
             <dl className="mt-8 divide-y divide-border border-t border-border">
               <div className="py-4">
-                <dt className="text-xs uppercase tracking-[0.14em] text-textDim">Email</dt>
-                <dd className="mt-1">
+                <dt className="meta">Email</dt>
+                <dd className="mt-1.5">
                   <a href={`mailto:${content.email}`} className="hover:text-textDim">
                     {content.email}
                   </a>
                 </dd>
               </div>
               <div className="py-4">
-                <dt className="text-xs uppercase tracking-[0.14em] text-textDim">{language === 'nl' ? 'Telefoon' : 'Phone'}</dt>
-                <dd className="mt-1">
+                <dt className="meta">{language === 'nl' ? 'Telefoon' : 'Phone'}</dt>
+                <dd className="mt-1.5">
                   <a href="tel:+32465136679" className="hover:text-textDim">{content.phone}</a>
                 </dd>
               </div>
               <div className="py-4">
-                <dt className="text-xs uppercase tracking-[0.14em] text-textDim">{language === 'nl' ? 'Locatie' : 'Location'}</dt>
-                <dd className="mt-1">{content.location}</dd>
+                <dt className="meta">{language === 'nl' ? 'Locatie' : 'Location'}</dt>
+                <dd className="mt-1.5">{content.location}</dd>
               </div>
             </dl>
           </div>
@@ -99,6 +104,8 @@ const Contact: React.FC = () => {
                     href={social.url}
                     target="_blank"
                     rel="noopener noreferrer"
+                    data-cursor="label"
+                    data-cursor-label={social.label}
                     className="flex items-center justify-between py-4 hover:text-textDim"
                   >
                     {social.label}
@@ -112,7 +119,7 @@ const Contact: React.FC = () => {
           <div className="border-t border-border pt-8">
             <h2 className="eyebrow">{content.availability}</h2>
             <p className="mt-5 flex items-center gap-2.5 text-sm">
-              <span className="dot" aria-hidden="true" />
+              <span className="status-dot" aria-hidden="true" />
               {content.availableText}
             </p>
             <p className="mt-3 text-sm text-textDim">{content.responseTime}</p>

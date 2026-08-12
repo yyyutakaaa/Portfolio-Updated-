@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { Download } from 'lucide-react';
 import Panel from '../components/Panel';
 import Reveal from '../components/Reveal';
+import MagneticButton from '../components/MagneticButton';
 import { useLanguage } from '../contexts/LanguageContext';
 
 const Resume: React.FC = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
 
   const handleDownload = async () => {
@@ -33,7 +34,9 @@ const Resume: React.FC = () => {
       window.setTimeout(() => URL.revokeObjectURL(url), 1_000);
     } catch (error) {
       console.error('Unable to generate the CV PDF.', error);
-      window.alert('De PDF kon niet worden aangemaakt. Probeer het opnieuw.');
+      window.alert(language === 'nl'
+        ? 'De PDF kon niet worden aangemaakt. Probeer het opnieuw.'
+        : 'The PDF could not be generated. Please try again.');
     } finally {
       setIsGeneratingPdf(false);
     }
@@ -45,20 +48,22 @@ const Resume: React.FC = () => {
       {/* Header */}
       <header className="resume-header mb-20 flex flex-col gap-8 border-b border-border pb-10 md:flex-row md:items-end md:justify-between">
         <div>
-          <h1 className="display text-[clamp(2.75rem,8vw,5.5rem)]">{t.resume.title}</h1>
-          <p className="mt-4 text-textDim">{t.resume.subtitle}</p>
+          <span className="eyebrow">{t.resume.subtitle}</span>
+          <h1 className="display mt-6 text-[clamp(2.75rem,8vw,5.5rem)]">{t.resume.title}</h1>
         </div>
-        <button
-          type="button"
-          className="button-outline print-hidden shrink-0 self-start md:self-auto"
-          onClick={handleDownload}
-          disabled={isGeneratingPdf}
-          aria-label="Generate CV PDF"
-          aria-busy={isGeneratingPdf}
-        >
-          <Download size={15} strokeWidth={1.4} aria-hidden="true" />
-          {isGeneratingPdf ? 'PDF…' : t.resume.download}
-        </button>
+        <MagneticButton className="print-hidden shrink-0 self-start md:self-auto">
+          <button
+            type="button"
+            className="button-outline"
+            onClick={handleDownload}
+            disabled={isGeneratingPdf}
+            aria-label={language === 'nl' ? 'CV als PDF genereren' : 'Generate CV PDF'}
+            aria-busy={isGeneratingPdf}
+          >
+            <Download size={15} strokeWidth={1.4} aria-hidden="true" />
+            {isGeneratingPdf ? 'PDF…' : t.resume.download}
+          </button>
+        </MagneticButton>
       </header>
 
       <div className="resume-grid grid grid-cols-1 gap-14 md:grid-cols-3 md:gap-16">
@@ -136,9 +141,13 @@ const Resume: React.FC = () => {
 
           <Panel label={t.resume.contact.title} delay={80}>
             <div className="space-y-3 text-sm text-textDim">
-              <p>Evergem, België</p>
+              <p>{language === 'nl' ? 'Evergem, België' : 'Evergem, Belgium'}</p>
               <p>
-                <a href="mailto:mehdi.ouladkhlie@outlook.be" aria-label="Send email to Mehdi" className="hover:text-textMain">
+                <a
+                  href="mailto:mehdi.ouladkhlie@outlook.be"
+                  aria-label={language === 'nl' ? 'Stuur e-mail naar Mehdi' : 'Send email to Mehdi'}
+                  className="hover:text-textMain"
+                >
                   mehdi.ouladkhlie@<wbr />outlook.be
                 </a>
               </p>

@@ -24,6 +24,7 @@ export default {
       fontFamily: {
         sans: ['Manrope Variable', 'Manrope', 'Helvetica Neue', 'Arial', 'sans-serif'],
         serif: ['Cormorant Garamond Variable', 'Cormorant Garamond', 'Georgia', 'serif'],
+        mono: ['JetBrains Mono Variable', 'JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'monospace'],
       },
       maxWidth: {
         prose: '68ch',

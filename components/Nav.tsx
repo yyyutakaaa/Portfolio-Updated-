@@ -1,12 +1,13 @@
 import React from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { Moon, Sun, Menu, X } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useSmoothScroll } from '../contexts/SmoothScrollContext';
 import { useActiveSection } from '../hooks/useActiveSection';
 
 const SECTION_IDS = ['work', 'about', 'log'];
+const EMPTY_IDS: string[] = [];
 
 interface NavProps {
   theme: 'light' | 'dark';
@@ -18,12 +19,14 @@ const Nav: React.FC<NavProps> = ({ theme, toggleTheme }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { scrollTo } = useSmoothScroll();
+  const prefersReducedMotion = useReducedMotion();
   const isHome = location.pathname === '/';
-  const activeSection = useActiveSection(isHome ? SECTION_IDS : []);
+  const activeSection = useActiveSection(isHome ? SECTION_IDS : EMPTY_IDS);
 
   const [scrolled, setScrolled] = React.useState(false);
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const menuRef = React.useRef<HTMLDivElement>(null);
+  const menuLinksRef = React.useRef<HTMLElement>(null);
   const toggleRef = React.useRef<HTMLButtonElement>(null);
 
   React.useEffect(() => {
@@ -46,7 +49,7 @@ const Nav: React.FC<NavProps> = ({ theme, toggleTheme }) => {
 
   React.useEffect(() => {
     if (mobileOpen) {
-      const firstLink = menuRef.current?.querySelector<HTMLElement>('a, button');
+      const firstLink = menuLinksRef.current?.querySelector<HTMLElement>('a, button');
       firstLink?.focus();
     } else {
       toggleRef.current?.focus({ preventScroll: true });
@@ -101,10 +104,17 @@ const Nav: React.FC<NavProps> = ({ theme, toggleTheme }) => {
 
   return (
     <>
-      <div className={`nav-shell ${scrolled ? 'is-scrolled' : ''}`} aria-label="Primary navigation">
+      <div
+        className={`nav-shell ${scrolled ? 'is-scrolled' : ''}`}
+        aria-label={language === 'nl' ? 'Hoofdnavigatie' : 'Primary navigation'}
+      >
         <div className="nav-bar">
           <div className="nav-bar-inner">
-            <Link to="/" className="brand-chip-link" aria-label="Mehdi Oulad Khlie — home">
+            <Link
+              to="/"
+              className="brand-chip-link"
+              aria-label={language === 'nl' ? 'Mehdi Oulad Khlie — naar home' : 'Mehdi Oulad Khlie — home'}
+            >
               <span className="brand-chip">
                 <img src="/inverted-image-96.webp" alt="" width={96} height={96} className="brand-chip-mark" />
               </span>
@@ -170,7 +180,7 @@ const Nav: React.FC<NavProps> = ({ theme, toggleTheme }) => {
                 aria-label={language === 'nl' ? 'Open navigatiemenu' : 'Open navigation menu'}
                 className="icon-button lg:hidden"
               >
-                <Menu size={17} strokeWidth={1.4} aria-hidden="true" />
+                <Menu size={18} strokeWidth={1.4} aria-hidden="true" />
               </button>
             </div>
           </div>
@@ -189,7 +199,7 @@ const Nav: React.FC<NavProps> = ({ theme, toggleTheme }) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: prefersReducedMotion ? 0 : 0.28, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className="mobile-menu-top">
               <span className="eyebrow eyebrow--plain">{language === 'nl' ? 'Menu' : 'Menu'}</span>
@@ -203,7 +213,7 @@ const Nav: React.FC<NavProps> = ({ theme, toggleTheme }) => {
               </button>
             </div>
 
-            <nav className="mobile-menu-links">
+            <nav ref={menuLinksRef} className="mobile-menu-links">
               {sectionLinks.map((link, i) => (
                 <motion.button
                   key={link.id}
@@ -212,7 +222,11 @@ const Nav: React.FC<NavProps> = ({ theme, toggleTheme }) => {
                   className="mobile-menu-link"
                   initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1], delay: 0.05 + i * 0.05 }}
+                  transition={{
+                    duration: prefersReducedMotion ? 0 : 0.4,
+                    ease: [0.22, 1, 0.36, 1],
+                    delay: prefersReducedMotion ? 0 : 0.05 + i * 0.05,
+                  }}
                 >
                   {link.label}
                 </motion.button>
@@ -222,7 +236,11 @@ const Nav: React.FC<NavProps> = ({ theme, toggleTheme }) => {
                   key={link.to}
                   initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1], delay: 0.05 + (sectionLinks.length + i) * 0.05 }}
+                  transition={{
+                    duration: prefersReducedMotion ? 0 : 0.4,
+                    ease: [0.22, 1, 0.36, 1],
+                    delay: prefersReducedMotion ? 0 : 0.05 + (sectionLinks.length + i) * 0.05,
+                  }}
                 >
                   <NavLink to={link.to} className="mobile-menu-link">
                     {link.label}

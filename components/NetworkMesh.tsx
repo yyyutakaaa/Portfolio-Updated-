@@ -44,6 +44,17 @@ const NetworkMesh: React.FC<{ className?: string }> = ({ className = '' }) => {
       return val || fallback;
     };
 
+    // Theme colors only change when the theme toggles, not every frame —
+    // read them once and refresh on theme change instead of inside draw().
+    let inkColor = readVar('--cursor-ink', '28 26 23');
+    let accentColor = readVar('--color-accent-rgb', '191 76 27');
+    const refreshColors = () => {
+      inkColor = readVar('--cursor-ink', '28 26 23');
+      accentColor = readVar('--color-accent-rgb', '191 76 27');
+    };
+    const themeObserver = new MutationObserver(refreshColors);
+    themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
     const buildNodes = () => {
       const area = width * height;
       const count = Math.max(20, Math.min(60, Math.round(area / 17000)));
@@ -82,6 +93,8 @@ const NetworkMesh: React.FC<{ className?: string }> = ({ className = '' }) => {
 
     const resize = () => {
       const rect = container.getBoundingClientRect();
+      const prevWidth = width;
+      const prevHeight = height;
       width = rect.width;
       height = rect.height;
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -90,10 +103,28 @@ const NetworkMesh: React.FC<{ className?: string }> = ({ className = '' }) => {
       canvas.style.width = `${width}px`;
       canvas.style.height = `${height}px`;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      buildNodes();
+
+      if (nodes.length === 0) {
+        buildNodes();
+        return;
+      }
+
+      // Rescale the existing layout instead of re-randomizing on every
+      // resize — mobile browsers fire resize repeatedly as the address bar
+      // shows/hides on scroll, and a full rebuild made nodes visibly jump.
+      const scaleX = prevWidth > 0 ? width / prevWidth : 1;
+      const scaleY = prevHeight > 0 ? height / prevHeight : 1;
+      if (scaleX !== 1 || scaleY !== 1) {
+        nodes.forEach((node) => {
+          node.baseX *= scaleX;
+          node.baseY *= scaleY;
+        });
+      }
     };
 
     const handlePointerMove = (event: PointerEvent) => {
+      // Re-measured here (not cached) because the container's viewport
+      // position changes on scroll, not just on resize.
       const rect = container.getBoundingClientRect();
       pointerPos = { x: event.clientX - rect.left, y: event.clientY - rect.top };
     };
@@ -105,8 +136,8 @@ const NetworkMesh: React.FC<{ className?: string }> = ({ className = '' }) => {
       time += 1;
       ctx.clearRect(0, 0, width, height);
 
-      const ink = readVar('--cursor-ink', '28 26 23');
-      const accent = readVar('--color-accent-rgb', '191 76 27');
+      const ink = inkColor;
+      const accent = accentColor;
 
       nodes.forEach((node) => {
         node.x = node.baseX + Math.sin(time * 0.008 * node.speed + node.phase) * node.amp;
@@ -183,6 +214,7 @@ const NetworkMesh: React.FC<{ className?: string }> = ({ className = '' }) => {
       cancelAnimationFrame(rafId);
       intersectionObserver.disconnect();
       resizeObserver.disconnect();
+      themeObserver.disconnect();
       window.removeEventListener('pointermove', handlePointerMove);
       window.removeEventListener('pointerleave', handlePointerLeave);
     };

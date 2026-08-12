@@ -1,6 +1,5 @@
 import React from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
-import Reveal from './Reveal';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 
 interface SkillCategory {
   key: string;
@@ -12,13 +11,18 @@ interface SkillsConsoleProps {
   categories: SkillCategory[];
 }
 
+const PANEL_ID = 'skills-panel';
+
 /**
  * Accordion-style skill browser: one category expanded at a time, keyboard
  * operable via plain buttons (no custom tablist semantics to get wrong).
- * The signal bar under each item is decorative — a "line acquired" flourish,
- * not a fabricated proficiency percentage.
+ * The panel keeps one stable DOM id across category switches so every tab
+ * button's aria-controls resolves to a real element, not just the active
+ * one's. The signal bar under each item is decorative — a "line acquired"
+ * flourish, not a fabricated proficiency percentage.
  */
 const SkillsConsole: React.FC<SkillsConsoleProps> = ({ categories }) => {
+  const prefersReducedMotion = useReducedMotion();
   const [openKey, setOpenKey] = React.useState(categories[0]?.key ?? '');
   const active = categories.find((cat) => cat.key === openKey);
 
@@ -33,7 +37,7 @@ const SkillsConsole: React.FC<SkillsConsoleProps> = ({ categories }) => {
               type="button"
               className="console-tab"
               aria-expanded={isOpen}
-              aria-controls={`skills-panel-${cat.key}`}
+              aria-controls={PANEL_ID}
               onClick={() => setOpenKey(cat.key)}
             >
               <span className="flex items-baseline gap-4">
@@ -47,33 +51,41 @@ const SkillsConsole: React.FC<SkillsConsoleProps> = ({ categories }) => {
       </div>
 
       <div className="md:col-span-8">
-        <AnimatePresence mode="wait">
-          {active && (
-            <motion.ul
-              key={active.key}
-              id={`skills-panel-${active.key}`}
-              role="region"
-              aria-label={active.title}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
-              className="space-y-5"
-            >
-              {active.items.map((item, i) => (
-                <Reveal as="li" key={item} delay={i * 60}>
-                  <div className="flex items-baseline justify-between gap-4 border-b border-border pb-4">
-                    <span className="text-sm sm:text-base">{item}</span>
-                    <span className="font-mono text-[10px] text-textDim/70">{String(i + 1).padStart(2, '0')}</span>
-                  </div>
-                  <div className="signal-bar-track mt-3" style={{ '--fill': '100%' } as React.CSSProperties}>
-                    <span className="signal-bar-fill" />
-                  </div>
-                </Reveal>
-              ))}
-            </motion.ul>
-          )}
-        </AnimatePresence>
+        <div id={PANEL_ID} role="region" aria-label={active?.title}>
+          <AnimatePresence mode="wait">
+            {active && (
+              <motion.ul
+                key={active.key}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: prefersReducedMotion ? 0 : 0.32, ease: [0.22, 1, 0.36, 1] }}
+                className="space-y-5"
+              >
+                {active.items.map((item, i) => (
+                  <motion.li
+                    key={item}
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                      duration: prefersReducedMotion ? 0 : 0.48,
+                      ease: [0.22, 1, 0.36, 1],
+                      delay: prefersReducedMotion ? 0 : i * 0.035,
+                    }}
+                  >
+                    <div className="flex items-baseline justify-between gap-4 border-b border-border pb-4">
+                      <span className="text-sm sm:text-base">{item}</span>
+                      <span className="font-mono text-[10px] text-textDim">{String(i + 1).padStart(2, '0')}</span>
+                    </div>
+                    <div className="signal-bar-track mt-3">
+                      <span className="signal-bar-fill" />
+                    </div>
+                  </motion.li>
+                ))}
+              </motion.ul>
+            )}
+          </AnimatePresence>
+        </div>
       </div>
     </div>
   );

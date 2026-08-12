@@ -7,15 +7,26 @@ interface ProjectPlateProps {
   cursorLabel: string;
   className?: string;
   children: React.ReactNode;
+  /**
+   * Set to false when the plate is the page's own primary image (e.g. a
+   * project's own detail page showing its own screenshot) rather than a
+   * decorative preview sitting next to a separate visible text link. In
+   * that case there is no other accessible copy of the image's content, so
+   * it must not be linked/aria-hidden away. Defaults to true, matching the
+   * decorative-preview-next-to-a-link usage on the home page.
+   */
+  decorative?: boolean;
 }
 
 /**
  * The interactive image plate used for flagship project previews: a clip
  * reveal the first time it scrolls into view, then a subtle pointer-tracked
- * tilt on hover. Wrapped in a Link but marked aria-hidden — the accessible
- * link lives alongside it as visible text.
+ * tilt on hover. When `decorative` (the default), it's wrapped in a Link
+ * marked aria-hidden — the accessible link lives alongside it as visible
+ * text. When not decorative, it renders as a plain, fully accessible div so
+ * the image's own alt text stays reachable.
  */
-const ProjectPlate: React.FC<ProjectPlateProps> = ({ to, cursorLabel, className = '', children }) => {
+const ProjectPlate: React.FC<ProjectPlateProps> = ({ to, cursorLabel, className = '', children, decorative = true }) => {
   const prefersReducedMotion = useReducedMotion();
   const revealRef = React.useRef<HTMLDivElement>(null);
   const inView = useInView(revealRef, { once: true, amount: 0.2 });
@@ -38,6 +49,28 @@ const ProjectPlate: React.FC<ProjectPlateProps> = ({ to, cursorLabel, className 
     rotateY.set(0);
   };
 
+  const content = (
+    <div ref={revealRef}>
+      <motion.div
+        initial={prefersReducedMotion ? undefined : { clipPath: 'inset(0% 0 100% 0)' }}
+        animate={prefersReducedMotion ? undefined : (inView ? { clipPath: 'inset(0% 0 0% 0)' } : undefined)}
+        transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
+      >
+        <motion.div
+          onPointerMove={handlePointerMove}
+          onPointerLeave={handlePointerLeave}
+          style={{ rotateX: springRotateX, rotateY: springRotateY, transformPerspective: 1000 }}
+        >
+          {children}
+        </motion.div>
+      </motion.div>
+    </div>
+  );
+
+  if (!decorative) {
+    return <div className={`plate plate--interactive block ${className}`}>{content}</div>;
+  }
+
   return (
     <Link
       to={to}
@@ -47,21 +80,7 @@ const ProjectPlate: React.FC<ProjectPlateProps> = ({ to, cursorLabel, className 
       data-cursor-label={cursorLabel}
       className={`plate plate--interactive block ${className}`}
     >
-      <div ref={revealRef}>
-        <motion.div
-          initial={prefersReducedMotion ? undefined : { clipPath: 'inset(0% 0 100% 0)' }}
-          animate={prefersReducedMotion ? undefined : (inView ? { clipPath: 'inset(0% 0 0% 0)' } : undefined)}
-          transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <motion.div
-            onPointerMove={handlePointerMove}
-            onPointerLeave={handlePointerLeave}
-            style={{ rotateX: springRotateX, rotateY: springRotateY, transformPerspective: 1000 }}
-          >
-            {children}
-          </motion.div>
-        </motion.div>
-      </div>
+      {content}
     </Link>
   );
 };

@@ -53,7 +53,6 @@
   --accent-soft: rgb(var(--color-accent-soft-rgb) / 0.12);
   --rule: var(--color-border);
   --rule-strong: var(--color-border-active);
-  --trace: rgb(28 26 23 / 0.07);
   --nav-bg: rgb(247 245 241 / 0.82);
   --panel-bg: rgb(252 251 248 / 0.7);
   --panel-bg-solid: rgb(252 251 248);
@@ -88,7 +87,6 @@
   --color-border: rgb(240 236 229 / 0.12);
   --color-border-active: rgb(240 236 229 / 0.28);
 
-  --trace: rgb(240 236 229 / 0.09);
   --nav-bg: rgb(15 15 13 / 0.78);
   --panel-bg: rgb(22 21 19 / 0.6);
   --panel-bg-solid: rgb(22 21 19);
@@ -460,11 +458,6 @@ p {
   background: rgb(var(--color-surface-highlight-rgb) / 0.5);
 }
 
-a.panel:hover,
-.panel--interactive:hover {
-  border-color: var(--rule-strong);
-}
-
 .plate {
   display: block;
   overflow: hidden;
@@ -599,33 +592,6 @@ a.panel:hover,
   mask-image: radial-gradient(85% 70% at 60% 25%, black, transparent 78%);
 }
 
-/* -------------------------------------------------------------- traces ---- */
-
-.trace-line {
-  display: block;
-  width: 100%;
-  color: var(--trace);
-  overflow: visible;
-}
-
-.trace-divider {
-  position: relative;
-  display: flex;
-  align-items: center;
-  height: 1px;
-  background: var(--rule);
-}
-
-.trace-node {
-  position: absolute;
-  width: 5px;
-  height: 5px;
-  border: 1px solid var(--rule-strong);
-  background: var(--page);
-  border-radius: 1px;
-  transform: translate(-50%, -50%) rotate(45deg);
-}
-
 /* ------------------------------------------------------------- console ---- */
 
 .console-tab {
@@ -677,14 +643,9 @@ a.panel:hover,
 .signal-bar-fill {
   position: absolute;
   inset: 0 auto 0 0;
-  width: 0%;
+  width: 100%;
   background: var(--ink);
   border-radius: 999px;
-  transition: width 900ms var(--ease-signal);
-}
-
-[data-revealed="true"] .signal-bar-fill {
-  width: var(--fill, 0%);
 }
 
 /* ------------------------------------------------------------ log-list ---- */
@@ -874,20 +835,6 @@ a.panel:hover,
   opacity: 0.55;
 }
 
-.button-muted {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.625rem;
-  padding: 0.875rem 1.75rem;
-  border: 1px dashed var(--rule-strong);
-  border-radius: 999px;
-  color: var(--muted);
-  font-size: 0.8125rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
 /* ---------------------------------------------------------------- meta ---- */
 
 .meta {
@@ -911,15 +858,6 @@ a.panel:hover,
   letter-spacing: 0.06em;
   text-transform: uppercase;
   transition: border-color var(--motion-fast) var(--ease-out-soft), color var(--motion-fast) var(--ease-out-soft);
-}
-
-.dot {
-  display: inline-block;
-  width: 5px;
-  height: 5px;
-  flex: 0 0 auto;
-  border-radius: 999px;
-  background: var(--accent);
 }
 
 .status-dot {
@@ -1123,10 +1061,6 @@ a.panel:hover,
 
   .custom-cursor {
     display: none !important;
-  }
-
-  .signal-bar-fill {
-    width: var(--fill, 0%) !important;
   }
 
   .status-dot::after {

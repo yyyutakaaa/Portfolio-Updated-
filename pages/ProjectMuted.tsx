@@ -68,7 +68,7 @@ const ProjectMuted: React.FC = () => {
       </header>
 
       {/* Screenshot */}
-      <ProjectPlate to="/projects/muted" cursorLabel="Muted" className="mt-16">
+      <ProjectPlate to="/projects/muted" cursorLabel="Muted" decorative={false} className="mt-16">
         <picture>
           <source
             type="image/webp"

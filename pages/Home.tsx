@@ -277,7 +277,7 @@ const Home: React.FC = () => {
                   >
                     {t.home.certified.title}
                   </a>
-                  <span className="mt-1 block text-xs uppercase tracking-[0.12em] text-textDim">
+                  <span className="mt-1 block text-xs uppercase tracking-[0.14em] text-textDim">
                     {t.home.certified.subtitle}
                   </span>
                 </dd>

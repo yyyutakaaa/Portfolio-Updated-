@@ -59,7 +59,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <div className="site-shell min-h-screen bg-bg text-textMain font-sans">
       <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:bg-textMain focus:px-4 focus:py-2 focus:text-sm focus:text-bg">
-        Skip to content
+        {language === 'nl' ? 'Ga naar inhoud' : 'Skip to content'}
       </a>
 
       <Nav theme={theme} toggleTheme={toggleTheme} />

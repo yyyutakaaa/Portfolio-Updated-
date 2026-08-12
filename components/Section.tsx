@@ -20,7 +20,9 @@ const Section: React.FC<SectionProps> = ({ id, index, label, title, intro, class
     {(index || label) && (
       <div className="flex items-baseline gap-5 border-t border-border pt-5">
         {index && <span className="index-number">{index}</span>}
-        {label && <span className="eyebrow">{label}</span>}
+        {label && (
+          title ? <span className="eyebrow">{label}</span> : <h2 className="eyebrow">{label}</h2>
+        )}
       </div>
     )}
 

@@ -6,7 +6,7 @@ import MagneticButton from '../components/MagneticButton';
 import { useLanguage } from '../contexts/LanguageContext';
 
 const Resume: React.FC = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
 
   const handleDownload = async () => {
@@ -34,7 +34,9 @@ const Resume: React.FC = () => {
       window.setTimeout(() => URL.revokeObjectURL(url), 1_000);
     } catch (error) {
       console.error('Unable to generate the CV PDF.', error);
-      window.alert('De PDF kon niet worden aangemaakt. Probeer het opnieuw.');
+      window.alert(language === 'nl'
+        ? 'De PDF kon niet worden aangemaakt. Probeer het opnieuw.'
+        : 'The PDF could not be generated. Please try again.');
     } finally {
       setIsGeneratingPdf(false);
     }
@@ -55,7 +57,7 @@ const Resume: React.FC = () => {
             className="button-outline"
             onClick={handleDownload}
             disabled={isGeneratingPdf}
-            aria-label="Generate CV PDF"
+            aria-label={language === 'nl' ? 'CV als PDF genereren' : 'Generate CV PDF'}
             aria-busy={isGeneratingPdf}
           >
             <Download size={15} strokeWidth={1.4} aria-hidden="true" />
@@ -139,9 +141,13 @@ const Resume: React.FC = () => {
 
           <Panel label={t.resume.contact.title} delay={80}>
             <div className="space-y-3 text-sm text-textDim">
-              <p>Evergem, België</p>
+              <p>{language === 'nl' ? 'Evergem, België' : 'Evergem, Belgium'}</p>
               <p>
-                <a href="mailto:mehdi.ouladkhlie@outlook.be" aria-label="Send email to Mehdi" className="hover:text-textMain">
+                <a
+                  href="mailto:mehdi.ouladkhlie@outlook.be"
+                  aria-label={language === 'nl' ? 'Stuur e-mail naar Mehdi' : 'Send email to Mehdi'}
+                  className="hover:text-textMain"
+                >
                   mehdi.ouladkhlie@<wbr />outlook.be
                 </a>
               </p>

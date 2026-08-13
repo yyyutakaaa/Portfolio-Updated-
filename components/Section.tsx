@@ -1,7 +1,8 @@
 import React from 'react';
-import Reveal from './Reveal';
+import KineticHeading from './motion/KineticHeading';
 
 interface SectionProps {
+  id?: string;
   index?: string;
   label?: string;
   title?: React.ReactNode;
@@ -11,34 +12,34 @@ interface SectionProps {
 }
 
 /**
- * Editorial section: a hairline rule, a numbered eyebrow and an optional
- * serif heading. No cards, no fills — the whitespace does the work.
+ * A numbered rule, a monospace label, and air. Section titles arrive with the
+ * kinetic treatment; everything below them is left to the page.
  */
-const Section: React.FC<SectionProps> = ({ index, label, title, intro, className = '', children }) => (
-  <Reveal as="section" className={className}>
+const Section: React.FC<SectionProps> = ({ id, index, label, title, intro, className = '', children }) => (
+  <section id={id} className={className}>
     {(index || label) && (
       <div className="flex items-baseline gap-5 border-t border-border pt-5">
-        {index && <span className="index-number">{index}</span>}
-        {label && <span className="eyebrow">{label}</span>}
+        {index && (
+          <span className="index-num" aria-hidden="true">
+            {index}
+          </span>
+        )}
+        {/* The label is the section's real heading, so it is marked up as one
+            even though it is styled as a small monospace rule. */}
+        {label && (title ? <span className="label">{label}</span> : <h2 className="label">{label}</h2>)}
       </div>
     )}
 
     {title && (
-      <h2 className="display mt-8 text-4xl md:text-5xl lg:text-6xl">
+      <KineticHeading className="display mt-10 text-[clamp(2.25rem,5.5vw,4.5rem)]">
         {title}
-      </h2>
+      </KineticHeading>
     )}
 
-    {intro && (
-      <p className="mt-6 max-w-prose text-textDim">
-        {intro}
-      </p>
-    )}
+    {intro && <p className="lede prose-dim mt-7">{intro}</p>}
 
-    <div className={title || intro ? 'mt-12 md:mt-16' : 'mt-10 md:mt-14'}>
-      {children}
-    </div>
-  </Reveal>
+    <div className={title || intro ? 'mt-14 md:mt-20' : 'mt-10 md:mt-14'}>{children}</div>
+  </section>
 );
 
 export default Section;

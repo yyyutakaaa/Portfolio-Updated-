@@ -1,276 +1,364 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, ArrowUpRight } from 'lucide-react';
+import { ArrowDown, ArrowRight, ArrowUpRight } from 'lucide-react';
 import Section from '../components/Section';
-import Reveal from '../components/Reveal';
+import ProjectScene from '../components/ProjectScene';
+import LocalClock from '../components/LocalClock';
+import KineticHeading from '../components/motion/KineticHeading';
+import Reveal from '../components/motion/Reveal';
+import { scrollToId } from '../components/motion/SmoothScroll';
 import { useLanguage } from '../contexts/LanguageContext';
+
+const NetworkField = React.lazy(() => import('../components/NetworkField'));
 
 const CREDLY_URL = 'https://www.credly.com/badges/39769716-9d80-4a83-a62f-f642da9e7b40/public_url';
 
 const Home: React.FC = () => {
   const { t, language } = useLanguage();
 
-  const skillGroups = [
-    { title: t.home.skills.sysAdmin, items: t.home.skills.items.sysAdmin },
-    { title: t.home.skills.networking, items: t.home.skills.items.networking },
-    { title: t.home.skills.cloudOps, items: t.home.skills.items.cloudOps },
-    { title: t.home.skills.softSkills, items: t.home.skills.items.softSkills },
-  ];
+  /**
+   * Bento cells are auto-placed in DOM order, so this order *is* the layout:
+   * 5+4+3 fills the first row, the two tall tiles carry into the second, and
+   * 5+7 closes it off. Reading order and visual order stay the same thing.
+   */
+  const skillTile = (title: string, items: string[], span: string, delay: number) => (
+    <Reveal key={title} className={`tile ${span}`} delay={delay}>
+      <h3 className="label label-ink">{title}</h3>
+      <ul className="mt-6 space-y-2.5">
+        {items.map((skill) => (
+          <li key={skill} className="flex items-baseline gap-3 text-sm text-textDim">
+            <span aria-hidden="true" className="index-num">
+              ·
+            </span>
+            {skill}
+          </li>
+        ))}
+      </ul>
+    </Reveal>
+  );
 
   return (
-    <div className="space-y-28 md:space-y-40">
+    <>
+      {/* ------------------------------------------------------------ hero -- */}
+      <header className="relative">
+        {/* Topology sits behind the type, lazily and only once it can pay for itself. */}
+        <div className="pointer-events-none absolute inset-x-0 -top-32 bottom-0 -z-10 overflow-hidden">
+          <Suspense fallback={null}>
+            <NetworkField className="absolute inset-0 h-full w-full" />
+          </Suspense>
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-bg"
+          />
+        </div>
 
-      {/* Opening */}
-      <header>
-        <span className="eyebrow">{t.home.role}</span>
+        <div className="container relative">
+          <div className="grid-guides" aria-hidden="true">
+            {Array.from({ length: 12 }, (_, i) => (
+              <span key={i} />
+            ))}
+          </div>
 
-        <h1 className="display mt-7 text-[clamp(3.25rem,11.5vw,9rem)]">
-          Mehdi
-          <br />
-          <span className="display-italic">Oulad Khlie</span>
-        </h1>
+          <div className="relative">
+            <Reveal delay={0.1}>
+              <span className="label label-ink">{t.home.role}</span>
+            </Reveal>
 
-        <div className="mt-14 grid gap-8 border-t border-border pt-6 md:grid-cols-12 md:gap-10">
-          <p className="lede md:col-span-7 lg:col-span-6">
-            {language === 'nl'
-              ? 'Ik hou de systemen en netwerken draaiende waar mensen dagelijks op rekenen, het liefst zonder dat iemand het merkt.'
-              : "I keep the systems and networks people rely on every day running, ideally without anyone noticing."}
-          </p>
-          <div className="flex flex-col gap-3 md:col-span-5 md:items-end lg:col-span-6">
-            <span className="meta">{t.home.location}</span>
-            <span className="flex items-center gap-2.5 text-sm text-textDim">
-              <span className="dot" aria-hidden="true" />
-              {t.nav.status}
-            </span>
+            {/* Second line breaks the grid twice over: it starts where the first
+                one ends, and it is drawn as a contour that fills on hover. */}
+            <h1 className="hero-name mt-8 md:mt-10">
+              <KineticHeading
+                as="span"
+                trigger="load"
+                delay={0.2}
+                className="display display-tight block text-[clamp(3.25rem,12vw,10.5rem)]"
+              >
+                Mehdi
+              </KineticHeading>
+              {/* Keeps the accessible name "Mehdi Oulad Khlie" rather than running
+                  the two display lines together. */}
+              <span className="sr-only"> </span>
+              <KineticHeading
+                as="span"
+                trigger="load"
+                delay={0.32}
+                className="display display-tight text-outline block text-[clamp(3.25rem,12vw,10.5rem)] md:pl-[14%]"
+              >
+                Oulad Khlie
+              </KineticHeading>
+            </h1>
+
+            <div className="mt-14 grid gap-10 border-t border-border pt-7 md:mt-20 md:grid-cols-12 md:gap-12">
+              <Reveal className="md:col-span-6 lg:col-span-5" delay={0.5}>
+                <p className="lede">
+                  {language === 'nl'
+                    ? 'Ik hou de systemen en netwerken draaiende waar mensen dagelijks op rekenen, het liefst zonder dat iemand het merkt.'
+                    : 'I keep the systems and networks people rely on every day running, ideally without anyone noticing.'}
+                </p>
+
+                <button type="button" onClick={() => scrollToId('work')} className="link-line mt-10">
+                  {language === 'nl' ? 'Geselecteerd werk' : 'Selected work'}
+                  <ArrowDown size={14} strokeWidth={1.6} aria-hidden="true" />
+                </button>
+              </Reveal>
+
+              {/* Status rail — the three facts a recruiter scans for. */}
+              <Reveal
+                as="dl"
+                stagger={0.08}
+                delay={0.6}
+                className="divide-y divide-border border-y border-border md:col-span-4 md:col-start-9"
+              >
+                <div className="flex items-baseline justify-between gap-6 py-3.5">
+                  <dt className="label">{language === 'nl' ? 'Locatie' : 'Location'}</dt>
+                  <dd className="mono text-xs tracking-[0.1em]">{t.home.location}</dd>
+                </div>
+                <div className="flex items-baseline justify-between gap-6 py-3.5">
+                  <dt className="label">{t.home.localTime}</dt>
+                  <dd className="mono text-xs tracking-[0.1em]">
+                    <LocalClock />
+                  </dd>
+                </div>
+                <div className="flex items-baseline justify-between gap-6 py-3.5">
+                  <dt className="label">{t.home.status.label}</dt>
+                  <dd className="mono flex items-center gap-2.5 text-xs tracking-[0.1em] text-accent">
+                    <span className="dot dot--live" aria-hidden="true" />
+                    {t.nav.status}
+                  </dd>
+                </div>
+              </Reveal>
+            </div>
           </div>
         </div>
       </header>
 
-      {/* Selected work */}
-      <Section index="01" label={language === 'nl' ? 'Geselecteerd werk' : 'Selected work'}>
-        <div className="space-y-24 md:space-y-32">
-
-          {/* Muted */}
-          <article className="group/work grid items-center gap-10 md:grid-cols-12 md:gap-14">
-            <Link
-              to="/projects/muted"
-              tabIndex={-1}
-              aria-hidden="true"
-              className="plate md:col-span-7"
-            >
-              <picture>
-                <source
-                  type="image/webp"
-                  srcSet="/muted-screenshot-800.webp 800w, /muted-screenshot-1400.webp 1400w"
-                  sizes="(max-width: 767px) calc(100vw - 40px), 640px"
-                />
-                <img
-                  src="/muted-screenshot.png"
-                  width="1573"
-                  height="978"
-                  alt=""
-                  loading="lazy"
-                  decoding="async"
-                />
-              </picture>
-            </Link>
-
-            <div className="md:col-span-5">
-              <span className="eyebrow">{t.home.featuredProject.label}</span>
-              <h3 className="display mt-5 text-5xl md:text-6xl">{t.home.featuredProject.title}</h3>
-              <p className="mt-3 text-sm text-textDim">{t.home.featuredProject.stack}</p>
-
-              <p className="mt-7 text-textDim">{t.home.featuredProject.description}</p>
-
-              <ul className="mt-8 space-y-2.5 border-t border-border pt-6 text-sm text-textDim">
-                {t.home.featuredProject.features.map((feature) => (
-                  <li key={feature} className="flex items-baseline gap-3">
-                    <span className="text-textDim/60">—</span>
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-
-              <Link to="/projects/muted" className="link-quiet mt-9">
-                {t.home.featuredProject.cta}
-                <ArrowRight size={15} strokeWidth={1.4} aria-hidden="true" />
-              </Link>
-            </div>
-          </article>
-
-          {/* Sets */}
-          <article className="grid items-center gap-10 md:grid-cols-12 md:gap-14">
-            <Link
+      {/* ---------------------------------------------------- selected work -- */}
+      <div className="container mt-32 space-y-32 md:mt-48 md:space-y-52">
+        <Section id="work" index="01" label={language === 'nl' ? 'Geselecteerd werk' : 'Selected work'}>
+          <div className="space-y-32 md:space-y-48">
+            <ProjectScene
+              index="01"
+              label={t.home.featuredProject.label}
+              title={t.home.featuredProject.title}
+              stack={t.home.featuredProject.stack}
+              description={t.home.featuredProject.description}
+              features={t.home.featuredProject.features}
+              cta={t.home.featuredProject.cta}
               to="/projects/sets"
-              tabIndex={-1}
-              aria-hidden="true"
-              className="plate md:order-2 md:col-span-7"
-            >
-              <picture>
-                <source
-                  type="image/webp"
-                  srcSet="/sets/preview-800.webp 800w, /sets/preview-1400.webp 1400w"
-                  sizes="(max-width: 767px) calc(100vw - 40px), 640px"
-                />
-                <img
-                  src="/sets/preview.png"
-                  width="1731"
-                  height="909"
-                  alt=""
-                  loading="lazy"
-                  decoding="async"
-                />
-              </picture>
-            </Link>
+              image={{
+                fallback: '/sets/preview.png',
+                srcSet: '/sets/preview-800.webp 800w, /sets/preview-1400.webp 1400w',
+                width: 1731,
+                height: 909,
+              }}
+              flagship
+            />
 
-            <div className="md:order-1 md:col-span-5">
-              <span className="eyebrow">{t.home.secondProject.label}</span>
-              <h3 className="display mt-5 text-5xl md:text-6xl">{t.home.secondProject.title}</h3>
-              <p className="mt-3 text-sm text-textDim">{t.home.secondProject.stack}</p>
+            <ProjectScene
+              index="02"
+              label={t.home.secondProject.label}
+              title={t.home.secondProject.title}
+              stack={t.home.secondProject.stack}
+              description={t.home.secondProject.description}
+              features={t.home.secondProject.features}
+              cta={t.home.secondProject.cta}
+              to="/projects/muted"
+              image={{
+                fallback: '/muted-screenshot.png',
+                srcSet: '/muted-screenshot-800.webp 800w, /muted-screenshot-1400.webp 1400w',
+                width: 1573,
+                height: 978,
+              }}
+              reversed
+            />
+          </div>
+        </Section>
 
-              <p className="mt-7 text-textDim">{t.home.secondProject.description}</p>
+        {/* --------------------------------------------------------- profile -- */}
+        <Section index="02" label={t.home.profile.title}>
+          {/* Held to seven columns on purpose — the empty third is the point. */}
+          <div className="grid md:grid-cols-12">
+            <div className="md:col-span-8 lg:col-span-7">
+              <div className="lede text-textDim">{t.home.profile.text}</div>
 
-              <ul className="mt-8 space-y-2.5 border-t border-border pt-6 text-sm text-textDim">
-                {t.home.secondProject.features.map((feature) => (
-                  <li key={feature} className="flex items-baseline gap-3">
-                    <span className="text-textDim/60">—</span>
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-
-              <Link to="/projects/sets" className="link-quiet mt-9">
-                {t.home.secondProject.cta}
-                <ArrowRight size={15} strokeWidth={1.4} aria-hidden="true" />
+              <Link to="/resume" className="link-line mt-12">
+                {t.home.profile.cta}
+                <ArrowRight size={14} strokeWidth={1.6} aria-hidden="true" />
               </Link>
             </div>
-          </article>
-
-        </div>
-      </Section>
-
-      {/* Profile */}
-      <Section index="02" label={t.home.profile.title}>
-        <div className="grid gap-14 md:grid-cols-12 md:gap-16">
-          <div className="md:col-span-7">
-            <div className="lede text-textDim">
-              {t.home.profile.text}
-            </div>
-            <Link to="/resume" className="link-quiet mt-10">
-              {t.home.profile.cta}
-              <ArrowRight size={15} strokeWidth={1.4} aria-hidden="true" />
-            </Link>
           </div>
+        </Section>
 
-          <dl className="divide-y divide-border border-y border-border md:col-span-5 md:self-start">
-            <div className="flex items-baseline justify-between gap-6 py-5">
-              <dt className="meta">{t.home.status.gradYear}</dt>
-              <dd className="serif text-2xl">2027</dd>
-            </div>
-            <div className="flex items-baseline justify-between gap-6 py-5">
-              <dt className="meta">{t.home.certified.label}</dt>
-              <dd className="text-right">
-                <a
-                  href={CREDLY_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="serif text-2xl hover:text-textDim"
-                >
-                  {t.home.certified.title}
-                </a>
-                <span className="mt-1 block text-xs uppercase tracking-[0.12em] text-textDim">
-                  {t.home.certified.subtitle}
-                </span>
-              </dd>
-            </div>
-            <div className="flex items-baseline justify-between gap-6 py-5">
-              <dt className="meta">{t.home.status.label}</dt>
-              <dd className="flex items-center gap-2.5 text-sm text-textDim">
-                <span className="dot" aria-hidden="true" />
-                {t.home.status.available}
-              </dd>
-            </div>
-          </dl>
-        </div>
-      </Section>
+        {/* ---------------------------------------------------- capabilities -- */}
+        <Section index="03" label={t.home.skills.label}>
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-12">
+            {skillTile(t.home.skills.sysAdmin, t.home.skills.items.sysAdmin, 'lg:col-span-5 lg:row-span-2', 0)}
+            {skillTile(t.home.skills.networking, t.home.skills.items.networking, 'lg:col-span-4', 0.06)}
 
-      {/* Skills */}
-      <Section index="03" label={t.home.skills.label}>
-        <div className="grid gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
-          {skillGroups.map((group) => (
-            <div key={group.title}>
-              <h3 className="eyebrow">{group.title}</h3>
-              <ul className="mt-5 space-y-3 border-t border-border pt-5 text-sm text-textDim">
-                {group.items.map((skill) => (
-                  <li key={skill}>{skill}</li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-      </Section>
-
-      {/* Other projects */}
-      <Section index="04" label={t.home.projects.label}>
-        <ul className="border-t border-border">
-          {t.home.projects.items.map((project) => (
-            <li key={project.title}>
+            {/* Cert tile is set apart: it's the one item with proof behind it. */}
+            <Reveal className="md:col-span-2 lg:col-span-3 lg:row-span-2" delay={0.1}>
               <a
-                href={project.url}
+                href={CREDLY_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group/row grid gap-3 border-b border-border py-7 md:grid-cols-12 md:gap-8"
+                className="tile tile--accent group/badge h-full justify-between"
               >
-                <div className="md:col-span-4">
-                  <h3 className="serif text-2xl leading-snug group-hover/row:text-textDim">{project.title}</h3>
-                  <span className="mt-2 block text-xs uppercase tracking-[0.12em] text-textDim">{project.stack}</span>
-                </div>
-                <p className="text-sm text-textDim md:col-span-7">{project.desc}</p>
-                <span className="text-textDim md:col-span-1 md:flex md:justify-end">
+                <span className="label label-ink">{t.home.certified.label}</span>
+                <span className="mt-8">
+                  <span className="headline block text-3xl">{t.home.certified.title}</span>
+                  <span className="index-num mt-3 block">{t.home.certified.subtitle}</span>
+                </span>
+                <span className="mt-8 flex items-center gap-2">
+                  <span className="label !text-accent">Credly</span>
                   <ArrowUpRight
-                    size={18}
-                    strokeWidth={1.2}
+                    size={14}
+                    strokeWidth={1.6}
                     aria-hidden="true"
-                    className="transition-transform duration-500 group-hover/row:-translate-y-1 group-hover/row:translate-x-1"
+                    className="text-accent transition-transform duration-500 ease-soft group-hover/badge:-translate-y-0.5 group-hover/badge:translate-x-0.5"
                   />
                 </span>
               </a>
-            </li>
-          ))}
-        </ul>
-      </Section>
+            </Reveal>
 
-      {/* Education */}
-      <Section index="05" label={t.home.education.label}>
-        <div className="grid gap-12 border-t border-border pt-10 md:grid-cols-2 md:gap-16">
-          <div>
-            <span className="meta">{t.home.education.expected}</span>
-            <h3 className="serif mt-3 text-3xl leading-tight">{t.home.education.degree1}</h3>
-            <p className="mt-3 text-sm text-textDim">HOGENT — Gent</p>
-          </div>
-          <div>
-            <span className="meta">2018 — 2024</span>
-            <h3 className="serif mt-3 text-3xl leading-tight">{t.home.education.degree2}</h3>
-            <p className="mt-3 text-sm text-textDim">Vrij Instituut voor Secundair Onderwijs</p>
-            <p className="mt-2 text-sm text-textDim">{t.home.education.degree2desc}</p>
-          </div>
-        </div>
-      </Section>
+            {skillTile(t.home.skills.cloudOps, t.home.skills.items.cloudOps, 'lg:col-span-4', 0.12)}
+            {skillTile(t.home.skills.softSkills, t.home.skills.items.softSkills, 'lg:col-span-5', 0.18)}
 
-      {/* Closing call to action */}
-      <Reveal as="section" className="border-t border-border pt-14">
-        <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
-          <h2 className="display max-w-xl text-4xl md:text-6xl">
+            {/* Live status strip, mirroring the hero rail. */}
+            <Reveal className="tile md:col-span-2 lg:col-span-7" delay={0.16}>
+              <dl className="grid gap-6 sm:grid-cols-3">
+                <div>
+                  <dt className="label">{t.home.status.gradYear}</dt>
+                  <dd className="headline mt-3 text-4xl">2027</dd>
+                </div>
+                <div>
+                  <dt className="label">{t.home.localTime}</dt>
+                  <dd className="headline mt-3 text-4xl">
+                    <LocalClock />
+                  </dd>
+                </div>
+                <div>
+                  <dt className="label">{t.home.status.label}</dt>
+                  <dd className="mt-3 flex items-center gap-2.5">
+                    <span className="dot dot--live" aria-hidden="true" />
+                    <span className="mono text-xs uppercase tracking-[0.12em] text-accent">
+                      {t.home.status.available}
+                    </span>
+                  </dd>
+                </div>
+              </dl>
+            </Reveal>
+          </div>
+        </Section>
+
+        {/* ------------------------------------------------- project index -- */}
+        <Section index="04" label={t.home.projects.label}>
+          <ul className="border-t border-border">
+            {t.home.projects.items.map((project, index) => (
+              <li key={project.title}>
+                <a
+                  href={project.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group/row relative grid gap-3 border-b border-border py-8 transition-colors duration-500 ease-soft md:grid-cols-12 md:items-baseline md:gap-8"
+                >
+                  {/* Accent hairline sweeps in from the left on hover. */}
+                  <span
+                    aria-hidden="true"
+                    className="absolute inset-x-0 bottom-[-1px] h-px origin-left scale-x-0 bg-accent transition-transform duration-[600ms] ease-soft group-hover/row:scale-x-100 group-focus-visible/row:scale-x-100"
+                  />
+
+                  <span className="index-num md:col-span-1">{String(index + 1).padStart(2, '0')}</span>
+
+                  <div className="md:col-span-4">
+                    <h3 className="headline text-2xl transition-transform duration-500 ease-soft md:text-[1.75rem] md:group-hover/row:translate-x-1.5">
+                      {project.title}
+                    </h3>
+                    <span className="index-num mt-2 block">{project.stack}</span>
+                  </div>
+
+                  <p className="text-sm text-textDim md:col-span-6">{project.desc}</p>
+
+                  <span className="text-textDim md:col-span-1 md:flex md:justify-end">
+                    <ArrowUpRight
+                      size={18}
+                      strokeWidth={1.3}
+                      aria-hidden="true"
+                      className="transition-all duration-500 ease-soft group-hover/row:-translate-y-1 group-hover/row:translate-x-1 group-hover/row:text-accent"
+                    />
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </Section>
+
+        {/* ------------------------------------------------------ education -- */}
+        <Section index="05" label={t.home.education.label}>
+          <Reveal className="grid gap-3 md:grid-cols-2" stagger={0.1}>
+            <div className="tile">
+              <span className="label">{t.home.education.expected}</span>
+              <h3 className="headline mt-6 text-2xl md:text-3xl">{t.home.education.degree1}</h3>
+              <p className="index-num mt-4">HOGENT — GENT</p>
+            </div>
+            <div className="tile">
+              <span className="label">2018 — 2024</span>
+              <h3 className="headline mt-6 text-2xl md:text-3xl">{t.home.education.degree2}</h3>
+              <p className="index-num mt-4">VRIJ INSTITUUT VOOR SECUNDAIR ONDERWIJS</p>
+              <p className="mt-4 text-sm text-textDim">{t.home.education.degree2desc}</p>
+            </div>
+          </Reveal>
+        </Section>
+      </div>
+
+      {/* --------------------------------------------------------- closing -- */}
+      <section className="mt-32 border-t border-border pt-20 md:mt-48">
+        <div className="container">
+          <KineticHeading className="display text-[clamp(2.5rem,8vw,7rem)]">
             {language === 'nl' ? 'Iets te bespreken?' : 'Something to discuss?'}
-          </h2>
-          <Link to="/contact" className="button-outline self-start md:self-auto">
-            {t.nav.contact}
-            <ArrowRight size={15} strokeWidth={1.4} aria-hidden="true" />
-          </Link>
-        </div>
-      </Reveal>
+          </KineticHeading>
 
-    </div>
+          {/* One way out of this section, and it is the contact page. */}
+          <Reveal className="mt-14">
+            <Link to="/contact" className="btn">
+              {t.nav.contact}
+              <ArrowRight size={14} strokeWidth={1.6} aria-hidden="true" />
+            </Link>
+          </Reveal>
+        </div>
+
+        {/* The availability statement, set at display size as a moving contour —
+            the one place the site is allowed to raise its voice. */}
+        <div className="mt-20 overflow-hidden border-y border-border py-6 md:py-8" aria-hidden="true">
+          <div className="marquee">
+            {Array.from({ length: 2 }, (_, copy) => (
+              <span key={copy} className="flex shrink-0 items-center">
+                {Array.from({ length: 3 }, (_, i) => (
+                  <span
+                    key={i}
+                    className="display text-outline flex items-center whitespace-nowrap text-[clamp(2.5rem,6vw,5rem)] text-textMain opacity-60"
+                  >
+                    {t.nav.status}
+                    <span
+                      className="mx-8 text-[0.35em] text-accent md:mx-12"
+                      style={{ WebkitTextFillColor: 'currentcolor', WebkitTextStroke: '0' }}
+                    >
+                      ◆
+                    </span>
+                    {t.home.role}
+                    <span
+                      className="mx-8 text-[0.35em] text-accent md:mx-12"
+                      style={{ WebkitTextFillColor: 'currentcolor', WebkitTextStroke: '0' }}
+                    >
+                      ◆
+                    </span>
+                  </span>
+                ))}
+              </span>
+            ))}
+          </div>
+        </div>
+      </section>
+    </>
   );
 };
 

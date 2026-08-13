@@ -242,7 +242,7 @@ const ContactForm: React.FC<ContactFormProps> = ({ language }) => {
         type="submit"
         disabled={status === 'submitting'}
         aria-busy={status === 'submitting'}
-        className="button-solid w-full disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
+        className="btn w-full disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
       >
         {status === 'submitting' ? t.sending : t.send}
         <Send size={15} strokeWidth={1.4} aria-hidden="true" />

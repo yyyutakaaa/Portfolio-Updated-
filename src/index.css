@@ -2,111 +2,158 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ============================================================== fonts ==== */
+
+/* Served from /public under stable names so index.html can preload them by
+   URL — the oversized hero headline is the LCP element, and waiting for the
+   stylesheet to be parsed before the font is even requested costs a round trip. */
 @font-face {
   font-family: "Manrope Variable";
   font-style: normal;
   font-display: swap;
   font-weight: 200 800;
-  src: url("@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2") format("woff2-variations");
+  src: url("/fonts/manrope-variable.woff2") format("woff2-variations");
 }
 
 @font-face {
-  font-family: "Cormorant Garamond Variable";
+  font-family: "JetBrains Mono Variable";
   font-style: normal;
   font-display: swap;
-  font-weight: 300 700;
-  src: url("@fontsource-variable/cormorant-garamond/files/cormorant-garamond-latin-wght-normal.woff2") format("woff2-variations");
+  font-weight: 100 800;
+  src: url("/fonts/jetbrains-mono-variable.woff2") format("woff2-variations");
 }
 
-@font-face {
-  font-family: "Cormorant Garamond Variable";
-  font-style: italic;
-  font-display: swap;
-  font-weight: 300 700;
-  src: url("@fontsource-variable/cormorant-garamond/files/cormorant-garamond-latin-wght-italic.woff2") format("woff2-variations");
-}
+/* ============================================================= tokens ==== */
 
 :root {
   color-scheme: light;
-  --color-bg-rgb: 247 245 241;
-  --color-surface-rgb: 252 251 248;
-  --color-surface-highlight-rgb: 238 234 227;
-  --color-text-main-rgb: 28 26 23;
-  --color-text-dim-rgb: 111 104 94;
-  --color-accent-rgb: 138 91 64;
-  --color-border: rgb(28 26 23 / 0.11);
-  --color-border-active: rgb(28 26 23 / 0.26);
 
-  --page: rgb(var(--color-bg-rgb));
-  --ink: rgb(var(--color-text-main-rgb));
-  --muted: rgb(var(--color-text-dim-rgb));
-  --accent: rgb(var(--color-accent-rgb));
-  --rule: var(--color-border);
-  --rule-strong: var(--color-border-active);
-  --nav-bg: rgb(247 245 241 / 0.82);
-  --panel-bg: rgb(252 251 248 / 0.7);
-  --panel-bg-solid: rgb(252 251 248);
-  --shadow-soft: rgb(46 38 28 / 0.05);
-  --shadow-medium: rgb(46 38 28 / 0.09);
-  --plate-tint: rgb(28 26 23 / 0.03);
-  --scroll-thumb: rgb(28 26 23 / 0.18);
-  --scroll-thumb-hover: rgb(28 26 23 / 0.3);
+  /* Warm paper base. One accent, nothing else. */
+  --paper: #f4f2ed;
+  --paper-raised: #fbfaf7;
+  --paper-sunken: #e8e4db;
+  --ink: #15140f;
+  --ink-muted: #5f5a50;
+  --ink-faint: #8c867a;
+  --accent: #9e4a24;
+  --accent-soft: rgb(158 74 36 / 0.1);
+
+  /* Sets' own brand colour. One project gets to bring its own light: the glow
+     channel is decorative-only, the ink variant holds AA for text. */
+  --lime-glow: 132 204 22;
+  --lime-ink: #486e0b;
+
+  --rule: rgb(21 20 15 / 0.13);
+  --rule-strong: rgb(21 20 15 / 0.28);
+  --wash: rgb(21 20 15 / 0.035);
+  --nav-bg: rgb(244 242 237 / 0.72);
+  --shadow: rgb(52 44 32 / 0.1);
+
+  /* Tailwind bridges — kept as channels so /<alpha-value> works. */
+  --color-bg-rgb: 244 242 237;
+  --color-surface-rgb: 251 250 247;
+  --color-surface-highlight-rgb: 232 228 219;
+  --color-text-main-rgb: 21 20 15;
+  --color-text-dim-rgb: 95 90 80;
+  --color-accent-rgb: 158 74 36;
+  --color-border: var(--rule);
+  --color-border-active: var(--rule-strong);
 
   --radius: 2px;
-  --radius-lg: 4px;
+  --radius-lg: 3px;
+
   --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
   --motion-fast: 200ms;
   --motion-medium: 480ms;
-  --motion-reveal: 900ms;
+
+  --gutter: 20px;
+  --shell-max: 1440px;
 }
 
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --color-bg-rgb: 18 17 15;
-  --color-surface-rgb: 25 24 21;
-  --color-surface-highlight-rgb: 33 31 28;
-  --color-text-main-rgb: 240 236 229;
-  --color-text-dim-rgb: 153 146 134;
-  --color-accent-rgb: 208 166 128;
-  --color-border: rgb(240 236 229 / 0.12);
-  --color-border-active: rgb(240 236 229 / 0.28);
 
-  --nav-bg: rgb(18 17 15 / 0.82);
-  --panel-bg: rgb(25 24 21 / 0.6);
-  --panel-bg-solid: rgb(25 24 21);
-  --shadow-soft: rgb(0 0 0 / 0.24);
-  --shadow-medium: rgb(0 0 0 / 0.36);
-  --plate-tint: rgb(240 236 229 / 0.035);
-  --scroll-thumb: rgb(240 236 229 / 0.16);
-  --scroll-thumb-hover: rgb(240 236 229 / 0.28);
+  --paper: #100f0d;
+  --paper-raised: #191815;
+  --paper-sunken: #201e1a;
+  --ink: #f0ece4;
+  --ink-muted: #9b9488;
+  --ink-faint: #756f64;
+  --accent: #d9a273;
+  --accent-soft: rgb(217 162 115 / 0.13);
+
+  --rule: rgb(240 236 228 / 0.13);
+  --rule-strong: rgb(240 236 228 / 0.3);
+  --wash: rgb(240 236 228 / 0.04);
+  --nav-bg: rgb(16 15 13 / 0.72);
+  --shadow: rgb(0 0 0 / 0.4);
+
+  --color-bg-rgb: 16 15 13;
+  --color-surface-rgb: 25 24 21;
+  --color-surface-highlight-rgb: 32 30 26;
+  --color-text-main-rgb: 240 236 228;
+  --color-text-dim-rgb: 155 148 136;
+  --color-accent-rgb: 217 162 115;
+
+  /* Lime glows harder against near-black; the ink variant brightens to match. */
+  --lime-glow: 163 230 53;
+  --lime-ink: #a3e635;
 }
+
+@media (min-width: 640px) {
+  :root {
+    --gutter: 32px;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root {
+    --gutter: 56px;
+  }
+}
+
+/* =============================================================== base ==== */
 
 html {
   min-width: 0;
-  background: var(--page);
-  scroll-behavior: smooth;
-  scrollbar-color: var(--scroll-thumb) transparent;
+  background: var(--paper);
+  scrollbar-color: var(--rule-strong) transparent;
 }
 
 body {
   min-width: 0;
   margin: 0;
   overflow-x: hidden;
-  background: var(--page);
+  background: var(--paper);
   color: var(--ink);
   font-family: "Manrope Variable", Manrope, "Helvetica Neue", Arial, sans-serif;
   font-synthesis: none;
   font-weight: 350;
-  line-height: 1.7;
-  letter-spacing: 0.002em;
+  font-size: 1rem;
+  line-height: 1.65;
+  letter-spacing: 0.001em;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
-  transition: background-color 400ms var(--ease-standard), color 300ms ease;
+  transition: background-color 500ms var(--ease-standard), color 300ms ease;
 }
 
 #root {
   min-width: 0;
+}
+
+/* Lenis drives the scroll; native smooth would fight it. */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
 }
 
 a,
@@ -132,7 +179,8 @@ h1,
 h2,
 h3,
 h4 {
-  font-weight: 400;
+  margin: 0;
+  font-weight: 300;
   text-wrap: balance;
 }
 
@@ -140,40 +188,149 @@ p {
   text-wrap: pretty;
 }
 
-/* ---------------------------------------------------------------- type ---- */
+::selection {
+  background: var(--accent-soft);
+  color: var(--ink);
+}
 
+:where(a, button, input, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 1px;
+}
+
+::-webkit-scrollbar {
+  width: 9px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background: var(--rule-strong);
+  background-clip: content-box;
+}
+
+/* =============================================================== type ==== */
+
+/* Oversized headline face. Weight and tracking are animated, so both are
+   declared here as the resting state GSAP tweens toward. */
 .display {
-  font-family: "Cormorant Garamond Variable", "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  font-family: "Manrope Variable", Manrope, "Helvetica Neue", Arial, sans-serif;
+  font-weight: 250;
+  line-height: 0.88;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.display-tight {
+  line-height: 0.82;
+  letter-spacing: -0.048em;
+}
+
+.headline {
+  font-family: "Manrope Variable", Manrope, "Helvetica Neue", Arial, sans-serif;
   font-weight: 300;
   line-height: 1.02;
-  letter-spacing: -0.012em;
+  letter-spacing: -0.028em;
 }
 
-.display-italic {
-  font-family: "Cormorant Garamond Variable", "Cormorant Garamond", Georgia, serif;
-  font-style: italic;
-  font-weight: 300;
+/* Display scale without the uppercasing — units and library names carry
+   meaning in their casing ("48 kHz", "RNNoise", "C#") and must not be flattened. */
+.stat-value {
+  font-family: "Manrope Variable", Manrope, "Helvetica Neue", Arial, sans-serif;
+  font-weight: 250;
+  line-height: 1;
+  letter-spacing: -0.03em;
 }
 
-.serif {
-  font-family: "Cormorant Garamond Variable", "Cormorant Garamond", Georgia, serif;
+.mono {
+  font-family: "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-feature-settings: "zero" 1;
 }
 
-.eyebrow {
+/* Editorial contrast trick: type drawn as a contour. Guarded behind @supports
+   so browsers without text-stroke keep the solid glyphs instead of nothing. */
+@supports (-webkit-text-stroke: 1px black) {
+  .text-outline {
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke: 1.2px currentColor;
+    transition: -webkit-text-fill-color 700ms var(--ease-out-soft);
+  }
+
+  /* The outlined name line fills with ink when the visitor reaches for it. */
+  .hero-name:hover .text-outline,
+  .hero-name:focus-within .text-outline {
+    -webkit-text-fill-color: currentColor;
+  }
+}
+
+/* The workhorse meta style: every label, index, stack line and status. */
+.label {
   display: inline-block;
-  color: var(--muted);
+  font-family: "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: var(--ink-muted);
   font-size: 0.6875rem;
-  font-weight: 500;
+  font-weight: 450;
   line-height: 1.4;
-  letter-spacing: 0.24em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
 }
 
+.label-ink {
+  color: var(--ink);
+}
+
+/* Carries real content — stack lines, stat labels, institutions — so it takes
+   the muted tone (AA at body size) rather than the faint one, which is
+   reserved for non-text decoration like arrow glyphs and rules. */
+.index-num {
+  font-family: "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: var(--ink-muted);
+  font-size: 0.6875rem;
+  font-weight: 450;
+  letter-spacing: 0.16em;
+  font-variant-numeric: tabular-nums;
+}
+
 .lede {
-  font-size: clamp(1.125rem, 1.6vw, 1.375rem);
-  font-weight: 300;
-  line-height: 1.72;
-  letter-spacing: -0.003em;
+  font-size: clamp(1.0625rem, 1.35vw, 1.3125rem);
+  font-weight: 320;
+  line-height: 1.6;
+  letter-spacing: -0.004em;
+}
+
+.prose-dim {
+  max-width: 62ch;
+  color: var(--ink-muted);
+}
+
+/* ============================================================= layout ==== */
+
+.shell {
+  position: relative;
+  isolation: isolate;
+  min-height: 100svh;
+  background: var(--paper);
+  transition: background-color 500ms var(--ease-standard), color 300ms ease;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--shell-max);
+  margin: 0 auto;
+  padding-inline: var(--gutter);
+}
+
+.container-narrow {
+  width: 100%;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding-inline: var(--gutter);
 }
 
 .rule {
@@ -182,52 +339,93 @@ p {
   background: var(--rule);
 }
 
-/* -------------------------------------------------------------- layout ---- */
-
-.site-shell {
-  isolation: isolate;
-  position: relative;
-  transition: background-color 400ms var(--ease-standard), color 300ms ease;
-}
-
-.site-shell::before {
-  position: fixed;
-  z-index: 0;
+/* Faint column guides — the grid stays visible, quietly. */
+.grid-guides {
+  position: absolute;
   inset: 0;
-  content: "";
+  z-index: 0;
+  display: none;
   pointer-events: none;
-  background:
-    radial-gradient(120% 80% at 50% -20%, var(--plate-tint), transparent 62%);
 }
 
-.site-main {
-  animation: page-enter var(--motion-reveal) var(--ease-out-soft) both;
+@media (min-width: 1024px) {
+  .grid-guides {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 24px;
+  }
+
+  .grid-guides span {
+    border-left: 1px solid var(--rule);
+    opacity: 0.45;
+  }
+
+  .grid-guides span:last-child {
+    border-right: 1px solid var(--rule);
+  }
 }
+
+/* ================================================================ nav ==== */
 
 .site-nav {
+  position: fixed;
+  z-index: 50;
+  top: 0;
+  right: 0;
+  left: 0;
   background: var(--nav-bg);
-  backdrop-filter: saturate(1.1) blur(14px);
-  -webkit-backdrop-filter: saturate(1.1) blur(14px);
-  transition: background-color 400ms var(--ease-standard), border-color 300ms ease;
+  backdrop-filter: saturate(1.4) blur(16px);
+  -webkit-backdrop-filter: saturate(1.4) blur(16px);
+  border-bottom: 1px solid transparent;
+  transition: border-color 400ms ease, background-color 400ms var(--ease-standard);
 }
 
-.brand-mark {
-  font-family: "Cormorant Garamond Variable", "Cormorant Garamond", Georgia, serif;
-  font-size: 1.375rem;
-  font-weight: 400;
+.site-nav[data-scrolled="true"] {
+  border-bottom-color: var(--rule);
+}
+
+.brand {
+  font-family: "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, monospace;
+  color: var(--ink);
+  font-size: 0.8125rem;
+  font-weight: 600;
   letter-spacing: 0.02em;
   line-height: 1;
+}
+
+.brand span {
+  color: var(--accent);
 }
 
 .nav-link {
   position: relative;
   display: inline-flex;
-  min-height: 40px;
+  min-height: 44px;
   align-items: center;
-  color: var(--muted);
-  font-size: 0.8125rem;
-  font-weight: 400;
-  letter-spacing: 0.02em;
+  white-space: nowrap;
+  font-family: "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, monospace;
+  color: var(--ink-muted);
+  font-size: 0.6875rem;
+  font-weight: 450;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* The index prefix is the first thing to go when space runs out. */
+.nav-link::before {
+  display: none;
+  margin-right: 0.5rem;
+  color: var(--ink-faint);
+  content: attr(data-index);
+  font-size: 0.9em;
+  opacity: 0.7;
+  transition: color var(--motion-fast) ease;
+}
+
+@media (min-width: 420px) {
+  .nav-link::before {
+    display: inline;
+  }
 }
 
 .nav-link:hover,
@@ -235,15 +433,18 @@ p {
   color: var(--ink);
 }
 
+.nav-link.active::before {
+  color: var(--accent);
+}
+
 .nav-link::after {
   position: absolute;
   right: 0;
-  bottom: 8px;
+  bottom: 10px;
   left: 0;
   height: 1px;
   content: "";
-  background: currentColor;
-  opacity: 0.5;
+  background: var(--accent);
   transform: scaleX(0);
   transform-origin: right;
   transition: transform var(--motion-medium) var(--ease-out-soft);
@@ -257,13 +458,17 @@ p {
 
 .icon-button {
   display: inline-flex;
-  height: 36px;
-  width: 36px;
+  height: 38px;
+  min-width: 38px;
   align-items: center;
   justify-content: center;
+  padding-inline: 0.5rem;
   border: 1px solid transparent;
   border-radius: 999px;
-  color: var(--muted);
+  color: var(--ink-muted);
+  font-family: "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, monospace;
+  font-size: 0.625rem;
+  letter-spacing: 0.12em;
 }
 
 .icon-button:hover {
@@ -271,61 +476,126 @@ p {
   color: var(--ink);
 }
 
-/* ------------------------------------------------------------ surfaces ---- */
+/* ============================================================ surfaces ==== */
 
-.panel {
+.tile {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 1.5rem;
   border: 1px solid var(--rule);
   border-radius: var(--radius-lg);
-  background: var(--panel-bg);
+  background: var(--wash);
   transition:
     border-color var(--motion-medium) var(--ease-out-soft),
-    background-color var(--motion-medium) var(--ease-out-soft);
+    background-color var(--motion-medium) var(--ease-out-soft),
+    transform var(--motion-medium) var(--ease-out-soft);
 }
 
-.panel--plain {
-  border: 0;
-  background: transparent;
+@media (min-width: 768px) {
+  .tile {
+    padding: 1.75rem;
+  }
 }
 
-.panel--quiet {
-  background: rgb(var(--color-surface-highlight-rgb) / 0.5);
+.tile::after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 1px;
+  width: 100%;
+  content: "";
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 700ms var(--ease-out-soft);
 }
 
-a.panel:hover,
-.panel--interactive:hover {
+.tile:hover::after,
+.tile:focus-within::after {
+  transform: scaleX(1);
+}
+
+.tile:hover {
   border-color: var(--rule-strong);
 }
 
+.tile--accent {
+  background: var(--accent-soft);
+  border-color: rgb(var(--color-accent-rgb) / 0.28);
+}
+
 .plate {
+  position: relative;
   display: block;
   overflow: hidden;
-  padding: 10px;
   border: 1px solid var(--rule);
   border-radius: var(--radius-lg);
-  background: rgb(var(--color-surface-highlight-rgb) / 0.55);
-  box-shadow: 0 24px 60px -34px var(--shadow-medium);
+  background: var(--paper-sunken);
 }
 
 .plate img {
   display: block;
   width: 100%;
   height: auto;
-  border-radius: 1px;
-  transition: transform 900ms var(--ease-out-soft);
 }
 
-.group\/work:hover .plate img {
-  transform: scale(1.018);
+.plate--pad {
+  padding: 10px;
+  box-shadow: 0 30px 70px -40px var(--shadow);
+}
+
+/* The flagship plate carries Sets' own lime: a tinted frame, a top hairline,
+   and a slow-breathing aura — box-shadow layers, so nothing gets clipped by
+   the plate's own overflow. Deliberately dramatic; still one colour. */
+.plate--flagship {
+  border-color: rgb(var(--lime-glow) / 0.5);
+  background: rgb(var(--lime-glow) / 0.07);
+  box-shadow:
+    0 0 22px -4px rgb(var(--lime-glow) / 0.35),
+    0 0 90px -18px rgb(var(--lime-glow) / 0.5),
+    0 30px 70px -40px var(--shadow);
+  animation: flagship-breathe 5.5s ease-in-out infinite alternate;
+}
+
+.plate--flagship::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  height: 2px;
+  width: 100%;
+  content: "";
+  background: rgb(var(--lime-glow));
+}
+
+.plate--flagship:hover {
+  border-color: rgb(var(--lime-glow) / 0.75);
+}
+
+@keyframes flagship-breathe {
+  from {
+    box-shadow:
+      0 0 22px -4px rgb(var(--lime-glow) / 0.3),
+      0 0 90px -18px rgb(var(--lime-glow) / 0.4),
+      0 30px 70px -40px var(--shadow);
+  }
+  to {
+    box-shadow:
+      0 0 30px -4px rgb(var(--lime-glow) / 0.5),
+      0 0 120px -14px rgb(var(--lime-glow) / 0.65),
+      0 30px 70px -40px var(--shadow);
+  }
 }
 
 .hscroll {
   scrollbar-width: thin;
-  scrollbar-color: var(--scroll-thumb) transparent;
+  scrollbar-color: var(--rule-strong) transparent;
 }
 
 .hscroll::-webkit-scrollbar {
-  height: 6px;
+  height: 5px;
 }
 
 .hscroll::-webkit-scrollbar-track {
@@ -335,165 +605,224 @@ a.panel:hover,
 .hscroll::-webkit-scrollbar-thumb {
   border: 0;
   border-radius: 999px;
-  background: var(--scroll-thumb);
+  background: var(--rule-strong);
 }
 
-/* --------------------------------------------------------------- links ---- */
+/* =============================================================== links ==== */
 
-.link-quiet {
+.link-line {
   position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  color: var(--ink);
-  font-size: 0.875rem;
-  letter-spacing: 0.01em;
-}
-
-.link-quiet::after {
-  position: absolute;
-  right: 0;
-  bottom: -3px;
-  left: 0;
-  height: 1px;
-  content: "";
-  background: currentColor;
-  opacity: 0.35;
-  transform-origin: left;
-  transition: transform var(--motion-medium) var(--ease-out-soft), opacity var(--motion-fast) ease;
-}
-
-.link-quiet:hover::after {
-  opacity: 0.8;
-}
-
-.link-quiet svg {
-  transition: transform var(--motion-medium) var(--ease-out-soft);
-}
-
-.link-quiet:hover svg,
-.group\/work:hover .link-quiet svg {
-  transform: translateX(4px);
-}
-
-.button-outline {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   gap: 0.625rem;
-  padding: 0.875rem 1.75rem;
-  border: 1px solid var(--rule-strong);
-  border-radius: 999px;
+  padding-bottom: 0.375rem;
+  font-family: "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, monospace;
   color: var(--ink);
-  font-size: 0.8125rem;
-  font-weight: 400;
-  letter-spacing: 0.08em;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
 }
 
-.button-outline:hover {
-  border-color: var(--ink);
-  background: rgb(var(--color-text-main-rgb) / 0.04);
+.link-line::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 1px;
+  content: "";
+  background: var(--rule-strong);
 }
 
-.button-solid {
+.link-line::before {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  height: 1px;
+  width: 100%;
+  content: "";
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 600ms var(--ease-out-soft);
+}
+
+.link-line:hover::before,
+.link-line:focus-visible::before,
+.group\/scene:hover .link-line::before {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* For links whose text is real content — an address, a URL — where forcing
+   uppercase would misrepresent it. */
+.link-line--plain {
+  font-family: "Manrope Variable", Manrope, "Helvetica Neue", Arial, sans-serif;
+  font-size: 0.9375rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.link-line svg {
+  transition: transform var(--motion-medium) var(--ease-out-soft);
+}
+
+.link-line:hover svg,
+.group\/scene:hover .link-line svg {
+  transform: translateX(4px);
+}
+
+.btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.625rem;
+  min-height: 48px;
   padding: 0.875rem 1.75rem;
   border: 1px solid var(--ink);
   border-radius: 999px;
   background: var(--ink);
-  color: var(--page);
-  font-size: 0.8125rem;
-  font-weight: 400;
-  letter-spacing: 0.08em;
+  color: var(--paper);
+  font-family: "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, monospace;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
 }
 
-.button-solid:hover {
-  background: transparent;
-  color: var(--ink);
+.btn,
+.btn-ghost {
+  transition-property: color, background-color, border-color, opacity, transform, letter-spacing;
 }
 
-.button-solid:disabled {
+/* Hover breathes the tracking open — the variable-type idea at button scale. */
+.btn:hover {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--paper);
+  letter-spacing: 0.22em;
+}
+
+.btn:disabled {
   cursor: wait;
   opacity: 0.55;
 }
 
-.button-muted {
+.btn-ghost {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.625rem;
+  min-height: 48px;
   padding: 0.875rem 1.75rem;
-  border: 1px dashed var(--rule-strong);
+  border: 1px solid var(--rule-strong);
   border-radius: 999px;
-  color: var(--muted);
-  font-size: 0.8125rem;
-  letter-spacing: 0.08em;
+  color: var(--ink);
+  font-family: "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, monospace;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
 }
 
-/* ---------------------------------------------------------------- meta ---- */
-
-.meta {
-  color: var(--muted);
-  font-size: 0.75rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+.btn-ghost:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  letter-spacing: 0.22em;
 }
 
 .pill {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.375rem 0.875rem;
+  padding: 0.4375rem 0.875rem;
   border: 1px solid var(--rule);
   border-radius: 999px;
-  color: var(--muted);
+  font-family: "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, monospace;
+  color: var(--ink-muted);
   font-size: 0.6875rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  font-weight: 450;
+  /* No uppercasing: pills carry tech names whose casing is part of the name. */
+  letter-spacing: 0.05em;
+}
+
+.pill--live {
+  border-color: rgb(var(--color-accent-rgb) / 0.35);
+  color: var(--accent);
 }
 
 .dot {
+  position: relative;
   display: inline-block;
-  width: 5px;
-  height: 5px;
+  width: 6px;
+  height: 6px;
   flex: 0 0 auto;
   border-radius: 999px;
   background: var(--accent);
 }
 
-.index-number {
-  font-family: "Cormorant Garamond Variable", "Cormorant Garamond", Georgia, serif;
-  color: var(--muted);
-  font-size: 0.9375rem;
-  font-style: italic;
-  letter-spacing: 0.04em;
+.dot--sm {
+  width: 4px;
+  height: 4px;
 }
 
-/* --------------------------------------------------------------- forms ---- */
+/* Sets' lime, in its AA-safe ink form — label and dot of the flagship scene. */
+.text-lime-ink {
+  color: var(--lime-ink);
+}
+
+.dot--lime {
+  background: var(--lime-ink);
+}
+
+.dot--lime::after {
+  border-color: var(--lime-ink);
+}
+
+/* The pulse is reserved for actual live status. Everywhere else the dot is
+   just a bullet, and a bullet that throbs is noise. */
+.dot--live::after {
+  position: absolute;
+  inset: -3px;
+  content: "";
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  opacity: 0;
+  animation: ping 2.8s var(--ease-out-soft) infinite;
+}
+
+@keyframes ping {
+  0% {
+    opacity: 0.6;
+    transform: scale(0.6);
+  }
+  70%,
+  100% {
+    opacity: 0;
+    transform: scale(1.5);
+  }
+}
+
+/* =============================================================== forms ==== */
 
 .field {
   width: 100%;
-  padding: 0.75rem 0;
+  padding: 0.875rem 0;
   border: 0;
   border-bottom: 1px solid var(--rule);
   border-radius: 0;
   background: transparent;
   color: var(--ink);
   font-family: inherit;
-  font-size: 0.9375rem;
+  font-size: 1rem;
   font-weight: 350;
   transition: border-color var(--motion-fast) ease;
 }
 
 .field::placeholder {
-  color: var(--muted);
-  opacity: 0.7;
+  color: var(--ink-faint);
 }
 
 .field:hover {
@@ -501,29 +830,42 @@ a.panel:hover,
 }
 
 .field:focus {
-  border-bottom-color: var(--ink);
+  border-bottom-color: var(--accent);
   outline: none;
+}
+
+.field:focus-visible {
+  outline: none;
+  outline-offset: 0;
 }
 
 .field-label {
   display: block;
-  margin-bottom: 0.25rem;
-  color: var(--muted);
-  font-size: 0.6875rem;
+  margin-bottom: 0.125rem;
+  font-family: "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, monospace;
+  color: var(--ink-muted);
+  font-size: 0.625rem;
+  font-weight: 450;
   letter-spacing: 0.18em;
   text-transform: uppercase;
 }
 
-/* ------------------------------------------------------------- reveals ---- */
+/* ============================================================= motion ==== */
 
-[data-reveal] {
-  opacity: 0;
-  translate: 0 18px;
+/* Resting state for anything GSAP will animate in. If JS never runs, the
+   fallback rule below puts it all back — content is never trapped hidden. */
+[data-anim] {
+  will-change: transform, opacity;
 }
 
-[data-reveal][data-revealed="true"] {
-  animation: reveal-in var(--motion-reveal) var(--ease-out-soft) forwards;
-  animation-delay: var(--reveal-delay, 0ms);
+html:not(.motion-ready) [data-anim] {
+  opacity: 1;
+  transform: none;
+}
+
+.kinetic-line {
+  display: block;
+  overflow: hidden;
 }
 
 .page-loader {
@@ -538,7 +880,7 @@ a.panel:hover,
   width: 5px;
   height: 5px;
   border-radius: 999px;
-  background: var(--muted);
+  background: var(--ink-faint);
   animation: loader-fade 1.2s ease-in-out infinite alternate;
 }
 
@@ -550,63 +892,26 @@ a.panel:hover,
   animation-delay: 300ms;
 }
 
-:where(a, button, input, textarea, [tabindex]):focus-visible {
-  outline: 1px solid var(--ink);
-  outline-offset: 4px;
-}
-
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  border: 2px solid transparent;
-  border-radius: 999px;
-  background: var(--scroll-thumb);
-  background-clip: content-box;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--scroll-thumb-hover);
-  background-clip: content-box;
-}
-
-::selection {
-  background: rgb(var(--color-text-main-rgb) / 0.12);
-  color: var(--ink);
-}
-
-@keyframes page-enter {
-  from {
-    opacity: 0;
-    translate: 0 8px;
-  }
-  to {
-    opacity: 1;
-    translate: 0 0;
-  }
-}
-
-@keyframes reveal-in {
-  to {
-    opacity: 1;
-    translate: 0 0;
-  }
-}
-
 @keyframes loader-fade {
   to {
     opacity: 0.2;
   }
 }
 
-@media (max-width: 767px) {
-  body {
-    line-height: 1.65;
+/* Marquee for the closing band. Duplicated content scrolls one full copy. */
+.marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 38s linear infinite;
+}
+
+.marquee:hover {
+  animation-play-state: paused;
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
   }
 }
 
@@ -624,15 +929,19 @@ a.panel:hover,
     transition-duration: 0.01ms !important;
   }
 
-  [data-reveal],
-  .site-main {
+  [data-anim],
+  .kinetic-line > * {
     opacity: 1 !important;
-    translate: none !important;
     transform: none !important;
+  }
+
+  .marquee {
+    width: 100%;
+    justify-content: center;
   }
 }
 
-/* --------------------------------------------------------------- print ---- */
+/* ============================================================== print ==== */
 
 @page {
   size: A4;
@@ -643,19 +952,20 @@ a.panel:hover,
   :root,
   :root[data-theme="dark"] {
     color-scheme: light;
+    --paper: #fff;
+    --paper-raised: #fff;
+    --paper-sunken: #f4f1ec;
+    --ink: #15140f;
+    --ink-muted: #4c473f;
+    --ink-faint: #6b665b;
+    --accent: #8f4220;
+    --rule: rgb(21 20 15 / 0.2);
+    --rule-strong: rgb(21 20 15 / 0.34);
+    --wash: transparent;
     --color-bg-rgb: 255 255 255;
-    --color-surface-rgb: 255 255 255;
-    --color-surface-highlight-rgb: 244 241 236;
-    --color-text-main-rgb: 28 26 23;
-    --color-text-dim-rgb: 92 86 78;
-    --color-accent-rgb: 138 91 64;
-    --color-border: rgb(28 26 23 / 0.18);
-    --color-border-active: rgb(28 26 23 / 0.32);
-    --page: rgb(255 255 255);
-    --ink: rgb(28 26 23);
-    --muted: rgb(92 86 78);
-    --panel-bg: transparent;
-    --plate-tint: transparent;
+    --color-text-main-rgb: 21 20 15;
+    --color-text-dim-rgb: 76 71 63;
+    --color-border: rgb(21 20 15 / 0.2);
   }
 
   *,
@@ -670,20 +980,11 @@ a.panel:hover,
 
   html,
   body,
-  #root {
+  #root,
+  .shell {
     min-height: 0 !important;
     background: #fff !important;
     color: var(--ink) !important;
-  }
-
-  .site-shell {
-    min-height: 0 !important;
-    background: #fff !important;
-    color: var(--ink) !important;
-  }
-
-  .site-shell::before {
-    display: none !important;
   }
 
   body {
@@ -693,8 +994,9 @@ a.panel:hover,
   }
 
   .site-nav,
-  .site-shell > footer,
-  .print-hidden {
+  .site-footer,
+  .print-hidden,
+  .grid-guides {
     display: none !important;
   }
 
@@ -703,20 +1005,18 @@ a.panel:hover,
     max-width: none !important;
     margin: 0 !important;
     padding: 0 !important;
-    opacity: 1 !important;
-    translate: none !important;
-    transform: none !important;
   }
 
-  [data-reveal] {
+  [data-anim] {
     opacity: 1 !important;
-    translate: none !important;
+    transform: none !important;
   }
 
   .resume-page {
     width: 100% !important;
     max-width: none !important;
     margin: 0 !important;
+    padding: 0 !important;
   }
 
   .resume-page > * + * {
@@ -726,17 +1026,12 @@ a.panel:hover,
   .resume-header {
     margin: 0 0 6mm !important;
     padding: 0 0 4mm !important;
-    border-bottom: 1px solid var(--color-border) !important;
+    border-bottom: 1px solid var(--rule) !important;
   }
 
   .resume-header h1 {
     font-size: 27pt !important;
     line-height: 1 !important;
-  }
-
-  .resume-header p {
-    margin-top: 2mm !important;
-    font-size: 8pt !important;
   }
 
   .resume-grid {
@@ -752,11 +1047,6 @@ a.panel:hover,
 
   .resume-main > * + * {
     margin-top: 6mm !important;
-  }
-
-  .resume-main h2 {
-    font-size: 8.4pt !important;
-    letter-spacing: 0.22em !important;
   }
 
   .resume-timeline {
@@ -785,14 +1075,6 @@ a.panel:hover,
     line-height: 1.36 !important;
   }
 
-  .resume-entry ul {
-    margin-top: 1.6mm !important;
-  }
-
-  .resume-entry li + li {
-    margin-top: 0.6mm !important;
-  }
-
   .resume-sidebar {
     position: static !important;
     top: auto !important;
@@ -808,13 +1090,16 @@ a.panel:hover,
     overflow-wrap: anywhere;
   }
 
-  .resume-page .panel {
+  .resume-page .tile {
     padding: 4mm !important;
-    border: 1px solid var(--color-border) !important;
-    border-radius: 1mm !important;
+    border: 1px solid var(--rule) !important;
     background: transparent !important;
     break-inside: avoid-page;
     page-break-inside: avoid;
+  }
+
+  .resume-page .tile::after {
+    display: none !important;
   }
 
   .resume-page a {

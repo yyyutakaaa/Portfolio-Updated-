@@ -1,6 +1,7 @@
 import React from 'react';
 import ContactForm from '../components/ContactForm';
-import Reveal from '../components/Reveal';
+import KineticHeading from '../components/motion/KineticHeading';
+import Reveal from '../components/motion/Reveal';
 import { useLanguage } from '../contexts/LanguageContext';
 
 const Contact: React.FC = () => {
@@ -10,7 +11,8 @@ const Contact: React.FC = () => {
     nl: {
       title: 'Contact',
       subtitle: 'Laten we verbinden',
-      description: 'Heb je een vraag, een project in gedachten, of wil je gewoon eens babbelen? Stuur een bericht via het formulier hieronder, of neem rechtstreeks contact op via een van de kanalen.',
+      description:
+        'Heb je een vraag, een project in gedachten, of wil je gewoon eens babbelen? Stuur een bericht via het formulier hieronder, of neem rechtstreeks contact op via een van de kanalen.',
       formTitle: 'Stuur een bericht',
       infoTitle: 'Contactgegevens',
       socialTitle: 'Elders',
@@ -19,12 +21,13 @@ const Contact: React.FC = () => {
       email: 'mehdi.ouladkhlie@outlook.be',
       availability: 'Beschikbaarheid',
       availableText: 'Beschikbaar voor werk',
-      responseTime: 'Ik probeer binnen 24-48 uur te reageren op berichten.'
+      responseTime: 'Ik probeer binnen 24-48 uur te reageren op berichten.',
     },
     en: {
       title: 'Contact',
-      subtitle: 'Let\'s connect',
-      description: "Have a question, a project in mind, or just want to say hi? Send a message through the form below, or reach out directly through one of the channels.",
+      subtitle: "Let's connect",
+      description:
+        'Have a question, a project in mind, or just want to say hi? Send a message through the form below, or reach out directly through one of the channels.',
       formTitle: 'Send a message',
       infoTitle: 'Contact details',
       socialTitle: 'Elsewhere',
@@ -33,8 +36,8 @@ const Contact: React.FC = () => {
       email: 'mehdi.ouladkhlie@outlook.be',
       availability: 'Availability',
       availableText: 'Available for work',
-      responseTime: 'I try to respond to messages within 24-48 hours.'
-    }
+      responseTime: 'I try to respond to messages within 24-48 hours.',
+    },
   };
 
   const content = contactInfo[language];
@@ -46,52 +49,70 @@ const Contact: React.FC = () => {
   ];
 
   return (
-    <div className="space-y-20 md:space-y-28">
+    <div className="container">
+      <header className="border-b border-border pb-16">
+        <span className="label">{content.subtitle}</span>
 
-      <header>
-        <span className="eyebrow">{content.subtitle}</span>
-        <h1 className="display mt-7 text-[clamp(3.25rem,11vw,8rem)]">{content.title}</h1>
-        <p className="lede mt-12 max-w-prose border-t border-border pt-8 text-textDim">
-          {content.description}
-        </p>
+        <KineticHeading
+          as="h1"
+          trigger="load"
+          delay={0.1}
+          className="display display-tight mt-7 text-[clamp(3.5rem,13vw,10rem)]"
+        >
+          {content.title}
+        </KineticHeading>
+
+        <Reveal delay={0.25}>
+          <p className="lede prose-dim mt-12">{content.description}</p>
+        </Reveal>
       </header>
 
-      <div className="grid gap-16 md:grid-cols-12 md:gap-14">
-
+      <div className="mt-20 grid gap-16 md:grid-cols-12 md:gap-14">
         <Reveal className="md:col-span-7">
-          <h2 className="eyebrow">{content.formTitle}</h2>
-          <div className="mt-8 border-t border-border pt-8">
+          <div className="flex items-baseline gap-5 border-t border-border pt-5">
+            <span className="index-num">01</span>
+            <h2 className="label">{content.formTitle}</h2>
+          </div>
+          <div className="mt-12">
             <ContactForm language={language} />
           </div>
         </Reveal>
 
-        <Reveal delay={80} className="space-y-12 md:col-span-4 md:col-start-9">
-          <div>
-            <h2 className="eyebrow">{content.infoTitle}</h2>
+        <div className="space-y-12 md:col-span-4 md:col-start-9">
+          <Reveal delay={0.08}>
+            <div className="flex items-baseline gap-5 border-t border-border pt-5">
+              <span className="index-num">02</span>
+              <h2 className="label">{content.infoTitle}</h2>
+            </div>
             <dl className="mt-8 divide-y divide-border border-t border-border">
               <div className="py-4">
-                <dt className="text-xs uppercase tracking-[0.14em] text-textDim">Email</dt>
-                <dd className="mt-1">
-                  <a href={`mailto:${content.email}`} className="hover:text-textDim">
+                <dt className="label">Email</dt>
+                <dd className="mt-2">
+                  <a href={`mailto:${content.email}`} className="text-sm hover:text-accent">
                     {content.email}
                   </a>
                 </dd>
               </div>
               <div className="py-4">
-                <dt className="text-xs uppercase tracking-[0.14em] text-textDim">{language === 'nl' ? 'Telefoon' : 'Phone'}</dt>
-                <dd className="mt-1">
-                  <a href="tel:+32465136679" className="hover:text-textDim">{content.phone}</a>
+                <dt className="label">{language === 'nl' ? 'Telefoon' : 'Phone'}</dt>
+                <dd className="mt-2">
+                  <a href="tel:+32465136679" className="text-sm hover:text-accent">
+                    {content.phone}
+                  </a>
                 </dd>
               </div>
               <div className="py-4">
-                <dt className="text-xs uppercase tracking-[0.14em] text-textDim">{language === 'nl' ? 'Locatie' : 'Location'}</dt>
-                <dd className="mt-1">{content.location}</dd>
+                <dt className="label">{language === 'nl' ? 'Locatie' : 'Location'}</dt>
+                <dd className="mt-2 text-sm text-textDim">{content.location}</dd>
               </div>
             </dl>
-          </div>
+          </Reveal>
 
-          <div>
-            <h2 className="eyebrow">{content.socialTitle}</h2>
+          <Reveal delay={0.14}>
+            <div className="flex items-baseline gap-5 border-t border-border pt-5">
+              <span className="index-num">03</span>
+              <h2 className="label">{content.socialTitle}</h2>
+            </div>
             <ul className="mt-8 divide-y divide-border border-t border-border">
               {socials.map((social) => (
                 <li key={social.label}>
@@ -99,26 +120,32 @@ const Contact: React.FC = () => {
                     href={social.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-between py-4 hover:text-textDim"
+                    className="group/social flex items-center justify-between py-4 text-sm hover:text-accent"
                   >
                     {social.label}
-                    <span aria-hidden="true" className="text-textDim">↗</span>
+                    <span
+                      aria-hidden="true"
+                      className="text-textFaint transition-transform duration-500 ease-soft group-hover/social:-translate-y-0.5 group-hover/social:translate-x-0.5"
+                    >
+                      ↗
+                    </span>
                   </a>
                 </li>
               ))}
             </ul>
-          </div>
+          </Reveal>
 
-          <div className="border-t border-border pt-8">
-            <h2 className="eyebrow">{content.availability}</h2>
-            <p className="mt-5 flex items-center gap-2.5 text-sm">
-              <span className="dot" aria-hidden="true" />
-              {content.availableText}
+          <Reveal delay={0.2} className="tile">
+            <h2 className="label label-ink">{content.availability}</h2>
+            <p className="mt-6 flex items-center gap-2.5">
+              <span className="dot dot--live" aria-hidden="true" />
+              <span className="mono text-xs uppercase tracking-[0.12em] text-accent">
+                {content.availableText}
+              </span>
             </p>
-            <p className="mt-3 text-sm text-textDim">{content.responseTime}</p>
-          </div>
-        </Reveal>
-
+            <p className="mt-4 text-sm text-textDim">{content.responseTime}</p>
+          </Reveal>
+        </div>
       </div>
     </div>
   );

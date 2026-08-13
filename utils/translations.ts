@@ -14,19 +14,19 @@ export const translations = {
       localTime: "Lokale tijd",
       featuredProject: {
         label: "Grootste Project",
+        title: "Sets",
+        description: "Een workout logger, gebouwd voor na de training, niet ervoor. Loggen schrijft eerst naar je toestel en gaat daarna naar de cloud, zodat je sessies op al je toestellen terechtkomen.",
+        stack: "PWA / VANILLA JS + SUPABASE",
+        features: ["Automatische cloud-sync", "Live 1RM & PR-detectie", "Installeerbaar als PWA"],
+        cta: "Bekijk Sets"
+      },
+      secondProject: {
+        label: "2de Project",
         title: "Muted",
         description: "Mijn microfoon klonk altijd rammelend door de ventilator van mijn pc, dus bouwde ik hier iets voor. Muted filtert ruis lokaal via RNNoise voordat je stem Discord, Teams of je game bereikt.",
         stack: "WINDOWS APP / C# .NET 9",
         features: ["RNNoise-ruisonderdrukking", "100% lokale verwerking", "Voice gate & virtuele kabel"],
         cta: "Bekijk project"
-      },
-      secondProject: {
-        label: "2de Project",
-        title: "Sets",
-        description: "Een offline-first workout logger, gebouwd voor na de training, niet ervoor. Loggen schrijft altijd eerst naar je toestel; zonder verbinding wacht de sessie gewoon tot je weer online bent.",
-        stack: "PWA / VANILLA JS + SUPABASE",
-        features: ["Offline-first met automatische sync", "Live 1RM & PR-detectie", "Installeerbaar als PWA"],
-        cta: "Bekijk Sets"
       },
       profile: {
         title: "Profiel",
@@ -37,7 +37,7 @@ export const translations = {
           React.createElement("br", null),
           React.createElement("br", null),
           "Het liefst werk ik in Windows-omgevingen. Ik heb al heel wat pc's en netwerken zien vastlopen en er minstens evenveel weer aan de praat gekregen, van kapotte drivers tot rare netwerkfouten. Daarnaast haal ik mijn ",
-          React.createElement("span", { className: "text-textMain italic serif text-[1.1em]" }, "CCNA"),
+          React.createElement("span", { className: "mono text-textMain text-[0.88em] tracking-[0.04em]" }, "CCNA"),
           " en volg ik Microsoft-trajecten om dat verder uit te bouwen."
         ),
         cta: "Bekijk volledige CV"
@@ -186,19 +186,19 @@ export const translations = {
         title: "Onder de motorkap",
         intro: "Dit stuk hoef je niet te lezen om de app te snappen. Het is puur voor wie benieuwd is hoe het er vanbinnen uitziet.",
         signalPathTitle: "Hoe een sessie wordt opgeslagen",
-        signalPathIntro: "Gyms zitten vaak in een kelder zonder bereik. Log je daar een workout, dan wordt die meteen op je toestel bewaard, verbinding of niet. Kom je later weer online, dan stuurt de app alles automatisch door naar de cloud, zonder dat jij er iets voor hoeft te doen.",
-        signalPath: ["Workout", "Lokale write (localStorage)", "Outbox bij offline", "Supabase (cloud sync)"],
+        signalPathIntro: "Loggen schrijft eerst naar je toestel, zodat wat je intikt meteen vaststaat en het scherm niet op een antwoord hoeft te wachten. Daarna gaat de sessie door naar de cloud, zodat je data ook op je andere toestellen terechtkomt zonder dat jij er iets voor hoeft te doen.",
+        signalPath: ["Workout", "Lokale write (localStorage)", "Supabase (cloud sync)"],
         frameMathTitle: "Wat dat in de praktijk betekent",
         frameMath: [
           { value: "Meteen", label: "je ziet je data zonder te wachten" },
-          { value: "Altijd", label: "beschikbaar, ook zonder wifi in de gym" },
+          { value: "Sync", label: "je sessies komen op al je toestellen" },
           { value: "Live", label: "je 1RM verschijnt terwijl je nog aan het typen bent" },
           { value: "Auto", label: "je workout bewaart zichzelf bij elke wijziging" }
         ],
         points: [
           {
             title: "Alles voelt meteen aan",
-            body: "Elk scherm toont meteen je gegevens, ook met slecht bereik, omdat de app een kopie op je toestel bewaart. Log je in of kom je weer online, dan wordt die kopie op de achtergrond bijgewerkt."
+            body: "Elk scherm toont meteen je gegevens, omdat de app een kopie op je toestel bewaart in plaats van elk scherm opnieuw op te halen. Bij het inloggen wordt die kopie op de achtergrond bijgewerkt."
           },
           {
             title: "Een crash kost je niets",
@@ -207,10 +207,6 @@ export const translations = {
           {
             title: "Ook zonder account kun je gewoon trainen",
             body: "Train je zonder in te loggen? Dan blijft dat gewoon op je toestel staan. Maak je later een account aan, dan neemt de app die workouts mee in plaats van ze kwijt te raken."
-          },
-          {
-            title: "Bij twijfel wint de laatste",
-            body: "Bewerk je dezelfde training op twee toestellen die allebei offline waren, dan geldt straks de versie die het laatst weer online komt. Voor een persoonlijk trainingslogboek is dat een compromis waar ik prima mee kan leven."
           }
         ]
       },
@@ -236,7 +232,7 @@ export const translations = {
         "Vanilla ES6+ JavaScript, zonder bundler",
         "Tailwind CSS, precompiled tot één static bestand",
         "Supabase voor auth, database en cloud-sync (met row-level security)",
-        "PWA met een offline-first localStorage-cache en outbox"
+        "PWA met een localStorage-cache zodat schermen meteen laden"
       ],
       installTitle: "Sets op je telefoon zetten",
       installSteps: [
@@ -245,7 +241,7 @@ export const translations = {
         "De app opent voortaan volledig scherm, zonder browserbalk, alsof het een native app is."
       ],
       limitationsTitle: "Belangrijk om te weten",
-      limitations: "Train je zonder account, dan blijft die data alleen op je telefoon staan; verwijder je de app voor je inlogt, dan ben je die historie kwijt. En bewerk je dezelfde training op twee toestellen die allebei offline waren, dan wint gewoon de versie die het laatst weer online komt.",
+      limitations: "Train je zonder account, dan blijft die data alleen op je telefoon staan; verwijder je de app voor je inlogt, dan ben je die historie kwijt. Bewerk je dezelfde training op twee toestellen, dan wint de versie die het laatst gesynct is.",
       openCta: "Open Sets",
       openNote: "sets.ink — gratis, en in een paar tikken op je telefoon te zetten",
       galleryTitle: "In de app",
@@ -431,19 +427,19 @@ export const translations = {
       localTime: "Local Time",
       featuredProject: {
         label: "Flagship Project",
+        title: "Sets",
+        description: "A workout logger, built for after training, not during it. Logging writes to your device first and then goes to the cloud, so your sessions end up on every device you use.",
+        stack: "PWA / VANILLA JS + SUPABASE",
+        features: ["Automatic cloud sync", "Live 1RM & PR detection", "Installable as a PWA"],
+        cta: "View Sets"
+      },
+      secondProject: {
+        label: "2nd Project",
         title: "Muted",
         description: "My mic always picked up my PC's fan noise, so I built something for it. Muted filters noise locally through RNNoise before your voice reaches Discord, Teams, or your game.",
         stack: "WINDOWS APP / C# .NET 9",
         features: ["RNNoise noise suppression", "100% local processing", "Voice gate & virtual cable"],
         cta: "View project"
-      },
-      secondProject: {
-        label: "2nd Project",
-        title: "Sets",
-        description: "An offline-first workout logger, built for after training, not during it. Logging always writes to your device first; without a connection the session just waits until you're back online.",
-        stack: "PWA / VANILLA JS + SUPABASE",
-        features: ["Offline-first with automatic sync", "Live 1RM & PR detection", "Installable as a PWA"],
-        cta: "View Sets"
       },
       profile: {
         title: "Profile",
@@ -454,7 +450,7 @@ export const translations = {
           React.createElement("br", null),
           React.createElement("br", null),
           "I prefer working in Windows environments. I've watched plenty of PCs and networks fall over and gotten just as many running again, from broken drivers to weird network faults. On the side, I'm working toward my ",
-          React.createElement("span", { className: "text-textMain italic serif text-[1.1em]" }, "CCNA"),
+          React.createElement("span", { className: "mono text-textMain text-[0.88em] tracking-[0.04em]" }, "CCNA"),
           " and taking Microsoft courses to build on that."
         ),
         cta: "View Full Resume"
@@ -603,19 +599,19 @@ export const translations = {
         title: "Under the hood",
         intro: "None of this is required reading to use the app. It's just for anyone curious what's actually going on under the hood.",
         signalPathTitle: "How a session gets saved",
-        signalPathIntro: "Gyms tend to be basements with no signal. Log a workout there and it saves straight to your phone, connection or not. Get back online later and the app pushes everything to the cloud on its own, no action needed from you.",
-        signalPath: ["Workout", "Local write (localStorage)", "Outbox if offline", "Supabase (cloud sync)"],
+        signalPathIntro: "Logging writes to your phone first, so what you type is committed immediately and the screen never waits on a response. The session then goes up to the cloud, so your data ends up on your other devices without you having to do anything about it.",
+        signalPath: ["Workout", "Local write (localStorage)", "Supabase (cloud sync)"],
         frameMathTitle: "What that means in practice",
         frameMath: [
           { value: "Instant", label: "you see your data with no wait" },
-          { value: "Always", label: "available, even with no wifi at the gym" },
+          { value: "Sync", label: "your sessions reach every device you use" },
           { value: "Live", label: "your 1RM appears while you're still typing" },
           { value: "Auto", label: "your workout saves itself as you go" }
         ],
         points: [
           {
             title: "Everything feels instant",
-            body: "Every screen shows your data right away, even on bad signal, because the app keeps a copy on your phone. That copy gets updated in the background whenever you log in or come back online."
+            body: "Every screen shows your data right away, because the app keeps a copy on your phone instead of fetching each screen fresh. That copy gets updated in the background whenever you log in."
           },
           {
             title: "A crash costs you nothing",
@@ -624,10 +620,6 @@ export const translations = {
           {
             title: "No account, no problem",
             body: "Train without signing in and it just stays on your phone. Create an account later and those workouts come with you instead of getting left behind."
-          },
-          {
-            title: "Whoever syncs last wins",
-            body: "Edit the same session on two devices that were both offline, and whichever one comes back online last is the version that sticks. For a personal training log, that's a trade-off I'm fine with."
           }
         ]
       },
@@ -653,7 +645,7 @@ export const translations = {
         "Vanilla ES6+ JavaScript, no bundler",
         "Tailwind CSS, precompiled into a single static file",
         "Supabase for auth, database, and cloud sync (with row-level security)",
-        "PWA with an offline-first localStorage cache and outbox"
+        "PWA with a localStorage cache so screens render immediately"
       ],
       installTitle: "Adding Sets to your phone",
       installSteps: [
@@ -662,7 +654,7 @@ export const translations = {
         "From then on it opens full-screen, no browser bar, like a native app."
       ],
       limitationsTitle: "Worth knowing",
-      limitations: "Train without an account and that data stays on your phone only; delete the app before signing in and that history is gone. And if you edit the same session on two devices that were both offline, whichever one comes back online last simply wins.",
+      limitations: "Train without an account and that data stays on your phone only; delete the app before signing in and that history is gone. And if you edit the same session on two devices, the version that syncs last is the one that wins.",
       openCta: "Open Sets",
       openNote: "sets.ink — free, and just a couple of taps to add to your phone",
       galleryTitle: "Inside the app",

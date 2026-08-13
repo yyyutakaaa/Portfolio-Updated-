@@ -173,8 +173,8 @@ const Resume: React.FC = () => {
                   </a>
                 </p>
                 <p>
-                  <a href="tel:+32465136679" className="hover:text-textMain">
-                    +32 465 13 66 79
+                  <a href="tel:+32468549478" className="hover:text-textMain">
+                    +32 468 54 94 78
                   </a>
                 </p>
               </div>

@@ -399,7 +399,7 @@ const ResumePdfDocument: React.FC<ResumePdfDocumentProps> = ({ content }) => {
                 <Text style={styles.contactValue}>mehdi.ouladkhlie@outlook.be</Text>
               </View>
               <View>
-                <Text style={styles.contactValue}>+32 465 13 66 79</Text>
+                <Text style={styles.contactValue}>+32 468 54 94 78</Text>
               </View>
             </View>
 

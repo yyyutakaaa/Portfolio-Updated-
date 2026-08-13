@@ -16,8 +16,8 @@ const Contact: React.FC = () => {
       formTitle: 'Stuur een bericht',
       infoTitle: 'Contactgegevens',
       socialTitle: 'Elders',
-      location: 'Gent, België',
-      phone: '+32 465 13 66 79',
+      location: 'Evergem, België',
+      phone: '+32 468 54 94 78',
       email: 'mehdi.ouladkhlie@outlook.be',
       availability: 'Beschikbaarheid',
       availableText: 'Beschikbaar voor werk',
@@ -31,8 +31,8 @@ const Contact: React.FC = () => {
       formTitle: 'Send a message',
       infoTitle: 'Contact details',
       socialTitle: 'Elsewhere',
-      location: 'Ghent, Belgium',
-      phone: '+32 465 13 66 79',
+      location: 'Evergem, Belgium',
+      phone: '+32 468 54 94 78',
       email: 'mehdi.ouladkhlie@outlook.be',
       availability: 'Availability',
       availableText: 'Available for work',
@@ -96,7 +96,7 @@ const Contact: React.FC = () => {
               <div className="py-4">
                 <dt className="label">{language === 'nl' ? 'Telefoon' : 'Phone'}</dt>
                 <dd className="mt-2">
-                  <a href="tel:+32465136679" className="text-sm hover:text-accent">
+                  <a href="tel:+32468549478" className="text-sm hover:text-accent">
                     {content.phone}
                   </a>
                 </dd>

@@ -92,8 +92,8 @@ const Home: React.FC = () => {
               <Reveal className="md:col-span-6 lg:col-span-5" delay={0.5}>
                 <p className="lede">
                   {language === 'nl'
-                    ? 'Ik hou de systemen en netwerken draaiende waar mensen dagelijks op rekenen, het liefst zonder dat iemand het merkt.'
-                    : 'I keep the systems and networks people rely on every day running, ideally without anyone noticing.'}
+                    ? 'Ik zorg dat de systemen en netwerken waar mensen elke dag op rekenen gewoon blijven draaien, liefst zonder dat iemand het doorheeft.'
+                    : 'I make sure the systems and networks people count on every day just keep running, preferably without anyone noticing.'}
                 </p>
 
                 <button type="button" onClick={() => scrollToId('work')} className="link-line mt-10">
@@ -298,10 +298,10 @@ const Home: React.FC = () => {
             <div className="tile">
               <span className="label">{t.home.education.expected}</span>
               <h3 className="headline mt-6 text-2xl md:text-3xl">{t.home.education.degree1}</h3>
-              <p className="index-num mt-4">HOGENT — GENT</p>
+              <p className="index-num mt-4">HOGENT · GENT</p>
             </div>
             <div className="tile">
-              <span className="label">2018 — 2024</span>
+              <span className="label">2018 - 2024</span>
               <h3 className="headline mt-6 text-2xl md:text-3xl">{t.home.education.degree2}</h3>
               <p className="index-num mt-4">VRIJ INSTITUUT VOOR SECUNDAIR ONDERWIJS</p>
               <p className="mt-4 text-sm text-textDim">{t.home.education.degree2desc}</p>

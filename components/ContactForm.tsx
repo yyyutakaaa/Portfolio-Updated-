@@ -31,15 +31,15 @@ const ContactForm: React.FC<ContactFormProps> = ({ language }) => {
       email: 'E-mail',
       emailPlaceholder: 'je@email.com',
       subject: 'Onderwerp',
-      subjectPlaceholder: 'Waarover wil je praten?',
+      subjectPlaceholder: 'Waarover gaat het?',
       message: 'Bericht',
-      messagePlaceholder: 'Schrijf hier je bericht...',
+      messagePlaceholder: 'Typ hier je bericht...',
       send: 'Verstuur bericht',
       sending: 'Verzenden...',
-      success: 'Bericht succesvol verzonden! Ik neem zo snel mogelijk contact met je op.',
-      error: 'Er is iets misgegaan. Probeer het opnieuw of stuur een e-mail naar mehdi.ouladkhlie@outlook.be',
-      required: 'Dit veld is verplicht',
-      invalidEmail: 'Voer een geldig e-mailadres in'
+      success: 'Verstuurd. Ik laat zo snel mogelijk iets weten.',
+      error: 'Er ging iets mis. Probeer nog eens, of mail me gewoon op mehdi.ouladkhlie@outlook.be',
+      required: 'Dit veld moet ingevuld zijn',
+      invalidEmail: 'Vul een geldig e-mailadres in'
     },
     en: {
       name: 'Name',
@@ -47,15 +47,15 @@ const ContactForm: React.FC<ContactFormProps> = ({ language }) => {
       email: 'Email',
       emailPlaceholder: 'you@email.com',
       subject: 'Subject',
-      subjectPlaceholder: 'What do you want to talk about?',
+      subjectPlaceholder: 'What is it about?',
       message: 'Message',
-      messagePlaceholder: 'Write your message here...',
+      messagePlaceholder: 'Type your message here...',
       send: 'Send message',
       sending: 'Sending...',
-      success: 'Message sent successfully! I will get back to you as soon as possible.',
-      error: 'Something went wrong. Please try again or send an email to mehdi.ouladkhlie@outlook.be',
-      required: 'This field is required',
-      invalidEmail: 'Please enter a valid email address'
+      success: 'Sent. I will get back to you as soon as I can.',
+      error: 'Something went wrong. Try again, or just email me at mehdi.ouladkhlie@outlook.be',
+      required: 'This field has to be filled in',
+      invalidEmail: 'Fill in a valid email address'
     }
   };
 

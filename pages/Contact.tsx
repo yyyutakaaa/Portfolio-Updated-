@@ -10,9 +10,9 @@ const Contact: React.FC = () => {
   const contactInfo = {
     nl: {
       title: 'Contact',
-      subtitle: 'Laten we verbinden',
+      subtitle: 'Zeg gerust hallo',
       description:
-        'Heb je een vraag, een project in gedachten, of wil je gewoon eens babbelen? Stuur een bericht via het formulier hieronder, of neem rechtstreeks contact op via een van de kanalen.',
+        'Heb je een vraag of wil je gewoon eens babbelen? Vul het formulier hieronder in, of pak me rechtstreeks via een van de kanalen hiernaast.',
       formTitle: 'Stuur een bericht',
       infoTitle: 'Contactgegevens',
       socialTitle: 'Elders',
@@ -21,13 +21,13 @@ const Contact: React.FC = () => {
       email: 'mehdi.ouladkhlie@outlook.be',
       availability: 'Beschikbaarheid',
       availableText: 'Beschikbaar voor werk',
-      responseTime: 'Ik probeer binnen 24-48 uur te reageren op berichten.',
+      responseTime: 'Ik antwoord meestal binnen een dag of twee.',
     },
     en: {
       title: 'Contact',
-      subtitle: "Let's connect",
+      subtitle: 'Say hi',
       description:
-        'Have a question, a project in mind, or just want to say hi? Send a message through the form below, or reach out directly through one of the channels.',
+        'Got a question, or do you just want to chat? Fill in the form below, or reach me directly through one of the channels on the side.',
       formTitle: 'Send a message',
       infoTitle: 'Contact details',
       socialTitle: 'Elsewhere',
@@ -36,7 +36,7 @@ const Contact: React.FC = () => {
       email: 'mehdi.ouladkhlie@outlook.be',
       availability: 'Availability',
       availableText: 'Available for work',
-      responseTime: 'I try to respond to messages within 24-48 hours.',
+      responseTime: 'I usually get back to you within a day or two.',
     },
   };
 

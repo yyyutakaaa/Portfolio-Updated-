@@ -103,7 +103,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
         <div className="container">
           <div className="flex h-16 items-center justify-between gap-4 sm:h-[74px]">
-            <NavLink to="/" className="brand shrink-0" aria-label="Mehdi Oulad Khlie — home">
+            <NavLink to="/" className="brand shrink-0" aria-label="Mehdi Oulad Khlie, home">
               MEHDI<span aria-hidden="true">.</span>
               <span className="sr-only"> </span>
               <span className="hidden text-textMain sm:inline">OULAD KHLIE</span>
@@ -179,8 +179,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             </div>
 
             <p className="label">
-              © {new Date().getFullYear()} Mehdi Oulad Khlie —{' '}
-              {language === 'nl' ? 'Ontworpen in België' : 'Designed in Belgium'}
+              © {new Date().getFullYear()} Mehdi Oulad Khlie.{' '}
+              {language === 'nl' ? 'Gemaakt in België' : 'Made in Belgium'}
             </p>
           </div>
         </div>

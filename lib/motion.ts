@@ -5,6 +5,14 @@ import { SplitText } from 'gsap/SplitText';
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
 /**
+ * `ignoreMobileResize` keeps the collapsing mobile URL bar from triggering a
+ * full refresh of every trigger mid-scroll, and `limitCallbacks` stops
+ * enter/leave callbacks from firing twice around a boundary. Both are pure
+ * scheduling — no trigger changes position or timing.
+ */
+ScrollTrigger.config({ ignoreMobileResize: true, limitCallbacks: true });
+
+/**
  * Every animated element renders in its resting state until this class is
  * set, so a JS failure or a slow chunk can never leave content invisible.
  */

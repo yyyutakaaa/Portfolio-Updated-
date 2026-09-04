@@ -41,10 +41,17 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   /* A hairline that fills as the page is read — the only always-on indicator. */
   React.useEffect(() => {
     let frame = 0;
+    /* Reading scrollHeight forces a layout, so the document height is measured
+       when it can actually change — on resize and when the page grows — never
+       on every scroll frame. */
+    let scrollable = 0;
+
+    const measure = () => {
+      scrollable = document.documentElement.scrollHeight - window.innerHeight;
+    };
 
     const update = () => {
       frame = 0;
-      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
       const progress = scrollable > 0 ? window.scrollY / scrollable : 0;
 
       setScrolled(window.scrollY > 8);
@@ -57,14 +64,25 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       if (!frame) frame = window.requestAnimationFrame(update);
     };
 
+    const onResize = () => {
+      measure();
+      onScroll();
+    };
+
+    measure();
     update();
     window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll, { passive: true });
+    window.addEventListener('resize', onResize, { passive: true });
+
+    // Lazy images, webfonts and route changes all move the page height.
+    const resizeObserver = new ResizeObserver(onResize);
+    resizeObserver.observe(document.body);
 
     return () => {
       if (frame) window.cancelAnimationFrame(frame);
+      resizeObserver.disconnect();
       window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onScroll);
+      window.removeEventListener('resize', onResize);
     };
   }, []);
 

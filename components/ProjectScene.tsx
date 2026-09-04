@@ -82,6 +82,15 @@ const ProjectScene: React.FC<ProjectSceneProps> = ({
 
     // The depth pass only where there's room for drift to read as depth.
     mm.add('(prefers-reduced-motion: no-preference) and (min-width: 768px)', () => {
+      /**
+       * A scrubbed layer moves on every scroll frame, so it wants its own
+       * compositor layer — but only while it is on screen. The trigger's own
+       * range is exactly that window, so it hands the promotion out and takes
+       * it back again.
+       */
+      const promote = (el: Element) => (self: { isActive: boolean }) =>
+        gsap.set(el, { willChange: self.isActive ? 'transform' : 'auto' });
+
       const tweens = [
         gsap.fromTo(
           plate,
@@ -94,6 +103,7 @@ const ProjectScene: React.FC<ProjectSceneProps> = ({
               start: 'top bottom',
               end: 'bottom top',
               scrub: 0.65,
+              onToggle: promote(plate),
             },
           },
         ),
@@ -113,6 +123,7 @@ const ProjectScene: React.FC<ProjectSceneProps> = ({
                 start: 'top bottom',
                 end: 'bottom top',
                 scrub: 0.9,
+                onToggle: promote(ghost),
               },
             },
           ),
@@ -124,8 +135,8 @@ const ProjectScene: React.FC<ProjectSceneProps> = ({
           tween.scrollTrigger?.kill();
           tween.kill();
         });
-        gsap.set(plate, { clearProps: 'transform' });
-        if (ghost) gsap.set(ghost, { clearProps: 'transform' });
+        gsap.set(plate, { clearProps: 'transform,willChange' });
+        if (ghost) gsap.set(ghost, { clearProps: 'transform,willChange' });
       };
     });
 

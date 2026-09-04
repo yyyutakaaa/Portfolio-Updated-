@@ -47,6 +47,7 @@
   --rule-strong: rgb(21 20 15 / 0.28);
   --wash: rgb(21 20 15 / 0.035);
   --nav-bg: rgb(244 242 237 / 0.72);
+  --nav-bg-solid: var(--paper);
   --shadow: rgb(52 44 32 / 0.1);
 
   /* Tailwind bridges — kept as channels so /<alpha-value> works. */
@@ -87,6 +88,7 @@
   --rule-strong: rgb(240 236 228 / 0.3);
   --wash: rgb(240 236 228 / 0.04);
   --nav-bg: rgb(16 15 13 / 0.72);
+  --nav-bg-solid: var(--paper);
   --shadow: rgb(0 0 0 / 0.4);
 
   --color-bg-rgb: 16 15 13;
@@ -367,17 +369,33 @@ p {
 
 /* ================================================================ nav ==== */
 
+/* A backdrop-filter re-samples everything behind the bar on every scrolled
+   frame, and it is the single most expensive thing on the page — around a
+   third of all main-thread time during a scroll, measured. Lowering the blur
+   radius saves nothing; the cost is in taking the snapshot at all.
+
+   So the frosted bar is spent where it can be afforded and where it is looked
+   at: pointer devices. Touch screens get a solid bar in the page colour
+   instead, which is also the fallback anywhere backdrop-filter is missing. */
 .site-nav {
   position: fixed;
   z-index: 50;
   top: 0;
   right: 0;
   left: 0;
-  background: var(--nav-bg);
-  backdrop-filter: saturate(1.4) blur(16px);
-  -webkit-backdrop-filter: saturate(1.4) blur(16px);
+  background: var(--nav-bg-solid);
   border-bottom: 1px solid transparent;
   transition: border-color 400ms ease, background-color 400ms var(--ease-standard);
+}
+
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  @media (hover: hover) and (pointer: fine) {
+    .site-nav {
+      background: var(--nav-bg);
+      backdrop-filter: saturate(1.4) blur(16px);
+      -webkit-backdrop-filter: saturate(1.4) blur(16px);
+    }
+  }
 }
 
 .site-nav[data-scrolled="true"] {
@@ -487,10 +505,12 @@ p {
   border: 1px solid var(--rule);
   border-radius: var(--radius-lg);
   background: var(--wash);
+  /* No transform here on purpose: nothing moves a tile on hover, and listing
+     transform meant every frame GSAP wrote one it also started a CSS
+     transition against it — two engines animating the same property. */
   transition:
     border-color var(--motion-medium) var(--ease-out-soft),
-    background-color var(--motion-medium) var(--ease-out-soft),
-    transform var(--motion-medium) var(--ease-out-soft);
+    background-color var(--motion-medium) var(--ease-out-soft);
 }
 
 @media (min-width: 768px) {
@@ -701,7 +721,8 @@ p {
 
 .btn,
 .btn-ghost {
-  transition-property: color, background-color, border-color, opacity, transform, letter-spacing;
+  /* transform is deliberately absent — see .tile above. */
+  transition-property: color, background-color, border-color, opacity, letter-spacing;
 }
 
 /* Hover breathes the tracking open — the variable-type idea at button scale. */
@@ -798,6 +819,8 @@ p {
   border-radius: 999px;
   opacity: 0;
   animation: ping 2.8s var(--ease-out-soft) infinite;
+  /* An infinite loop belongs on the compositor, not in the style engine. */
+  will-change: transform, opacity;
 }
 
 @keyframes ping {

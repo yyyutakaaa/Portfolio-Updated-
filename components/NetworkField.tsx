@@ -158,10 +158,28 @@ const NetworkField: React.FC<{ className?: string }> = ({ className = '' }) => {
       ctx.globalAlpha = 1;
     };
 
-    const step = () => {
+    /**
+     * The field drifts at a fraction of a pixel per frame, so redrawing it 60
+     * times a second buys nothing visible — it just takes main-thread time away
+     * from the scroll running over it. It redraws 30 times a second instead and
+     * moves by elapsed time, so the drift keeps exactly the same speed.
+     */
+    const FRAME_MS = 1000 / 30;
+    let previous = 0;
+
+    const step = (now: number) => {
+      frame = window.requestAnimationFrame(step);
+
+      const elapsed = now - previous;
+      if (elapsed < FRAME_MS) return;
+      // A tab returning from the background can hand back a huge gap; clamp it
+      // so the field never teleports.
+      const delta = Math.min(elapsed, 100) / 16.667;
+      previous = now;
+
       for (const node of nodes) {
-        node.x += node.vx;
-        node.y += node.vy;
+        node.x += node.vx * delta;
+        node.y += node.vy * delta;
 
         // Wrap rather than bounce: no visible walls in the field.
         if (node.x < -20) node.x = width + 20;
@@ -171,11 +189,11 @@ const NetworkField: React.FC<{ className?: string }> = ({ className = '' }) => {
       }
 
       draw();
-      frame = window.requestAnimationFrame(step);
     };
 
     const play = () => {
       if (still || frame) return;
+      previous = performance.now();
       frame = window.requestAnimationFrame(step);
     };
 
@@ -183,6 +201,29 @@ const NetworkField: React.FC<{ className?: string }> = ({ className = '' }) => {
       if (!frame) return;
       window.cancelAnimationFrame(frame);
       frame = 0;
+    };
+
+    /**
+     * The field is a slow drift; nobody tracks it while the page is moving
+     * under them. Holding it still during a scroll hands the whole frame
+     * budget to the scroll itself, and it picks the drift back up a moment
+     * after the page settles.
+     */
+    let scrolling = false;
+    let settle = 0;
+
+    const sync = () => (visible && !scrolling && !document.hidden ? play() : pause());
+
+    const onScroll = () => {
+      if (!scrolling) {
+        scrolling = true;
+        pause();
+      }
+      window.clearTimeout(settle);
+      settle = window.setTimeout(() => {
+        scrolling = false;
+        sync();
+      }, 180);
     };
 
     const onPointerMove = (event: PointerEvent) => {
@@ -199,7 +240,7 @@ const NetworkField: React.FC<{ className?: string }> = ({ className = '' }) => {
       pointer.y = -9999;
     };
 
-    const onVisibility = () => (document.hidden || !visible ? pause() : play());
+    const onVisibility = () => sync();
 
     readPalette();
     resize();
@@ -211,7 +252,7 @@ const NetworkField: React.FC<{ className?: string }> = ({ className = '' }) => {
     const intersectionObserver = new IntersectionObserver(
       ([entry]) => {
         visible = entry.isIntersecting;
-        visible && !document.hidden ? play() : pause();
+        sync();
       },
       { rootMargin: '120px' },
     );
@@ -228,11 +269,14 @@ const NetworkField: React.FC<{ className?: string }> = ({ className = '' }) => {
     });
 
     document.addEventListener('visibilitychange', onVisibility);
+    window.addEventListener('scroll', onScroll, { passive: true });
     parent.addEventListener('pointermove', onPointerMove);
     parent.addEventListener('pointerleave', onPointerLeave);
 
     return () => {
       pause();
+      window.clearTimeout(settle);
+      window.removeEventListener('scroll', onScroll);
       resizeObserver.disconnect();
       intersectionObserver.disconnect();
       themeObserver.disconnect();

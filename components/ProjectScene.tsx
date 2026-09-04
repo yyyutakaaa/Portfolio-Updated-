@@ -134,6 +134,28 @@ const ProjectScene: React.FC<ProjectSceneProps> = ({
     };
   }, []);
 
+  /* The flagship plate breathes on a wide, blurred box-shadow, which repaints
+     on every frame it runs. Off screen there is nothing to see, so it pauses. */
+  React.useEffect(() => {
+    const plate = plateRef.current;
+    if (!plate || !flagship) return;
+
+    plate.dataset.offscreen = 'true';
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        plate.dataset.offscreen = entry.isIntersecting ? 'false' : 'true';
+      },
+      { rootMargin: '80px' },
+    );
+    observer.observe(plate);
+
+    return () => {
+      observer.disconnect();
+      delete plate.dataset.offscreen;
+    };
+  }, [flagship]);
+
   return (
     <article ref={sceneRef} className="group/scene relative">
       {/* Oversized contour index — a layout element, drifting against the plate. */}

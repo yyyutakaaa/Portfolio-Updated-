@@ -559,6 +559,13 @@ p {
   animation: flagship-breathe 5.5s ease-in-out infinite alternate;
 }
 
+/* Animating a large blurred box-shadow repaints every frame, so the breathing
+   only runs while the plate is actually on screen. Identical on screen, free
+   off it. */
+.plate--flagship[data-offscreen="true"] {
+  animation-play-state: paused;
+}
+
 .plate--flagship::before {
   position: absolute;
   top: 0;
@@ -853,10 +860,12 @@ p {
 /* ============================================================= motion ==== */
 
 /* Resting state for anything GSAP will animate in. If JS never runs, the
-   fallback rule below puts it all back — content is never trapped hidden. */
-[data-anim] {
-  will-change: transform, opacity;
-}
+   fallback rule below puts it all back — content is never trapped hidden.
+
+   No blanket will-change or layer promotion here: GSAP promotes each element
+   for the duration of its own tween and releases it afterwards. Holding a
+   compositor layer open for every animated block on the page — dozens of them
+   — is what made long pages crawl. */
 
 html:not(.motion-ready) [data-anim] {
   opacity: 1;
@@ -903,6 +912,7 @@ html:not(.motion-ready) [data-anim] {
   display: flex;
   width: max-content;
   animation: marquee 38s linear infinite;
+  will-change: transform;
 }
 
 .marquee:hover {

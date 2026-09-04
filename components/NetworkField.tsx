@@ -70,6 +70,10 @@ const NetworkField: React.FC<{ className?: string }> = ({ className = '' }) => {
       const rect = parent.getBoundingClientRect();
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
+      // Mobile browsers fire a resize every time the URL bar slides; without
+      // this guard the field would be re-allocated and reseeded mid-scroll.
+      if (Math.abs(rect.width - width) < 1 && Math.abs(rect.height - height) < 1) return;
+
       width = rect.width;
       height = rect.height;
       if (width === 0 || height === 0) return;
@@ -84,28 +88,58 @@ const NetworkField: React.FC<{ className?: string }> = ({ className = '' }) => {
       if (still) draw();
     };
 
+    /**
+     * Every link used to be its own beginPath/stroke pair — several hundred
+     * draw calls a frame. Links are instead sorted into a few opacity bands
+     * per colour and each band is stroked as one path. The banding sits at
+     * 0.03 alpha steps on a hairline: invisible, and an order of magnitude
+     * cheaper.
+     */
+    const BANDS = 6;
+    const bands: number[][] = Array.from({ length: BANDS * 2 }, () => []);
+
     const draw = () => {
       ctx.clearRect(0, 0, width, height);
 
+      for (const band of bands) band.length = 0;
+
+      const reach = linkDistance;
+      const reachSq = reach * reach;
+
       // Links first, so nodes sit on top of their own connections.
       for (let i = 0; i < nodes.length; i++) {
+        const a = nodes[i];
         for (let j = i + 1; j < nodes.length; j++) {
-          const a = nodes[i];
           const b = nodes[j];
           const dx = a.x - b.x;
+          if (dx > reach || dx < -reach) continue;
           const dy = a.y - b.y;
-          const distance = Math.hypot(dx, dy);
-          if (distance > linkDistance) continue;
+          if (dy > reach || dy < -reach) continue;
 
-          const strength = 1 - distance / linkDistance;
-          ctx.globalAlpha = strength * 0.2;
-          ctx.strokeStyle = a.live && b.live ? palette.accent : palette.ink;
-          ctx.lineWidth = 1;
-          ctx.beginPath();
-          ctx.moveTo(a.x, a.y);
-          ctx.lineTo(b.x, b.y);
-          ctx.stroke();
+          const distanceSq = dx * dx + dy * dy;
+          if (distanceSq > reachSq) continue;
+
+          const strength = 1 - Math.sqrt(distanceSq) / reach;
+          const band = Math.min(BANDS - 1, (strength * BANDS) | 0);
+          const bucket = bands[(a.live && b.live ? BANDS : 0) + band];
+          bucket.push(a.x, a.y, b.x, b.y);
         }
+      }
+
+      ctx.lineWidth = 1;
+      for (let band = 0; band < bands.length; band++) {
+        const segments = bands[band];
+        if (segments.length === 0) continue;
+
+        const step = band % BANDS;
+        ctx.globalAlpha = ((step + 0.5) / BANDS) * 0.2;
+        ctx.strokeStyle = band >= BANDS ? palette.accent : palette.ink;
+        ctx.beginPath();
+        for (let k = 0; k < segments.length; k += 4) {
+          ctx.moveTo(segments[k], segments[k + 1]);
+          ctx.lineTo(segments[k + 2], segments[k + 3]);
+        }
+        ctx.stroke();
       }
 
       for (const node of nodes) {
@@ -174,10 +208,13 @@ const NetworkField: React.FC<{ className?: string }> = ({ className = '' }) => {
     const resizeObserver = new ResizeObserver(resize);
     resizeObserver.observe(parent);
 
-    const intersectionObserver = new IntersectionObserver(([entry]) => {
-      visible = entry.isIntersecting;
-      visible && !document.hidden ? play() : pause();
-    });
+    const intersectionObserver = new IntersectionObserver(
+      ([entry]) => {
+        visible = entry.isIntersecting;
+        visible && !document.hidden ? play() : pause();
+      },
+      { rootMargin: '120px' },
+    );
     intersectionObserver.observe(parent);
 
     // The palette flips with the theme toggle.

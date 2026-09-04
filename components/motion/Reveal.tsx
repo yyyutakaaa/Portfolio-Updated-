@@ -46,12 +46,20 @@ const Reveal: React.FC<RevealProps> = ({
         ease: EASE.out,
         stagger,
         scrollTrigger: { trigger: el, start: 'top 90%', once: true },
+        /**
+         * Promoted for the second it moves and released straight after. Without
+         * this the browser repaints the block on every frame of the rise; with
+         * it left on permanently the page carries a compositor layer per
+         * revealed block for the rest of the visit.
+         */
+        onStart: () => gsap.set(targets, { willChange: 'transform, opacity' }),
+        onComplete: () => gsap.set(targets, { willChange: 'auto' }),
       });
 
       return () => {
         tween.scrollTrigger?.kill();
         tween.kill();
-        gsap.set(targets, { clearProps: 'transform,opacity,visibility' });
+        gsap.set(targets, { clearProps: 'transform,opacity,visibility,willChange' });
       };
     });
 

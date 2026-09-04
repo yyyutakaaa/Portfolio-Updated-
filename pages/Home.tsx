@@ -283,7 +283,7 @@ const Home: React.FC = () => {
                       size={18}
                       strokeWidth={1.3}
                       aria-hidden="true"
-                      className="transition-all duration-500 ease-soft group-hover/row:-translate-y-1 group-hover/row:translate-x-1 group-hover/row:text-accent"
+                      className="transition-[color,transform] duration-500 ease-soft group-hover/row:-translate-y-1 group-hover/row:translate-x-1 group-hover/row:text-accent"
                     />
                   </span>
                 </a>

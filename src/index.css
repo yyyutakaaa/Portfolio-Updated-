@@ -487,10 +487,12 @@ p {
   border: 1px solid var(--rule);
   border-radius: var(--radius-lg);
   background: var(--wash);
+  /* No transform here on purpose: nothing moves a tile on hover, and listing
+     transform meant every frame GSAP wrote one it also started a CSS
+     transition against it — two engines animating the same property. */
   transition:
     border-color var(--motion-medium) var(--ease-out-soft),
-    background-color var(--motion-medium) var(--ease-out-soft),
-    transform var(--motion-medium) var(--ease-out-soft);
+    background-color var(--motion-medium) var(--ease-out-soft);
 }
 
 @media (min-width: 768px) {
@@ -701,7 +703,8 @@ p {
 
 .btn,
 .btn-ghost {
-  transition-property: color, background-color, border-color, opacity, transform, letter-spacing;
+  /* transform is deliberately absent — see .tile above. */
+  transition-property: color, background-color, border-color, opacity, letter-spacing;
 }
 
 /* Hover breathes the tracking open — the variable-type idea at button scale. */
@@ -798,6 +801,8 @@ p {
   border-radius: 999px;
   opacity: 0;
   animation: ping 2.8s var(--ease-out-soft) infinite;
+  /* An infinite loop belongs on the compositor, not in the style engine. */
+  will-change: transform, opacity;
 }
 
 @keyframes ping {

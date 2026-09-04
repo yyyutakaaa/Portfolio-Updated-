@@ -72,6 +72,9 @@ const KineticHeading: React.FC<KineticHeadingProps> = ({
                 trigger === 'scroll'
                   ? { trigger: el, start: 'top 88%', once: true }
                   : undefined,
+              // Composited while the lines are in flight, released afterwards.
+              onStart: () => gsap.set(self.lines, { willChange: 'transform, opacity' }),
+              onComplete: () => gsap.set(self.lines, { willChange: 'auto' }),
             })
             .from(self.lines, {
               yPercent: 112,

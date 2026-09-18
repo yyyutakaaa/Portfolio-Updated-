@@ -11,6 +11,7 @@ const Contact = React.lazy(() => import('./pages/Contact'));
 const Privacy = React.lazy(() => import('./pages/Privacy'));
 const ProjectMuted = React.lazy(() => import('./pages/ProjectMuted'));
 const ProjectSets = React.lazy(() => import('./pages/ProjectSets'));
+const Ink = React.lazy(() => import('./pages/Ink'));
 
 /**
  * Resets scroll on navigation and recomputes every trigger once the new page
@@ -29,13 +30,26 @@ const ScrollToTop = () => {
   return null;
 };
 
+/**
+ * The sumi-e direction is its own world — paper ground, its own nav, its own
+ * type. It renders without the current shell so the two can be compared
+ * honestly instead of one borrowing the other's chrome.
+ */
+const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { pathname } = useLocation();
+
+  if (pathname === '/ink') return <>{children}</>;
+
+  return <Layout>{children}</Layout>;
+};
+
 const App: React.FC = () => {
   return (
     <LanguageProvider>
       <HashRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <SmoothScroll>
           <ScrollToTop />
-          <Layout>
+          <AppShell>
             <Suspense
               fallback={
                 <div className="page-loader" aria-label="Loading page">
@@ -52,10 +66,11 @@ const App: React.FC = () => {
                 <Route path="/visibility-spoofer-privacy" element={<Privacy />} />
                 <Route path="/projects/muted" element={<ProjectMuted />} />
                 <Route path="/projects/sets" element={<ProjectSets />} />
+                <Route path="/ink" element={<Ink />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
             </Suspense>
-          </Layout>
+          </AppShell>
         </SmoothScroll>
       </HashRouter>
     </LanguageProvider>

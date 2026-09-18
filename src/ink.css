@@ -1,0 +1,495 @@
+/* ==========================================================================
+   Sumi-e direction — self-contained.
+
+   Everything here is scoped under `.ink-root` (plus a small `html.ink-mode`
+   hook for the page ground) so it can sit next to the current site without
+   either one leaking into the other.
+   ========================================================================== */
+
+/* --------------------------------------------------------------- faces --- */
+
+@font-face {
+  font-family: "Cormorant Garamond";
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url("/fonts/cormorant-variable.woff2") format("woff2-variations");
+}
+
+@font-face {
+  font-family: "Cormorant Garamond";
+  font-style: italic;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url("/fonts/cormorant-variable-italic.woff2") format("woff2-variations");
+}
+
+@font-face {
+  font-family: "Inter Variable";
+  font-style: normal;
+  font-weight: 200 500;
+  font-display: swap;
+  src: url("/fonts/inter-variable.woff2") format("woff2-variations");
+}
+
+/* -------------------------------------------------------------- tokens --- */
+
+.ink-root {
+  /* Paper and ink. The greys are ink thinned with water, not neutral greys —
+     they carry the same warmth as the paper. */
+  --washi: #f4f1ea;
+  --sumi: #1c1b19;
+  --ink-1: #4a4744;
+  --ink-2: #8c8883;
+  --ink-3: #c9c4bb;
+
+  /* The only colour on the site. Three uses, site-wide. */
+  --hanko: #b23a2e;
+
+  --rule: rgb(28 27 25 / 0.08);
+  --rule-firm: rgb(28 27 25 / 0.16);
+
+  --serif: "Cormorant Garamond", "Iowan Old Style", Georgia, serif;
+  --sans: "Inter Variable", Inter, "Helvetica Neue", Arial, sans-serif;
+
+  --gutter: clamp(20px, 4.2vw, 68px);
+  --shell: 1560px;
+
+  /* One deceleration curve for the whole site — ink settles, it never bounces. */
+  --settle: cubic-bezier(0.22, 1, 0.36, 1);
+
+  position: relative;
+  min-height: 100svh;
+  background: var(--washi);
+  color: var(--sumi);
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: clamp(0.95rem, 0.9rem + 0.2vw, 1.0625rem);
+  line-height: 1.75;
+  letter-spacing: 0.004em;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* The shell is themed elsewhere; while a sumi-e page is mounted the ground
+   under it (overscroll included) has to be paper in either stored theme. */
+html.ink-mode,
+html.ink-mode body {
+  background: #f4f1ea;
+  color: #1c1b19;
+}
+
+html.ink-cursor-on,
+html.ink-cursor-on * {
+  cursor: none;
+}
+
+/* Keyboard focus has to survive a hidden cursor. */
+.ink-root :where(a, button, [tabindex]):focus-visible {
+  outline: 1px solid var(--sumi);
+  outline-offset: 5px;
+  border-radius: 1px;
+}
+
+
+/* The name is painted as SVG, so the heading carries it as real text for
+   anything that reads rather than looks. */
+.ink-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------------------------------------------------------------- paper --- */
+
+/* Two tiled noise fields at different scales, so neither one's repeat is
+   legible: fine pulp grain, and a softly directional second pass for the fibre
+   that runs through washi. The directionality is deliberately mild — push the
+   frequency ratio much past 10:1 and turbulence stops reading as fibre and
+   starts reading as banding. Both are static, so they rasterise once. */
+.ink-grain {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.5;
+  mix-blend-mode: multiply;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23g)' opacity='0.24'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='380' height='380'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.55 0.06' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='380' height='380' filter='url(%23f)' opacity='0.1'/%3E%3C/svg%3E");
+  background-size: 220px 220px, 380px 380px;
+}
+
+/* Hand-made paper is never one flat tone. Two washes, both under 3% ink. */
+.ink-tone {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(62vw 52vw at 18% 12%, rgb(28 27 25 / 0.028), transparent 70%),
+    radial-gradient(48vw 44vw at 88% 86%, rgb(28 27 25 / 0.022), transparent 68%);
+}
+
+/* ----------------------------------------------------------------- nav --- */
+
+.ink-nav {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: clamp(18px, 2.4vw, 30px) var(--gutter);
+}
+
+.ink-nav__sealLink {
+  display: block;
+  line-height: 0;
+}
+
+.ink-nav__seal {
+  display: block;
+  width: 26px;
+  height: 26px;
+  transition: transform 600ms var(--settle);
+}
+
+.ink-nav__sealLink:hover .ink-nav__seal {
+  transform: rotate(-3deg) scale(1.05);
+}
+
+.ink-nav__right {
+  display: flex;
+  align-items: center;
+  gap: clamp(20px, 2.6vw, 38px);
+}
+
+.ink-nav__links {
+  display: flex;
+  gap: clamp(20px, 2.6vw, 38px);
+}
+
+.ink-cap {
+  font-family: var(--sans);
+  font-size: 0.6875rem;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.19em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.ink-nav__link {
+  position: relative;
+  color: var(--ink-1);
+  text-decoration: none;
+  padding-bottom: 3px;
+  transition: color 400ms var(--settle);
+}
+
+.ink-nav__link::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 520ms var(--settle);
+}
+
+.ink-nav__link:hover {
+  color: var(--sumi);
+}
+
+.ink-nav__link:hover::after {
+  transform: scaleX(1);
+}
+
+.ink-enso {
+  display: block;
+  width: 26px;
+  height: 26px;
+}
+
+@media (max-width: 599px) {
+  .ink-nav__links {
+    gap: 16px;
+  }
+
+  .ink-cap {
+    letter-spacing: 0.14em;
+  }
+}
+
+/* ---------------------------------------------------------------- hero --- */
+
+.ink-hero {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+  padding: clamp(104px, 13vh, 168px) var(--gutter) clamp(28px, 4vh, 44px);
+}
+
+.ink-hero__shell {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  width: 100%;
+  max-width: var(--shell);
+  margin: 0 auto;
+}
+
+.ink-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: clamp(10px, 1.6vw, 26px);
+}
+
+/* Faint verticals at the two columns the content hangs from, plus one far
+   right to close the composition. Decorative, so they stay under 8% ink. */
+.ink-rules {
+  position: absolute;
+  inset: 0 var(--gutter);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.ink-rules__inner {
+  width: 100%;
+  max-width: var(--shell);
+  height: 100%;
+  margin: 0 auto;
+}
+
+.ink-rules span {
+  display: block;
+  height: 100%;
+}
+
+.ink-rules span:nth-child(3),
+.ink-rules span:nth-child(5),
+.ink-rules span:nth-child(11) {
+  box-shadow: inset 1px 0 0 var(--rule);
+}
+
+.ink-hero__body {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.ink-eyebrow {
+  grid-column: 3 / span 8;
+  margin-bottom: clamp(26px, 3.6vh, 46px);
+}
+
+.ink-name {
+  grid-column: 3 / span 9;
+  margin: 0;
+  font-weight: inherit;
+}
+
+.ink-name__art {
+  display: block;
+}
+
+.ink-name svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.ink-name__glyphs {
+  font-family: var(--serif);
+  font-weight: 300;
+  fill: var(--sumi);
+  letter-spacing: -0.012em;
+}
+
+.ink-tail {
+  grid-column: 5 / span 6;
+  margin-top: clamp(34px, 4.6vh, 58px);
+}
+
+.ink-brushrule {
+  display: block;
+  width: clamp(112px, 12vw, 168px);
+  height: auto;
+  margin-bottom: clamp(20px, 2.4vh, 30px);
+  fill: var(--sumi);
+  opacity: 0.8;
+}
+
+.ink-lede {
+  max-width: 33ch;
+  margin: 0;
+  font-size: clamp(1.0625rem, 0.98rem + 0.42vw, 1.375rem);
+  font-weight: 250;
+  line-height: 1.68;
+  letter-spacing: 0.002em;
+  color: var(--ink-1);
+}
+
+/* The one italic word. Optically larger because the serif runs small beside
+   Inter, and at full ink so it reads as the emphasis it is. */
+.ink-lede em {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.3em;
+  line-height: 1;
+  letter-spacing: 0.006em;
+  color: var(--sumi);
+}
+
+/* ---------------------------------------------------------------- foot --- */
+
+.ink-foot {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  padding-top: clamp(24px, 4vh, 40px);
+}
+
+.ink-foot__meta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.ink-foot__sep {
+  width: 22px;
+  height: 1px;
+  background: var(--rule-firm);
+}
+
+.ink-scroll {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.ink-scroll__track {
+  position: relative;
+  width: 1px;
+  height: 46px;
+  background: rgb(28 27 25 / 0.22);
+  overflow: hidden;
+}
+
+/* A bead of ink running down the track — the only looping motion on the page. */
+.ink-scroll__bead {
+  position: absolute;
+  inset: 0 auto auto 50%;
+  width: 3px;
+  height: 3px;
+  margin-left: -1.5px;
+  border-radius: 50%;
+  background: var(--sumi);
+  animation: ink-bead 2.9s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+}
+
+@keyframes ink-bead {
+  0% {
+    transform: translateY(-6px);
+    opacity: 0;
+  }
+  22%,
+  78% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(46px);
+    opacity: 0;
+  }
+}
+
+@media (max-width: 719px) {
+  .ink-eyebrow,
+  .ink-name,
+  .ink-tail {
+    grid-column: 1 / -1;
+  }
+
+  .ink-rules span:nth-child(3),
+  .ink-rules span:nth-child(5),
+  .ink-rules span:nth-child(11) {
+    box-shadow: none;
+  }
+
+  .ink-foot__meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .ink-foot__sep {
+    display: none;
+  }
+}
+
+/* -------------------------------------------------------------- cursor --- */
+
+.ink-trail {
+  position: fixed;
+  inset: 0;
+  z-index: 59;
+  pointer-events: none;
+}
+
+.ink-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 60;
+  width: 7px;
+  height: 7px;
+  margin: -3.5px 0 0 -3.5px;
+  border-radius: 50%;
+  background: var(--sumi);
+  pointer-events: none;
+  will-change: transform;
+  transition: width 420ms var(--settle), height 420ms var(--settle),
+    margin 420ms var(--settle), background-color 420ms var(--settle),
+    opacity 300ms linear;
+}
+
+.ink-dot[data-over="true"] {
+  width: 30px;
+  height: 30px;
+  margin: -15px 0 0 -15px;
+  background: rgb(28 27 25 / 0.14);
+}
+
+/* ------------------------------------------------------- reduced motion --- */
+
+@media (prefers-reduced-motion: reduce) {
+  .ink-scroll__bead {
+    animation: none;
+    opacity: 0.5;
+    transform: translateY(20px);
+  }
+
+  .ink-nav__link::after {
+    transition: none;
+  }
+}

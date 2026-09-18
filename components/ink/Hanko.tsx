@@ -1,22 +1,32 @@
 import React from 'react';
 
 /**
- * A carved seal block with the initial knocked out, the way a real hanko reads:
- * red ink everywhere except the character, which is the paper showing through.
+ * A carved seal block with Mehdi's own mark knocked out of it, the way a real
+ * hanko carries its owner's initial: red ink everywhere except the mark,
+ * which is the paper showing through.
  *
- * It is the only place red appears besides the contact stamp — two uses on the
- * whole site.
+ * The mark is the same artwork the nav brushes onto the page (`/mok-mark.webp`,
+ * used as a mask there too), so it is one logo throughout the site rather than
+ * a second, invented one. Its white-on-transparent pixels are inverted to
+ * black-on-transparent first — a mask hides what is black or absent and
+ * shows what is white, so the mark has to go dark to cut a hole rather than
+ * add one.
+ *
+ * It is the only place red appears on the whole site.
  */
 const Hanko: React.FC<{ className?: string; uid: string }> = ({ className, uid }) => (
   <svg className={className} viewBox="0 0 40 40" aria-hidden="true" focusable="false">
     <defs>
-      <mask id={`hanko-${uid}`}>
+      <filter id={`hanko-cut-${uid}`} colorInterpolationFilters="sRGB">
+        {/* Keeps alpha, zeroes RGB: white becomes black, transparent stays
+            transparent. */}
+        <feColorMatrix type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" />
+      </filter>
+      <mask id={`hanko-${uid}`} maskUnits="userSpaceOnUse" x="0" y="0" width="40" height="40">
         <rect width="40" height="40" fill="#fff" />
         {/* The carved frame every seal has, a hair inside the edge. */}
         <rect x="4.4" y="4.6" width="31.2" height="30.8" rx="2.6" fill="none" stroke="#000" strokeWidth="1.15" />
-        <path d="M10.5 11h4.1v18h-4.1z" fill="#000" />
-        <path d="M25.4 11h4.1v18h-4.1z" fill="#000" />
-        <path d="M14.6 11h3.6L20 14.6 21.8 11h3.6v5.1L21.9 24.4h-3.8L14.6 16.1z" fill="#000" />
+        <image href="/mok-mark.webp" x="10" y="7.6" width="20" height="24.8" filter={`url(#hanko-cut-${uid})`} />
       </mask>
     </defs>
     {/* Cut by hand, so no two corners agree. */}

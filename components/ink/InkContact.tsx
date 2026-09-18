@@ -3,13 +3,22 @@ import InkReveal from './InkReveal';
 import InkSectionHead from './InkSectionHead';
 import BrushDivider from './BrushDivider';
 import InkContactForm from './InkContactForm';
+import InkEnso from './InkEnso';
+import LocalClock from '../LocalClock';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { inkContent } from '../../utils/inkContent';
 
 /**
- * Contact as it was on the previous site — a form to write in, and the direct
- * lines beside it — in the same ink as everything else. It closes the home
- * page and is the whole of /contact, so both say exactly the same thing.
+ * Contact, set as correspondence.
+ *
+ * The heading shares its row with a large ensō, brushed on as it comes into
+ * view, holding the time in Evergem — the one live detail on the page, and a
+ * quiet answer to "will he be awake to read this". Below it, the email address
+ * at reading size for anyone who would rather just write; then the form,
+ * laid out as a letter on its own sheet, addressed and dated, sealed with the
+ * hanko. The direct lines sit beside it.
+ *
+ * It closes the home page and is the whole of /contact.
  */
 const InkContact: React.FC<{ asPage?: boolean }> = ({ asPage = false }) => {
   const { language } = useLanguage();
@@ -17,52 +26,54 @@ const InkContact: React.FC<{ asPage?: boolean }> = ({ asPage = false }) => {
 
   return (
     <section
-      className={`ink-section ${asPage ? 'ink-section--page' : ''}`}
+      className={`ink-section ink-letterbox ${asPage ? 'ink-section--page' : ''}`}
       id="ink-contact"
       aria-labelledby="ink-contact-heading"
     >
       <div className="ink-shell">
         {!asPage && <BrushDivider />}
-        <InkSectionHead
-          id="ink-contact-heading"
-          label={c.label}
-          heading={c.heading}
-          level={asPage ? 'h1' : 'h2'}
-        />
+
+        <div className="ink-letterbox__top">
+          <InkSectionHead
+            id="ink-contact-heading"
+            label={c.label}
+            heading={c.heading}
+            level={asPage ? 'h1' : 'h2'}
+            className="ink-letterbox__head"
+          />
+
+          <InkEnso className="ink-letterbox__enso">
+            <span className="ink-cap">{c.localTime}</span>
+            <LocalClock className="ink-letterbox__clock" />
+          </InkEnso>
+        </div>
 
         <div className="ink-grid">
-          <InkReveal className="ink-contact__intro">
+          <InkReveal className="ink-letterbox__intro" stagger={0.1}>
             <p className="ink-prose">{c.line}</p>
+            <p className="ink-cap ink-letterbox__direct">{c.direct}</p>
+            <a className="ink-letterbox__email" href={`mailto:${c.email}`}>
+              {c.email}
+            </a>
           </InkReveal>
         </div>
 
         <div className="ink-grid ink-contact">
-          <InkReveal className="ink-contact__form">
-            <p className="ink-cap ink-contact__kicker">{c.formTitle}</p>
-            <InkContactForm copy={c.form} />
+          <InkReveal className="ink-contact__form" y={28}>
+            <InkContactForm copy={c.form} title={c.formTitle} to={c.letterTo} />
           </InkReveal>
 
           <div className="ink-contact__aside">
             <InkReveal>
               <p className="ink-cap ink-contact__kicker">{c.infoTitle}</p>
-              <dl className="ink-facts ink-facts--stacked">
-                <div className="ink-facts__row">
-                  <dt className="ink-cap">{c.emailLabel}</dt>
-                  <dd>
-                    <a className="ink-inline-link" href={`mailto:${c.email}`}>
-                      {c.email}
-                    </a>
-                  </dd>
-                </div>
-                <div className="ink-facts__row">
+              <dl className="ink-lines">
+                <div>
                   <dt className="ink-cap">{c.phoneLabel}</dt>
                   <dd>
-                    <a className="ink-inline-link" href={`tel:${c.phone.replace(/\s/g, '')}`}>
-                      {c.phone}
-                    </a>
+                    <a href={`tel:${c.phone.replace(/\s/g, '')}`}>{c.phone}</a>
                   </dd>
                 </div>
-                <div className="ink-facts__row">
+                <div>
                   <dt className="ink-cap">{c.locationLabel}</dt>
                   <dd>{c.location}</dd>
                 </div>
@@ -83,7 +94,7 @@ const InkContact: React.FC<{ asPage?: boolean }> = ({ asPage = false }) => {
               </ul>
             </InkReveal>
 
-            <InkReveal>
+            <InkReveal className="ink-contact__status">
               <p className="ink-cap ink-contact__kicker">{c.availability}</p>
               <p className="ink-contact__available">
                 <span className="ink-contact__drop" aria-hidden="true" />

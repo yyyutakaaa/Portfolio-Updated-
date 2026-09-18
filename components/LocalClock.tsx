@@ -28,7 +28,7 @@ const LocalClock: React.FC<{ className?: string }> = ({ className = '' }) => {
 
   return (
     <time className={className} dateTime={time}>
-      {time} CET
+      {time}
     </time>
   );
 };

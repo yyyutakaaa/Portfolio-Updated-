@@ -63,6 +63,11 @@ export interface InkCopy {
     label: string;
     heading: string;
     line: string;
+    /** Above the large email address, for anyone who would rather not fill in a form. */
+    direct: string;
+    /** Header of the letter the form is set as. */
+    letterTo: string;
+    localTime: string;
     formTitle: string;
     infoTitle: string;
     socialTitle: string;
@@ -185,8 +190,11 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
     contact: {
       label: 'Contact',
       heading: 'Say hi.',
-      line: 'Got a question, or do you just want to chat? Fill in the form, or reach me directly through one of the channels on the side.',
-      formTitle: 'Send a message',
+      line: 'Got a question, or do you just want to chat? Write me a letter below, or reach me directly through one of the channels on the side.',
+      direct: 'Rather write directly?',
+      letterTo: 'To',
+      localTime: 'Evergem, now',
+      formTitle: 'A letter',
       infoTitle: 'Contact details',
       socialTitle: 'Elsewhere',
       emailLabel: 'Email',
@@ -208,7 +216,7 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
         subjectPlaceholder: 'What is it about?',
         message: 'Message',
         messagePlaceholder: 'Type your message here…',
-        send: 'Send message',
+        send: 'Seal & send',
         sending: 'Sending…',
         success: 'Sent. I will get back to you as soon as I can.',
         error: `Something went wrong. Try again, or just email me at ${EMAIL}`,
@@ -302,8 +310,11 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
     contact: {
       label: 'Contact',
       heading: 'Zeg gerust hallo.',
-      line: 'Heb je een vraag of wil je gewoon eens babbelen? Vul het formulier in, of pak me rechtstreeks via een van de kanalen hiernaast.',
-      formTitle: 'Stuur een bericht',
+      line: 'Heb je een vraag of wil je gewoon eens babbelen? Schrijf me hieronder een briefje, of pak me rechtstreeks via een van de kanalen hiernaast.',
+      direct: 'Liever rechtstreeks mailen?',
+      letterTo: 'Aan',
+      localTime: 'Evergem, nu',
+      formTitle: 'Een briefje',
       infoTitle: 'Contactgegevens',
       socialTitle: 'Elders',
       emailLabel: 'E-mail',
@@ -325,7 +336,7 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
         subjectPlaceholder: 'Waarover gaat het?',
         message: 'Bericht',
         messagePlaceholder: 'Typ hier je bericht…',
-        send: 'Verstuur bericht',
+        send: 'Verzegel & verstuur',
         sending: 'Verzenden…',
         success: 'Verstuurd. Ik laat zo snel mogelijk iets weten.',
         error: `Er ging iets mis. Probeer nog eens, of mail me gewoon op ${EMAIL}`,

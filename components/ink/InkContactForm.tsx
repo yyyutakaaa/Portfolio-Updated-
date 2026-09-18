@@ -1,16 +1,18 @@
 import React from 'react';
 import Hanko from './Hanko';
 import { gsap, prefersReducedMotion } from '../../lib/motion';
+import { useLanguage } from '../../contexts/LanguageContext';
 import type { ContactFormCopy } from '../../utils/inkContent';
 
 /**
  * The same form as before — name, email, subject, message, sent through
- * Web3Forms — set on paper instead of in boxes.
+ * Web3Forms — written as a letter.
  *
- * Fields are a single ruled line each, the way a form on a letter is: no
- * borders, no fills, just a hairline that takes ink when it has focus. The
+ * It sits on its own sheet, a shade lighter than the page with a deckled
+ * edge, addressed and dated like correspondence. Each field is a single ruled
+ * line; the one being written on gets a brush stroke drawn under it. The
  * submit is the seal: pressing it drives the block into the paper and leaves
- * its impression behind, which is the second and last place red appears.
+ * its impression behind — the only red on the site.
  */
 
 type Field = 'name' | 'email' | 'subject' | 'message';
@@ -21,7 +23,26 @@ const FIELDS: Field[] = ['name', 'email', 'subject', 'message'];
 
 const isEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 
-const InkContactForm: React.FC<{ copy: ContactFormCopy }> = ({ copy }) => {
+interface InkContactFormProps {
+  copy: ContactFormCopy;
+  /** Small-caps kicker at the head of the letter. */
+  title: string;
+  /** "To" / "Aan". */
+  to: string;
+}
+
+const InkContactForm: React.FC<InkContactFormProps> = ({ copy, title, to }) => {
+  const { language } = useLanguage();
+  const today = React.useMemo(
+    () =>
+      new Intl.DateTimeFormat(language === 'nl' ? 'nl-BE' : 'en-GB', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+      }).format(new Date()),
+    [language],
+  );
+
   const [values, setValues] = React.useState(EMPTY);
   const [status, setStatus] = React.useState<Status>('idle');
   const [error, setError] = React.useState('');
@@ -116,9 +137,12 @@ const InkContactForm: React.FC<{ copy: ContactFormCopy }> = ({ copy }) => {
     }
   };
 
+  const number = (name: Field) => String(FIELDS.indexOf(name) + 1).padStart(2, '0');
+
   const field = (name: Field, label: string, placeholder: string, extra: Partial<React.InputHTMLAttributes<HTMLInputElement>> = {}) => (
     <div className="ink-field">
       <label className="ink-cap ink-field__label" htmlFor={`ink-${name}`}>
+        <span className="ink-field__num" aria-hidden="true">{number(name)}</span>
         {label}
       </label>
       <input
@@ -137,7 +161,15 @@ const InkContactForm: React.FC<{ copy: ContactFormCopy }> = ({ copy }) => {
   );
 
   return (
-    <form className="ink-form" onSubmit={onSubmit} noValidate>
+    <form className="ink-form ink-letter" onSubmit={onSubmit} noValidate>
+      <div className="ink-letter__head">
+        <span className="ink-cap">{title}</span>
+        <time className="ink-letter__date">{today}</time>
+      </div>
+      <p className="ink-letter__to">
+        <span className="ink-cap">{to}</span> Mehdi Oulad Khlie
+      </p>
+
       <div className="ink-form__pair">
         {field('name', copy.name, copy.namePlaceholder, { type: 'text', autoComplete: 'name' })}
         {field('email', copy.email, copy.emailPlaceholder, { type: 'email', autoComplete: 'email' })}
@@ -147,6 +179,7 @@ const InkContactForm: React.FC<{ copy: ContactFormCopy }> = ({ copy }) => {
 
       <div className="ink-field">
         <label className="ink-cap ink-field__label" htmlFor="ink-message">
+          <span className="ink-field__num" aria-hidden="true">{number('message')}</span>
           {copy.message}
         </label>
         <textarea

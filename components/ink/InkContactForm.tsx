@@ -205,7 +205,7 @@ const InkContactForm: React.FC<InkContactFormProps> = ({ copy, title, to }) => {
         >
           <span className="ink-send__seal" aria-hidden="true">
             <span className="ink-send__mark" ref={markRef}>
-              <Hanko uid="send-mark" />
+              <Hanko uid="send-mark" color="var(--hanko)" />
             </span>
             <span className="ink-send__block" ref={blockRef}>
               <Hanko uid="send-block" />

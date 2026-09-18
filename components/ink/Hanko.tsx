@@ -2,7 +2,7 @@ import React from 'react';
 
 /**
  * A carved seal block with Mehdi's own mark knocked out of it, the way a real
- * hanko carries its owner's initial: red ink everywhere except the mark,
+ * hanko carries its owner's initial: solid ink everywhere except the mark,
  * which is the paper showing through.
  *
  * The mark is the same artwork the nav brushes onto the page (`/mok-mark.webp`,
@@ -12,9 +12,15 @@ import React from 'react';
  * shows what is white, so the mark has to go dark to cut a hole rather than
  * add one.
  *
- * It is the only place red appears on the whole site.
+ * The block itself sits in plain ink — a real seal's own body is carved wood
+ * or stone, not the colour it stamps. Red is reserved for what it leaves
+ * behind: the one place on the whole site that colour appears.
  */
-const Hanko: React.FC<{ className?: string; uid: string }> = ({ className, uid }) => (
+const Hanko: React.FC<{ className?: string; uid: string; color?: string }> = ({
+  className,
+  uid,
+  color = 'var(--sumi)',
+}) => (
   <svg className={className} viewBox="0 0 40 40" aria-hidden="true" focusable="false">
     <defs>
       <filter id={`hanko-cut-${uid}`} colorInterpolationFilters="sRGB">
@@ -32,7 +38,7 @@ const Hanko: React.FC<{ className?: string; uid: string }> = ({ className, uid }
     {/* Cut by hand, so no two corners agree. */}
     <path
       d="M5.2 1.6C14 .9 27 1 35.2 1.9c3.2.4 3.7 1.5 3.8 4.2.2 8.9.1 20.9-.6 28.5-.3 3-1.2 3.7-4.1 3.9-9.3.6-21.3.5-28.9-.2-3.1-.3-4-1.1-4.2-4.1C.8 25 .9 13 1.5 5.4 1.7 2.6 2.4 1.9 5.2 1.6Z"
-      fill="var(--hanko)"
+      fill={color}
       mask={`url(#hanko-${uid})`}
     />
   </svg>

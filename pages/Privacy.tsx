@@ -1,91 +1,73 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
-import KineticHeading from '../components/motion/KineticHeading';
-import Reveal from '../components/motion/Reveal';
+import InkReveal from '../components/ink/InkReveal';
+import InkSectionHead from '../components/ink/InkSectionHead';
+import BrushDivider from '../components/ink/BrushDivider';
 import { useLanguage } from '../contexts/LanguageContext';
 
+/** Plain reading: the policy is set like a letter, one ruled section at a time. */
 const Privacy: React.FC = () => {
   const { t } = useLanguage();
   const p = t.privacy;
 
   return (
-    <div className="container-narrow">
-      <div className="mx-auto max-w-3xl">
-        <Link
-          to="/"
-          aria-label={p.backToHome}
-          className="group inline-flex items-center gap-2.5 text-textDim hover:text-textMain"
-        >
-          <ArrowLeft
-            size={14}
-            strokeWidth={1.6}
-            aria-hidden="true"
-            className="transition-transform duration-500 ease-soft group-hover:-translate-x-1"
-          />
-          <span className="label group-hover:text-textMain">{p.backToHome}</span>
-        </Link>
+    <article className="ink-page">
+      <header className="ink-section ink-section--page">
+        <div className="ink-shell">
+          <div className="ink-grid">
+            <Link className="ink-cap ink-back" to="/">
+              <span aria-hidden="true">←</span> {p.backToHome}
+            </Link>
+          </div>
+          <InkSectionHead label={p.lastUpdated} heading={p.title} level="h1" />
+          <div className="ink-grid">
+            <InkReveal className="ink-case__lead" delay={0.3}>
+              <p className="ink-prose">{p.introParagraph}</p>
+            </InkReveal>
+          </div>
+        </div>
+      </header>
 
-        <header className="mt-16 border-b border-border pb-12">
-          <span className="label">{p.lastUpdated}</span>
-          <KineticHeading
-            as="h1"
-            trigger="load"
-            delay={0.1}
-            className="display display-tight mt-7 text-[clamp(2.5rem,8vw,5.5rem)]"
-          >
-            {p.title}
-          </KineticHeading>
-          <Reveal delay={0.25}>
-            <p className="prose-dim mt-10">{p.introParagraph}</p>
-          </Reveal>
-        </header>
-
-        <div className="mt-16 space-y-16">
-          {p.sections.map((section, index) => (
-            <Reveal as="section" key={section.heading}>
-              <div className="flex items-baseline gap-5 border-t border-border pt-5">
-                <span className="index-num">{String(index + 1).padStart(2, '0')}</span>
-                <h2 className="label">{section.heading}</h2>
-              </div>
-
-              <div className="mt-8 space-y-4 text-sm text-textDim">
+      {p.sections.map((section, index) => (
+        <section className="ink-section ink-section--compact" key={section.heading}>
+          <div className="ink-shell">
+            <BrushDivider flip={index % 2 === 1} />
+            <InkSectionHead label={String(index + 1).padStart(2, '0')} heading={section.heading} />
+            <div className="ink-grid">
+              <InkReveal className="ink-case__body" stagger={0.06}>
                 {section.paragraphs.map((paragraph: string) => (
-                  <p key={paragraph} className="max-w-prose break-words">
+                  <p key={paragraph} className="ink-prose">
                     {paragraph}
                   </p>
                 ))}
-              </div>
-
-              {'items' in section && section.items && (
-                <ul className="mt-8 border-t border-border">
-                  {section.items.map((item: string) => (
-                    <li
-                      key={item}
-                      className="flex items-baseline gap-4 break-words border-b border-border py-3.5 text-sm text-textDim"
-                    >
-                      <span className="dot dot--sm" aria-hidden="true" />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </Reveal>
-          ))}
-
-          <Reveal as="section">
-            <div className="flex items-baseline gap-5 border-t border-border pt-5">
-              <span className="index-num">{String(p.sections.length + 1).padStart(2, '0')}</span>
-              <h2 className="label">{p.contact.heading}</h2>
+                {'items' in section && section.items && (
+                  <ul className="ink-bullets ink-bullets--single">
+                    {section.items.map((item: string) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                )}
+              </InkReveal>
             </div>
-            <p className="mt-8 text-sm text-textDim">{p.contact.text}</p>
-            <a href={p.contact.url} className="link-line link-line--plain mt-8 break-all">
-              {p.contact.url}
-            </a>
-          </Reveal>
+          </div>
+        </section>
+      ))}
+
+      <section className="ink-section ink-section--compact">
+        <div className="ink-shell">
+          <BrushDivider />
+          <InkSectionHead label={String(p.sections.length + 1).padStart(2, '0')} heading={p.contact.heading} />
+          <div className="ink-grid">
+            <InkReveal className="ink-case__body">
+              <p className="ink-prose">{p.contact.text}</p>
+              <a className="ink-inline-link" href={p.contact.url}>
+                {p.contact.url}
+              </a>
+            </InkReveal>
+          </div>
         </div>
-      </div>
-    </div>
+      </section>
+    </article>
   );
 };
 

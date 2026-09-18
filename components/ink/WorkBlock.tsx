@@ -1,4 +1,5 @@
 import React from 'react';
+import InkTitle from './InkTitle';
 import type { WorkItem } from '../../utils/inkContent';
 
 /**
@@ -32,7 +33,9 @@ const WorkBlock: React.FC<{ item: WorkItem }> = ({ item }) => {
 
         <span className="ink-work__text">
           <span className="ink-work__head">
-            <h3 className="ink-work__title">{item.title}</h3>
+            <InkTitle as="h3" className="ink-work__title">
+              {item.title}
+            </InkTitle>
             <span className="ink-cap ink-work__stack">{item.stack}</span>
           </span>
           <span className="ink-work__desc">{item.description}</span>

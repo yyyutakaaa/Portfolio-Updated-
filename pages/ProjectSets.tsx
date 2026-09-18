@@ -1,7 +1,6 @@
 import React from 'react';
-import { ArrowUpRight } from 'lucide-react';
-import CaseStudy from '../components/CaseStudy';
-import Reveal from '../components/motion/Reveal';
+import InkCaseStudy from '../components/ink/InkCaseStudy';
+import InkReveal from '../components/ink/InkReveal';
 import { useLanguage } from '../contexts/LanguageContext';
 
 const APP_URL = 'https://sets.ink';
@@ -13,32 +12,27 @@ const ProjectSets: React.FC = () => {
   const s = t.setsPage;
 
   return (
-    <CaseStudy
+    <InkCaseStudy
       content={s}
       note={s.openNote}
       actions={
-        <a href={APP_URL} target="_blank" rel="noopener noreferrer" className="btn">
-          {s.openCta}
-          <ArrowUpRight size={14} strokeWidth={1.6} aria-hidden="true" />
+        <a href={APP_URL} target="_blank" rel="noopener noreferrer" className="ink-btn">
+          {s.openCta} <span aria-hidden="true">↗</span>
         </a>
       }
       visual={
         <>
-          <div className="flex items-baseline gap-5 border-t border-border pt-5">
-            <span className="index-num">00</span>
-            <span className="label">{s.galleryTitle}</span>
+          <div className="ink-grid">
+            <p className="ink-cap ink-case__kicker">{s.galleryTitle}</p>
           </div>
 
-          {/* Phone screens read best as a swipeable strip, not a squeezed grid. */}
-          <Reveal
-            as="ul"
-            stagger={0.06}
-            className="hscroll -mx-5 mt-10 flex snap-x snap-mandatory gap-5 overflow-x-auto px-5 pb-5 sm:mx-0 sm:px-0"
-          >
+          {/* Phone screens read best as a strip you pass along, like frames
+              on a hand scroll, not squeezed into a grid. */}
+          <InkReveal as="ul" className="ink-strip" stagger={0.06}>
             {SCREENS.map((screen, i) => (
-              <li key={screen} className="w-[210px] shrink-0 snap-start sm:w-[240px]">
+              <li key={screen} className="ink-strip__item">
                 <figure>
-                  <div className="plate">
+                  <div className="ink-plate ink-plate--phone">
                     <img
                       src={`/sets/screens/${screen}-640.webp`}
                       srcSet={`/sets/screens/${screen}-640.webp 640w, /sets/screens/${screen}-960.webp 960w`}
@@ -50,14 +44,14 @@ const ProjectSets: React.FC = () => {
                       decoding="async"
                     />
                   </div>
-                  <figcaption className="mt-4 flex items-baseline gap-3">
-                    <span className="index-num">{String(i + 1).padStart(2, '0')}</span>
-                    <span className="text-sm text-textDim">{s.gallery[i]}</span>
+                  <figcaption>
+                    <span className="ink-strip__num">{String(i + 1).padStart(2, '0')}</span>
+                    {s.gallery[i]}
                   </figcaption>
                 </figure>
               </li>
             ))}
-          </Reveal>
+          </InkReveal>
         </>
       }
     />

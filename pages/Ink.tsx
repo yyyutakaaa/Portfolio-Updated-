@@ -1,17 +1,17 @@
 import React from 'react';
-import InkNav from '../components/ink/InkNav';
-import InkCursor from '../components/ink/InkCursor';
+import { useLocation, useNavigate } from 'react-router-dom';
 import InkReveal from '../components/ink/InkReveal';
 import InkPortrait from '../components/ink/InkPortrait';
 import BrushDivider from '../components/ink/BrushDivider';
 import WorkBlock from '../components/ink/WorkBlock';
-import HankoStamp from '../components/ink/HankoStamp';
+import InkSectionHead from '../components/ink/InkSectionHead';
+import InkContact from '../components/ink/InkContact';
+import { useInkShell } from '../components/ink/InkLayout';
 import BrushName, { BrushNameHandle, PATH_UNITS } from '../components/ink/BrushName';
 import { scrollToId } from '../components/motion/SmoothScroll';
 import { useLanguage } from '../contexts/LanguageContext';
 import { inkContent } from '../utils/inkContent';
 import { gsap, ScrollTrigger, EASE, prefersReducedMotion } from '../lib/motion';
-import '../src/ink.css';
 
 /**
  * The sumi-e site.
@@ -29,26 +29,14 @@ import '../src/ink.css';
 
 const SEEN_KEY = 'ink-intro-seen';
 
-/** Section label plus its serif line — the same opening for all three. */
-const SectionHead: React.FC<{ id: string; label: string; heading: string }> = ({
-  id,
-  label,
-  heading,
-}) => (
-  <InkReveal className="ink-section__head ink-grid" stagger={0.09}>
-    <p className="ink-cap ink-section__label">{label}</p>
-    <h2 className="ink-section__heading" id={id}>
-      {heading}
-    </h2>
-  </InkReveal>
-);
-
 const Ink: React.FC = () => {
   const { language } = useLanguage();
   const copy = inkContent[language];
 
   const rootRef = React.useRef<HTMLDivElement>(null);
-  const navRef = React.useRef<HTMLElement>(null);
+  const { navRef } = useInkShell();
+  const location = useLocation();
+  const navigate = useNavigate();
   const rulesRef = React.useRef<HTMLDivElement>(null);
   const eyebrowRef = React.useRef<HTMLParagraphElement>(null);
   const tailRef = React.useRef<HTMLDivElement>(null);
@@ -78,12 +66,6 @@ const Ink: React.FC = () => {
     frayedRef.current =
       !prefersReducedMotion() && window.matchMedia('(min-width: 720px)').matches;
   }
-
-  /* The previous shell themes the page; claim the ground while this is mounted. */
-  React.useEffect(() => {
-    document.documentElement.classList.add('ink-mode');
-    return () => document.documentElement.classList.remove('ink-mode');
-  }, []);
 
   /* Hide the pieces the intro is going to bring in, before first paint, so
      there is never a frame where the finished state shows and then vanishes. */
@@ -199,6 +181,20 @@ const Ink: React.FC = () => {
     };
   }, []);
 
+  /* Arriving from another page by one of the nav's section links: the nav
+     could not scroll a page that did not exist yet, so it left the target in
+     the route state for this page to finish the job once it has laid out. */
+  React.useEffect(() => {
+    const target = (location.state as { scrollTo?: string } | null)?.scrollTo;
+    if (!target) return;
+
+    const id = window.setTimeout(() => {
+      scrollToId(target);
+      navigate('.', { replace: true, state: null });
+    }, 260);
+    return () => window.clearTimeout(id);
+  }, [location.state, navigate]);
+
   /* Switching language rewrites most of the copy, and the Dutch runs longer
      than the English. Triggers measured against the old heights would fire in
      the wrong places. */
@@ -208,14 +204,7 @@ const Ink: React.FC = () => {
   }, [language]);
 
   return (
-    <div className="ink-root" id="ink-top" ref={rootRef}>
-      <div className="ink-tone" aria-hidden="true" />
-      <div className="ink-grain" aria-hidden="true" />
-
-      <InkNav ref={navRef} />
-      <InkCursor />
-
-      <main>
+    <div className="ink-page" ref={rootRef}>
         {/* --------------------------------------------------------- hero -- */}
         <header className="ink-hero">
           <div className="ink-rules" ref={rulesRef} aria-hidden="true">
@@ -290,7 +279,7 @@ const Ink: React.FC = () => {
         <section className="ink-section" id="ink-about" aria-labelledby="ink-about-heading">
           <div className="ink-shell">
             <BrushDivider />
-            <SectionHead id="ink-about-heading" label={copy.about.label} heading={copy.about.heading} />
+            <InkSectionHead id="ink-about-heading" label={copy.about.label} heading={copy.about.heading} />
 
             <div className="ink-grid ink-about">
               <InkReveal className="ink-about__portrait">
@@ -327,7 +316,7 @@ const Ink: React.FC = () => {
         <section className="ink-section" id="ink-work" aria-labelledby="ink-work-heading">
           <div className="ink-shell">
             <BrushDivider />
-            <SectionHead id="ink-work-heading" label={copy.work.label} heading={copy.work.heading} />
+            <InkSectionHead id="ink-work-heading" label={copy.work.label} heading={copy.work.heading} />
 
             <div className="ink-worklist">
               {copy.work.items.map((item) => (
@@ -340,56 +329,7 @@ const Ink: React.FC = () => {
         </section>
 
         {/* ------------------------------------------------------ contact -- */}
-        <section className="ink-section" id="ink-contact" aria-labelledby="ink-contact-heading">
-          <div className="ink-shell">
-            <BrushDivider />
-            <SectionHead id="ink-contact-heading" label={copy.contact.label} heading={copy.contact.heading} />
-
-            <div className="ink-grid ink-contact">
-              <InkReveal className="ink-contact__stamp">
-                <HankoStamp
-                  email={copy.contact.email}
-                  label={copy.contact.stamp}
-                  ariaLabel={copy.contact.stampAria}
-                />
-              </InkReveal>
-
-              <InkReveal className="ink-contact__details" stagger={0.09}>
-                <p className="ink-prose">{copy.contact.line}</p>
-
-                <a className="ink-contact__email" href={`mailto:${copy.contact.email}`}>
-                  {copy.contact.email}
-                </a>
-
-                <ul className="ink-contact__links">
-                  {copy.contact.links.map((link) => (
-                    <li key={link.label}>
-                      <a
-                        className="ink-cap ink-nav__link"
-                        href={link.href}
-                        {...(link.href.startsWith('http')
-                          ? { target: '_blank', rel: 'noreferrer noopener' }
-                          : {})}
-                      >
-                        {link.label}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </InkReveal>
-            </div>
-          </div>
-        </section>
-
-        {/* ------------------------------------------------------- footer -- */}
-        <footer className="ink-pagefoot">
-          <div className="ink-shell">
-            <p className="ink-cap">
-              {copy.footer.name} — {copy.footer.place} · {new Date().getFullYear()}
-            </p>
-          </div>
-        </footer>
-      </main>
+        <InkContact />
     </div>
   );
 };

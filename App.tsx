@@ -1,6 +1,7 @@
 import React, { Suspense } from 'react';
 import { HashRouter, Navigate, Routes, Route, useLocation } from 'react-router-dom';
 import Layout from './components/Layout';
+import InkLayout from './components/ink/InkLayout';
 import SmoothScroll, { scrollToTop } from './components/motion/SmoothScroll';
 import { LanguageProvider } from './contexts/LanguageContext';
 import { ScrollTrigger } from './lib/motion';
@@ -31,16 +32,15 @@ const ScrollToTop = () => {
 };
 
 /**
- * The sumi-e site is its own world — paper ground, its own nav, its own type —
- * so it renders without the old shell. The pages that have not been rebuilt in
- * it yet keep the shell they were designed for.
+ * Every page is on the sumi-e paper now. The one exception is the previous
+ * homepage, kept at /legacy in the shell it was designed for.
  */
 const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { pathname } = useLocation();
 
-  if (pathname === '/') return <>{children}</>;
+  if (pathname === '/legacy') return <Layout>{children}</Layout>;
 
-  return <Layout>{children}</Layout>;
+  return <InkLayout>{children}</InkLayout>;
 };
 
 const App: React.FC = () => {

@@ -1,16 +1,20 @@
 import React from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { scrollToId } from '../motion/SmoothScroll';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { inkContent } from '../../utils/inkContent';
-import Hanko from './Hanko';
+import InkLogo from './InkLogo';
 
 /**
  * Fixed, small, and almost entirely negative space.
  *
- * Two marks hold the top of the page: the hanko at one end — the first of the
- * three times red is allowed to appear anywhere on the site — and an ensō at
- * the other that takes ink as the page is read. Everything between them is
- * set at 11px so the name below has nothing to compete with.
+ * Two marks hold the top of the page: the MOK monogram at one end, brushed in
+ * ink, and an ensō at the other that takes ink as the page is read.
+ * Everything between them is set at 11px so the page below has nothing to
+ * compete with.
+ *
+ * It is the same nav on every page. On the home page the section links scroll;
+ * anywhere else they go home first and the home page finishes the journey.
  */
 
 /* Centre line of the ring: an open circle with the gap at the top right. */
@@ -87,7 +91,7 @@ const Enso: React.FC<{ progress: number }> = ({ progress }) => {
           />
         </mask>
       </defs>
-      <path d={ENSO_SHAPE} fill="rgb(28 27 25 / 0.14)" />
+      <path d={ENSO_SHAPE} fill="var(--sumi)" opacity="0.15" />
       <path d={ENSO_SHAPE} fill="var(--sumi)" mask={`url(#enso-${id})`} />
     </svg>
   );
@@ -96,6 +100,17 @@ const Enso: React.FC<{ progress: number }> = ({ progress }) => {
 const InkNav = React.forwardRef<HTMLElement>((_props, ref) => {
   const { language, setLanguage } = useLanguage();
   const copy = inkContent[language];
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+  const home = pathname === '/';
+
+  const goTo = (id: string) => {
+    if (home) {
+      scrollToId(id);
+      return;
+    }
+    navigate('/', { state: { scrollTo: id } });
+  };
   const [progress, setProgress] = React.useState(0);
   const [scrolled, setScrolled] = React.useState(false);
 
@@ -144,21 +159,27 @@ const InkNav = React.forwardRef<HTMLElement>((_props, ref) => {
   const sections: { id: string; label: string }[] = [
     { id: 'about', label: copy.nav.about },
     { id: 'work', label: copy.nav.work },
-    { id: 'contact', label: copy.nav.contact },
   ];
 
   return (
     <nav ref={ref} className="ink-nav" aria-label="Primary" data-scrolled={scrolled}>
+      {/* The bar's own sheet of paper, and the same ink the page has taken —
+          set per frame by the layout, so it never reads as a pale band. */}
+      <span className="ink-nav__ground" aria-hidden="true">
+        <span className="ink-nav__shade" />
+      </span>
+
       <a
-        className="ink-nav__sealLink"
+        className="ink-nav__logoLink"
         href="#/"
         aria-label={copy.nav.home}
         onClick={(event) => {
           event.preventDefault();
-          scrollToId('ink-top', 0);
+          if (home) scrollToId('ink-top', 0);
+          else navigate('/');
         }}
       >
-        <Hanko className="ink-nav__seal" uid="nav" />
+        <InkLogo className="ink-nav__logo" />
       </a>
 
       <div className="ink-nav__right">
@@ -168,11 +189,21 @@ const InkNav = React.forwardRef<HTMLElement>((_props, ref) => {
               key={section.id}
               type="button"
               className="ink-cap ink-nav__link"
-              onClick={() => scrollToId(`ink-${section.id}`)}
+              onClick={() => goTo(`ink-${section.id}`)}
             >
               {section.label}
             </button>
           ))}
+          <a
+            className="ink-cap ink-nav__link"
+            href="#/resume"
+            aria-current={pathname === '/resume' ? 'page' : undefined}
+          >
+            {copy.nav.resume}
+          </a>
+          <button type="button" className="ink-cap ink-nav__link" onClick={() => goTo('ink-contact')}>
+            {copy.nav.contact}
+          </button>
         </div>
 
         <div className="ink-nav__lang" role="group" aria-label="Language">

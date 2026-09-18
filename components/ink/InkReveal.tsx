@@ -10,7 +10,7 @@ import { gsap, ScrollTrigger, EASE, prefersReducedMotion } from '../../lib/motio
  * a layout effect, so a failed chunk or a thrown error leaves a readable page.
  */
 
-type RevealTag = 'div' | 'section' | 'ul' | 'dl' | 'p' | 'header' | 'footer';
+type RevealTag = 'div' | 'section' | 'ul' | 'ol' | 'li' | 'dl' | 'p' | 'header' | 'footer';
 
 interface InkRevealProps {
   children: React.ReactNode;

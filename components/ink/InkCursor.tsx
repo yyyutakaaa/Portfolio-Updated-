@@ -97,6 +97,8 @@ const InkCursor: React.FC = () => {
       while (samples.length && now - samples[0].t > LIFE) samples.shift();
 
       ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+      /* At night the ink on the page is light, so the trail is too. */
+      const trail = root.dataset.inkTone === 'night' ? '#ede8de' : '#1c1b19';
 
       for (let i = 1; i < samples.length; i += 1) {
         const a = samples[i - 1];
@@ -112,7 +114,7 @@ const InkCursor: React.FC = () => {
 
         ctx.globalAlpha = 0.62 * fade;
         ctx.lineWidth = width;
-        ctx.strokeStyle = '#1c1b19';
+        ctx.strokeStyle = trail;
         ctx.beginPath();
         ctx.moveTo(a.x, a.y);
         ctx.lineTo(b.x, b.y);

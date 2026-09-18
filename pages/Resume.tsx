@@ -1,16 +1,21 @@
 import React, { useState } from 'react';
-import { Download } from 'lucide-react';
-import KineticHeading from '../components/motion/KineticHeading';
-import Reveal from '../components/motion/Reveal';
+import InkReveal from '../components/ink/InkReveal';
+import InkSectionHead from '../components/ink/InkSectionHead';
+import BrushDivider from '../components/ink/BrushDivider';
 import { useLanguage } from '../contexts/LanguageContext';
 
+/**
+ * The CV as a sheet you read top to bottom: experience and education as two
+ * ruled timelines, with languages and the direct lines held beside them. The
+ * PDF is generated on demand, as before, so the page stays light.
+ */
 const Resume: React.FC = () => {
   const { t, language } = useLanguage();
+  const r = t.resume;
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
 
   const handleDownload = async () => {
     if (isGeneratingPdf) return;
-
     setIsGeneratingPdf(true);
 
     try {
@@ -20,7 +25,7 @@ const Resume: React.FC = () => {
       ]);
       Font.clear();
       registerResumePdfFonts();
-      const blob = await pdf(<ResumePdfDocument content={t.resume} />).toBlob();
+      const blob = await pdf(<ResumePdfDocument content={r} />).toBlob();
       const url = URL.createObjectURL(blob);
       const downloadLink = document.createElement('a');
 
@@ -43,146 +48,114 @@ const Resume: React.FC = () => {
     }
   };
 
+  const languages = [
+    { name: r.languages.dutch, level: r.languages.native },
+    { name: r.languages.arabic, level: r.languages.native },
+    { name: r.languages.english, level: r.languages.fluent },
+    { name: r.languages.french, level: r.languages.basic },
+  ];
+
   return (
-    <div className="container-narrow">
-      <div className="resume-page">
-        <header className="resume-header mb-20 flex flex-col gap-10 border-b border-border pb-12 md:flex-row md:items-end md:justify-between">
-          <div>
-            <span className="label">{t.resume.subtitle}</span>
-            <KineticHeading
-              as="h1"
-              trigger="load"
-              delay={0.1}
-              className="display display-tight mt-7 text-[clamp(2.75rem,9vw,6.5rem)]"
-            >
-              {t.resume.title}
-            </KineticHeading>
-          </div>
-
-          <button
-            type="button"
-            className="btn print-hidden shrink-0 self-start md:self-auto"
-            onClick={handleDownload}
-            disabled={isGeneratingPdf}
-            aria-label="Generate CV PDF"
-            aria-busy={isGeneratingPdf}
-          >
-            <Download size={14} strokeWidth={1.6} aria-hidden="true" />
-            {isGeneratingPdf ? 'PDF…' : t.resume.download}
-          </button>
-        </header>
-
-        <div className="resume-grid grid grid-cols-1 gap-16 md:grid-cols-12 md:gap-14">
-          <div className="resume-main space-y-24 md:col-span-8">
-            <section>
-              <div className="flex items-baseline gap-5 border-t border-border pt-5">
-                <span className="index-num">01</span>
-                <h2 className="label">{t.resume.experienceTitle}</h2>
+    <article className="ink-page ink-resume">
+      <header className="ink-section ink-section--page">
+        <div className="ink-shell">
+          <InkSectionHead label={r.subtitle} heading={r.title} level="h1" />
+          <div className="ink-grid">
+            <InkReveal className="ink-case__lead" delay={0.3}>
+              <div className="ink-actions">
+                <button
+                  type="button"
+                  className="ink-btn"
+                  onClick={handleDownload}
+                  disabled={isGeneratingPdf}
+                  aria-busy={isGeneratingPdf}
+                >
+                  {isGeneratingPdf ? 'PDF…' : r.download}
+                </button>
               </div>
+            </InkReveal>
+          </div>
+        </div>
+      </header>
 
-              <div className="resume-timeline mt-12 border-l border-border pl-8">
-                {t.resume.jobs.map((job, index) => (
-                  <Reveal
-                    key={`${job.company}-${job.period}`}
-                    className={`resume-entry relative ${index > 0 ? 'mt-14' : ''}`}
-                  >
-                    <span
-                      className="resume-dot absolute -left-[33px] top-3 h-[7px] w-[7px] rounded-full border border-border bg-bg"
-                      aria-hidden="true"
-                    />
-                    <div className="flex flex-col gap-1.5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
-                      <h3 className="headline text-xl md:text-2xl">{job.role}</h3>
-                      <span className="index-num shrink-0">{job.period}</span>
+      <section className="ink-section">
+        <div className="ink-shell">
+          <BrushDivider />
+          <div className="ink-grid ink-resume__layout">
+            <div className="ink-resume__main">
+              <InkSectionHead label="01" heading={r.experienceTitle} className="ink-section__head--inline" />
+              <ol className="ink-timeline">
+                {r.jobs.map((job) => (
+                  <InkReveal as="li" key={`${job.company}-${job.period}`} className="ink-timeline__entry">
+                    <div className="ink-timeline__top">
+                      <h3 className="ink-timeline__role">{job.role}</h3>
+                      <span className="ink-cap">{job.period}</span>
                     </div>
-                    <p className="mt-2 text-sm text-textDim">{job.company}</p>
-                    <ul className="mt-5 space-y-2.5">
-                      {job.description.map((desc) => (
-                        <li key={desc} className="flex gap-4 text-sm text-textDim">
-                          <span className="dot dot--sm mt-2 shrink-0" aria-hidden="true" />
-                          <span>{desc}</span>
-                        </li>
+                    <p className="ink-timeline__where">{job.company}</p>
+                    <ul className="ink-bullets ink-bullets--single">
+                      {job.description.map((line) => (
+                        <li key={line}>{line}</li>
                       ))}
                     </ul>
-                  </Reveal>
+                  </InkReveal>
                 ))}
-              </div>
-            </section>
+              </ol>
 
-            <section>
-              <div className="flex items-baseline gap-5 border-t border-border pt-5">
-                <span className="index-num">02</span>
-                <h2 className="label">{t.resume.educationTitle}</h2>
-              </div>
-
-              <div className="resume-timeline mt-12 border-l border-border pl-8">
-                {t.resume.educationList.map((edu, index) => (
-                  <Reveal
-                    key={`${edu.school}-${edu.period}`}
-                    className={`resume-entry relative ${index > 0 ? 'mt-12' : ''}`}
-                  >
-                    <span
-                      className="resume-dot absolute -left-[33px] top-3 h-[7px] w-[7px] rounded-full border border-border bg-bg"
-                      aria-hidden="true"
-                    />
-                    <div className="flex flex-col gap-1.5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
-                      <h3 className="headline text-xl md:text-2xl">{edu.degree}</h3>
-                      <span className="index-num shrink-0">{edu.period}</span>
+              <InkSectionHead label="02" heading={r.educationTitle} className="ink-section__head--inline" />
+              <ol className="ink-timeline">
+                {r.educationList.map((edu) => (
+                  <InkReveal as="li" key={`${edu.school}-${edu.period}`} className="ink-timeline__entry">
+                    <div className="ink-timeline__top">
+                      <h3 className="ink-timeline__role">{edu.degree}</h3>
+                      <span className="ink-cap">{edu.period}</span>
                     </div>
-                    <p className="mt-2 text-sm text-textDim">{edu.school}</p>
-                    <p className="mt-4 text-sm text-textDim">{edu.description}</p>
-                  </Reveal>
+                    <p className="ink-timeline__where">{edu.school}</p>
+                    <p className="ink-prose">{edu.description}</p>
+                  </InkReveal>
                 ))}
-              </div>
-            </section>
+              </ol>
+            </div>
+
+            <aside className="ink-resume__aside">
+              <InkReveal>
+                <p className="ink-cap ink-contact__kicker">{r.languages.title}</p>
+                <dl className="ink-facts ink-facts--stacked">
+                  {languages.map((entry) => (
+                    <div className="ink-facts__row" key={entry.name}>
+                      <dt>{entry.name}</dt>
+                      <dd className="ink-cap">{entry.level}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </InkReveal>
+
+              <InkReveal>
+                <p className="ink-cap ink-contact__kicker">{r.contact.title}</p>
+                <dl className="ink-facts ink-facts--stacked">
+                  <div className="ink-facts__row">
+                    <dd>{language === 'nl' ? 'Evergem, België' : 'Evergem, Belgium'}</dd>
+                  </div>
+                  <div className="ink-facts__row">
+                    <dd>
+                      <a className="ink-inline-link" href="mailto:mehdi.ouladkhlie@outlook.be">
+                        mehdi.ouladkhlie@<wbr />outlook.be
+                      </a>
+                    </dd>
+                  </div>
+                  <div className="ink-facts__row">
+                    <dd>
+                      <a className="ink-inline-link" href="tel:+32468549478">
+                        +32 468 54 94 78
+                      </a>
+                    </dd>
+                  </div>
+                </dl>
+              </InkReveal>
+            </aside>
           </div>
-
-          <aside className="resume-sidebar space-y-3 md:col-span-4 md:sticky md:top-28 md:self-start">
-            <Reveal className="tile">
-              <h2 className="label label-ink">{t.resume.languages.title}</h2>
-              <dl className="mt-6 divide-y divide-border">
-                <div className="flex items-baseline justify-between gap-4 pb-3">
-                  <dt className="text-sm">{t.resume.languages.dutch}</dt>
-                  <dd className="index-num">{t.resume.languages.native}</dd>
-                </div>
-                <div className="flex items-baseline justify-between gap-4 py-3">
-                  <dt className="text-sm">{t.resume.languages.arabic}</dt>
-                  <dd className="index-num">{t.resume.languages.native}</dd>
-                </div>
-                <div className="flex items-baseline justify-between gap-4 py-3">
-                  <dt className="text-sm">{t.resume.languages.english}</dt>
-                  <dd className="index-num">{t.resume.languages.fluent}</dd>
-                </div>
-                <div className="flex items-baseline justify-between gap-4 pt-3">
-                  <dt className="text-sm text-textDim">{t.resume.languages.french}</dt>
-                  <dd className="index-num">{t.resume.languages.basic}</dd>
-                </div>
-              </dl>
-            </Reveal>
-
-            <Reveal className="tile" delay={0.08}>
-              <h2 className="label label-ink">{t.resume.contact.title}</h2>
-              <div className="mt-6 space-y-3 text-sm text-textDim">
-                <p>Evergem, België</p>
-                <p>
-                  <a
-                    href="mailto:mehdi.ouladkhlie@outlook.be"
-                    aria-label="Send email to Mehdi"
-                    className="hover:text-textMain"
-                  >
-                    mehdi.ouladkhlie@<wbr />outlook.be
-                  </a>
-                </p>
-                <p>
-                  <a href="tel:+32468549478" className="hover:text-textMain">
-                    +32 468 54 94 78
-                  </a>
-                </p>
-              </div>
-            </Reveal>
-          </aside>
         </div>
-      </div>
-    </div>
+      </section>
+    </article>
   );
 };
 

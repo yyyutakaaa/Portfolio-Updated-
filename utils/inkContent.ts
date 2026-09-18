@@ -18,7 +18,7 @@ export interface WorkItem {
   href: string;
   external: boolean;
   /** Omitted where there is no screenshot to show yet. */
-  image?: { src: string; srcSet: string; alt: string };
+  image?: { src: string; srcSet: string; alt: string; ratio?: string };
   cta: string;
 }
 
@@ -89,6 +89,10 @@ export interface InkCopy {
 const SETS_IMAGE = {
   src: '/sets/preview-1400.webp',
   srcSet: '/sets/preview-800.webp 800w, /sets/preview-1400.webp 1400w',
+  /* Wider than the other plates — its own screenshot is a 1731×909 banner,
+     not a 16:10 crop — so it gets its own ratio rather than losing its edges
+     to `object-fit: cover` inside a box built for something narrower. */
+  ratio: '1731 / 909',
 };
 
 const MUTED_IMAGE = {

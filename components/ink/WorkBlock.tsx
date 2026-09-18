@@ -12,12 +12,22 @@ import type { WorkItem } from '../../utils/inkContent';
  * compositor. Both `img`s carry the same `srcSet`, so it is one download.
  */
 
-/* Every plate is the same shape whatever the screenshot's own proportions, so
-   nothing reflows as images arrive. */
-const RATIO = '16 / 10';
+/* Plates default to one shape so nothing reflows as images arrive, but a
+   screenshot far off that shape (Sets' wide banner) can say so and get a box
+   built for its own proportions instead of losing its edges to the crop. */
+const DEFAULT_RATIO = '16 / 10';
+
+/** `"1731 / 909"` → 1.904 — used to size the `<img>` intrinsic box. */
+const ratioValue = (ratio: string) => {
+  const [w, h] = ratio.split('/').map(Number);
+  return w / h;
+};
 
 const WorkBlock: React.FC<{ item: WorkItem }> = ({ item }) => {
   const external = item.external;
+  const ratio = item.image?.ratio ?? DEFAULT_RATIO;
+  const intrinsicWidth = 1400;
+  const intrinsicHeight = Math.round(intrinsicWidth / ratioValue(ratio));
 
   return (
     <article className="ink-work">
@@ -52,7 +62,7 @@ const WorkBlock: React.FC<{ item: WorkItem }> = ({ item }) => {
               description that has to be read. */}
           <span className="ink-work__wash" aria-hidden="true" />
 
-          <span className="ink-work__plate" style={{ aspectRatio: RATIO }}>
+          <span className="ink-work__plate" style={{ aspectRatio: ratio }}>
             {item.image ? (
               <>
                 <img
@@ -63,8 +73,8 @@ const WorkBlock: React.FC<{ item: WorkItem }> = ({ item }) => {
                   alt={item.image.alt}
                   loading="lazy"
                   decoding="async"
-                  width={1400}
-                  height={875}
+                  width={intrinsicWidth}
+                  height={intrinsicHeight}
                 />
                 <img
                   className="ink-work__img ink-work__img--colour"
@@ -75,8 +85,8 @@ const WorkBlock: React.FC<{ item: WorkItem }> = ({ item }) => {
                   aria-hidden="true"
                   loading="lazy"
                   decoding="async"
-                  width={1400}
-                  height={875}
+                  width={intrinsicWidth}
+                  height={intrinsicHeight}
                 />
               </>
             ) : (

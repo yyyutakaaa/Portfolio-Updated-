@@ -150,6 +150,51 @@ html.ink-cursor-on * {
   padding: clamp(18px, 2.4vw, 30px) var(--gutter);
 }
 
+/* Paper, not frosted glass: once the page has moved, the bar is simply another
+   sheet laid over the one being read, closed by a hairline. */
+.ink-nav::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--washi);
+  border-bottom: 1px solid var(--rule);
+  opacity: 0;
+  transition: opacity 420ms var(--settle);
+}
+
+.ink-nav[data-scrolled="true"]::before {
+  opacity: 1;
+}
+
+.ink-nav > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---- language ---- */
+
+.ink-nav__lang {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.ink-nav__langBtn {
+  padding: 2px 1px;
+  background: none;
+  border: 0;
+  color: var(--ink-3);
+  transition: color 380ms var(--settle);
+}
+
+.ink-nav__langBtn[aria-pressed="true"] {
+  color: var(--sumi);
+}
+
+.ink-nav__langBtn:hover {
+  color: var(--ink-1);
+}
+
 .ink-nav__sealLink {
   display: block;
   line-height: 0;
@@ -241,13 +286,16 @@ html.ink-cursor-on * {
   padding: clamp(104px, 13vh, 168px) var(--gutter) clamp(28px, 4vh, 44px);
 }
 
-.ink-hero__shell {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
+.ink-shell {
   width: 100%;
   max-width: var(--shell);
   margin: 0 auto;
+}
+
+.ink-hero .ink-shell {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
 }
 
 .ink-grid {
@@ -386,6 +434,10 @@ html.ink-cursor-on * {
   flex-direction: column;
   align-items: center;
   gap: 10px;
+  padding: 6px 10px;
+  background: none;
+  border: 0;
+  color: inherit;
 }
 
 .ink-scroll__track {
@@ -490,6 +542,491 @@ html.ink-cursor-on * {
   }
 
   .ink-nav__link::after {
+    transition: none;
+  }
+}
+
+/* ============================================================ sections ==== */
+
+.ink-section {
+  position: relative;
+  z-index: 2;
+  padding: clamp(84px, 11vh, 150px) var(--gutter) 0;
+  /* The single source of truth for how far below the fixed header a section
+     comes to rest. Lenis and the browser's own scrolling both honour it, so
+     neither path needs to know the nav's height. */
+  scroll-margin-top: clamp(104px, 11vh, 132px);
+}
+
+/* ------------------------------------------------------------- divider --- */
+
+.ink-divider {
+  width: 100%;
+  margin-bottom: clamp(46px, 6vh, 78px);
+}
+
+.ink-divider svg {
+  display: block;
+  width: 100%;
+  height: 9px;
+  overflow: visible;
+  fill: var(--sumi);
+  opacity: 0.62;
+}
+
+/* --------------------------------------------------------- section head --- */
+
+.ink-section__head {
+  margin-bottom: clamp(44px, 6vh, 76px);
+}
+
+.ink-section__label {
+  grid-column: 3 / span 8;
+  margin: 0 0 clamp(16px, 2vh, 24px);
+}
+
+.ink-section__heading {
+  grid-column: 3 / span 7;
+  margin: 0;
+  font-family: var(--serif);
+  font-size: clamp(1.9rem, 1.2rem + 2.5vw, 3.5rem);
+  font-weight: 300;
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+  color: var(--sumi);
+}
+
+/* ------------------------------------------------------------- reading --- */
+
+.ink-prose {
+  max-width: 54ch;
+  margin: 0 0 1.15em;
+  font-size: clamp(0.98rem, 0.93rem + 0.24vw, 1.1rem);
+  font-weight: 300;
+  line-height: 1.82;
+  color: var(--ink-1);
+}
+
+.ink-prose:last-child {
+  margin-bottom: 0;
+}
+
+/* --------------------------------------------------------------- about --- */
+
+.ink-about {
+  row-gap: clamp(40px, 6vh, 64px);
+}
+
+.ink-about__portrait {
+  grid-column: 3 / span 3;
+}
+
+.ink-about__text {
+  grid-column: 7 / span 5;
+}
+
+.ink-portrait {
+  margin: 0;
+}
+
+.ink-portrait svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Ink has no colour. A little extra contrast keeps a photograph from going
+   flat once the hue is gone. */
+.ink-portrait__img {
+  filter: grayscale(1) contrast(1.06) brightness(1.02);
+}
+
+.ink-portrait__pending {
+  display: block;
+  margin-top: 14px;
+  color: var(--ink-2);
+}
+
+.ink-facts {
+  margin: clamp(30px, 4vh, 44px) 0 0;
+}
+
+.ink-facts__row {
+  display: grid;
+  grid-template-columns: minmax(96px, 26%) 1fr;
+  gap: 16px;
+  align-items: baseline;
+  padding: 13px 0;
+  border-top: 1px solid var(--rule);
+}
+
+.ink-facts__row:last-child {
+  border-bottom: 1px solid var(--rule);
+}
+
+.ink-facts dt {
+  margin: 0;
+}
+
+.ink-facts dd {
+  margin: 0;
+  font-size: 0.94rem;
+  font-weight: 300;
+  line-height: 1.6;
+  color: var(--ink-1);
+}
+
+/* ---------------------------------------------------------------- work --- */
+
+.ink-worklist {
+  display: flex;
+  flex-direction: column;
+}
+
+.ink-work {
+  border-top: 1px solid var(--rule);
+}
+
+.ink-worklist > *:last-child .ink-work {
+  border-bottom: 1px solid var(--rule);
+}
+
+.ink-work__link {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: clamp(10px, 1.6vw, 26px);
+  align-items: center;
+  padding: clamp(30px, 4vh, 52px) 0;
+  color: inherit;
+  text-decoration: none;
+}
+
+.ink-work__index {
+  grid-column: 3 / span 1;
+  align-self: start;
+  font-family: var(--serif);
+  font-size: clamp(1.75rem, 1.1rem + 1.7vw, 2.6rem);
+  font-weight: 300;
+  line-height: 1;
+  color: var(--ink-3);
+  transition: color 600ms var(--settle);
+}
+
+.ink-work__text {
+  grid-column: 4 / span 3;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ink-work__head {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.ink-work__title {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: clamp(1.5rem, 1.1rem + 1.2vw, 2.15rem);
+  font-weight: 300;
+  line-height: 1.1;
+  letter-spacing: -0.005em;
+  color: var(--sumi);
+}
+
+.ink-work__stack {
+  color: var(--ink-2);
+}
+
+.ink-work__desc {
+  max-width: 38ch;
+  font-size: 0.94rem;
+  font-weight: 300;
+  line-height: 1.72;
+  color: var(--ink-1);
+}
+
+.ink-work__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+  color: var(--ink-2);
+  transition: color 500ms var(--settle);
+}
+
+.ink-work__cta svg {
+  width: 9px;
+  height: 9px;
+  overflow: visible;
+  transition: transform 550ms var(--settle);
+}
+
+.ink-work__frame {
+  position: relative;
+  grid-column: 8 / span 5;
+}
+
+/* Opens outward from behind the plate, so it never crosses the description. */
+.ink-work__wash {
+  position: absolute;
+  inset: -14% -9%;
+  border-radius: 50%;
+  background: radial-gradient(
+    closest-side,
+    rgb(28 27 25 / 0.17),
+    rgb(28 27 25 / 0.07) 58%,
+    transparent 78%
+  );
+  opacity: 0;
+  transform: scale(0.82);
+  transition: opacity 760ms var(--settle), transform 760ms var(--settle);
+}
+
+.ink-work__plate {
+  position: relative;
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  background: rgb(28 27 25 / 0.045);
+}
+
+.ink-work__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Two layers rather than an animated `filter`: the colour copy fades over the
+   grey one, which is opacity and stays on the compositor. Both carry the same
+   `srcSet`, so it is one download. */
+.ink-work__img--grey {
+  filter: grayscale(1) contrast(1.04);
+}
+
+.ink-work__img--colour {
+  opacity: 0;
+  transition: opacity 620ms var(--settle);
+}
+
+.ink-work__blank {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  font-family: var(--serif);
+  font-size: clamp(3rem, 6vw, 5rem);
+  font-weight: 300;
+  color: rgb(28 27 25 / 0.12);
+}
+
+@media (hover: hover) {
+  .ink-work__link:hover .ink-work__wash,
+  .ink-work__link:focus-visible .ink-work__wash {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .ink-work__link:hover .ink-work__img--colour,
+  .ink-work__link:focus-visible .ink-work__img--colour {
+    opacity: 1;
+  }
+
+  .ink-work__link:hover .ink-work__index {
+    color: var(--ink-1);
+  }
+
+  .ink-work__link:hover .ink-work__cta {
+    color: var(--sumi);
+  }
+
+  .ink-work__link:hover .ink-work__cta svg {
+    transform: translate(2px, -2px);
+  }
+}
+
+/* Touch has no hover, so the colour is simply there. */
+@media (hover: none) {
+  .ink-work__img--colour {
+    opacity: 1;
+  }
+}
+
+/* ------------------------------------------------------------- contact --- */
+
+.ink-contact {
+  row-gap: clamp(40px, 5vh, 56px);
+  align-items: start;
+}
+
+.ink-contact__stamp {
+  grid-column: 3 / span 2;
+}
+
+.ink-contact__details {
+  grid-column: 6 / span 5;
+}
+
+.ink-stamp {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+}
+
+.ink-stamp__button {
+  position: relative;
+  display: block;
+  width: clamp(76px, 7vw, 96px);
+  line-height: 0;
+}
+
+.ink-stamp__block,
+.ink-stamp__mark {
+  display: block;
+}
+
+.ink-stamp__block svg,
+.ink-stamp__mark svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* The impression the seal leaves behind: offset, off true, and never quite as
+   saturated as the block itself. */
+.ink-stamp__mark {
+  position: absolute;
+  inset: 9px -13px auto auto;
+  width: 100%;
+  opacity: 0;
+  visibility: hidden;
+  filter: saturate(0.9);
+}
+
+.ink-stamp__label {
+  color: var(--ink-2);
+}
+
+.ink-contact__email {
+  display: inline-block;
+  margin: clamp(22px, 3vh, 32px) 0 clamp(24px, 3vh, 34px);
+  font-family: var(--serif);
+  font-size: clamp(1.3rem, 1rem + 1.1vw, 2rem);
+  font-weight: 300;
+  letter-spacing: -0.005em;
+  color: var(--sumi);
+  text-decoration: none;
+  background-image: linear-gradient(var(--rule-firm), var(--rule-firm));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 100% 1px;
+  transition: background-size 620ms var(--settle);
+}
+
+.ink-contact__email:hover {
+  background-size: 100% 2px;
+}
+
+.ink-contact__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(20px, 2.6vw, 34px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* -------------------------------------------------------------- footer --- */
+
+.ink-pagefoot {
+  position: relative;
+  z-index: 2;
+  margin-top: clamp(84px, 11vh, 140px);
+  padding: 0 var(--gutter);
+}
+
+.ink-pagefoot .ink-shell {
+  padding: clamp(22px, 3vh, 30px) 0 clamp(26px, 4vh, 38px);
+  border-top: 1px solid var(--rule);
+}
+
+/* ================================================== sections, narrow ===== */
+
+@media (max-width: 899px) {
+  .ink-section__label,
+  .ink-section__heading {
+    grid-column: 2 / -1;
+  }
+
+  .ink-about__portrait {
+    grid-column: 2 / span 5;
+  }
+
+  .ink-about__text,
+  .ink-contact__details,
+  .ink-contact__stamp {
+    grid-column: 2 / -1;
+  }
+
+  .ink-work__link {
+    row-gap: 26px;
+  }
+
+  .ink-work__index {
+    grid-column: 2 / span 1;
+  }
+
+  .ink-work__text {
+    grid-column: 3 / -1;
+  }
+
+  .ink-work__frame {
+    grid-column: 3 / -1;
+    grid-row: 2;
+  }
+}
+
+@media (max-width: 719px) {
+  .ink-section__label,
+  .ink-section__heading,
+  .ink-about__text,
+  .ink-contact__stamp,
+  .ink-contact__details,
+  .ink-work__text,
+  .ink-work__frame {
+    grid-column: 1 / -1;
+  }
+
+  .ink-about__portrait {
+    grid-column: 1 / -1;
+    max-width: 260px;
+  }
+
+  .ink-work__link {
+    row-gap: 20px;
+  }
+
+  .ink-work__index {
+    grid-column: 1 / -1;
+  }
+
+  .ink-facts__row {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}
+
+/* ====================================================== reduced motion ==== */
+
+@media (prefers-reduced-motion: reduce) {
+  .ink-work__wash,
+  .ink-work__img--colour,
+  .ink-work__cta svg,
+  .ink-contact__email {
     transition: none;
   }
 }

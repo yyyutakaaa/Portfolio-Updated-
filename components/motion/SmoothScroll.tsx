@@ -25,16 +25,31 @@ export const scrollToTop = () => {
 /**
  * Scrolls to an element by id. Plain `href="#work"` anchors are off limits here
  * because HashRouter owns the fragment — following one would navigate.
+ *
+ * The offset clears the fixed nav, measured rather than assumed: the sumi-e
+ * header and the previous shell's are different heights, and both grow with
+ * the viewport.
  */
-export const scrollToId = (id: string) => {
+export const scrollToId = (id: string, offset?: number) => {
   const target = document.getElementById(id);
   if (!target) return;
 
+  /* Lenis and `scrollIntoView` both honour `scroll-margin-top`, so a section
+     that sets one has already said how much room it wants; adding a nav offset
+     on top of that lands it a nav-height too low. Sections that set none fall
+     back to the measured header. */
+  const margin = parseFloat(window.getComputedStyle(target).scrollMarginTop) || 0;
+  const nav = document.querySelector('.ink-nav, header[class*="nav"]');
+  const clearance =
+    offset ?? (margin > 0 ? 0 : -((nav?.getBoundingClientRect().height ?? 80) + 16));
+
   if (lenisRef.current) {
-    lenisRef.current.scrollTo(target, { offset: -90 });
+    lenisRef.current.scrollTo(target, { offset: clearance });
     return;
   }
 
+  /* Native path: reduced motion, or Lenis off. `scroll-margin-top` on the
+     section does the same job for the browser's own scrolling. */
   target.scrollIntoView({
     behavior: window.matchMedia(REDUCED_MOTION_QUERY).matches ? 'auto' : 'smooth',
     block: 'start',
@@ -51,9 +66,12 @@ const SmoothScroll: React.FC<{ children: React.ReactNode }> = ({ children }) => 
     const start = () => {
       if (lenis || media.matches) return;
 
+      /* `lerp` and `duration` are alternative modes and Lenis takes lerp when
+         both are given, so only lerp is set. 0.08 is a long, ink-like settle —
+         slow enough to feel weighted, short of the floaty 0.05 range. */
       lenis = new Lenis({
-        duration: 1.05,
-        lerp: 0.1,
+        lerp: 0.08,
+        smoothWheel: true,
         wheelMultiplier: 1,
         touchMultiplier: 1.6,
         // Native scrolling on touch feels better than an interpolated one.

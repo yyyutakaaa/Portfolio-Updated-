@@ -90,7 +90,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   const navLinks = (
     <>
-      <NavLink to="/" className={navLinkClass} data-index="01" end>
+      {/* This shell's own portfolio page moved aside when the sumi-e site
+          took over "/", so the link follows it rather than leaving the shell. */}
+      <NavLink to="/legacy" className={navLinkClass} data-index="01" end>
         {t.nav.portfolio}
       </NavLink>
       <NavLink to="/resume" className={navLinkClass} data-index="02">

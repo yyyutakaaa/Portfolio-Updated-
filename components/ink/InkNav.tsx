@@ -1,5 +1,8 @@
 import React from 'react';
 import { scrollToId } from '../motion/SmoothScroll';
+import { useLanguage } from '../../contexts/LanguageContext';
+import { inkContent } from '../../utils/inkContent';
+import Hanko from './Hanko';
 
 /**
  * Fixed, small, and almost entirely negative space.
@@ -9,29 +12,6 @@ import { scrollToId } from '../motion/SmoothScroll';
  * the other that takes ink as the page is read. Everything between them is
  * set at 11px so the name below has nothing to compete with.
  */
-
-const EMAIL = 'mehdi.ouladkhlie@outlook.be';
-
-/** A carved block with the initial knocked out, the way a real seal reads. */
-const Hanko: React.FC = () => (
-  <svg className="ink-nav__seal" viewBox="0 0 40 40" aria-hidden="true" focusable="false">
-    <defs>
-      <mask id="hanko-cut">
-        <rect width="40" height="40" fill="#fff" />
-        <rect x="4.4" y="4.6" width="31.2" height="30.8" rx="2.6" fill="none" stroke="#000" strokeWidth="1.15" />
-        <path d="M10.5 11h4.1v18h-4.1z" fill="#000" />
-        <path d="M25.4 11h4.1v18h-4.1z" fill="#000" />
-        <path d="M14.6 11h3.6L20 14.6 21.8 11h3.6v5.1L21.9 24.4h-3.8L14.6 16.1z" fill="#000" />
-      </mask>
-    </defs>
-    {/* Cut by hand, so no two corners agree. */}
-    <path
-      d="M5.2 1.6C14 .9 27 1 35.2 1.9c3.2.4 3.7 1.5 3.8 4.2.2 8.9.1 20.9-.6 28.5-.3 3-1.2 3.7-4.1 3.9-9.3.6-21.3.5-28.9-.2-3.1-.3-4-1.1-4.2-4.1C.8 25 .9 13 1.5 5.4 1.7 2.6 2.4 1.9 5.2 1.6Z"
-      fill="var(--hanko)"
-      mask="url(#hanko-cut)"
-    />
-  </svg>
-);
 
 /* Centre line of the ring: an open circle with the gap at the top right. */
 const ENSO = { cx: 22, cy: 22, start: -32, sweep: 326, steps: 64 };
@@ -114,7 +94,10 @@ const Enso: React.FC<{ progress: number }> = ({ progress }) => {
 };
 
 const InkNav = React.forwardRef<HTMLElement>((_props, ref) => {
+  const { language, setLanguage } = useLanguage();
+  const copy = inkContent[language];
   const [progress, setProgress] = React.useState(0);
+  const [scrolled, setScrolled] = React.useState(false);
 
   React.useEffect(() => {
     let frame = 0;
@@ -129,6 +112,7 @@ const InkNav = React.forwardRef<HTMLElement>((_props, ref) => {
     const update = () => {
       frame = 0;
       setProgress(scrollable > 0 ? Math.min(Math.max(window.scrollY / scrollable, 0), 1) : 0);
+      setScrolled(window.scrollY > 24);
     };
 
     const onScroll = () => {
@@ -145,38 +129,64 @@ const InkNav = React.forwardRef<HTMLElement>((_props, ref) => {
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onResize);
 
+    /* Images and webfonts land after mount and make the document taller, which
+       would otherwise leave the ring reading full at half the page. */
+    const settle = window.setTimeout(onResize, 900);
+
     return () => {
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onResize);
+      window.clearTimeout(settle);
       if (frame) window.cancelAnimationFrame(frame);
     };
   }, []);
 
+  const sections: { id: string; label: string }[] = [
+    { id: 'about', label: copy.nav.about },
+    { id: 'work', label: copy.nav.work },
+    { id: 'contact', label: copy.nav.contact },
+  ];
+
   return (
-    <nav ref={ref} className="ink-nav" aria-label="Primary">
+    <nav ref={ref} className="ink-nav" aria-label="Primary" data-scrolled={scrolled}>
       <a
         className="ink-nav__sealLink"
-        href="#/ink"
-        aria-label="Mehdi Oulad Khlie — home"
+        href="#/"
+        aria-label={copy.nav.home}
         onClick={(event) => {
           event.preventDefault();
-          scrollToId('ink-top');
+          scrollToId('ink-top', 0);
         }}
       >
-        <Hanko />
+        <Hanko className="ink-nav__seal" uid="nav" />
       </a>
 
       <div className="ink-nav__right">
         <div className="ink-nav__links">
-          <button type="button" className="ink-cap ink-nav__link" onClick={() => scrollToId('ink-about')}>
-            About
-          </button>
-          <button type="button" className="ink-cap ink-nav__link" onClick={() => scrollToId('ink-work')}>
-            Work
-          </button>
-          <a className="ink-cap ink-nav__link" href={`mailto:${EMAIL}`}>
-            Contact
-          </a>
+          {sections.map((section) => (
+            <button
+              key={section.id}
+              type="button"
+              className="ink-cap ink-nav__link"
+              onClick={() => scrollToId(`ink-${section.id}`)}
+            >
+              {section.label}
+            </button>
+          ))}
+        </div>
+
+        <div className="ink-nav__lang" role="group" aria-label="Language">
+          {(['nl', 'en'] as const).map((code) => (
+            <button
+              key={code}
+              type="button"
+              className="ink-cap ink-nav__langBtn"
+              aria-pressed={language === code}
+              onClick={() => setLanguage(code)}
+            >
+              {code}
+            </button>
+          ))}
         </div>
 
         <Enso progress={progress} />

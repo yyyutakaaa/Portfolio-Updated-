@@ -31,14 +31,14 @@ const ScrollToTop = () => {
 };
 
 /**
- * The sumi-e direction is its own world — paper ground, its own nav, its own
- * type. It renders without the current shell so the two can be compared
- * honestly instead of one borrowing the other's chrome.
+ * The sumi-e site is its own world — paper ground, its own nav, its own type —
+ * so it renders without the old shell. The pages that have not been rebuilt in
+ * it yet keep the shell they were designed for.
  */
 const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { pathname } = useLocation();
 
-  if (pathname === '/ink') return <>{children}</>;
+  if (pathname === '/') return <>{children}</>;
 
   return <Layout>{children}</Layout>;
 };
@@ -60,13 +60,15 @@ const App: React.FC = () => {
               }
             >
               <Routes>
-                <Route path="/" element={<Home />} />
+                <Route path="/" element={<Ink />} />
+                {/* The previous homepage, kept reachable while the new one
+                    takes over the sections it covers. */}
+                <Route path="/legacy" element={<Home />} />
                 <Route path="/resume" element={<Resume />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/visibility-spoofer-privacy" element={<Privacy />} />
                 <Route path="/projects/muted" element={<ProjectMuted />} />
                 <Route path="/projects/sets" element={<ProjectSets />} />
-                <Route path="/ink" element={<Ink />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
             </Suspense>

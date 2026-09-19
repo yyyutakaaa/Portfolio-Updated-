@@ -153,13 +153,13 @@ export const translations = {
       educationTitle: "Opleiding",
       jobs: [
         {
-          role: "Magazijnier (Student)",
+          role: "Medewerker Expeditie Nacht (Student)",
           company: "Sligro Evergem",
           period: "JUN 2026 - HEDEN",
           description: [
-            "Ik krijg elke shift een aantal ritten toegewezen.",
-            "Via het WMS verwerk ik de orders en koppel ik ze aan de juiste klant.",
-            "Dat doe ik tijdens de nachtshift."
+            "Ik controleer de binnengekomen producten op aantal en kwaliteit.",
+            "Ik sorteer de kratten per klant en rit, en verwerk dat in het WMS.",
+            "Ik zorg dat alles klaarstaat voor de chauffeurs, tijdens de nachtdienst."
           ]
         },
         {
@@ -465,13 +465,13 @@ export const translations = {
       educationTitle: "Education",
       jobs: [
         {
-          role: "Warehouse Assistant (Student)",
+          role: "Night Shift Dispatch Assistant (Student)",
           company: "Sligro Evergem",
           period: "JUN 2026 - PRESENT",
           description: [
-            "Each shift I get a set of routes assigned to me.",
-            "I use the WMS to process orders and match them to the right customer.",
-            "It's night shift work."
+            "I check everything that comes in for quantity and quality.",
+            "I sort the crates by customer and route, and log that in the WMS.",
+            "I make sure everything's ready for the drivers, on the night shift."
           ]
         },
         {

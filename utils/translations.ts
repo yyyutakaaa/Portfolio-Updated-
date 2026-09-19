@@ -193,7 +193,11 @@ export const translations = {
           company: "Lidl België & Luxemburg | Gent",
           period: "AUG 2022 - OKT 2023",
           description: [
-            "Kassa, stock en de bakkerij, in een winkel die bijna nooit rustig was. Daar heb ik vooral geleerd om snel te schakelen tussen taken en toch vriendelijk te blijven tegen klanten."
+            "Ik hielp lange rijen aan de kassa wegwerken.",
+            "Ik hield de winkel proper, onder andere met de poetsmachine door de gangen.",
+            "Ik beantwoordde vragen van klanten en hield de groente- en fruitafdeling in de gaten.",
+            "'s Ochtends bakte ik de croissants af, en af en toe begeleidde ik nieuwe collega's.",
+            "Dat deden we als team: snel schakelen tussen taken en toch vriendelijk blijven tegen klanten."
           ]
         },
         {
@@ -515,7 +519,11 @@ export const translations = {
           company: "Lidl Belgium & Luxembourg | Gent",
           period: "AUG 2022 - OCT 2023",
           description: [
-            "Checkout, stock, and the bakery, in a store that was almost never quiet. What I mostly learned there was switching between tasks quickly while staying friendly with customers."
+            "I helped clear long lines at the register.",
+            "I kept the store clean, including running the scrubber machine through the aisles.",
+            "I answered customer questions and kept an eye on the fruit and vegetable section.",
+            "In the mornings I'd finish baking the croissants, and sometimes helped guide new colleagues.",
+            "All of that as a team: switching between tasks fast while staying friendly with customers."
           ]
         },
         {

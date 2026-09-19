@@ -204,11 +204,14 @@ const InkContactForm: React.FC<InkContactFormProps> = ({ copy, title, to }) => {
           aria-busy={status === 'submitting'}
         >
           <span className="ink-send__seal" aria-hidden="true">
-            <span className="ink-send__mark" ref={markRef}>
-              <Hanko uid="send-mark" color="var(--hanko)" />
-            </span>
+            {/* The block sits first, so the impression paints over it, not
+                under it: pressing briefly turns the seal red, exactly where
+                it already sits, before that ink dries back to black. */}
             <span className="ink-send__block" ref={blockRef}>
               <Hanko uid="send-block" />
+            </span>
+            <span className="ink-send__mark" ref={markRef}>
+              <Hanko uid="send-mark" color="var(--hanko)" />
             </span>
           </span>
           <span className="ink-cap ink-send__label">{status === 'submitting' ? copy.sending : copy.send}</span>

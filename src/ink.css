@@ -1665,9 +1665,13 @@ html.ink-cursor-on * {
   height: 100%;
 }
 
-/* What the seal leaves behind: offset, off true, a little less saturated. */
+/* What the seal leaves behind, painted right over it rather than tucked
+   behind it — it sits on top in the markup, in the same spot, just off true
+   by a couple of degrees and a couple of px, the way a hand-pressed stamp
+   never lands perfectly square. Pressing turns the block red for a moment,
+   then that ink dries back down to the plain-ink seal underneath. */
 .ink-send__mark {
-  transform: translate(10px, 8px);
+  transform: translate(2px, 2px);
   opacity: 0;
   visibility: hidden;
   filter: saturate(0.9);

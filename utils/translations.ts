@@ -174,12 +174,12 @@ export const translations = {
           ]
         },
         {
-          role: "Dispatcher (Student)",
+          role: "Magazijnier (Student)",
           company: "AMP (bpost group) | Lokeren",
           period: "JUL 2024 - JUL 2026",
           description: [
-            "Als dispatcher verdeelde ik pallets met magazines en tijdschriften over de verschillende sites.",
-            "'s Nachts kreeg ik pallets met kranten binnen, die ik verdeelde over de juiste ritten."
+            "'s Nachts kreeg ik pallets met kranten binnen, die ik verdeelde over de juiste ritten.",
+            "Daarnaast deed ik er ook dispatcher-werk bij: pallets met magazines en tijdschriften verdelen over de verschillende sites."
           ]
         },
         {
@@ -486,12 +486,12 @@ export const translations = {
           ]
         },
         {
-          role: "Dispatcher (Student)",
+          role: "Warehouse Assistant (Student)",
           company: "AMP (bpost group) | Lokeren",
           period: "JUL 2024 - JUL 2026",
           description: [
-            "As dispatcher, I split pallets of magazines and periodicals across the different sites.",
-            "At night, I'd get pallets of newspapers in and split those across the right routes."
+            "At night, I'd get pallets of newspapers in and split those across the right routes.",
+            "On top of that I did dispatcher work: splitting pallets of magazines and periodicals across the different sites."
           ]
         },
         {

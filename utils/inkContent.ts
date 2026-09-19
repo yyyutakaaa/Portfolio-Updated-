@@ -20,6 +20,10 @@ export interface WorkItem {
   /** Omitted where there is no screenshot to show yet. */
   image?: { src: string; srcSet: string; alt: string; ratio?: string };
   cta: string;
+  /** A second destination, e.g. the live site next to the repository. Omitted for most projects. */
+  secondaryHref?: string;
+  secondaryCta?: string;
+  secondaryExternal?: boolean;
 }
 
 export interface ContactFormCopy {
@@ -205,6 +209,9 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
           external: true,
           image: { ...FUELTRACKER_IMAGE, alt: 'The FuelTracker site planning a route between two addresses' },
           cta: 'See it on GitHub',
+          secondaryHref: 'https://fueltracker.mehdioul.dev/',
+          secondaryCta: 'Visit the site',
+          secondaryExternal: true,
         },
         {
           index: '05',
@@ -328,6 +335,9 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
           external: true,
           image: { ...FUELTRACKER_IMAGE, alt: 'FuelTracker terwijl een route tussen twee adressen wordt gepland' },
           cta: 'Bekijk de code op GitHub',
+          secondaryHref: 'https://fueltracker.mehdioul.dev/',
+          secondaryCta: 'Bekijk de website',
+          secondaryExternal: true,
         },
         {
           index: '05',

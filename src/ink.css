@@ -739,6 +739,27 @@ html.ink-cursor-on * {
   transition: transform 550ms var(--settle);
 }
 
+.ink-work__ctaRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 22px;
+  margin-top: 4px;
+}
+
+.ink-work__ctaRow .ink-work__cta {
+  margin-top: 0;
+}
+
+.ink-work__ctaRow .ink-work__cta:hover,
+.ink-work__ctaRow .ink-work__cta:focus-visible {
+  color: var(--sumi);
+}
+
+.ink-work__ctaRow .ink-work__cta:hover svg,
+.ink-work__ctaRow .ink-work__cta:focus-visible svg {
+  transform: translate(2px, -2px);
+}
+
 .ink-work__frame {
   position: relative;
   grid-column: 8 / span 5;

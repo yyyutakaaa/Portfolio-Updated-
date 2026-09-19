@@ -23,82 +23,124 @@ const ratioValue = (ratio: string) => {
   return w / h;
 };
 
+/** The little arrow that follows every CTA, link or plain text alike. */
+const CtaArrow: React.FC = () => (
+  <svg viewBox="0 0 12 12" aria-hidden="true" focusable="false">
+    <path d="M1 11 11 1M4 1h7v7" fill="none" stroke="currentColor" strokeWidth="1.2" />
+  </svg>
+);
+
 const WorkBlock: React.FC<{ item: WorkItem }> = ({ item }) => {
   const external = item.external;
   const ratio = item.image?.ratio ?? DEFAULT_RATIO;
   const intrinsicWidth = 1400;
   const intrinsicHeight = Math.round(intrinsicWidth / ratioValue(ratio));
+  /* Two destinations (e.g. the repository and the live site) can't both live
+     inside one wrapping link, so the whole plate drops to a plain div and the
+     two CTAs become real links of their own instead of one span. */
+  const hasSecondary = Boolean(item.secondaryHref);
+  const Wrapper = hasSecondary ? 'div' : 'a';
+
+  const body = (
+    <>
+      <span className="ink-work__index" aria-hidden="true">
+        {item.index}
+      </span>
+
+      <span className="ink-work__text">
+        <span className="ink-work__head">
+          <InkTitle as="h3" className="ink-work__title">
+            {item.title}
+          </InkTitle>
+          <span className="ink-cap ink-work__stack">{item.stack}</span>
+        </span>
+        <span className="ink-work__desc">{item.description}</span>
+
+        {hasSecondary ? (
+          <span className="ink-work__ctaRow">
+            <a
+              className="ink-cap ink-work__cta"
+              href={item.href}
+              {...(external ? { target: '_blank', rel: 'noreferrer noopener' } : {})}
+            >
+              {item.cta}
+              <CtaArrow />
+            </a>
+            <a
+              className="ink-cap ink-work__cta"
+              href={item.secondaryHref}
+              {...(item.secondaryExternal ? { target: '_blank', rel: 'noreferrer noopener' } : {})}
+            >
+              {item.secondaryCta}
+              <CtaArrow />
+            </a>
+          </span>
+        ) : (
+          <span className="ink-cap ink-work__cta">
+            {item.cta}
+            <CtaArrow />
+          </span>
+        )}
+      </span>
+
+      <span className="ink-work__frame">
+        {/* Sits behind the plate and opens outward, so it never crosses the
+            description that has to be read. */}
+        <span className="ink-work__wash" aria-hidden="true" />
+
+        <span className="ink-work__plate" style={{ aspectRatio: ratio }}>
+          {item.image ? (
+            <>
+              <img
+                className="ink-work__img ink-work__img--grey"
+                src={item.image.src}
+                srcSet={item.image.srcSet}
+                sizes="(max-width: 899px) 92vw, 44vw"
+                alt={item.image.alt}
+                loading="lazy"
+                decoding="async"
+                width={intrinsicWidth}
+                height={intrinsicHeight}
+              />
+              <img
+                className="ink-work__img ink-work__img--colour"
+                src={item.image.src}
+                srcSet={item.image.srcSet}
+                sizes="(max-width: 899px) 92vw, 44vw"
+                alt=""
+                aria-hidden="true"
+                loading="lazy"
+                decoding="async"
+                width={intrinsicWidth}
+                height={intrinsicHeight}
+              />
+            </>
+          ) : (
+            /* No screenshot for this one yet. Rather than a broken frame,
+               the plate carries the numeral as a watermark. */
+            <span className="ink-work__blank" aria-hidden="true">
+              {item.index}
+            </span>
+          )}
+        </span>
+      </span>
+    </>
+  );
 
   return (
     <article className="ink-work">
-      <a
+      <Wrapper
         className="ink-work__link"
-        href={item.href}
-        {...(external ? { target: '_blank', rel: 'noreferrer noopener' } : {})}
-        aria-label={`${item.title} — ${item.cta}`}
+        {...(hasSecondary
+          ? {}
+          : {
+              href: item.href,
+              ...(external ? { target: '_blank', rel: 'noreferrer noopener' } : {}),
+              'aria-label': `${item.title}, ${item.cta}`,
+            })}
       >
-        <span className="ink-work__index" aria-hidden="true">
-          {item.index}
-        </span>
-
-        <span className="ink-work__text">
-          <span className="ink-work__head">
-            <InkTitle as="h3" className="ink-work__title">
-              {item.title}
-            </InkTitle>
-            <span className="ink-cap ink-work__stack">{item.stack}</span>
-          </span>
-          <span className="ink-work__desc">{item.description}</span>
-          <span className="ink-cap ink-work__cta">
-            {item.cta}
-            <svg viewBox="0 0 12 12" aria-hidden="true" focusable="false">
-              <path d="M1 11 11 1M4 1h7v7" fill="none" stroke="currentColor" strokeWidth="1.2" />
-            </svg>
-          </span>
-        </span>
-
-        <span className="ink-work__frame">
-          {/* Sits behind the plate and opens outward, so it never crosses the
-              description that has to be read. */}
-          <span className="ink-work__wash" aria-hidden="true" />
-
-          <span className="ink-work__plate" style={{ aspectRatio: ratio }}>
-            {item.image ? (
-              <>
-                <img
-                  className="ink-work__img ink-work__img--grey"
-                  src={item.image.src}
-                  srcSet={item.image.srcSet}
-                  sizes="(max-width: 899px) 92vw, 44vw"
-                  alt={item.image.alt}
-                  loading="lazy"
-                  decoding="async"
-                  width={intrinsicWidth}
-                  height={intrinsicHeight}
-                />
-                <img
-                  className="ink-work__img ink-work__img--colour"
-                  src={item.image.src}
-                  srcSet={item.image.srcSet}
-                  sizes="(max-width: 899px) 92vw, 44vw"
-                  alt=""
-                  aria-hidden="true"
-                  loading="lazy"
-                  decoding="async"
-                  width={intrinsicWidth}
-                  height={intrinsicHeight}
-                />
-              </>
-            ) : (
-              /* No screenshot for this one yet. Rather than a broken frame,
-                 the plate carries the numeral as a watermark. */
-              <span className="ink-work__blank" aria-hidden="true">
-                {item.index}
-              </span>
-            )}
-          </span>
-        </span>
-      </a>
+        {body}
+      </Wrapper>
     </article>
   );
 };

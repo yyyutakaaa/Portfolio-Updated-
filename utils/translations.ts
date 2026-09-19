@@ -201,7 +201,11 @@ export const translations = {
           company: "Plopsaland De Panne",
           period: "JUN 2021 - SEP 2021",
           description: [
-            "Ik hielp mee in de keuken tijdens het hoogseizoen en zorgde dat alles proper bleef, volgens de hygiëneregels."
+            "Ik verwelkomde gasten en hielp hen aan de kassa.",
+            "Ik verwerkte de bestellingen nauwkeurig en zorgde dat elke order klopte.",
+            "Ik hielp mee in de keuken bij het klaarmaken van de gerechten.",
+            "Ik hield de zaak netjes en volgde de hygiëne- en veiligheidsregels op.",
+            "Dat deed ik samen met een team, tijdens het hoogseizoen."
           ]
         }
       ],
@@ -519,7 +523,11 @@ export const translations = {
           company: "Plopsaland De Panne",
           period: "JUN 2021 - SEP 2021",
           description: [
-            "I helped out in the kitchen during peak season and kept everything up to the hygiene standards."
+            "I welcomed guests and helped out at the register.",
+            "I processed orders accurately and made sure each one came out right.",
+            "I helped prepare food in the kitchen.",
+            "I kept the place clean and followed the hygiene and safety rules.",
+            "All of that as part of a team, during peak season."
           ]
         }
       ],

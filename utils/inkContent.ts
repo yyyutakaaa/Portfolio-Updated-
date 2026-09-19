@@ -117,6 +117,11 @@ const FUELTRACKER_IMAGE = {
 const SHUTITDOWN_IMAGE = {
   src: '/shutdown-server-1000.webp',
   srcSet: '/shutdown-server-700.webp 700w, /shutdown-server-1000.webp 1000w',
+  /* Cropped tight to the window itself — its corners are rounded, so cropping
+     any looser than this lets the desktop wallpaper behind it bleed back in
+     at the edges. That native shape is wider than the other plates' 16:10,
+     so it gets its own ratio rather than being cropped again to fit. */
+  ratio: '582 / 383',
 };
 
 export const EMAIL = 'mehdi.ouladkhlie@outlook.be';

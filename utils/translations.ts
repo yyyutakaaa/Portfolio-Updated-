@@ -182,7 +182,10 @@ export const translations = {
           period: "JUL 2024 - JUL 2026",
           description: [
             "'s Nachts kreeg ik pallets met kranten binnen, die ik verdeelde over de juiste ritten.",
-            "Daarnaast deed ik er ook dispatcher-werk bij: pallets met magazines en tijdschriften verdelen over de verschillende sites."
+            "Daarnaast deed ik er ook dispatcher-werk bij: pallets met magazines en tijdschriften verdelen over de verschillende sites.",
+            "Ik hielp ook mee met het verwerken van retourzendingen.",
+            "Ik controleerde de leveringen en hield het magazijn netjes.",
+            "Dat gebeurde vroeg in de nacht, ergens tussen 1 en 6 uur."
           ]
         },
         {
@@ -497,7 +500,10 @@ export const translations = {
           period: "JUL 2024 - JUL 2026",
           description: [
             "At night, I'd get pallets of newspapers in and split those across the right routes.",
-            "On top of that I did dispatcher work: splitting pallets of magazines and periodicals across the different sites."
+            "On top of that I did dispatcher work: splitting pallets of magazines and periodicals across the different sites.",
+            "I also helped process returns.",
+            "I checked deliveries and kept the warehouse tidy.",
+            "All of that happened early in the night, somewhere between 1 and 6 in the morning."
           ]
         },
         {

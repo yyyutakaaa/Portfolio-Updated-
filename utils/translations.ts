@@ -157,9 +157,9 @@ export const translations = {
           company: "Sligro Evergem",
           period: "JUN 2026 - HEDEN",
           description: [
-            "Ik sorteer producten per rit, zodat mijn collega's ze kunnen inscannen en bij de juiste klant afleveren.",
-            "Waar nodig scan ik ook zelf mee.",
-            "En ik hou het magazijn netjes."
+            "Ik krijg elke shift een aantal ritten toegewezen.",
+            "Via het WMS verwerk ik de orders en koppel ik ze aan de juiste klant.",
+            "Dat doe ik tijdens de nachtshift."
           ]
         },
         {
@@ -174,13 +174,12 @@ export const translations = {
           ]
         },
         {
-          role: "Logistiek Assistent (Student)",
+          role: "Dispatcher (Student)",
           company: "AMP (bpost group) | Lokeren",
-          period: "JUL 2024 - HEDEN",
+          period: "JUL 2024 - JUL 2026",
           description: [
-            "Voor de goederenstroom en de transportpapieren ben ik het aanspreekpunt.",
-            "Ik pick orders met de scanner, meestal tegen een vertrektijd die vaststaat.",
-            "En ik sorteer goederen per regio, zodat elke rit precies meekrijgt wat erbij hoort."
+            "Als dispatcher verdeelde ik pallets met magazines en tijdschriften over de verschillende sites.",
+            "'s Nachts kreeg ik pallets met kranten binnen, die ik verdeelde over de juiste ritten."
           ]
         },
         {
@@ -470,9 +469,9 @@ export const translations = {
           company: "Sligro Evergem",
           period: "JUN 2026 - PRESENT",
           description: [
-            "I sort products by delivery route so my colleagues can scan them in and get them to the right customer.",
-            "I pitch in with scanning myself when it's needed.",
-            "And I keep the warehouse tidy."
+            "Each shift I get a set of routes assigned to me.",
+            "I use the WMS to process orders and match them to the right customer.",
+            "It's night shift work."
           ]
         },
         {
@@ -487,13 +486,12 @@ export const translations = {
           ]
         },
         {
-          role: "Logistics Assistant (Student)",
+          role: "Dispatcher (Student)",
           company: "AMP (bpost group) | Lokeren",
-          period: "JUL 2024 - PRESENT",
+          period: "JUL 2024 - JUL 2026",
           description: [
-            "I'm the go-to person for the flow of goods and the transport paperwork.",
-            "I pick orders with a scanner, usually against a departure time that isn't flexible.",
-            "And I sort goods by region, so every route gets exactly what it needs."
+            "As dispatcher, I split pallets of magazines and periodicals across the different sites.",
+            "At night, I'd get pallets of newspapers in and split those across the right routes."
           ]
         },
         {

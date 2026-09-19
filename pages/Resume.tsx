@@ -40,8 +40,8 @@ const Resume: React.FC = () => {
       console.error('Unable to generate the CV PDF.', error);
       window.alert(
         language === 'nl'
-          ? 'De PDF kon niet worden aangemaakt. Probeer het opnieuw.'
-          : 'The PDF could not be generated. Please try again.',
+          ? 'Het is niet gelukt om de PDF te maken. Probeer het nog eens.'
+          : "Couldn't generate the PDF. Give it another try.",
       );
     } finally {
       setIsGeneratingPdf(false);

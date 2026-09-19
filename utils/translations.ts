@@ -4,15 +4,15 @@ export const translations = {
       back: "Terug naar home",
       badge: "WINDOWS APP",
       title: "Muted",
-      tagline: "Propere micro, duidelijke stem.",
-      screenshotAlt: "Screenshot van de Muted-app met het RNNoise-filter, de voice gate en de instellingen voor de virtuele kabel",
-      intro: "Muted is een Windows-app die ik gemaakt heb omdat ik het beu was dat heel Discord mijn ventilator hoorde. Het haalt achtergrondgeluid uit je micro voor het bij Discord, Teams of je game aankomt. Alles gebeurt op je eigen pc: er gaat niks naar een server en er wordt niks opgenomen.",
+      tagline: "Minder ruis, dezelfde stem.",
+      screenshotAlt: "Screenshot van Muted met het RNNoise-filter, de voice gate en de instellingen van de virtuele kabel",
+      intro: "Muted is een Windows-app die ik in elkaar heb gezet omdat ik er genoeg van had dat mijn ventilator via Discord meeluisterde. Ze filtert achtergrondgeluid uit je micro voor het bij Discord, Teams of je game terechtkomt. Dat gebeurt allemaal lokaal op je pc: niks gaat naar een server, en er wordt niks opgenomen.",
       deepDive: {
-        title: "Onder de motorkap",
-        signalPathTitle: "De weg die je stem aflegt",
-        signalPathIntro: "Windows laat een app wel de micro's en boxen gebruiken die er al staan, maar een nieuw apparaat aanmaken mag niet zonder ondertekende kernel-driver. Muted doet het dus met wat er al is: het pakt je echte micro, maakt die proper, en zet het resultaat op een virtuele kabel waar je apps naar kunnen luisteren.",
+        title: "Achter de schermen",
+        signalPathTitle: "Waar je stem eigenlijk langsgaat",
+        signalPathIntro: "Windows laat een app gebruikmaken van micro's en boxen die al geïnstalleerd staan, maar een nieuw apparaat toevoegen mag alleen met een ondertekende kernel-driver. Muted werkt dus met wat er al is: het neemt je echte micro, maakt het geluid proper, en stuurt dat resultaat naar een virtuele kabel waar andere apps naar kunnen luisteren.",
         signalPath: ["Microfoon", "Muted (gain · RNNoise · mix · gate · drift)", "Virtuele kabel in", "Gekoppelde kabel-uitgang", "Discord / Teams / game"],
-        frameMathTitle: "De cijfers erachter",
+        frameMathTitle: "De cijfers in detail",
         frameMath: [
           { value: "48 kHz", label: "samplerate" },
           { value: "480", label: "samples per frame" },
@@ -21,133 +21,133 @@ export const translations = {
         ],
         points: [
           {
-            title: "Geen eigen driver",
-            body: "Een gewone app mag van Windows geen nieuwe micro toevoegen aan de lijst die Discord te zien krijgt. Daar heb je een ondertekende kernel-driver voor nodig, plus het hele ondertekeningsproces dat erbij hoort. Muted slaat dat over en leent een virtuele audiokabel die je al geïnstalleerd hebt, en voert daar propere audio in. Alles blijft in één gewone user-mode app, er draait niks in de kernel."
+            title: "Zonder eigen driver",
+            body: "Windows laat een gewone app niet zomaar een nieuwe micro toevoegen aan de lijst die Discord ziet. Daarvoor is een ondertekende kernel-driver nodig, met het hele certificeringsproces erbij. Muted omzeilt dat gewoon: het leent een virtuele audiokabel die je toch al hebt staan, en stuurt daar proper geluid naartoe. Het geheel blijft één gewone user-mode app, er draait niks in de kernel."
           },
           {
-            title: "De opnamethread doet bijna niks",
-            body: "De thread die je micro uitleest doet maar één ding: de audio in een buffer kopiëren en verder gaan. Geen filtering, geen locks, geen geheugen dat daar wordt aangevraagd. Een tweede thread haalt er telkens precies 480 samples uit, goed voor 10 ms audio, want dat is de framegrootte waar RNNoise op rekent."
+            title: "De opnamethread heeft weinig te doen",
+            body: "De thread die je micro uitleest heeft maar één taak: de audio in een buffer zetten en doorgaan. Geen filtering, geen locks, geen geheugen dat daar wordt vrijgemaakt. Een tweede thread haalt er telkens exact 480 samples uit, 10 ms aan audio, omdat dat de framegrootte is waarop RNNoise rekent."
           },
           {
-            title: "Eén frame, van begin tot eind",
-            body: "Elk frame krijgt eerst input-gain en splitst dan in twee. De ene kopie blijft zoals ze is, de andere gaat door RNNoise. RNNoise voegt zelf ongeveer 20 ms vertraging toe, dus de onaangeroerde kopie wordt evenveel opgehouden zodat ze sample per sample gelijk lopen. Daarna gaan ze samen volgens de verhouding die jij instelt, knipt een optionele voice gate de stiltes eruit op basis van RNNoise's eigen stemdetectie, en gaat de output-gain erover."
+            title: "Eén frame, stap voor stap",
+            body: "Elk frame krijgt eerst input-gain en wordt dan in twee gesplitst. De ene kopie blijft onaangeroerd, de andere gaat door RNNoise. Omdat RNNoise zelf ongeveer 20 ms vertraging toevoegt, wordt die onaangeroerde kopie precies zo lang opgehouden, zodat ze sample per sample synchroon blijven. Daarna worden ze gemengd volgens de verhouding die jij kiest, knipt een optionele voice gate de stiltes weg op basis van RNNoise's eigen stemdetectie, en komt de output-gain er als laatste over."
           },
           {
-            title: "Twee klokken die niet gelijk lopen",
-            body: "Je micro en de virtuele kabel zijn twee aparte apparaten met elk hun eigen klok, en tijdens een lange call lopen die uit elkaar. Zou Muted precies evenveel samples wegschrijven als het inleest, dan loopt de buffer stilaan leeg of net over. Daarom stuurt het honderd keer per seconde één sample meer of minder door, afhankelijk van hoe vol de buffer staat. Eén sample hoor je niet, maar zo blijft alles uren aan een stuk gelijk lopen."
+            title: "Twee klokken die uit elkaar lopen",
+            body: "Je micro en de virtuele kabel zijn twee losse apparaten met elk hun eigen klok, en tijdens een lange call lopen die stilaan uit elkaar. Schrijft Muted exact evenveel samples weg als het inleest, dan raakt de buffer op een gegeven moment leeg of net vol. Daarom stuurt het honderd keer per seconde één sample meer of minder door, naargelang hoe vol de buffer op dat moment is. Eén sample hoor je nooit, maar op die manier blijft alles urenlang synchroon."
           },
           {
-            title: "Het start niet in je boxen",
-            body: "Eén controle heeft niks met geluidskwaliteit te maken. Als de uitgang van Muted op je boxen zou staan in plaats van op een virtuele kabel, dan komt je eigen stem terug in je micro en heb je een lus. Daarom checkt de app eerst of de uitgang echt een virtuele kabel is, en start hij gewoon niet als dat niet klopt."
+            title: "Het start niet als het naar je boxen zou gaan",
+            body: "Eén van de controles heeft niks te maken met geluidskwaliteit. Zou de uitgang van Muted op je boxen staan in plaats van op een virtuele kabel, dan komt je eigen stem terug in je micro en krijg je een lus. Daarom checkt de app eerst of de uitgang echt een virtuele kabel is, en weigert hij gewoon te starten als dat niet het geval is."
           }
         ]
       },
-      howItWorksTitle: "Hoe het werkt",
+      howItWorksTitle: "In grote lijnen",
       howItWorks: [
-        "De app vangt je micro op in 48kHz mono via WASAPI.",
-        "Elk blokje van 480 samples (20ms) gaat door het RNNoise-model van Xiph, dat getraind is om stem van ruis te onderscheiden.",
-        "Zet je de voice gate aan, dan knipt die de stiltes er nog strakker uit, zodat je toetsenbord of een zoemende ventilator er niet doorkomt.",
-        "De app corrigeert klokdrift, zodat het ook na een lange sessie nog gelijk loopt.",
-        "Het resultaat gaat naar een virtuele audiokabel, en die kies je dan als micro in Discord, Teams of je game."
+        "De app neemt je micro op in 48kHz mono, via WASAPI.",
+        "Elk blokje van 480 samples, 20ms, gaat door het RNNoise-model van Xiph, getraind om stem van ruis te onderscheiden.",
+        "Zet je de voice gate aan, dan worden stiltes nog strakker weggeknipt, zodat een tikkend toetsenbord of een zoemende ventilator er niet doorkomt.",
+        "Ondertussen corrigeert de app klokdrift, zodat alles ook na een lange sessie nog synchroon loopt.",
+        "Het eindresultaat komt op een virtuele audiokabel terecht, en die stel je in als micro in Discord, Teams of je game."
       ],
-      featuresTitle: "Wat het doet",
+      featuresTitle: "Wat je krijgt",
       features: [
-        "Ruis eruit terwijl je praat, met het officiële RNNoise-model",
-        "Draait volledig op je eigen pc: geen account, geen cloud, geen opnames",
-        "Je stelt zelf in hoeveel filter je wil met de dry/wet-mix",
-        "Voice gate voor stiltes die echt stil zijn",
-        "Vindt zelf de audioapparaten die aangesloten zijn",
-        "Gaat naar de systeemtray en kan mee opstarten met Windows"
+        "Filtert ruis terwijl je praat, met het officiële RNNoise-model",
+        "Draait volledig lokaal: geen account, geen cloud, geen opnames",
+        "Bepaal zelf hoeveel filtering je wil via de dry/wet-mix",
+        "Voice gate zodat stilte ook echt stil is",
+        "Herkent zelf welke audioapparaten aangesloten zijn",
+        "Verdwijnt in de systeemtray en kan mee opstarten met Windows"
       ],
-      stackTitle: "Waarmee het gebouwd is",
+      stackTitle: "Gebouwd met",
       stack: ["C# (.NET 9 Desktop Runtime)", "WPF voor de interface", "NAudio + native RNNoise DLL voor de audio", "PowerShell / Visual Studio 2022 C++ build pipeline"],
-      installTitle: "Aan de slag",
+      installTitle: "Zo installeer je het",
       installSteps: [
-        "Installeer een ondertekende virtuele audiokabel, bijvoorbeeld VB-CABLE.",
-        "Herstart Windows als hij daarom vraagt.",
-        "Open Muted en zet je micro als input en de kabel als output.",
-        "Kies in Discord, Teams of je game de opnamekant van die kabel als micro."
+        "Installeer eerst een ondertekende virtuele audiokabel, VB-CABLE bijvoorbeeld.",
+        "Herstart Windows als daar om gevraagd wordt.",
+        "Open Muted en stel je micro in als input en de kabel als output.",
+        "Kies daarna in Discord, Teams of je game de opnamekant van die kabel als micro."
       ],
-      limitationsTitle: "Dat moet je wel weten",
-      limitations: "RNNoise haalt ruis weg, maar geen echo. Zit je in een kamer die galmt, gebruik dan een headset of iets dat echt aan echo-onderdrukking doet.",
-      downloadCta: "Download de pre-release (.exe)",
-      downloadNote: "v0.1.0, alleen Windows, nog volop in de maak",
-      githubCta: "Bekijk de code op GitHub"
+      limitationsTitle: "Goed om te weten",
+      limitations: "RNNoise haalt ruis weg, maar geen echo. In een kamer die galmt kom je verder met een headset of iets dat wel echt aan echo-onderdrukking doet.",
+      downloadCta: "Haal de pre-release binnen (.exe)",
+      downloadNote: "v0.1.0, enkel Windows, en nog volop in ontwikkeling",
+      githubCta: "Bekijk de broncode op GitHub"
     },
     setsPage: {
       back: "Terug naar home",
       badge: "PWA",
       title: "Sets",
-      tagline: "Trainen, opschrijven, klaar.",
-      intro: "Sets is een simpele app om bij te houden wat je in de gym doet, krachttraining en cardio. Je gaat trainen, en achteraf typ je in wat je gedaan hebt. Geen abonnement en geen laadschermen die je ophouden. Je zet hem in een paar tikken op je gsm en je bent vertrokken.",
+      tagline: "Eerst trainen, dan pas noteren.",
+      intro: "Sets is een eenvoudige app om bij te houden wat je in de gym doet, zowel krachttraining als cardio. Je traint eerst, en typt achteraf in wat je gedaan hebt. Geen abonnement, geen laadschermen die je ophouden. In een paar tikken staat hij op je gsm en kan je aan de slag.",
       deepDive: {
-        title: "Onder de motorkap",
-        intro: "Dit stuk moet je niet lezen om de app te gebruiken. Het staat er voor wie wil weten hoe het vanbinnen in elkaar zit.",
-        signalPathTitle: "Hoe een sessie wordt opgeslagen",
-        signalPathIntro: "Wat je intikt gaat eerst naar je gsm zelf, dus het staat meteen vast en het scherm moet niet zitten wachten op een antwoord. Daarna gaat de sessie naar de cloud, zodat je data ook op je andere toestellen staat zonder dat jij daar iets voor moet doen.",
+        title: "Achter de schermen",
+        intro: "Om de app te gebruiken moet je dit niet lezen. Het is er voor wie graag weet hoe het er vanbinnen aan toegaat.",
+        signalPathTitle: "Wat er gebeurt als je een sessie opslaat",
+        signalPathIntro: "Wat je intikt wordt eerst op je gsm zelf opgeslagen, dus het staat meteen vast en het scherm moet niet wachten op een reactie van waar dan ook. Pas daarna gaat de sessie naar de cloud, zodat je data ook op je andere toestellen belandt zonder dat je daar zelf iets voor moet doen.",
         signalPath: ["Workout", "Lokale write (localStorage)", "Supabase (cloud sync)"],
-        frameMathTitle: "Wat dat in de praktijk betekent",
+        frameMathTitle: "Wat je daar dagelijks van voelt",
         frameMath: [
-          { value: "Meteen", label: "je data staat er zonder wachten" },
-          { value: "Sync", label: "je sessies staan op al je toestellen" },
-          { value: "Live", label: "je 1RM verschijnt terwijl je nog typt" },
-          { value: "Auto", label: "je workout bewaart zichzelf" }
+          { value: "Meteen", label: "geen wachttijd voor je data" },
+          { value: "Sync", label: "je sessies volgen je overal" },
+          { value: "Live", label: "je 1RM update terwijl je typt" },
+          { value: "Auto", label: "je workout slaat zichzelf op" }
         ],
         points: [
           {
-            title: "Alles staat er direct",
-            body: "Elk scherm toont je gegevens meteen, omdat de app een kopie op je gsm bijhoudt in plaats van alles opnieuw op te halen. Die kopie wordt op de achtergrond bijgewerkt wanneer je inlogt."
+            title: "Niks houdt je op",
+            body: "Elk scherm toont je gegevens onmiddellijk, omdat de app een eigen kopie op je gsm bijhoudt in plaats van steeds alles opnieuw op te halen. Die kopie wordt op de achtergrond bijgewerkt zodra je inlogt."
           },
           {
-            title: "Een crash kost je niks",
-            body: "De workout waar je mee bezig bent wordt bij elke wijziging bewaard. Sluit iOS de app af midden in je sessie, dan vraagt Sets de volgende keer gewoon of je verder wil waar je gestopt was."
+            title: "Crashen kost je niks",
+            body: "De workout waar je middenin zit wordt bij elke aanpassing bewaard. Sluit iOS de app af tijdens je sessie, dan vraagt Sets de volgende keer gewoon of je wil verdergaan waar je gebleven was."
           },
           {
-            title: "Zonder account kun je ook gewoon trainen",
-            body: "Train je zonder in te loggen, dan blijft dat op je gsm staan. Maak je later toch een account, dan neemt de app die workouts mee in plaats van ze te laten vallen."
+            title: "Trainen zonder account kan gewoon",
+            body: "Train je zonder in te loggen, dan blijft dat gewoon op je gsm staan. Maak je later toch een account, dan neemt de app die eerdere workouts mee in plaats van ze te laten vallen."
           }
         ]
       },
-      howItWorksTitle: "Snel loggen",
+      howItWorksTitle: "Snel noteren",
       howItWorks: [
-        "De app zet je gewichten en reps van de vorige keer al als placeholder in de velden.",
-        "Bij elke set berekent hij live je geschatte 1RM met de Epley-formule. Ga je over je record, dan gloeit het veld goud op.",
-        "Cardio krijgt eigen velden voor tijd, afstand en calorieën.",
-        "Tik op het setnummer om het te taggen als warm-up, working set, drop set of tot falen. Warm-ups tellen niet mee voor je volume of je PR's.",
-        "RPE per set kun je aanzetten als je dat wil. Dan wordt je 1RM-schatting scherper op basis van je reps in reserve."
+        "De app zet je gewichten en reps van de vorige keer al klaar als placeholder.",
+        "Bij elke set berekent hij meteen je geschatte 1RM met de Epley-formule. Verbreek je je record, dan licht het veld goud op.",
+        "Voor cardio zijn er apart velden voor tijd, afstand en calorieën.",
+        "Tik op het setnummer om hem te taggen als warm-up, working set, drop set of tot falen. Warm-ups tellen niet mee voor je volume of je PR's.",
+        "RPE per set is optioneel, en maakt je 1RM-schatting nauwkeuriger op basis van je reps in reserve."
       ],
-      featuresTitle: "Wat het doet",
+      featuresTitle: "Wat je krijgt",
       features: [
-        "Dashboard met je volume, je PR's en grafieken van je laatste 7 sessies",
-        "Bronzen, zilveren en gouden badges die oplichten wanneer je ze haalt",
-        "Plaatcalculator die je per gym en per eenheid instelt",
-        "Kg of lbs, kies zelf: de app rekent het om",
-        "Licht of donker thema, en volledig in het Nederlands en het Engels",
-        "Eén tik in de instellingen en je hebt een backup van al je data"
+        "Een dashboard met je volume, je PR's en grafieken van je laatste 7 sessies",
+        "Bronzen, zilveren en gouden badges die oplichten zodra je ze verdient",
+        "Een plaatcalculator die je per gym en per eenheid instelt",
+        "Kg of lbs, jouw keuze, de app rekent zelf om",
+        "Licht of donker thema, volledig vertaald naar het Nederlands en Engels",
+        "Eén tik in de instellingen maakt een backup van al je data"
       ],
-      stackTitle: "Waarmee het gebouwd is",
+      stackTitle: "Gebouwd met",
       stack: [
         "Vanilla ES6+ JavaScript, zonder bundler",
         "Tailwind CSS, op voorhand gecompileerd tot één static bestand",
         "Supabase voor login, database en cloud sync (met row-level security)",
-        "PWA met een localStorage-cache zodat de schermen meteen laden"
+        "PWA met een localStorage-cache, zodat schermen meteen laden"
       ],
-      installTitle: "Sets op je gsm zetten",
+      installTitle: "Zo krijg je hem op je gsm",
       installSteps: [
         "Open sets.ink in Safari (iOS) of Chrome (Android).",
         "Tik op het deel-icoon en kies 'Zet op beginscherm'.",
-        "Vanaf dan opent hij volledig scherm, zonder browserbalk, alsof het een gewone app is."
+        "Vanaf dan opent hij op volledig scherm, zonder browserbalk, net als een normale app."
       ],
-      limitationsTitle: "Dat moet je wel weten",
-      limitations: "Train je zonder account, dan staat die data alleen op je gsm. Gooi je de app weg voor je inlogt, dan ben je die historie kwijt. En bewerk je dezelfde training op twee toestellen, dan wint de versie die het laatst gesynct is.",
+      limitationsTitle: "Goed om te weten",
+      limitations: "Train je zonder account, dan bestaat die data alleen op je gsm. Verwijder je de app voor je inlogt, dan is die geschiedenis weg. En pas je dezelfde training aan op twee toestellen, dan wint de versie die het laatst gesynct is.",
       openCta: "Open Sets",
-      openNote: "sets.ink, gratis, en in een paar tikken op je gsm gezet",
+      openNote: "sets.ink, gratis, en in een paar tikken op je gsm",
       galleryTitle: "In de app",
       gallery: ["Vandaag", "Workout loggen", "Voeding", "Social", "Progressie", "Geschiedenis"]
     },
     resume: {
       title: "Curriculum Vitae",
-      subtitle: "WAT IK TOT NU TOE GEDAAN HEB",
+      subtitle: "WAAR IK ZOAL MEE BEZIG WAS",
       download: "Download PDF",
       experienceTitle: "Werkervaring",
       educationTitle: "Opleiding",
@@ -157,9 +157,9 @@ export const translations = {
           company: "Sligro Evergem",
           period: "JUN 2026 - HEDEN",
           description: [
-            "Ik sorteer de producten per rit, zodat mijn collega's ze kunnen inscannen en bij de juiste klant krijgen.",
-            "Als het nodig is, scan ik zelf mee.",
-            "En ik hou het magazijn opgeruimd."
+            "Ik sorteer producten per rit, zodat mijn collega's ze kunnen inscannen en bij de juiste klant afleveren.",
+            "Waar nodig scan ik ook zelf mee.",
+            "En ik hou het magazijn netjes."
           ]
         },
         {
@@ -167,10 +167,10 @@ export const translations = {
           company: "Thiry Gent - PRIMAMUNDO Group | Evergem",
           period: "DEC 2024 - OKT 2025",
           description: [
-            "Ik telde de stock in het magazijn na en vergeleek dat met wat het systeem zei.",
-            "Klopte er iets niet, dan gaf ik dat meteen door en zocht ik mee uit waar het misgelopen was.",
-            "Ik hield het magazijn geordend en schreef alles precies bij, zodat er verderop geen fouten uit voortkwamen.",
-            "Het gaat om verse producten, dus alles moest snel én juist gebeuren."
+            "Ik telde de stock in het magazijn en vergeleek dat met de cijfers in het systeem.",
+            "Klopte er iets niet, dan meldde ik dat meteen en zocht ik mee naar waar het fout ging.",
+            "Ik hield het magazijn geordend en noteerde alles nauwkeurig, zodat fouten zich niet verder doorzetten.",
+            "Omdat het om verse producten gaat, moest alles snel en correct verlopen."
           ]
         },
         {
@@ -178,9 +178,9 @@ export const translations = {
           company: "AMP (bpost group) | Lokeren",
           period: "JUL 2024 - HEDEN",
           description: [
-            "Ik ben het aanspreekpunt voor de goederenstroom en de transportpapieren.",
-            "Orders picken met de scanner, meestal met een vertrektijd die niet opschuift.",
-            "En ik sorteer de goederen per regio, zodat elke rit meekrijgt wat erbij hoort."
+            "Voor de goederenstroom en de transportpapieren ben ik het aanspreekpunt.",
+            "Ik pick orders met de scanner, meestal tegen een vertrektijd die vaststaat.",
+            "En ik sorteer goederen per regio, zodat elke rit precies meekrijgt wat erbij hoort."
           ]
         },
         {
@@ -188,7 +188,7 @@ export const translations = {
           company: "Lidl België & Luxemburg | Gent",
           period: "AUG 2022 - OKT 2023",
           description: [
-            "Kassa, stock en de bakkerij, in een winkel waar het bijna nooit rustig was. Daar heb ik vooral geleerd om snel te wisselen tussen taken en toch vriendelijk te blijven tegen de klanten."
+            "Kassa, stock en de bakkerij, in een winkel die bijna nooit rustig was. Daar heb ik vooral geleerd om snel te schakelen tussen taken en toch vriendelijk te blijven tegen klanten."
           ]
         },
         {
@@ -196,7 +196,7 @@ export const translations = {
           company: "Plopsaland De Panne",
           period: "JUN 2021 - SEP 2021",
           description: [
-            "Ik hielp mee in de keuken tijdens het hoogseizoen en zorgde dat alles proper bleef volgens de hygiëneregels."
+            "Ik hielp mee in de keuken tijdens het hoogseizoen en zorgde dat alles proper bleef, volgens de hygiëneregels."
           ]
         }
       ],
@@ -205,13 +205,13 @@ export const translations = {
           school: "HOGENT",
           degree: "Graduaat Systeem- en Netwerkbeheer",
           period: "2025 - 2027 (Verwacht)",
-          description: "Hier zit ik nu. Het gaat vooral over bedrijfsnetwerken, servers beheren en cloud."
+          description: "Hier zit ik nu, met vooral bedrijfsnetwerken, serverbeheer en cloud."
         },
         {
           school: "Vrij Instituut voor Secundair Onderwijs (VISO)",
           degree: "TSO Intermedia / Multimedia",
           period: "2018 - 2024",
-          description: "Mijn secundair, richting IT en multimedia."
+          description: "Mijn middelbare school, richting IT en multimedia."
         }
       ],
       languages: {
@@ -232,82 +232,82 @@ export const translations = {
       title: "Privacy Policy",
       lastUpdated: "LAATST BIJGEWERKT: 10 JUNI 2026",
       backToHome: "Terug naar home",
-      introParagraph: "Deze privacyverklaring legt uit welke gegevens via deze portfoliowebsite verwerkt kunnen worden, waarom dat gebeurt, en welke externe diensten daarbij betrokken zijn.",
+      introParagraph: "Deze pagina legt uit welke gegevens deze portfoliosite kan verzamelen, waarom, en welke externe diensten daar een rol in spelen.",
       sections: [
         {
-          heading: "Wie beheert deze website",
+          heading: "Wie zit hierachter",
           paragraphs: [
-            "Deze website is de persoonlijke portfolio van Mehdi Oulad Khlie. Ze toont projecten, ervaring, contactgegevens en professionele profielen.",
-            "Heb je vragen over deze privacyverklaring of over gegevens die je via de website verstuurt, neem dan contact op via de contactpagina."
+            "Deze site is de persoonlijke portfolio van Mehdi Oulad Khlie, met projecten, werkervaring, contactgegevens en links naar professionele profielen.",
+            "Vragen over deze verklaring, of over gegevens die je via de site doorstuurt, kunnen via de contactpagina."
           ]
         },
         {
-          heading: "Gegevens via het contactformulier",
+          heading: "Wat het contactformulier verzamelt",
           paragraphs: [
-            "Wanneer je het contactformulier gebruikt, worden de gegevens die je zelf invult verstuurd zodat ik op je bericht kan antwoorden.",
-            "Het formulier verwerkt de volgende gegevens:"
+            "Gebruik je het contactformulier, dan verstuur je zelf de gegevens die ik nodig heb om te kunnen antwoorden.",
+            "Dat gaat om:"
           ],
           items: [
             "Naam",
             "E-mailadres",
             "Onderwerp",
             "Berichtinhoud",
-            "Technische verzendgegevens die de formulierdienst kan verwerken, zoals tijdstip, IP-adres, browser- of netwerkgegevens"
+            "Technische verzendgegevens die de formulierdienst kan bijhouden, zoals tijdstip, IP-adres, browser- of netwerkinfo"
           ]
         },
         {
           heading: "Web3Forms",
           paragraphs: [
-            "Het contactformulier verstuurt berichten via Web3Forms, een externe formulierdienst. Je inzending gaat dus eerst naar Web3Forms voor ze bij mij aankomt.",
-            "Gebruik het formulier alleen als je ermee akkoord gaat dat Web3Forms de ingevulde gegevens verwerkt om je bericht af te leveren."
+            "Berichten via het contactformulier lopen langs Web3Forms, een externe dienst, voor ze bij mij terechtkomen.",
+            "Door het formulier te gebruiken, ga je ermee akkoord dat Web3Forms je gegevens verwerkt om het bericht af te leveren."
           ]
         },
         {
-          heading: "Externe links en diensten",
+          heading: "Links naar andere plekken",
           paragraphs: [
-            "Deze website bevat links naar externe diensten zoals GitHub, LinkedIn, Instagram, Credly en projectrepositories. Open je zo'n link, dan geldt het privacybeleid van die dienst.",
-            "De website kan externe bestanden laden, zoals lettertypen of hosting-assets. Die externe partijen kunnen technische gegevens verwerken die ze nodig hebben om hun dienst te leveren."
+            "Deze site linkt door naar plekken zoals GitHub, LinkedIn, Instagram, Credly en verschillende projectrepositories. Klik je door, dan geldt vanaf dan het privacybeleid van die dienst.",
+            "Ook laadt de site soms externe bestanden, zoals lettertypes of hosting-assets. Die partijen kunnen de technische gegevens verwerken die ze daarvoor nodig hebben."
           ]
         },
         {
           heading: "Cookies en analytics",
           paragraphs: [
-            "In de huidige codebase staat geen analytics-provider ingesteld, en de website plaatst zelf geen marketingcookies.",
-            "Als er later analytics bijkomen, kan een analytics-provider technische gebruiksgegevens verwerken, zoals bezochte pagina's, apparaat- of browserinformatie en algemene interactiedata. Deze privacyverklaring moet dan bijgewerkt worden."
+            "Er staat momenteel geen analytics-tool ingesteld, en de site zelf plaatst geen marketingcookies.",
+            "Komt daar later verandering in, dan zou die tool dingen kunnen verwerken zoals bezochte pagina's, je apparaat of browser, en algemeen gebruiksgedrag. Deze pagina wordt dan aangepast."
           ]
         },
         {
-          heading: "Bewaartermijn",
+          heading: "Hoelang gegevens bewaard blijven",
           paragraphs: [
-            "Berichten die via het contactformulier binnenkomen, blijven alleen bewaard zolang dat nodig is om je vraag te beantwoorden, op te volgen of relevante communicatie bij te houden.",
-            "Je kunt vragen om eerdere communicatie te laten verwijderen, tenzij er een legitieme reden is om die nog te bewaren."
+            "Berichten via het contactformulier blijven bewaard zolang nodig om je vraag te beantwoorden, op te volgen of relevante communicatie bij te houden.",
+            "Je mag altijd vragen om eerdere communicatie te verwijderen, tenzij er een goede reden is om die toch te bewaren."
           ]
         },
         {
           heading: "Jouw rechten",
           paragraphs: [
-            "Afhankelijk van de toepasselijke privacywetgeving kun je vragen om inzage, correctie of verwijdering van persoonsgegevens die je via deze website hebt doorgegeven.",
-            "Omdat dit een persoonlijke portfolio is, blijven de gegevens beperkt tot wat nodig is voor contact en professionele communicatie."
+            "Naargelang de privacywetgeving die op jou van toepassing is, kun je inzage, correctie of verwijdering vragen van gegevens die je via deze site hebt doorgegeven.",
+            "Omdat dit een persoonlijke portfolio is en geen bedrijf, blijft alles beperkt tot wat nodig is voor contact en professionele communicatie."
           ]
         },
         {
           heading: "Beveiliging",
           paragraphs: [
-            "Ik ga zorgvuldig om met gegevens die via de website verstuurd worden, maar geen enkele online verzending of externe dienst kan absolute beveiliging garanderen.",
-            "Stuur daarom geen gevoelige gegevens, wachtwoorden, financiële informatie of vertrouwelijke documenten via het contactformulier."
+            "Gegevens die via de site verstuurd worden, behandel ik zorgvuldig, maar geen enkele online verzending of externe dienst kan volledige beveiliging garanderen.",
+            "Verstuur daarom geen gevoelige gegevens, wachtwoorden, financiële info of vertrouwelijke documenten via het contactformulier."
           ]
         },
         {
           heading: "Wijzigingen",
           paragraphs: [
-            "Deze privacyverklaring kan aangepast worden wanneer de website, het contactformulier of de gebruikte externe diensten veranderen.",
-            "De datum bovenaan deze pagina toont wanneer de tekst voor het laatst is bijgewerkt."
+            "Deze verklaring kan wijzigen zodra de site, het contactformulier of de externe diensten die gebruikt worden, veranderen.",
+            "De datum bovenaan toont wanneer de tekst voor het laatst is aangepast."
           ]
         }
       ],
       contact: {
         heading: "Contact",
-        text: "Heb je vragen over deze privacyverklaring, neem dan contact op via:",
+        text: "Vragen over deze verklaring kunnen hier terecht:",
         url: "https://www.mehdioul.dev/#/contact"
       }
     }
@@ -317,15 +317,15 @@ export const translations = {
       back: "Back to home",
       badge: "WINDOWS APP",
       title: "Muted",
-      tagline: "Clean mic, clear voice.",
-      screenshotAlt: "Screenshot of the Muted app with the RNNoise filter, the voice gate, and the virtual cable settings",
-      intro: "Muted is a Windows app I built because I was sick of everyone on Discord hearing my cooling fan. It strips background noise out of your mic before it reaches Discord, Teams, or your game. All of it happens on your own PC: nothing goes to a server and nothing gets recorded.",
+      tagline: "Less noise, same voice.",
+      screenshotAlt: "Screenshot of Muted showing the RNNoise filter, the voice gate, and the virtual cable settings",
+      intro: "Muted is a Windows app I put together after getting tired of Discord picking up the sound of my cooling fan. It filters the background noise out of your microphone before it ever reaches Discord, Teams, or whatever game you're in. Everything runs locally on your PC: nothing is sent to a server, and nothing gets recorded.",
       deepDive: {
-        title: "Under the hood",
-        signalPathTitle: "The route your voice takes",
-        signalPathIntro: "Windows lets an app use the mics and speakers that are already there, but you can't create a new device without a signed kernel driver. So Muted works with what's around: it takes your real mic, cleans it up, and hands the result to a virtual cable your apps can listen to.",
+        title: "Behind the scenes",
+        signalPathTitle: "Where your voice actually goes",
+        signalPathIntro: "Windows will let an app use whatever mics and speakers are already installed, but adding a brand new device needs a signed kernel driver. Muted sidesteps that: it grabs your actual mic, cleans up what it hears, and passes the result to a virtual cable that other apps can pick up as their input.",
         signalPath: ["Microphone", "Muted (gain · RNNoise · mix · gate · drift)", "Virtual cable in", "Cable's paired output", "Discord / Teams / game"],
-        frameMathTitle: "The numbers behind it",
+        frameMathTitle: "What that looks like in numbers",
         frameMath: [
           { value: "48 kHz", label: "sample rate" },
           { value: "480", label: "samples per frame" },
@@ -334,133 +334,133 @@ export const translations = {
         ],
         points: [
           {
-            title: "No driver of its own",
-            body: "Windows won't let a normal app add a new mic to the list Discord gets to see. That takes a signed kernel driver, plus the whole signing process that comes with it. Muted skips all that and borrows a virtual audio cable you already have installed, feeding clean audio into it. Everything stays in one regular user-mode app, nothing runs in the kernel."
+            title: "It doesn't install its own driver",
+            body: "A regular app can't add itself to the list of mics Discord sees. For that you'd need a signed kernel driver, plus the whole certification process behind it. Muted avoids all of that by borrowing a virtual audio cable you've already installed, and just feeding it clean audio. The whole thing runs as one ordinary user-mode app; nothing touches the kernel."
           },
           {
-            title: "The capture thread does almost nothing",
-            body: "The thread reading your mic does one thing: copy the audio into a buffer and move on. No filtering, no locks, no memory being allocated there. A second thread pulls exactly 480 samples at a time, worth 10 ms of audio, because that's the frame size RNNoise counts on."
+            title: "The thread reading your mic barely does anything",
+            body: "The thread that reads your mic has exactly one job: copy the audio into a buffer and get out of the way. No filtering, no locking, no memory allocation happening there. A separate thread then pulls out exactly 480 samples at a time, 10 ms worth of audio, since that's the frame size RNNoise expects."
           },
           {
-            title: "One frame, start to finish",
-            body: "Each frame gets input gain and then splits in two. One copy stays as it is, the other goes through RNNoise. RNNoise adds about 20 ms of delay itself, so the untouched copy is held back by the same amount to keep them lined up sample for sample. Then they get mixed at the ratio you set, an optional voice gate trims the gaps using RNNoise's own voice detection, and output gain goes over it."
+            title: "Following one frame from start to finish",
+            body: "Every frame first gets input gain applied, then splits into two copies. One is left alone, the other runs through RNNoise. Since RNNoise itself adds roughly 20 ms of delay, the untouched copy gets held back by the same amount so both stay in sync sample for sample. After that they're blended at whatever ratio you've chosen, an optional voice gate cuts out the silences using RNNoise's own voice detection, and output gain is applied last."
           },
           {
-            title: "Two clocks that don't agree",
-            body: "Your mic and the virtual cable are two separate devices with their own clocks, and over a long call they drift apart. If Muted wrote exactly as many samples as it read, the buffer would slowly run dry or overflow. So a hundred times a second it sends one sample more or fewer, depending on how full the buffer is. You can't hear a single sample, but it keeps everything lined up for hours."
+            title: "Two clocks that drift apart",
+            body: "Your microphone and the virtual cable are separate devices, each running on its own clock, and during a long call those clocks slowly drift apart. If Muted wrote out exactly the number of samples it read in, the buffer would eventually empty out or overflow. Instead, a hundred times per second, it adds or drops a single sample depending on how full the buffer currently is. One sample is inaudible, but doing this constantly keeps everything in sync for hours at a stretch."
           },
           {
-            title: "It won't start into your speakers",
-            body: "One check has nothing to do with sound quality. If Muted's output ended up on your speakers instead of a virtual cable, your own voice would come back into the mic and you'd have a loop. So the app checks first whether the output really is a virtual cable, and just won't start if it isn't."
+            title: "It refuses to start if it's pointed at your speakers",
+            body: "One safeguard has nothing to do with audio quality at all. If Muted's output somehow pointed at your speakers instead of a virtual cable, your own voice would feed straight back into the mic and create a loop. So before doing anything else, the app checks whether the output device is actually a virtual cable, and simply refuses to start if it isn't."
           }
         ]
       },
-      howItWorksTitle: "How it works",
+      howItWorksTitle: "The gist",
       howItWorks: [
-        "The app captures your mic in 48kHz mono through WASAPI.",
-        "Every 480-sample chunk (20ms) runs through Xiph's RNNoise model, which is trained to tell voice apart from noise.",
-        "Turn the voice gate on and it trims the gaps even tighter, so your keyboard or a humming fan doesn't get through.",
-        "The app corrects clock drift, so it's still lined up after a long session.",
-        "The result goes to a virtual audio cable, and you pick that as your mic in Discord, Teams, or your game."
+        "It captures your mic through WASAPI at 48kHz mono.",
+        "Every chunk of 480 samples, 20 ms, gets run through Xiph's RNNoise model, trained to separate voice from noise.",
+        "Switch on the voice gate and the gaps get trimmed even further, so keyboard clatter or a humming fan won't slip through.",
+        "It corrects for clock drift along the way, so everything's still in sync after a long session.",
+        "The cleaned-up result lands on a virtual audio cable, which you then select as your mic in Discord, Teams, or your game."
       ],
-      featuresTitle: "What it does",
+      featuresTitle: "What you get",
       features: [
-        "Noise gone while you talk, using the official RNNoise model",
-        "Runs entirely on your own PC: no account, no cloud, no recordings",
-        "You set how much filtering you want with the dry/wet mix",
-        "Voice gate for silences that are actually silent",
-        "Finds the connected audio devices by itself",
-        "Goes to the system tray and can start up with Windows"
+        "Removes noise while you're talking, using the official RNNoise model",
+        "Runs completely on your own PC, no account, no cloud, nothing recorded",
+        "Lets you control how much filtering happens with a dry/wet mix",
+        "A voice gate that actually keeps silence silent",
+        "Detects your connected audio devices on its own",
+        "Tucks itself into the system tray and can launch with Windows"
       ],
-      stackTitle: "What it's built with",
+      stackTitle: "Built with",
       stack: ["C# (.NET 9 Desktop Runtime)", "WPF for the interface", "NAudio + native RNNoise DLL for the audio", "PowerShell / Visual Studio 2022 C++ build pipeline"],
-      installTitle: "Getting started",
+      installTitle: "Setting it up",
       installSteps: [
-        "Install a signed virtual audio cable, e.g. VB-CABLE.",
-        "Restart Windows if it asks you to.",
-        "Open Muted and set your mic as input and the cable as output.",
-        "In Discord, Teams, or your game, pick that cable's recording side as your mic."
+        "Install a signed virtual audio cable, VB-CABLE works fine.",
+        "Restart Windows if it prompts you to.",
+        "Open Muted and point it at your mic as input and the cable as output.",
+        "In Discord, Teams, or your game, select that cable's recording side as your microphone."
       ],
-      limitationsTitle: "Worth knowing",
-      limitations: "RNNoise takes noise away, but not echo. If you're in a room that echoes, use a headset or something that actually does echo cancellation.",
-      downloadCta: "Download the pre-release (.exe)",
-      downloadNote: "v0.1.0, Windows only, still very much a work in progress",
-      githubCta: "View the code on GitHub"
+      limitationsTitle: "Good to know",
+      limitations: "RNNoise deals with noise, not echo. In a room with a lot of echo, you'll want a headset or something with real echo cancellation instead.",
+      downloadCta: "Get the pre-release (.exe)",
+      downloadNote: "v0.1.0, Windows only, and still very much in progress",
+      githubCta: "See the source on GitHub"
     },
     setsPage: {
       back: "Back to home",
       badge: "PWA",
       title: "Sets",
-      tagline: "Train, log it, done.",
-      intro: "Sets is a simple app for keeping track of what you do at the gym, strength and cardio. You go train, and afterward you type in what you did. No subscription and no loading screens holding you up. You add it to your phone in a couple of taps and you're off.",
+      tagline: "Train first, log it after.",
+      intro: "Sets is a straightforward app for tracking what you do at the gym, both lifting and cardio. You train first, then type in what you did afterward. No subscription, no loading screens getting in your way. A couple of taps and it's on your phone, ready to go.",
       deepDive: {
-        title: "Under the hood",
-        intro: "You don't need to read this to use the app. It's here for anyone who wants to know how it works inside.",
-        signalPathTitle: "How a session gets saved",
-        signalPathIntro: "What you type goes to your phone first, so it's committed right away and the screen isn't sitting there waiting for an answer. The session then goes to the cloud, so your data is on your other devices too without you having to do anything about it.",
+        title: "Behind the scenes",
+        intro: "None of this is required reading to use the app. It's here for anyone curious about what's happening underneath.",
+        signalPathTitle: "What happens when you save a session",
+        signalPathIntro: "Whatever you type is written to your phone first, so it's saved instantly and the screen never has to wait on a response. The session then makes its way to the cloud, which means your data ends up on your other devices too, without you lifting a finger for it.",
         signalPath: ["Workout", "Local write (localStorage)", "Supabase (cloud sync)"],
-        frameMathTitle: "What that means in practice",
+        frameMathTitle: "What that feels like day to day",
         frameMath: [
-          { value: "Instant", label: "your data is there with no waiting" },
-          { value: "Sync", label: "your sessions are on all your devices" },
-          { value: "Live", label: "your 1RM shows up while you're still typing" },
-          { value: "Auto", label: "your workout saves itself" }
+          { value: "Instant", label: "no waiting for your data to show up" },
+          { value: "Sync", label: "your sessions follow you across devices" },
+          { value: "Live", label: "your 1RM updates while you type" },
+          { value: "Auto", label: "your workout saves without you asking" }
         ],
         points: [
           {
-            title: "Everything is there right away",
-            body: "Every screen shows your data immediately, because the app keeps a copy on your phone instead of fetching everything again. That copy gets updated in the background when you log in."
+            title: "Nothing makes you wait",
+            body: "Every screen loads your data instantly, because the app keeps its own copy on your phone rather than fetching everything fresh each time. That local copy gets refreshed in the background whenever you log in."
           },
           {
-            title: "A crash costs you nothing",
-            body: "The workout you're in the middle of gets saved on every change. If iOS closes the app halfway through your session, Sets just asks next time whether you want to carry on where you stopped."
+            title: "Crashing costs you nothing",
+            body: "Whatever workout you're partway through gets saved with every change you make. If iOS kills the app mid-session, Sets simply asks the next time you open it whether you'd like to pick up where you left off."
           },
           {
-            title: "You can train without an account too",
-            body: "Train without logging in and it stays on your phone. Make an account later and the app brings those workouts along instead of dropping them."
+            title: "An account isn't required to train",
+            body: "Train without ever logging in, and everything just stays on your phone. If you decide to create an account later, the app carries those earlier workouts over instead of leaving them behind."
           }
         ]
       },
-      howItWorksTitle: "Fast logging",
+      howItWorksTitle: "Logging, fast",
       howItWorks: [
-        "The app puts your weights and reps from last time in the fields as placeholders.",
-        "On every set it works out your estimated 1RM live with the Epley formula. Go past your record and the field glows gold.",
-        "Cardio gets its own fields for time, distance, and calories.",
-        "Tap the set number to tag it as warm-up, working set, drop set, or to failure. Warm-ups don't count toward your volume or your PRs.",
-        "You can turn on RPE per set if you want. Then your 1RM estimate gets sharper based on your reps in reserve."
+        "It pre-fills the fields with your weights and reps from last time, as placeholders.",
+        "Each set gets a live estimated 1RM using the Epley formula. Beat your record and the field lights up gold.",
+        "Cardio has its own fields for time, distance, and calories.",
+        "Tapping the set number lets you tag it as a warm-up, working set, drop set, or to failure. Warm-up sets are excluded from your volume and your PRs.",
+        "RPE per set is optional, and turning it on sharpens your 1RM estimate using your reps in reserve."
       ],
-      featuresTitle: "What it does",
+      featuresTitle: "What you get",
       features: [
-        "Dashboard with your volume, your PRs, and charts of your last 7 sessions",
-        "Bronze, silver, and gold badges that light up when you earn them",
-        "Plate calculator you set per gym and per unit",
-        "Kg or lbs, pick yourself: the app converts it",
-        "Light or dark theme, and fully in Dutch and English",
-        "One tap in Settings and you have a backup of all your data"
+        "A dashboard showing your volume, your PRs, and charts of your last 7 sessions",
+        "Bronze, silver, and gold badges that light up as you earn them",
+        "A plate calculator you configure per gym and per unit",
+        "Kg or lbs, your choice, the app handles the conversion",
+        "A light or dark theme, fully translated into Dutch and English",
+        "A single tap in Settings backs up all of your data"
       ],
-      stackTitle: "What it's built with",
+      stackTitle: "Built with",
       stack: [
         "Vanilla ES6+ JavaScript, no bundler",
         "Tailwind CSS, precompiled into a single static file",
         "Supabase for login, database, and cloud sync (with row-level security)",
-        "PWA with a localStorage cache so the screens load right away"
+        "PWA with a localStorage cache, so screens load instantly"
       ],
-      installTitle: "Adding Sets to your phone",
+      installTitle: "Getting it on your phone",
       installSteps: [
         "Open sets.ink in Safari (iOS) or Chrome (Android).",
-        "Tap the share icon and choose Add to Home Screen.",
-        "From then on it opens full screen, no browser bar, like a normal app."
+        "Tap the share icon, then choose Add to Home Screen.",
+        "From that point on it opens full screen with no browser bar, just like any other app."
       ],
-      limitationsTitle: "Worth knowing",
-      limitations: "Train without an account and that data is only on your phone. Delete the app before you log in and that history is gone. And if you edit the same session on two devices, the version that syncs last is the one that wins.",
+      limitationsTitle: "Good to know",
+      limitations: "Training without an account means that data only exists on your phone. Delete the app before creating an account, and that history is gone for good. Edit the same session from two devices, and whichever one syncs last is the version that sticks.",
       openCta: "Open Sets",
-      openNote: "sets.ink, free, and a couple of taps to add to your phone",
+      openNote: "sets.ink, free, and on your phone in a couple of taps",
       galleryTitle: "Inside the app",
       gallery: ["Today", "Logging a workout", "Nutrition", "Social", "Progression", "History"]
     },
     resume: {
       title: "Curriculum Vitae",
-      subtitle: "WHAT I'VE DONE SO FAR",
+      subtitle: "WHAT I'VE BEEN UP TO",
       download: "Download PDF",
       experienceTitle: "Work Experience",
       educationTitle: "Education",
@@ -470,8 +470,8 @@ export const translations = {
           company: "Sligro Evergem",
           period: "JUN 2026 - PRESENT",
           description: [
-            "I sort the products by delivery route, so my colleagues can scan them in and get them to the right customer.",
-            "When it's needed, I scan along myself.",
+            "I sort products by delivery route so my colleagues can scan them in and get them to the right customer.",
+            "I pitch in with scanning myself when it's needed.",
             "And I keep the warehouse tidy."
           ]
         },
@@ -480,10 +480,10 @@ export const translations = {
           company: "Thiry Gent - PRIMAMUNDO Group | Evergem",
           period: "DEC 2024 - OCT 2025",
           description: [
-            "I counted the stock in the warehouse and compared it with what the system said.",
-            "If something didn't add up, I reported it straight away and helped work out where it went wrong.",
-            "I kept the warehouse organized and wrote everything down accurately, so no errors came out of it further down the line.",
-            "It's fresh produce, so everything had to be fast and correct at the same time."
+            "I counted stock in the warehouse and checked it against what the system showed.",
+            "When something didn't match, I flagged it right away and helped trace where it went wrong.",
+            "I kept the warehouse organized and logged everything precisely, so mistakes didn't carry over further down the line.",
+            "Since it's fresh produce, speed and accuracy both mattered at once."
           ]
         },
         {
@@ -491,9 +491,9 @@ export const translations = {
           company: "AMP (bpost group) | Lokeren",
           period: "JUL 2024 - PRESENT",
           description: [
-            "I'm the point of contact for the flow of goods and the transport paperwork.",
-            "Picking orders with the scanner, usually against a departure time that doesn't move.",
-            "And I sort the goods by region, so every route gets what belongs to it."
+            "I'm the go-to person for the flow of goods and the transport paperwork.",
+            "I pick orders with a scanner, usually against a departure time that isn't flexible.",
+            "And I sort goods by region, so every route gets exactly what it needs."
           ]
         },
         {
@@ -501,7 +501,7 @@ export const translations = {
           company: "Lidl Belgium & Luxembourg | Gent",
           period: "AUG 2022 - OCT 2023",
           description: [
-            "Checkout, stock, and the bakery, in a store that was hardly ever quiet. Mostly I learned there to switch between tasks fast and still stay friendly with the customers."
+            "Checkout, stock, and the bakery, in a store that was almost never quiet. What I mostly learned there was switching between tasks quickly while staying friendly with customers."
           ]
         },
         {
@@ -509,7 +509,7 @@ export const translations = {
           company: "Plopsaland De Panne",
           period: "JUN 2021 - SEP 2021",
           description: [
-            "I helped out in the kitchen during peak season and made sure everything stayed clean according to the hygiene rules."
+            "I helped out in the kitchen during peak season and kept everything up to the hygiene standards."
           ]
         }
       ],
@@ -518,13 +518,13 @@ export const translations = {
           school: "HOGENT",
           degree: "Associate Degree System & Network Administration",
           period: "2025 - 2027 (Expected)",
-          description: "This is where I am now. It's mostly about enterprise networks, running servers, and cloud."
+          description: "This is where I am right now, mostly focused on enterprise networks, running servers, and cloud."
         },
         {
           school: "Vrij Instituut voor Secundair Onderwijs (VISO)",
           degree: "TSO Intermedia / Multimedia",
           period: "2018 - 2024",
-          description: "My secondary school, IT and multimedia track."
+          description: "My secondary school, on the IT and multimedia track."
         }
       ],
       languages: {
@@ -545,82 +545,82 @@ export const translations = {
       title: "Privacy Policy",
       lastUpdated: "LAST UPDATED: JUNE 10, 2026",
       backToHome: "Back to home",
-      introParagraph: "This privacy policy explains what data may be processed through this portfolio website, why it is processed, and which external services are involved.",
+      introParagraph: "This page explains what data this portfolio site might collect, why, and which outside services are involved in that.",
       sections: [
         {
-          heading: "Who runs this website",
+          heading: "Who's behind this site",
           paragraphs: [
-            "This website is the personal portfolio of Mehdi Oulad Khlie. It shows projects, experience, contact details, and professional profiles.",
-            "If you have questions about this privacy policy or about data you submit through the website, you can contact me through the contact page."
+            "This site is Mehdi Oulad Khlie's personal portfolio. It shows projects, work experience, contact details, and links to professional profiles.",
+            "Questions about this policy, or about data you've sent through the site, can go through the contact page."
           ]
         },
         {
-          heading: "Data submitted through the contact form",
+          heading: "What the contact form collects",
           paragraphs: [
-            "When you use the contact form, the information you fill in is sent so I can read and answer your message.",
-            "The form processes the following data:"
+            "Using the contact form sends me whatever you fill in, so I can read it and reply.",
+            "That includes:"
           ],
           items: [
             "Name",
             "Email address",
             "Subject",
             "Message content",
-            "Technical delivery data the form provider may process, such as timestamp, IP address, browser data, or network data"
+            "Technical delivery details the form provider might log, like a timestamp, IP address, browser, or network information"
           ]
         },
         {
           heading: "Web3Forms",
           paragraphs: [
-            "The contact form sends messages through Web3Forms, an external form service. Your submission therefore goes to Web3Forms before it reaches me.",
-            "Only use the form if you agree that Web3Forms may process the information you fill in to deliver your message."
+            "Messages from the contact form pass through Web3Forms, an external service, before they reach me.",
+            "By using the form, you're agreeing that Web3Forms can process what you enter in order to deliver it."
           ]
         },
         {
-          heading: "External links and services",
+          heading: "Links to other places",
           paragraphs: [
-            "This website links to external services such as GitHub, LinkedIn, Instagram, Credly, and project repositories. When you open one of those links, that service's privacy policy applies.",
-            "The website may load external files, such as fonts or hosting assets. Those external parties may process technical data they need to provide their service."
+            "This site links out to places like GitHub, LinkedIn, Instagram, Credly, and various project repositories. Once you click through, that service's own privacy policy takes over.",
+            "It also loads some external files, fonts and hosting assets mainly. Whoever provides those may process the technical data they need to do so."
           ]
         },
         {
           heading: "Cookies and analytics",
           paragraphs: [
-            "No analytics provider is set up in the current codebase, and the website itself does not set marketing cookies.",
-            "If analytics are added later, an analytics provider may process technical usage data, such as visited pages, device or browser information, and general interaction data. This privacy policy has to be updated if that happens."
+            "There's no analytics tool set up right now, and the site itself doesn't drop any marketing cookies.",
+            "If that changes down the line, whatever analytics tool gets added would process things like which pages you visited, your device or browser, and general usage data. This page would get updated to reflect that."
           ]
         },
         {
-          heading: "Retention",
+          heading: "How long things are kept",
           paragraphs: [
-            "Messages received through the contact form are kept only as long as needed to answer your question, follow up, or keep relevant communication records.",
-            "You can ask for previous communication to be deleted unless there is a legitimate reason to keep it."
+            "Messages from the contact form stick around only as long as it takes to answer you, follow up, or keep a relevant record of the conversation.",
+            "You're free to ask for earlier messages to be deleted, unless there's a good reason to hold onto them."
           ]
         },
         {
           heading: "Your rights",
           paragraphs: [
-            "Depending on applicable privacy law, you may ask to access, correct, or delete personal data you have submitted through this website.",
-            "Because this is a personal portfolio, data stays limited to what is needed for contact and professional communication."
+            "Depending on the privacy law that applies to you, you can request access to, a correction of, or deletion of personal data you've submitted here.",
+            "Since this is a personal portfolio rather than a business, the data involved stays limited to what's needed for contact and professional communication."
           ]
         },
         {
           heading: "Security",
           paragraphs: [
-            "I handle data submitted through the website carefully, but no online transmission or external service can guarantee absolute security.",
-            "So do not send sensitive data, passwords, financial information, or confidential documents through the contact form."
+            "Data sent through the site is handled carefully, but no online transmission or third-party service can promise complete security.",
+            "So it's best not to send sensitive information, passwords, financial details, or confidential documents through the contact form."
           ]
         },
         {
           heading: "Changes",
           paragraphs: [
-            "This privacy policy may be updated when the website, the contact form, or the external services it uses change.",
-            "The date at the top of this page shows when the text was last updated."
+            "This policy might get updated whenever the site, the contact form, or the outside services it relies on change.",
+            "The date at the top shows when it was last revised."
           ]
         }
       ],
       contact: {
         heading: "Contact",
-        text: "If you have questions about this privacy policy, contact me through:",
+        text: "Questions about this policy can go here:",
         url: "https://www.mehdioul.dev/#/contact"
       }
     }

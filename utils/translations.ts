@@ -160,7 +160,9 @@ export const translations = {
             "Ik controleer de binnengekomen producten op aantal en kwaliteit.",
             "Ik sorteer de kratten per klant en rit, en verwerk dat in het WMS.",
             "Ik zorg dat alles klaarstaat voor de chauffeurs, tijdens de nachtdienst.",
-            "Komt er veel tegelijk binnen, dan werk ik onder tijdsdruk maar blijf ik het overzicht houden."
+            "Komt er veel tegelijk binnen, dan werk ik onder tijdsdruk maar blijf ik het overzicht houden.",
+            "Ik werk in een team dat er samen voor zorgt dat de nacht vlot verloopt.",
+            "Zo krijgen klanten hun bestelling volledig en op tijd binnen."
           ]
         },
         {
@@ -473,7 +475,9 @@ export const translations = {
             "I check everything that comes in for quantity and quality.",
             "I sort the crates by customer and route, and log that in the WMS.",
             "I make sure everything's ready for the drivers, on the night shift.",
-            "When a lot comes in at once, it gets busy fast, but I keep track of everything."
+            "When a lot comes in at once, it gets busy fast, but I keep track of everything.",
+            "I work as part of a team that keeps the whole night running smoothly.",
+            "That way customers get their order complete and on time."
           ]
         },
         {

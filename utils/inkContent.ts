@@ -100,6 +100,25 @@ const MUTED_IMAGE = {
   srcSet: '/muted-screenshot-800.webp 800w, /muted-screenshot-1400.webp 1400w',
 };
 
+const SPOOFER_IMAGE = {
+  src: '/visibility-spoofer-720.webp',
+  srcSet: '/visibility-spoofer-480.webp 480w, /visibility-spoofer-720.webp 720w',
+  /* The extension's own popup — a tall, narrow panel, not a browser window —
+     so it keeps its native shape rather than being cropped into a landscape
+     box built for a screenshot. */
+  ratio: '318 / 358',
+};
+
+const FUELTRACKER_IMAGE = {
+  src: '/fueltracker-1400.webp',
+  srcSet: '/fueltracker-800.webp 800w, /fueltracker-1400.webp 1400w',
+};
+
+const SHUTITDOWN_IMAGE = {
+  src: '/shutdown-server-1000.webp',
+  srcSet: '/shutdown-server-700.webp 700w, /shutdown-server-1000.webp 1000w',
+};
+
 export const EMAIL = 'mehdi.ouladkhlie@outlook.be';
 
 export const PHONE = '+32 468 54 94 78';
@@ -169,6 +188,7 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
           description: 'Spoofs the Page Visibility API so a tab looks open and focused while it sits in the background, iframes that load later included.',
           href: 'https://github.com/yyyutakaaa/Visibility-Spoofer',
           external: true,
+          image: { ...SPOOFER_IMAGE, alt: 'The Visibility Spoofer extension popup, spoofing active' },
           cta: 'View on GitHub',
         },
         {
@@ -178,6 +198,7 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
           description: 'Works out what a trip costs you in fuel and how much CO₂ comes with it. Type an address and the suggestions are already there.',
           href: 'https://github.com/yyyutakaaa/FuelTracker',
           external: true,
+          image: { ...FUELTRACKER_IMAGE, alt: 'The FuelTracker site planning a route between two addresses' },
           cta: 'View on GitHub',
         },
         {
@@ -187,6 +208,7 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
           description: 'Shuts your PC down remotely through a web page. Sits behind a PIN and runs along quietly in the system tray.',
           href: 'https://github.com/yyyutakaaa/ShutItDown',
           external: true,
+          image: { ...SHUTITDOWN_IMAGE, alt: 'The ShutItDown app showing the server running and its shutdown link' },
           cta: 'View on GitHub',
         },
       ],
@@ -289,6 +311,7 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
           description: 'Spooft de Page Visibility API zodat een tabblad open en gefocust lijkt terwijl het op de achtergrond staat, iframes die later laden erbij.',
           href: 'https://github.com/yyyutakaaa/Visibility-Spoofer',
           external: true,
+          image: { ...SPOOFER_IMAGE, alt: 'De Visibility Spoofer-extensie, spoofing actief' },
           cta: 'Bekijk op GitHub',
         },
         {
@@ -298,6 +321,7 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
           description: 'Rekent uit wat een rit je kost aan brandstof en hoeveel CO₂ eraan hangt. Je typt een adres en de suggesties staan er al.',
           href: 'https://github.com/yyyutakaaa/FuelTracker',
           external: true,
+          image: { ...FUELTRACKER_IMAGE, alt: 'FuelTracker terwijl een route tussen twee adressen wordt gepland' },
           cta: 'Bekijk op GitHub',
         },
         {
@@ -305,6 +329,7 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
           title: 'ShutItDown',
           stack: 'C# .NET 6 · ASP.NET Core',
           description: 'Zet je pc van op afstand af via een webpagina. Zit achter een pincode en draait rustig mee in de system tray.',
+          image: { ...SHUTITDOWN_IMAGE, alt: 'De ShutItDown-app met de draaiende server en de shutdown-link' },
           href: 'https://github.com/yyyutakaaa/ShutItDown',
           external: true,
           cta: 'Bekijk op GitHub',

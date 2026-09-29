@@ -818,6 +818,7 @@ a.row:hover .row__p,
 
 .read {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 26px;
   align-content: start;
   min-width: 0;

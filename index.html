@@ -27,13 +27,12 @@
     <link rel="icon" type="image/png" sizes="64x64" href="/favicon-64.png" />
     <link rel="canonical" href="https://www.mehdioul.dev/" />
 
-    <!-- The homepage's display face paints the name, which is the LCP element,
-         so both of its faces are fetched in parallel with the stylesheet rather
-         than after it. The previous shell's faces load on the pages that use
-         them. -->
-    <link rel="preload" as="font" type="font/woff2" href="/fonts/cormorant-variable.woff2" crossorigin />
-    <link rel="preload" as="font" type="font/woff2" href="/fonts/inter-variable.woff2" crossorigin />
+    <meta name="theme-color" content="#0a0a0b" />
 
+    <!-- Bodoni Moda for titles and figures, Jost for text and labels. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500&family=Jost:wght@300;400;500&display=swap" />
 
     <script type="application/ld+json">
       {

@@ -1,6 +1,5 @@
 import React from 'react';
-import InkCaseStudy from '../components/ink/InkCaseStudy';
-import InkReveal from '../components/ink/InkReveal';
+import CaseStudy from '../components/site/CaseStudy';
 import { useLanguage } from '../contexts/LanguageContext';
 
 const APP_URL = 'https://sets.ink';
@@ -12,31 +11,26 @@ const ProjectSets: React.FC = () => {
   const s = t.setsPage;
 
   return (
-    <InkCaseStudy
+    <CaseStudy
       content={s}
       note={s.openNote}
       actions={
-        <a href={APP_URL} target="_blank" rel="noopener noreferrer" className="ink-btn">
-          {s.openCta} <span aria-hidden="true">↗</span>
+        <a href={APP_URL} target="_blank" rel="noopener noreferrer" className="btn btn--accent">
+          {s.openCta}&nbsp;<span aria-hidden="true">&#8599;</span>
         </a>
       }
       visual={
-        <>
-          <div className="ink-grid">
-            <p className="ink-cap ink-case__kicker">{s.galleryTitle}</p>
-          </div>
-
-          {/* Phone screens read best as a strip you pass along, like frames
-              on a hand scroll, not squeezed into a grid. */}
-          <InkReveal as="ul" className="ink-strip" stagger={0.06}>
+        <section>
+          <h2>{s.galleryTitle}</h2>
+          <ul className="gallery">
             {SCREENS.map((screen, i) => (
-              <li key={screen} className="ink-strip__item">
+              <li key={screen}>
                 <figure>
-                  <div className="ink-plate ink-plate--phone">
+                  <div className="shot">
                     <img
                       src={`/sets/screens/${screen}-640.webp`}
                       srcSet={`/sets/screens/${screen}-640.webp 640w, /sets/screens/${screen}-960.webp 960w`}
-                      sizes="240px"
+                      sizes="190px"
                       width="1290"
                       height="2796"
                       alt=""
@@ -44,15 +38,14 @@ const ProjectSets: React.FC = () => {
                       decoding="async"
                     />
                   </div>
-                  <figcaption>
-                    <span className="ink-strip__num">{String(i + 1).padStart(2, '0')}</span>
-                    {s.gallery[i]}
+                  <figcaption className="lbl">
+                    {String(i + 1).padStart(2, '0')} · {s.gallery[i]}
                   </figcaption>
                 </figure>
               </li>
             ))}
-          </InkReveal>
-        </>
+          </ul>
+        </section>
       }
     />
   );

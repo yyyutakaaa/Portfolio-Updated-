@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Panel from './Panel';
+import Hy from './Hy';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { EMAIL, PHONE, SOCIALS } from '../../utils/content';
 
@@ -36,7 +37,7 @@ const ContactPanel: React.FC<{ number: string; asPage?: boolean; children?: Reac
           {c.contact.label}
         </Heading>
       </div>
-      <p className="disp contact__line">{c.contact.line}</p>
+      <p className="disp contact__line"><Hy text={c.contact.line} /></p>
       <a className="contact__mail" href={`mailto:${EMAIL}`}>
         {EMAIL}
       </a>

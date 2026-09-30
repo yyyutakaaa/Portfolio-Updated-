@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import InkReveal from '../components/ink/InkReveal';
 import InkSectionHead from '../components/ink/InkSectionHead';
 import BrushDivider from '../components/ink/BrushDivider';
@@ -91,6 +92,14 @@ const Resume: React.FC = () => {
                   {r.download}
                 </button>
               </div>
+              <p className="ink-cap ink-resume__stagelink">
+                <Link to="/stage">
+                  {language === 'nl'
+                    ? 'Op zoek naar mijn stage-CV? Bekijk de Stage-pagina'
+                    : 'Looking for my internship CV? See the Stage page'}{' '}
+                  <span aria-hidden="true">→</span>
+                </Link>
+              </p>
             </InkReveal>
           </div>
         </div>

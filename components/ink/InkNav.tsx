@@ -146,7 +146,7 @@ const InkNav = React.forwardRef<HTMLElement>((_props, ref) => {
             </button>
           ))}
           <a
-            className="ink-cap ink-nav__link"
+            className="ink-cap ink-nav__link ink-nav__link--stage"
             href="#/stage"
             aria-current={pathname === '/stage' ? 'page' : undefined}
           >

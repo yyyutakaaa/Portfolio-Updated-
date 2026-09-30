@@ -191,6 +191,7 @@ html.ink-cursor-on * {
 
 .ink-nav__links {
   display: flex;
+  align-items: baseline;
   gap: clamp(20px, 2.6vw, 38px);
 }
 
@@ -795,6 +796,34 @@ html.ink-cursor-on * {
   border-color: transparent transparent transparent rgb(244 241 234 / 0.95);
 }
 
+.ink-stage__note {
+  max-width: 62ch;
+  margin: 0;
+  padding-left: 12px;
+  border-left: 1px solid var(--ink-3);
+  font-size: 0.85rem;
+  font-weight: 300;
+  line-height: 1.65;
+  color: var(--ink-2);
+}
+
+.ink-resume__stagelink {
+  margin: 22px 0 0;
+}
+
+.ink-resume__stagelink a {
+  color: var(--ink-1);
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule-firm);
+  padding-bottom: 3px;
+  transition: color 400ms var(--settle), border-color 400ms var(--settle);
+}
+
+.ink-resume__stagelink a:hover {
+  color: var(--sumi);
+  border-color: var(--sumi);
+}
+
 .ink-stage__watch {
   align-self: flex-start;
   color: var(--sumi);
@@ -848,7 +877,59 @@ html.ink-cursor-on * {
 }
 
 .ink-workmore--hero {
-  margin-top: clamp(22px, 3.5vh, 36px);
+  margin-top: 0;
+}
+
+.ink-pitch {
+  max-width: 52ch;
+  margin: clamp(20px, 3vh, 30px) 0 0;
+  border-top: 1px solid var(--rule);
+}
+
+.ink-pitch__row {
+  display: grid;
+  grid-template-columns: 116px 1fr;
+  gap: 14px;
+  align-items: baseline;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.ink-pitch__row dt {
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+.ink-pitch__row dd {
+  margin: 0;
+  font-size: 0.92rem;
+  font-weight: 300;
+  line-height: 1.5;
+  color: var(--ink-1);
+}
+
+/* The period is the thing a recruiter is checking against a calendar. */
+.ink-pitch__row:nth-child(2) dd {
+  font-weight: 450;
+  color: var(--sumi);
+}
+
+.ink-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 30px;
+  margin-top: clamp(20px, 3vh, 30px);
+}
+
+.ink-foot__mail {
+  color: var(--ink-1);
+  text-decoration: none;
+  transition: color 400ms var(--settle);
+}
+
+.ink-foot__mail:hover {
+  color: var(--sumi);
 }
 
 .ink-work__index {
@@ -2327,5 +2408,200 @@ html.ink-cursor-on * {
     grid-column: 3 / -1;
     grid-row: 2;
     margin-top: 22px;
+  }
+}
+
+/* ------------------------------------------------------------- buttons --- */
+
+/* Two kinds, both taken from things the page already does. The primary button
+   is a label cut from the same torn paper as the letter on the contact page,
+   in solid ink. The secondary is plain text with a brush stroke under it, like
+   the rule under the hero line. No boxes, no borders. */
+
+.ink-btn,
+.ink-workmore--hero a {
+  position: relative;
+  isolation: isolate;
+  padding: 18px 32px 17px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--washi);
+}
+
+.ink-btn::before,
+.ink-workmore--hero a::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--sumi);
+  -webkit-mask: var(--ink-deckle) 0 0 / 100% 100% no-repeat;
+  mask: var(--ink-deckle) 0 0 / 100% 100% no-repeat;
+  transition: background-color 500ms var(--settle);
+}
+
+.ink-btn:hover,
+.ink-btn:focus-visible,
+.ink-workmore--hero a:hover,
+.ink-workmore--hero a:focus-visible {
+  background: transparent;
+  color: var(--washi);
+}
+
+.ink-btn:hover::before,
+.ink-btn:focus-visible::before,
+.ink-workmore--hero a:hover::before,
+.ink-workmore--hero a:focus-visible::before {
+  background: var(--ink-1);
+}
+
+.ink-workmore--hero a {
+  font-size: 0.78rem;
+}
+
+.ink-btn--quiet,
+.ink-workmore a:not(.ink-workmore--hero a) {
+  position: relative;
+  padding: 10px 2px 14px;
+  border: 0;
+  background: transparent;
+  color: var(--sumi);
+}
+
+.ink-btn--quiet::before,
+.ink-workmore a:not(.ink-workmore--hero a)::before {
+  content: none;
+}
+
+.ink-btn--quiet::after,
+.ink-workmore a:not(.ink-workmore--hero a)::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 2px;
+  height: 5px;
+  background: var(--sumi);
+  -webkit-mask: var(--ink-stroke) 0 0 / 100% 100% no-repeat;
+  mask: var(--ink-stroke) 0 0 / 100% 100% no-repeat;
+  transform-origin: left;
+  transition: transform 600ms var(--settle);
+}
+
+.ink-btn--quiet:hover,
+.ink-btn--quiet:focus-visible,
+.ink-workmore a:not(.ink-workmore--hero a):hover,
+.ink-workmore a:not(.ink-workmore--hero a):focus-visible {
+  background: transparent;
+  color: var(--sumi);
+}
+
+.ink-btn--quiet:hover::after,
+.ink-workmore a:not(.ink-workmore--hero a):hover::after {
+  transform: scaleX(0.7);
+}
+
+/* The internship link in the nav: an ordinary item, marked by a brush stroke
+   in the seal's red instead of a box. */
+.ink-nav__link--stage {
+  color: var(--sumi);
+}
+
+.ink-nav__link--stage::after {
+  height: 5px;
+  bottom: -3px;
+  background: var(--hanko);
+  -webkit-mask: var(--ink-stroke) 0 0 / 100% 100% no-repeat;
+  mask: var(--ink-stroke) 0 0 / 100% 100% no-repeat;
+  transform: scaleX(1);
+}
+
+/* ------------------------------------------------- lab evidence tables --- */
+
+.ink-stage__more {
+  max-width: none;
+}
+
+.ink-stage__more .ink-prose {
+  max-width: 62ch;
+}
+
+.ink-stage__subhead {
+  margin: 34px 0 10px;
+  color: var(--ink-2);
+}
+
+.ink-stage__table {
+  border-top: 1px solid var(--rule-firm);
+  font-size: 0.86rem;
+  font-weight: 300;
+  line-height: 1.6;
+  color: var(--ink-1);
+}
+
+.ink-stage__tr {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr 1.2fr;
+  gap: 8px 22px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.ink-stage__tr--two {
+  grid-template-columns: minmax(150px, 0.6fr) 1.6fr;
+}
+
+.ink-stage__tr--head {
+  padding: 9px 0;
+  font-family: var(--sans);
+  font-size: 0.6875rem;
+  letter-spacing: 0.19em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.ink-stage__skill {
+  color: var(--sumi);
+  font-weight: 400;
+}
+
+@media (max-width: 719px) {
+  .ink-stage__tr,
+  .ink-stage__tr--two {
+    grid-template-columns: 1fr;
+  }
+
+  .ink-stage__tr--head {
+    display: none;
+  }
+
+  .ink-stage__tr > [data-label]::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: 2px;
+    font-size: 0.6875rem;
+    letter-spacing: 0.19em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+  }
+}
+
+/* The write-up opens across the full width, under both the text and the
+   thumbnail, so its tables have room. */
+.ink-stage__details {
+  grid-column: 4 / -1;
+  grid-row: 2;
+  margin-top: 4px;
+}
+
+@media (max-width: 899px) {
+  .ink-stage__details {
+    grid-column: 3 / -1;
+    grid-row: 3;
+  }
+}
+
+@media (max-width: 719px) {
+  .ink-stage__details {
+    grid-column: 1 / -1;
   }
 }

@@ -9,7 +9,8 @@ import { inkContent, STAGE_EMAIL } from '../utils/inkContent';
 /** The school projects, set for someone deciding whether to offer an internship. */
 const Stage: React.FC = () => {
   const { language } = useLanguage();
-  const { stage } = inkContent[language];
+  const { stage, contact } = inkContent[language];
+  const socials = contact.socials.filter((social) => social.label !== 'Instagram');
 
   return (
     <article className="ink-page">
@@ -49,6 +50,13 @@ const Stage: React.FC = () => {
                   </a>
                 </li>
                 <li>Evergem</li>
+                {socials.map((social) => (
+                  <li key={social.label}>
+                    <a className="ink-inline-link" href={social.href} target="_blank" rel="noreferrer noopener">
+                      {social.label}
+                    </a>
+                  </li>
+                ))}
               </ul>
               <p className="ink-cap ink-stage__skillsLabel">{stage.skillsLabel}</p>
               <ul className="ink-stage__skills">
@@ -80,6 +88,7 @@ const Stage: React.FC = () => {
                         <h3 className="ink-work__title">{project.title}</h3>
                         <span className="ink-cap ink-work__stack">{project.stack}</span>
                         <p className="ink-work__desc">{project.summary}</p>
+                        {project.note && <p className="ink-stage__note">{project.note}</p>}
                         {project.video && (
                           <a
                             className="ink-cap ink-work__cta ink-stage__watch"
@@ -93,19 +102,6 @@ const Stage: React.FC = () => {
                             </svg>
                           </a>
                         )}
-                        <details className="ink-stage__details">
-                          <summary className="ink-cap">
-                            <span className="ink-stage__open">{stage.open}</span>
-                            <span className="ink-stage__close">{stage.close}</span>
-                          </summary>
-                          <div className="ink-stage__more">
-                            {project.details.map((paragraph) => (
-                              <p key={paragraph.slice(0, 30)} className="ink-prose">
-                                {paragraph}
-                              </p>
-                            ))}
-                          </div>
-                        </details>
                       </div>
                       {project.video && project.thumb && (
                         <a
@@ -128,6 +124,49 @@ const Stage: React.FC = () => {
                           <span className="ink-stage__play" aria-hidden="true" />
                         </a>
                       )}
+                      <details className="ink-stage__details">
+                        <summary className="ink-cap">
+                          <span className="ink-stage__open">{stage.open}</span>
+                          <span className="ink-stage__close">{stage.close}</span>
+                        </summary>
+                        <div className="ink-stage__more">
+                          {project.details.map((paragraph) => (
+                            <p key={paragraph.slice(0, 30)} className="ink-prose">
+                              {paragraph}
+                            </p>
+                          ))}
+
+                          {project.evidence && (
+                            <>
+                              <h4 className="ink-cap ink-stage__subhead">{stage.problemsTitle}</h4>
+                              <div className="ink-stage__table" role="table">
+                                <div className="ink-stage__tr ink-stage__tr--head" role="row">
+                                  <span role="columnheader">{stage.problemCols.problem}</span>
+                                  <span role="columnheader">{stage.problemCols.cause}</span>
+                                  <span role="columnheader">{stage.problemCols.fix}</span>
+                                </div>
+                                {project.evidence.problems.map((row) => (
+                                  <div className="ink-stage__tr" role="row" key={row.problem}>
+                                    <span role="cell" data-label={stage.problemCols.problem}>{row.problem}</span>
+                                    <span role="cell" data-label={stage.problemCols.cause}>{row.cause}</span>
+                                    <span role="cell" data-label={stage.problemCols.fix}>{row.fix}</span>
+                                  </div>
+                                ))}
+                              </div>
+
+                              <h4 className="ink-cap ink-stage__subhead">{stage.learnedTitle}</h4>
+                              <div className="ink-stage__table" role="table">
+                                {project.evidence.learned.map((row) => (
+                                  <div className="ink-stage__tr ink-stage__tr--two" role="row" key={row.skill}>
+                                    <span role="cell" className="ink-stage__skill">{row.skill}</span>
+                                    <span role="cell">{row.applied}</span>
+                                  </div>
+                                ))}
+                              </div>
+                            </>
+                          )}
+                        </div>
+                      </details>
                     </div>
                   </article>
                 </InkReveal>

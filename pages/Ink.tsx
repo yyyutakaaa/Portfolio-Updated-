@@ -9,7 +9,7 @@ import { useInkShell } from '../components/ink/InkLayout';
 import BrushName, { BrushNameHandle, PATH_UNITS } from '../components/ink/BrushName';
 import { scrollToId } from '../components/motion/SmoothScroll';
 import { useLanguage } from '../contexts/LanguageContext';
-import { inkContent } from '../utils/inkContent';
+import { inkContent, STAGE_EMAIL } from '../utils/inkContent';
 import { gsap, ScrollTrigger, EASE, prefersReducedMotion } from '../lib/motion';
 
 /**
@@ -236,10 +236,29 @@ const Ink: React.FC = () => {
                     {copy.hero.ledeTail}
                   </p>
 
-                  <div className="ink-workmore ink-workmore--hero">
-                    <Link className="ink-cap" to="/stage">
-                      {copy.stage.cta} <span aria-hidden="true">→</span>
-                    </Link>
+                  <dl className="ink-pitch">
+                    {copy.hero.internship.map((row) => (
+                      <div className="ink-pitch__row" key={row.key}>
+                        <dt className="ink-cap">{row.key}</dt>
+                        <dd>{row.value}</dd>
+                      </div>
+                    ))}
+                  </dl>
+
+                  <div className="ink-hero__actions">
+                    <div className="ink-workmore ink-workmore--hero">
+                      <Link className="ink-cap" to="/stage">
+                        {copy.stage.cta} <span aria-hidden="true">→</span>
+                      </Link>
+                    </div>
+                    <a
+                      className="ink-btn ink-btn--quiet"
+                      href={`${import.meta.env.BASE_URL}CV Stage - Mehdi Oulad Khlie.pdf`}
+                      target="_blank"
+                      rel="noopener"
+                    >
+                      {copy.stage.view}
+                    </a>
                   </div>
                 </div>
               </div>
@@ -249,7 +268,9 @@ const Ink: React.FC = () => {
               <div className="ink-foot__meta">
                 <span className="ink-cap">{copy.hero.location}</span>
                 <span className="ink-foot__sep" aria-hidden="true" />
-                <span className="ink-cap">{copy.hero.status}</span>
+                <a className="ink-cap ink-foot__mail" href={`mailto:${STAGE_EMAIL}`}>
+                  {STAGE_EMAIL}
+                </a>
               </div>
 
               <button

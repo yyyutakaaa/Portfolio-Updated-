@@ -36,6 +36,13 @@ export interface StageProject {
   details: string[];
   /** Demo recording on YouTube, where there is one. */
   video?: string;
+  /** What went wrong and how it was solved, plus what it taught. Shown inside the write-up. */
+  evidence?: {
+    problems: { problem: string; cause: string; fix: string }[];
+    learned: { skill: string; applied: string }[];
+  };
+  /** A line of context that has to be read before the rest, e.g. that a demo was an isolated lab. */
+  note?: string;
   /** File stem of the demo's thumbnail in `public/stage/`, e.g. `arp` → `arp-560.webp`. */
   thumb?: string;
 }
@@ -59,6 +66,10 @@ export interface StageCopy {
   close: string;
   /** Label of the link to a project's demo video. */
   watch: string;
+  problemsTitle: string;
+  problemCols: { problem: string; cause: string; fix: string };
+  learnedTitle: string;
+  learnedCols: { skill: string; applied: string };
 }
 
 export interface ContactFormCopy {
@@ -87,6 +98,8 @@ export interface InkCopy {
     ledeTail: string;
     location: string;
     status: string;
+    /** What a recruiter deciding in a few seconds needs: the direction, the period, the school. */
+    internship: { key: string; value: string }[];
     scroll: string;
   };
   about: {
@@ -162,6 +175,11 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
       ledeTail: ' it.',
       location: 'Evergem, BE',
       status: 'Open to opportunities',
+      internship: [
+        { key: 'Looking for', value: 'An internship in system & network administration: networks, servers and cloud' },
+        { key: 'Period', value: '8 February to 27 May 2027 (60 days)' },
+        { key: 'Studying', value: 'Associate degree, System & Network Administration, HOGENT' },
+      ],
       scroll: 'Scroll down',
     },
     about: {
@@ -297,6 +315,10 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
         'Kali Linux',
       ],
       watch: 'Watch the demo',
+      problemsTitle: 'What went wrong and how I fixed it',
+      problemCols: { problem: 'Problem', cause: 'Cause', fix: 'Fix' },
+      learnedTitle: 'What I learned',
+      learnedCols: { skill: 'Skill', applied: 'How I used it' },
       open: 'Read the full story',
       close: 'Close',
       groups: [
@@ -309,6 +331,20 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
               stack: 'Palo Alto · PAN-OS · NAT · service routes',
               summary:
                 'The base configuration of the Branch Office firewall over SSH: internet, policies, DNS and NTP over WAN, licensing and automatic updates. Everything worked and was tested from a LAN client.',
+              evidence: {
+                problems: [
+                  { problem: 'Setting up DNS and NTP over WAN did not work at first.', cause: 'The WAN interface is a DHCP client, and Palo Alto does not accept that as the source of a service route.', fix: 'Created a loopback interface with a fixed IP in the LAN zone and used it as the source. Traffic leaves over the default route with NAT.' },
+                  { problem: 'Installing the update failed because the file had not finished downloading. It happened twice.', cause: 'The install was started while the download was still running.', fix: 'Download first, check with show jobs all that the job is done, and only then install.' },
+                ],
+                learned: [
+                  { skill: 'Managing Palo Alto over the CLI', applied: 'Downloaded and installed updates over SSH, checked jobs and versions.' },
+                  { skill: 'Checking network connectivity', applied: 'Tested the DHCP lease, default route, and pings to 8.8.8.8 and google.com.' },
+                  { skill: 'Using firewall objects and policies', applied: 'Created address objects; verified the security and NAT policies through working browsing.' },
+                  { skill: 'Setting up service routes and interfaces', applied: 'Used a loopback interface to send DNS and NTP over WAN.' },
+                  { skill: 'Activating licences and subscriptions', applied: 'Threat Prevention, URL Filtering, WildFire, DNS Security and SD-WAN active.' },
+                  { skill: 'Analysing error messages', applied: 'Traced the update FAIL message to a download that was still running.' },
+                ],
+              },
               details: [
                 'I started by checking connectivity: the WAN side got an address over DHCP, there was a default route and a ping to 8.8.8.8 came back. A Windows client behind the firewall could browse, which proved my security policy and NAT rule were right.',
                 'Next I created address objects for LAN-HQ, LAN-BO, DMZ and SERVERS, so policies can use names instead of IP ranges.',
@@ -335,6 +371,7 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
               title: 'ARP poisoning & DNS spoofing',
               video: 'https://youtu.be/TZJtIaS60t8',
               thumb: 'arp',
+              note: 'Only carried out in an isolated school lab, on my own test machines. Countermeasures include Dynamic ARP Inspection and DNSSEC.',
               stack: 'Kali Linux · iptables · Man-in-the-Middle',
               summary:
                 'An attack demo in an isolated school lab: sitting between a victim and the network with Kali Linux and redirecting its traffic. Built to understand how these attacks work and how to stop them.',
@@ -368,11 +405,31 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
               title: 'Zabbix monitoring lab',
               video: 'https://youtu.be/lQUlKRPNc5U',
               thumb: 'zabbix',
-              stack: 'Zabbix · SNMP · Zabbix agent · dashboards',
+              stack: 'Zabbix 7.4 · SNMP · pfSense · VMware Workstation',
               summary:
                 'Set up Zabbix myself on a host-only network and monitored five hosts in five different ways, with a custom dashboard to see everything at a glance.',
+              evidence: {
+                problems: [
+                  { problem: 'Could not log in to the appliance as Admin.', cause: 'The console login is the Linux user, not the Zabbix web user.', fix: 'Logged in with the appliance\'s root account.' },
+                  { problem: 'IP conflict on 192.168.100.10.', cause: 'Windows Server had already been given that IP.', fix: 'The Zabbix server got a different fixed IP.' },
+                  { problem: 'The appliance was on the NAT subnet.', cause: 'Its network card was on VMnet8.', fix: 'Moved the card to VMnet1 and set a static IP through ifcfg-eth0.' },
+                  { problem: 'nmcli was not available on the appliance.', cause: 'The appliance uses network scripts.', fix: 'Edited the configuration in /etc/sysconfig/network-scripts.' },
+                  { problem: 'Pinging Windows from Zabbix failed.', cause: 'Windows Firewall was blocking ICMP.', fix: 'Added a firewall rule for ICMPv4.' },
+                  { problem: 'No internet on the Ubuntu server.', cause: 'Traffic was not going out through pfSense.', fix: 'Temporarily added a second network card on VMnet8 for package installs.' },
+                  { problem: 'The SNMP service was not visible in services.msc.', cause: 'The Windows feature was not installed.', fix: 'Ran Install-WindowsFeature SNMP-Service.' },
+                  { problem: 'The Zabbix frontend returned a 404 on /zabbix.', cause: 'The appliance serves the frontend from the root.', fix: 'Opened the frontend on the server\'s own IP.' },
+                ],
+                learned: [
+                  { skill: 'Monitoring and SNMP', applied: 'Configuring hosts, communities and templates.' },
+                  { skill: 'Network administration', applied: 'Static IPs, host-only and NAT.' },
+                  { skill: 'Firewall administration', applied: 'pfSense, Windows Firewall and iptables.' },
+                  { skill: 'Linux administration', applied: 'Rocky Linux and Ubuntu, network configuration, package management.' },
+                  { skill: 'Windows Server administration', applied: 'Installing features, services, PowerShell.' },
+                  { skill: 'Troubleshooting', applied: 'Isolating causes layer by layer.' },
+                ],
+              },
               details: [
-                'The five hosts were a Windows server over SNMP, a Windows server with the Zabbix agent, an Ubuntu server with snmpd, an Ubuntu server with the agent, and my firewall.',
+                'The five hosts were a Windows server over SNMP, a Windows server with the Zabbix agent, an Ubuntu server with snmpd, an Ubuntu server with the agent, and my pfSense firewall.',
                 'The dashboard has widgets for connection attempts on my website, host availability, critical problems on the network and the disk usage of a server.',
                 'I showed in a video of at most five minutes that everything works.',
               ],
@@ -393,6 +450,11 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
       ledeTail: ' van.',
       location: 'Evergem, BE',
       status: 'Op zoek naar werk',
+      internship: [
+        { key: 'Op zoek naar', value: 'Een stage in systeem- en netwerkbeheer: netwerk, servers en cloud' },
+        { key: 'Periode', value: '8 februari tot 27 mei 2027 (60 dagen)' },
+        { key: 'Opleiding', value: 'Graduaat Systeem- en Netwerkbeheer, HOGENT' },
+      ],
       scroll: 'Scroll verder',
     },
     about: {
@@ -528,6 +590,10 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
         'Kali Linux',
       ],
       watch: 'Bekijk de demo',
+      problemsTitle: 'Wat er misliep en hoe ik het oploste',
+      problemCols: { problem: 'Probleem', cause: 'Oorzaak', fix: 'Oplossing' },
+      learnedTitle: 'Wat ik hierbij geleerd heb',
+      learnedCols: { skill: 'Vaardigheid', applied: 'Toepassing' },
       open: 'Lees het volledige verhaal',
       close: 'Sluit',
       groups: [
@@ -540,6 +606,20 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
               stack: 'Palo Alto · PAN-OS · NAT · service routes',
               summary:
                 'De basisconfiguratie van de Branch Office-firewall via SSH: internet, policies, DNS en NTP via WAN, licentie en automatische updates. Alles werkte en is getest vanaf een client in het LAN.',
+              evidence: {
+                problems: [
+                  { problem: 'DNS en NTP via WAN instellen lukte niet direct.', cause: 'De WAN-interface is een DHCP-client. Palo Alto accepteert die niet als bron voor een service route.', fix: 'Een loopback-interface met een vast IP aangemaakt in de zone LAN en gebruikt als bron. Het verkeer gaat via de default route en NAT naar buiten.' },
+                  { problem: 'De installatie van de update gaf FAIL omdat het bestand nog niet gedownload was. Dit gebeurde twee keer.', cause: 'De installatie was gestart terwijl de download nog liep.', fix: 'Eerst downloaden en met show jobs all controleren of de job klaar is, en pas daarna installeren.' },
+                ],
+                learned: [
+                  { skill: 'Palo Alto beheren via CLI', applied: 'Via SSH updates gedownload en geïnstalleerd, jobs en versies gecontroleerd.' },
+                  { skill: 'Netwerkconnectiviteit controleren', applied: 'DHCP-lease, default route en ping naar 8.8.8.8 en google.com getest.' },
+                  { skill: 'Firewallobjecten en policies gebruiken', applied: 'Address objects aangemaakt; security policy en NAT-policy gecontroleerd via werkend surfen.' },
+                  { skill: 'Service routes en interfaces instellen', applied: 'Loopback-interface gebruikt om DNS en NTP via WAN te sturen.' },
+                  { skill: 'Licenties en subscriptions activeren', applied: 'Threat Prevention, URL Filtering, WildFire, DNS Security en SD-WAN actief.' },
+                  { skill: 'Foutmeldingen analyseren', applied: 'De FAIL-melding bij de update herleid tot een download die nog liep.' },
+                ],
+              },
               details: [
                 'Ik heb eerst de internetconnectiviteit gecontroleerd: de WAN-kant kreeg via DHCP een adres, er stond een default route en een ping naar 8.8.8.8 kwam terug. Vanaf een Windows-client achter de firewall kon ik ook surfen, wat bewees dat mijn security policy en NAT-regel klopten.',
                 'Daarna maakte ik address objects aan voor LAN-HQ, LAN-BO, DMZ en SERVERS, zodat ik policies met namen kan schrijven in plaats van met IP-reeksen.',
@@ -566,6 +646,7 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
               title: 'ARP poisoning & DNS spoofing',
               video: 'https://youtu.be/TZJtIaS60t8',
               thumb: 'arp',
+              note: 'Alleen uitgevoerd in een afgeschermd schoollab, op eigen testmachines. Tegenmaatregelen zijn onder meer Dynamic ARP Inspection en DNSSEC.',
               stack: 'Kali Linux · iptables · Man-in-the-Middle',
               summary:
                 'Een aanvalsdemo in een afgeschermd schoollab: met Kali Linux tussen een slachtoffer en het netwerk gaan zitten en verkeer omleiden. Bedoeld om te begrijpen hoe zulke aanvallen werken en hoe je ze tegenhoudt.',
@@ -599,11 +680,31 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
               title: 'Zabbix monitoring lab',
               video: 'https://youtu.be/lQUlKRPNc5U',
               thumb: 'zabbix',
-              stack: 'Zabbix · SNMP · Zabbix-agent · dashboards',
+              stack: 'Zabbix 7.4 · SNMP · pfSense · VMware Workstation',
               summary:
                 'Zabbix zelf opgezet in een host-only netwerk en vijf hosts gemonitord op vijf verschillende manieren, met een eigen dashboard om alles in één oogopslag te zien.',
+              evidence: {
+                problems: [
+                  { problem: 'Geen login op de appliance met Admin.', cause: 'De console-login is de Linux-gebruiker, niet de Zabbix-webgebruiker.', fix: 'Inloggen met de root-account van de appliance.' },
+                  { problem: 'IP-conflict op 192.168.100.10.', cause: 'Windows Server had dit IP al gekregen.', fix: 'De Zabbix-server kreeg een ander vast IP.' },
+                  { problem: 'De appliance stond op het NAT-subnet.', cause: 'De netwerkkaart hing op VMnet8.', fix: 'Netwerkkaart omgezet naar VMnet1 en een statisch IP ingesteld via ifcfg-eth0.' },
+                  { problem: 'nmcli niet beschikbaar op de appliance.', cause: 'De appliance gebruikt netwerkscripts.', fix: 'De configuratie bewerkt in /etc/sysconfig/network-scripts.' },
+                  { problem: 'Ping van Zabbix naar Windows mislukte.', cause: 'De Windows Firewall blokkeerde ICMP.', fix: 'Een firewallregel voor ICMPv4 toegevoegd.' },
+                  { problem: 'Geen internet op de Ubuntu-server.', cause: 'Het verkeer liep niet via pfSense naar buiten.', fix: 'Tijdelijk een tweede netwerkkaart op VMnet8 voor de pakketinstallatie.' },
+                  { problem: 'De SNMP-service was niet zichtbaar in services.msc.', cause: 'De Windows-feature was niet geïnstalleerd.', fix: 'Install-WindowsFeature SNMP-Service uitgevoerd.' },
+                  { problem: 'De Zabbix-frontend gaf een 404 op /zabbix.', cause: 'De appliance draait de frontend op de root.', fix: 'De frontend geopend op het IP van de server zelf.' },
+                ],
+                learned: [
+                  { skill: 'Monitoring en SNMP', applied: 'Hosts, communities en templates configureren.' },
+                  { skill: 'Netwerkbeheer', applied: 'Statische IP\'s, host-only en NAT.' },
+                  { skill: 'Firewallbeheer', applied: 'pfSense, Windows Firewall en iptables.' },
+                  { skill: 'Linux-beheer', applied: 'Rocky Linux en Ubuntu, netwerkconfiguratie, pakketbeheer.' },
+                  { skill: 'Windows Server-beheer', applied: 'Features installeren, services, PowerShell.' },
+                  { skill: 'Troubleshooting', applied: 'Stapsgewijs oorzaken isoleren per laag.' },
+                ],
+              },
               details: [
-                'De vijf hosts waren een Windows-server via SNMP, een Windows-server met de Zabbix-agent, een Ubuntu-server met snmpd, een Ubuntu-server met de agent, en mijn firewall.',
+                'De vijf hosts waren een Windows-server via SNMP, een Windows-server met de Zabbix-agent, een Ubuntu-server met snmpd, een Ubuntu-server met de agent, en mijn pfSense-firewall.',
                 'Op het dashboard staan widgets voor het aantal verbindingspogingen op mijn website, de beschikbaarheid van de hosts, kritieke problemen in het netwerk en het schijfgebruik van een server.',
                 'Ik toonde in een video van maximaal vijf minuten dat alles werkt.',
               ],

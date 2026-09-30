@@ -6,10 +6,15 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        /* React and the router change on a different schedule from the site's
-           own code, so they get a long-lived chunk of their own. */
+        /**
+         * React, the router and the animation runtime change on completely
+         * different schedules from the site's own code, so they get their own
+         * long-lived chunks instead of invalidating one big bundle on every
+         * copy tweak.
+         */
         manualChunks: {
           react: ['react', 'react-dom', 'react-router-dom'],
+          motion: ['gsap', 'gsap/ScrollTrigger', 'gsap/SplitText', 'lenis'],
         },
       },
     },

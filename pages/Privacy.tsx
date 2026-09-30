@@ -1,50 +1,72 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import InkReveal from '../components/ink/InkReveal';
+import InkSectionHead from '../components/ink/InkSectionHead';
+import BrushDivider from '../components/ink/BrushDivider';
 import { useLanguage } from '../contexts/LanguageContext';
 
-/** Plain reading: the policy set on one sheet, one ruled section at a time. */
+/** Plain reading: the policy is set like a letter, one ruled section at a time. */
 const Privacy: React.FC = () => {
   const { t } = useLanguage();
   const p = t.privacy;
 
   return (
-    <article className="page">
-      <div className="side side--sticky">
-        <Link className="lbl back" to="/">
-          <span aria-hidden="true">&larr;</span>&nbsp;{p.backToHome}
-        </Link>
-        <p className="lbl">{p.lastUpdated}</p>
-        <h1 className="side__title">{p.title}</h1>
-      </div>
+    <article className="ink-page">
+      <header className="ink-section ink-section--page">
+        <div className="ink-shell">
+          <div className="ink-grid">
+            <Link className="ink-cap ink-back" to="/">
+              <span aria-hidden="true">←</span> {p.backToHome}
+            </Link>
+          </div>
+          <InkSectionHead label={p.lastUpdated} heading={p.title} level="h1" />
+          <div className="ink-grid">
+            <InkReveal className="ink-case__lead" delay={0.3}>
+              <p className="ink-prose">{p.introParagraph}</p>
+            </InkReveal>
+          </div>
+        </div>
+      </header>
 
-      <div className="read">
-        <p className="lede">{p.introParagraph}</p>
-
-        {p.sections.map((section) => (
-          <section key={section.heading}>
-            <h2>{section.heading}</h2>
-            {section.paragraphs.map((paragraph: string) => (
-              <p key={paragraph} style={{ marginBottom: 12 }}>
-                {paragraph}
-              </p>
-            ))}
-            {'items' in section && section.items && (
-              <ul className="bullets">
-                {section.items.map((item: string) => (
-                  <li key={item}>{item}</li>
+      {p.sections.map((section, index) => (
+        <section className="ink-section ink-section--compact" key={section.heading}>
+          <div className="ink-shell">
+            <BrushDivider flip={index % 2 === 1} />
+            <InkSectionHead label={String(index + 1).padStart(2, '0')} heading={section.heading} />
+            <div className="ink-grid">
+              <InkReveal className="ink-case__body" stagger={0.06}>
+                {section.paragraphs.map((paragraph: string) => (
+                  <p key={paragraph} className="ink-prose">
+                    {paragraph}
+                  </p>
                 ))}
-              </ul>
-            )}
-          </section>
-        ))}
-
-        <section>
-          <h2>{p.contact.heading}</h2>
-          <p>
-            {p.contact.text} <a href={p.contact.url}>{p.contact.url}</a>
-          </p>
+                {'items' in section && section.items && (
+                  <ul className="ink-bullets ink-bullets--single">
+                    {section.items.map((item: string) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                )}
+              </InkReveal>
+            </div>
+          </div>
         </section>
-      </div>
+      ))}
+
+      <section className="ink-section ink-section--compact">
+        <div className="ink-shell">
+          <BrushDivider />
+          <InkSectionHead label={String(p.sections.length + 1).padStart(2, '0')} heading={p.contact.heading} />
+          <div className="ink-grid">
+            <InkReveal className="ink-case__body">
+              <p className="ink-prose">{p.contact.text}</p>
+              <a className="ink-inline-link" href={p.contact.url}>
+                {p.contact.url}
+              </a>
+            </InkReveal>
+          </div>
+        </div>
+      </section>
     </article>
   );
 };

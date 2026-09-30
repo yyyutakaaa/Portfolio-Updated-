@@ -1,18 +1,20 @@
 import React from 'react';
 
-const formatter = new Intl.DateTimeFormat('nl-BE', {
+const formatter = new Intl.DateTimeFormat('en-GB', {
   timeZone: 'Europe/Brussels',
   hour: '2-digit',
   minute: '2-digit',
   hour12: false,
 });
 
-/** Wall time in Belgium. Ticks once a minute, lined up with the minute. */
-const Clock: React.FC = () => {
+/** Wall time where Mehdi is. Ticks once a minute, not once a second. */
+const LocalClock: React.FC<{ className?: string }> = ({ className = '' }) => {
   const [time, setTime] = React.useState(() => formatter.format(new Date()));
 
   React.useEffect(() => {
     let interval = 0;
+
+    // Line up with the top of the next minute, then settle into a steady beat.
     const align = window.setTimeout(() => {
       setTime(formatter.format(new Date()));
       interval = window.setInterval(() => setTime(formatter.format(new Date())), 60_000);
@@ -24,7 +26,11 @@ const Clock: React.FC = () => {
     };
   }, []);
 
-  return <time>{time}</time>;
+  return (
+    <time className={className} dateTime={time}>
+      {time}
+    </time>
+  );
 };
 
-export default Clock;
+export default LocalClock;

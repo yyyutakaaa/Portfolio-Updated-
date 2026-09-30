@@ -1,14 +1,11 @@
 import React from 'react';
-import ContactPanel from '../components/site/ContactPanel';
-import ContactForm from '../components/site/ContactForm';
+import InkContact from '../components/ink/InkContact';
 
-/** The closing screen of the home page, with the message form added. */
+/** The same contact section that closes the home page, given a page of its own. */
 const Contact: React.FC = () => (
-  <ContactPanel number="01" asPage>
-    <div style={{ marginTop: 'clamp(36px, 5vw, 64px)' }}>
-      <ContactForm />
-    </div>
-  </ContactPanel>
+  <div className="ink-page">
+    <InkContact asPage />
+  </div>
 );
 
 export default Contact;

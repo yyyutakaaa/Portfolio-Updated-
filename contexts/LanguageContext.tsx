@@ -1,20 +1,18 @@
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { translations } from '../utils/translations';
-import { content, Lang, SiteCopy } from '../utils/content';
+
+type Language = 'nl' | 'en';
 
 interface LanguageContextType {
-  language: Lang;
-  setLanguage: (lang: Lang) => void;
-  /** Long-form pages: Sets, Muted, CV, privacy. */
+  language: Language;
+  setLanguage: (lang: Language) => void;
   t: typeof translations['nl'];
-  /** Home page, contents and the lab write-ups. */
-  c: SiteCopy;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [language, setLanguage] = useState<Lang>('nl');
+  const [language, setLanguage] = useState<Language>('en');
 
   useEffect(() => {
     document.documentElement.lang = language;
@@ -24,10 +22,13 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
     language,
     setLanguage,
     t: translations[language],
-    c: content[language],
   };
 
-  return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>;
+  return (
+    <LanguageContext.Provider value={value}>
+      {children}
+    </LanguageContext.Provider>
+  );
 };
 
 export const useLanguage = () => {

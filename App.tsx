@@ -1,55 +1,65 @@
 import React, { Suspense } from 'react';
 import { HashRouter, Navigate, Routes, Route, useLocation } from 'react-router-dom';
-import Layout from './components/site/Layout';
+import InkLayout from './components/ink/InkLayout';
+import SmoothScroll, { scrollToTop } from './components/motion/SmoothScroll';
 import { LanguageProvider } from './contexts/LanguageContext';
+import { ScrollTrigger } from './lib/motion';
 
-const Home = React.lazy(() => import('./pages/Home'));
-const LabProject = React.lazy(() => import('./pages/LabProject'));
 const Resume = React.lazy(() => import('./pages/Resume'));
 const Contact = React.lazy(() => import('./pages/Contact'));
 const Privacy = React.lazy(() => import('./pages/Privacy'));
 const ProjectMuted = React.lazy(() => import('./pages/ProjectMuted'));
 const ProjectSets = React.lazy(() => import('./pages/ProjectSets'));
+const Ink = React.lazy(() => import('./pages/Ink'));
 
-/** Each route starts at the top, unless the home page was sent to a section. */
+/**
+ * Resets scroll on navigation and recomputes every trigger once the new page
+ * has laid out — stale start/end positions are the classic ScrollTrigger bug
+ * in a single-page app.
+ */
 const ScrollToTop = () => {
   const { pathname } = useLocation();
 
-  React.useLayoutEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
+  React.useEffect(() => {
+    scrollToTop();
+    const timer = window.setTimeout(() => ScrollTrigger.refresh(), 180);
+    return () => window.clearTimeout(timer);
   }, [pathname]);
 
   return null;
 };
 
-const App: React.FC = () => (
-  <LanguageProvider>
-    <HashRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-      <ScrollToTop />
-      <Layout>
-        <Suspense
-          fallback={
-            <div className="page-loader" aria-label="Loading page">
-              <span />
-              <span />
-              <span />
-            </div>
-          }
-        >
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/resume" element={<Resume />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/visibility-spoofer-privacy" element={<Privacy />} />
-            <Route path="/projects/muted" element={<ProjectMuted />} />
-            <Route path="/projects/sets" element={<ProjectSets />} />
-            <Route path="/projects/:slug" element={<LabProject />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </Suspense>
-      </Layout>
-    </HashRouter>
-  </LanguageProvider>
-);
+const App: React.FC = () => {
+  return (
+    <LanguageProvider>
+      <HashRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+        <SmoothScroll>
+          <ScrollToTop />
+          <InkLayout>
+            <Suspense
+              fallback={
+                <div className="page-loader" aria-label="Loading page">
+                  <span />
+                  <span />
+                  <span />
+                </div>
+              }
+            >
+              <Routes>
+                <Route path="/" element={<Ink />} />
+                <Route path="/resume" element={<Resume />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/visibility-spoofer-privacy" element={<Privacy />} />
+                <Route path="/projects/muted" element={<ProjectMuted />} />
+                <Route path="/projects/sets" element={<ProjectSets />} />
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </Routes>
+            </Suspense>
+          </InkLayout>
+        </SmoothScroll>
+      </HashRouter>
+    </LanguageProvider>
+  );
+};
 
 export default App;

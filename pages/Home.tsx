@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Panel from '../components/site/Panel';
-import Hy from '../components/site/Hy';
 import IndexRows from '../components/site/IndexRows';
 import ContactPanel from '../components/site/ContactPanel';
 import Clock from '../components/site/Clock';
@@ -91,7 +90,7 @@ const Home: React.FC = () => {
             {c.about.label}
           </h2>
         </div>
-        <p className="disp about__text"><Hy text={c.about.body} /></p>
+        <p className="disp about__text">{c.about.body}</p>
         <dl className="facts">
           {c.about.facts.map((fact) => (
             <div key={fact.key}>

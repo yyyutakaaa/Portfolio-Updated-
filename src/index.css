@@ -180,12 +180,6 @@ button.lbl--accent:hover {
   letter-spacing: -0.02em;
 }
 
-/* A hyphen in display text, drawn in the body face (see components/site/Hy). */
-.hy {
-  font-family: var(--body);
-  font-weight: 400;
-}
-
 /* Nadruk in lopende tekst: Jost als basis, Bodoni Moda voor het woord. */
 em {
   font-family: var(--display);

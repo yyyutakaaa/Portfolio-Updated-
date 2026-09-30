@@ -1,4 +1,5 @@
 import React from 'react';
+import { renderSvg, renderTurbulence } from '../../lib/rasterise';
 
 /**
  * The name, painted rather than faded in.
@@ -81,6 +82,9 @@ interface Geometry {
   masks: { strokes: { d: string; width: number }[] }[];
 }
 
+/** Matches the mask region below, which is what the displaced strokes are drawn into. */
+const FRAY_AREA = { x: -400, y: -200, width: 2000, height: 900 };
+
 const BrushName: React.FC<BrushNameProps> = ({ onReady, frayed = true }) => {
   const uid = React.useId().replace(/[^a-zA-Z0-9]/g, '');
   const textRefs = React.useRef<(SVGTextElement | null)[]>([]);
@@ -90,6 +94,56 @@ const BrushName: React.FC<BrushNameProps> = ({ onReady, frayed = true }) => {
   const washRef = React.useRef<SVGEllipseElement>(null);
 
   const [geometry, setGeometry] = React.useState<Geometry | null>(null);
+
+  /* The bloom is static artwork that the intro only scales and fades, so the
+     bled version is drawn once and animated as a picture. */
+  const [bloomImage, setBloomImage] = React.useState<string | null>(null);
+  const bloomRadius = geometry?.drop.bloom ?? 0;
+  React.useEffect(() => {
+    if (!bloomRadius) return;
+    let cancelled = false;
+
+    /* The filter region is -70%/240% of the circle's box: 2.4 radii each way. */
+    const reach = bloomRadius * 2.4;
+    const size = reach * 2;
+    const pixels = Math.min(Math.round(size * 2), 1600);
+    const svg =
+      `<svg xmlns="http://www.w3.org/2000/svg" width="${pixels}" height="${pixels}" viewBox="${-reach} ${-reach} ${size} ${size}">` +
+      `<defs><radialGradient id="b"><stop offset="0%" stop-color="#1c1b19" stop-opacity="0.95"/>` +
+      `<stop offset="30%" stop-color="#1c1b19" stop-opacity="0.72"/><stop offset="58%" stop-color="#1c1b19" stop-opacity="0.32"/>` +
+      `<stop offset="82%" stop-color="#1c1b19" stop-opacity="0.09"/><stop offset="100%" stop-color="#1c1b19" stop-opacity="0"/></radialGradient>` +
+      `<filter id="f" x="-70%" y="-70%" width="240%" height="240%" color-interpolation-filters="sRGB">` +
+      `<feTurbulence type="fractalNoise" baseFrequency="0.013" numOctaves="4" seed="3" result="n"/>` +
+      `<feDisplacementMap in="SourceGraphic" in2="n" scale="30" xChannelSelector="R" yChannelSelector="G" result="d"/>` +
+      `<feGaussianBlur in="d" stdDeviation="3.4"/></filter></defs>` +
+      `<g filter="url(#f)"><circle r="${bloomRadius}" fill="url(#b)"/>` +
+      `<circle r="${bloomRadius * 0.3}" fill="#1c1b19" opacity="0.8"/></g></svg>`;
+
+    renderSvg(svg, pixels, pixels)
+      .then((url) => {
+        if (!cancelled && url) setBloomImage(url);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [bloomRadius]);
+
+  /* The fray noise, drawn once. Until it is ready the live turbulence stands
+     in for it, so nothing waits on it. */
+  const [frayNoise, setFrayNoise] = React.useState<string | null>(null);
+  React.useEffect(() => {
+    if (!frayed) return;
+    let cancelled = false;
+    renderTurbulence({ baseFrequency: '0.026 0.085', numOctaves: 3, seed: 7, ...FRAY_AREA })
+      .then((url) => {
+        if (!cancelled && url) setFrayNoise(url);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [frayed]);
 
   /* Everything downstream depends on where the glyphs actually land, and that
      is only knowable once the webfont is in. Measure, then build. */
@@ -264,7 +318,19 @@ const BrushName: React.FC<BrushNameProps> = ({ onReady, frayed = true }) => {
           height="220%"
           colorInterpolationFilters="sRGB"
         >
-          <feTurbulence type="fractalNoise" baseFrequency="0.026 0.085" numOctaves="3" seed="7" result="n" />
+          {frayNoise ? (
+            <feImage
+              href={frayNoise}
+              x={FRAY_AREA.x}
+              y={FRAY_AREA.y}
+              width={FRAY_AREA.width}
+              height={FRAY_AREA.height}
+              preserveAspectRatio="none"
+              result="n"
+            />
+          ) : (
+            <feTurbulence type="fractalNoise" baseFrequency="0.026 0.085" numOctaves="3" seed="7" result="n" />
+          )}
           <feDisplacementMap in="SourceGraphic" in2="n" scale="15" xChannelSelector="R" yChannelSelector="G" result="d" />
           <feGaussianBlur in="d" stdDeviation="7.5" />
         </filter>
@@ -345,10 +411,20 @@ const BrushName: React.FC<BrushNameProps> = ({ onReady, frayed = true }) => {
 
       {/* Concentric on the drop, so GSAP's bbox-centre origin is the drop. */}
       <g ref={bloomRef} opacity={0}>
-        <g filter={`url(#bleed-${uid})`} transform={`translate(${geometry?.drop.x ?? 0} ${geometry?.drop.y ?? 0})`}>
-          <circle r={geometry?.drop.bloom ?? 0} fill={`url(#bloom-${uid})`} />
-          <circle r={(geometry?.drop.bloom ?? 0) * 0.3} fill="#1c1b19" opacity="0.8" />
-        </g>
+        {bloomImage ? (
+          <image
+            href={bloomImage}
+            x={(geometry?.drop.x ?? 0) - bloomRadius * 2.4}
+            y={(geometry?.drop.y ?? 0) - bloomRadius * 2.4}
+            width={bloomRadius * 4.8}
+            height={bloomRadius * 4.8}
+          />
+        ) : (
+          <g filter={`url(#bleed-${uid})`} transform={`translate(${geometry?.drop.x ?? 0} ${geometry?.drop.y ?? 0})`}>
+            <circle r={geometry?.drop.bloom ?? 0} fill={`url(#bloom-${uid})`} />
+            <circle r={(geometry?.drop.bloom ?? 0) * 0.3} fill="#1c1b19" opacity="0.8" />
+          </g>
+        )}
       </g>
 
       <circle

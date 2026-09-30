@@ -1,7 +1,6 @@
 import React from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import InkReveal from '../components/ink/InkReveal';
-import InkPortrait from '../components/ink/InkPortrait';
 import BrushDivider from '../components/ink/BrushDivider';
 import WorkBlock from '../components/ink/WorkBlock';
 import InkSectionHead from '../components/ink/InkSectionHead';
@@ -17,17 +16,15 @@ import { gsap, ScrollTrigger, EASE, prefersReducedMotion } from '../lib/motion';
  * The sumi-e site.
  *
  * The intro is one gesture: a drop of ink lands on the paper, blooms, and the
- * name is brushed out of the stain it leaves. It runs once per session, ends
- * inside 2.1s, and any scroll, click or keypress cuts it short — nobody should
- * ever be made to wait through it twice.
+ * name is brushed out of the stain it leaves. It plays on every load and every
+ * return to the home page, ends inside 2.1s, and any scroll, click or keypress
+ * cuts it short.
  *
  * Below it the page is ordinary scrolling, deliberately: Lenis smooths the
  * wheel and nothing else. No section holds the scroll and none of them snap, so
  * a recruiter with thirty seconds can get from the name to the email address
  * without the page ever taking the wheel out of their hands.
  */
-
-const SEEN_KEY = 'ink-intro-seen';
 
 const Ink: React.FC = () => {
   const { language } = useLanguage();
@@ -46,17 +43,11 @@ const Ink: React.FC = () => {
   const timelineRef = React.useRef<gsap.core.Timeline | null>(null);
   const builtRef = React.useRef(false);
 
-  /* Decided once, before anything paints: a replay on every route change or
-     reload would turn the best part of the page into the most tiring one. */
+  /* Decided once per mount, before anything paints: it plays on every load
+     and every return to the home page, and only reduced motion skips it. */
   const introRef = React.useRef<boolean | null>(null);
   if (introRef.current === null) {
-    let seen = false;
-    try {
-      seen = window.sessionStorage.getItem(SEEN_KEY) === '1';
-    } catch {
-      // Private mode: the intro simply plays.
-    }
-    introRef.current = !seen && !prefersReducedMotion();
+    introRef.current = !prefersReducedMotion();
   }
 
   const frayedRef = React.useRef<boolean | null>(null);
@@ -137,12 +128,6 @@ const Ink: React.FC = () => {
     tl.to(eyebrowRef.current, { autoAlpha: 1, y: 0, duration: 0.8 }, 1.0);
     tl.to(tailRef.current, { autoAlpha: 1, y: 0, duration: 0.85 }, 1.16);
     tl.to([navRef.current, footRef.current], { autoAlpha: 1, duration: 0.7 }, 1.3);
-
-    try {
-      window.sessionStorage.setItem(SEEN_KEY, '1');
-    } catch {
-      // Nothing to do — it just plays again next time.
-    }
   }, []);
 
   /* Any intent to get on with it ends the intro. Not a hard cut: it runs out
@@ -250,6 +235,12 @@ const Ink: React.FC = () => {
                     <em>{copy.hero.ledeEm}</em>
                     {copy.hero.ledeTail}
                   </p>
+
+                  <div className="ink-workmore ink-workmore--hero">
+                    <Link className="ink-cap" to="/stage">
+                      {copy.stage.cta} <span aria-hidden="true">→</span>
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>
@@ -282,13 +273,6 @@ const Ink: React.FC = () => {
             <InkSectionHead id="ink-about-heading" label={copy.about.label} heading={copy.about.heading} />
 
             <div className="ink-grid ink-about">
-              <InkReveal className="ink-about__portrait">
-                <InkPortrait
-                  src="/portrait.jpg"
-                  alt={copy.about.portraitAlt}
-                  pendingLabel={copy.about.portraitPending}
-                />
-              </InkReveal>
 
               <div className="ink-about__text">
                 <InkReveal stagger={0.1}>
@@ -319,11 +303,17 @@ const Ink: React.FC = () => {
             <InkSectionHead id="ink-work-heading" label={copy.work.label} heading={copy.work.heading} />
 
             <div className="ink-worklist">
-              {copy.work.items.map((item) => (
+              {copy.work.items.slice(0, 2).map((item) => (
                 <InkReveal key={item.title} y={26}>
                   <WorkBlock item={item} />
                 </InkReveal>
               ))}
+            </div>
+
+            <div className="ink-workmore">
+              <Link className="ink-cap" to="/projects">
+                {copy.work.more.cta} <span aria-hidden="true">→</span>
+              </Link>
             </div>
           </div>
         </section>

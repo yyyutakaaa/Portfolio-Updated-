@@ -26,6 +26,41 @@ export interface WorkItem {
   secondaryExternal?: boolean;
 }
 
+export interface StageProject {
+  index: string;
+  title: string;
+  stack: string;
+  /** Two or three sentences: what was built and what worked. */
+  summary: string;
+  /** The longer write-up, one paragraph each, behind the disclosure. */
+  details: string[];
+  /** Demo recording on YouTube, where there is one. */
+  video?: string;
+  /** File stem of the demo's thumbnail in `public/stage/`, e.g. `arp` → `arp-560.webp`. */
+  thumb?: string;
+}
+
+export interface StageCopy {
+  /** Label of the button on the home page. */
+  cta: string;
+  back: string;
+  label: string;
+  heading: string;
+  intro: string;
+  /** Label of the button that downloads the internship CV. */
+  download: string;
+  /** Opens the same PDF in the browser instead of saving it. */
+  view: string;
+  contactLabel: string;
+  skillsLabel: string;
+  skills: string[];
+  groups: { title: string; projects: StageProject[] }[];
+  open: string;
+  close: string;
+  /** Label of the link to a project's demo video. */
+  watch: string;
+}
+
 export interface ContactFormCopy {
   name: string;
   namePlaceholder: string;
@@ -44,7 +79,7 @@ export interface ContactFormCopy {
 }
 
 export interface InkCopy {
-  nav: { about: string; work: string; resume: string; contact: string; home: string };
+  nav: { about: string; work: string; stage: string; resume: string; contact: string; home: string };
   hero: {
     eyebrow: string;
     ledeHead: string;
@@ -59,10 +94,14 @@ export interface InkCopy {
     heading: string;
     body: string[];
     facts: { key: string; value: string }[];
-    portraitAlt: string;
-    portraitPending: string;
   };
-  work: { label: string; heading: string; items: WorkItem[] };
+  /** The first two items live on the home page; the rest sit on the projects page, image-free. */
+  work: {
+    label: string;
+    heading: string;
+    items: WorkItem[];
+    more: { cta: string; label: string; heading: string; back: string };
+  };
   contact: {
     label: string;
     heading: string;
@@ -76,17 +115,16 @@ export interface InkCopy {
     infoTitle: string;
     socialTitle: string;
     emailLabel: string;
-    phoneLabel: string;
     locationLabel: string;
     location: string;
     availability: string;
     availableText: string;
     responseTime: string;
     email: string;
-    phone: string;
     socials: { label: string; href: string }[];
     form: ContactFormCopy;
   };
+  stage: StageCopy;
   footer: { name: string; place: string };
 }
 
@@ -104,33 +142,9 @@ const MUTED_IMAGE = {
   srcSet: '/muted-screenshot-800.webp 800w, /muted-screenshot-1400.webp 1400w',
 };
 
-const SPOOFER_IMAGE = {
-  src: '/visibility-spoofer-720.webp',
-  srcSet: '/visibility-spoofer-480.webp 480w, /visibility-spoofer-720.webp 720w',
-  /* The extension's own popup — a tall, narrow panel, not a browser window —
-     so it keeps its native shape rather than being cropped into a landscape
-     box built for a screenshot. */
-  ratio: '318 / 358',
-};
-
-const FUELTRACKER_IMAGE = {
-  src: '/fueltracker-1400.webp',
-  srcSet: '/fueltracker-800.webp 800w, /fueltracker-1400.webp 1400w',
-};
-
-const SHUTITDOWN_IMAGE = {
-  src: '/shutdown-server-1000.webp',
-  srcSet: '/shutdown-server-700.webp 700w, /shutdown-server-1000.webp 1000w',
-  /* Cropped tight to the window itself — its corners are rounded, so cropping
-     any looser than this lets the desktop wallpaper behind it bleed back in
-     at the edges. That native shape is wider than the other plates' 16:10,
-     so it gets its own ratio rather than being cropped again to fit. */
-  ratio: '582 / 383',
-};
+export const STAGE_EMAIL = 'mehdi.ouladkhlie@student.hogent.be';
 
 export const EMAIL = 'mehdi.ouladkhlie@outlook.be';
-
-export const PHONE = '+32 468 54 94 78';
 
 const SOCIALS = [
   { label: 'LinkedIn', href: 'https://www.linkedin.com/in/mehdi-oulad-khlie-5a43aa30b/' },
@@ -140,7 +154,7 @@ const SOCIALS = [
 
 export const inkContent: Record<'en' | 'nl', InkCopy> = {
   en: {
-    nav: { about: 'About', work: 'Work', resume: 'CV', contact: 'Contact', home: 'Mehdi Oulad Khlie, home' },
+    nav: { about: 'About', work: 'Work', stage: 'Internship', resume: 'CV', contact: 'Contact', home: 'Mehdi Oulad Khlie, home' },
     hero: {
       eyebrow: 'System and network administrator',
       ledeHead: "If it's doing its job, you never ",
@@ -163,8 +177,6 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
         { key: 'Certified', value: 'Microsoft 365 Fundamentals (MS-900)' },
         { key: 'Working on', value: 'CCNA Routing & Switching' },
       ],
-      portraitAlt: 'Mehdi Oulad Khlie',
-      portraitPending: 'Portrait',
     },
     work: {
       label: 'Some of my work',
@@ -197,7 +209,6 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
           description: "Tricks the Page Visibility API into reporting a tab as open and focused even while it sits in the background, including iframes that load in afterward.",
           href: 'https://github.com/yyyutakaaa/Visibility-Spoofer',
           external: true,
-          image: { ...SPOOFER_IMAGE, alt: 'The Visibility Spoofer extension popup, spoofing active' },
           cta: 'See it on GitHub',
         },
         {
@@ -207,7 +218,6 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
           description: "Calculates what a drive costs in fuel and how much CO₂ it produces. Start typing an address and the suggestions pop up right away.",
           href: 'https://github.com/yyyutakaaa/FuelTracker',
           external: true,
-          image: { ...FUELTRACKER_IMAGE, alt: 'The FuelTracker site planning a route between two addresses' },
           cta: 'See it on GitHub',
           secondaryHref: 'https://fueltracker.mehdioul.dev/',
           secondaryCta: 'Visit the site',
@@ -220,10 +230,15 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
           description: "Lets you shut your PC down remotely from a web page. Locked behind a PIN, and otherwise it just sits quietly in the system tray.",
           href: 'https://github.com/yyyutakaaa/ShutItDown',
           external: true,
-          image: { ...SHUTITDOWN_IMAGE, alt: 'The ShutItDown app showing the server running and its shutdown link' },
           cta: 'See it on GitHub',
         },
       ],
+      more: {
+        cta: 'More projects',
+        label: 'More projects',
+        heading: 'Smaller things, mostly on GitHub.',
+        back: 'Back home',
+      },
     },
     contact: {
       label: 'Contact',
@@ -236,14 +251,12 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
       infoTitle: 'Contact details',
       socialTitle: 'Elsewhere',
       emailLabel: 'Email',
-      phoneLabel: 'Phone',
       locationLabel: 'Location',
       location: 'Evergem, Belgium',
       availability: 'Availability',
       availableText: 'Currently available',
       responseTime: "I'll usually reply within a day or two.",
       email: EMAIL,
-      phone: PHONE,
       socials: SOCIALS,
       form: {
         name: 'Name',
@@ -262,11 +275,117 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
         invalidEmail: 'Enter a valid email address',
       },
     },
+    stage: {
+      cta: 'My internship projects',
+      back: 'Back home',
+      label: 'For my internship',
+      heading: 'What I have already built.',
+      intro:
+        'I am looking for an internship as a system and network administrator. These are five projects from my degree, each built and tested in a lab of its own. Open a project for the full story.',
+      download: 'Download my internship CV',
+      view: 'View my internship CV',
+      contactLabel: 'Contact for the internship',
+      skillsLabel: 'What I have worked with',
+      skills: [
+        'Active Directory',
+        'DNS & DHCP failover',
+        'HAProxy',
+        'Palo Alto firewall',
+        'Proxmox & HA',
+        'StarWind vSAN',
+        'Zabbix',
+        'Kali Linux',
+      ],
+      watch: 'Watch the demo',
+      open: 'Read the full story',
+      close: 'Close',
+      groups: [
+        {
+          title: 'Network & security',
+          projects: [
+            {
+              index: '01',
+              title: 'Palo Alto firewall',
+              stack: 'Palo Alto · PAN-OS · NAT · service routes',
+              summary:
+                'The base configuration of the Branch Office firewall over SSH: internet, policies, DNS and NTP over WAN, licensing and automatic updates. Everything worked and was tested from a LAN client.',
+              details: [
+                'I started by checking connectivity: the WAN side got an address over DHCP, there was a default route and a ping to 8.8.8.8 came back. A Windows client behind the firewall could browse, which proved my security policy and NAT rule were right.',
+                'Next I created address objects for LAN-HQ, LAN-BO, DMZ and SERVERS, so policies can use names instead of IP ranges.',
+                'DNS and NTP had to leave over WAN, but Palo Alto will not use a DHCP interface as the source for a service route. I solved that with a loopback interface with a fixed IP in the LAN zone.',
+                'After activating the licence, Threat Prevention, URL Filtering, WildFire, DNS Security and SD-WAN were all running. I pulled the signatures in over the CLI, learned to let a download finish before installing, and set up an automatic update schedule.',
+              ],
+            },
+            {
+              index: '02',
+              title: 'Redundant network infrastructure',
+              video: 'https://youtu.be/ZUK2rmJAkuE',
+              thumb: 'redundant',
+              stack: 'Active Directory · DHCP failover · HAProxy · BIND9',
+              summary:
+                'An infrastructure with no single point of failure: two domain controllers, two firewalls and two web servers behind a load balancer. When one web server went down, the other took over.',
+              details: [
+                'DC1 and DC2 are both domain controllers and AD replication works. DHCP runs in Hot Standby failover and the scope and DNS zone replicate correctly.',
+                'The network runs over two firewalls: Firewall 1 connects to the internet, the DMZ and Firewall 2, and Firewall 2 manages the server and client networks. Traffic to the web servers is balanced by HAProxy.',
+                'In the demo the site alternates between Web1 and Web2, and stays up if one fails. I also tested the domain join, reachability through both firewalls, AD, DNS, BIND9 and DNS lookups.',
+              ],
+            },
+            {
+              index: '03',
+              title: 'ARP poisoning & DNS spoofing',
+              video: 'https://youtu.be/TZJtIaS60t8',
+              thumb: 'arp',
+              stack: 'Kali Linux · iptables · Man-in-the-Middle',
+              summary:
+                'An attack demo in an isolated school lab: sitting between a victim and the network with Kali Linux and redirecting its traffic. Built to understand how these attacks work and how to stop them.',
+              details: [
+                'First came ARP poisoning. ARP has no authentication, so I could convince the victim (Ubuntu) that I was the router, and its traffic then ran through me.',
+                'DNS spoofing followed: instead of the real IP address, the victim got the address of my own server. I used iptables to route the intercepted traffic properly on my Kali machine.',
+                'When the victim requested a well-known website, it got my own demo page instead. That proved the attack worked. All of it happened in an isolated lab.',
+              ],
+            },
+          ],
+        },
+        {
+          title: 'Virtualisation & monitoring',
+          projects: [
+            {
+              index: '04',
+              title: 'Proxmox HCI with shared storage',
+              video: 'https://youtu.be/ZMIf_8fFkLE',
+              thumb: 'proxmox',
+              stack: 'Proxmox · StarWind vSAN · iSCSI · HA',
+              summary:
+                'Shared storage on a Proxmox cluster with StarWind vSAN, so VMs can move between nodes without downtime. In the HA test I powered a node off hard and the VM restarted on another one by itself.',
+              details: [
+                'Local storage is not enough if VMs need to move between nodes. On each node I imported a StarWind CVM with an extra network interface and an extra disk, loaded the licence and created an HA device with synchronous mirroring.',
+                'There is hardly any documentation for StarWind on Proxmox, so I combined the guides for Proxmox and VMware vSphere.',
+                'An LXC container on that shared disk did not work: an iSCSI LUN is block storage with no filesystem, and containers need one.',
+              ],
+            },
+            {
+              index: '05',
+              title: 'Zabbix monitoring lab',
+              video: 'https://youtu.be/lQUlKRPNc5U',
+              thumb: 'zabbix',
+              stack: 'Zabbix · SNMP · Zabbix agent · dashboards',
+              summary:
+                'Set up Zabbix myself on a host-only network and monitored five hosts in five different ways, with a custom dashboard to see everything at a glance.',
+              details: [
+                'The five hosts were a Windows server over SNMP, a Windows server with the Zabbix agent, an Ubuntu server with snmpd, an Ubuntu server with the agent, and my firewall.',
+                'The dashboard has widgets for connection attempts on my website, host availability, critical problems on the network and the disk usage of a server.',
+                'I showed in a video of at most five minutes that everything works.',
+              ],
+            },
+          ],
+        },
+      ],
+    },
     footer: { name: 'Mehdi Oulad Khlie', place: 'Evergem, BE' },
   },
 
   nl: {
-    nav: { about: 'Over mij', work: 'Werk', resume: 'CV', contact: 'Contact', home: 'Mehdi Oulad Khlie, home' },
+    nav: { about: 'Over mij', work: 'Werk', stage: 'Stage', resume: 'CV', contact: 'Contact', home: 'Mehdi Oulad Khlie, home' },
     hero: {
       eyebrow: 'Systeem- en netwerkbeheerder',
       ledeHead: 'Werkt het zoals het moet, dan merk je er ',
@@ -289,8 +408,6 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
         { key: 'Gecertificeerd', value: 'Microsoft 365 Fundamentals (MS-900)' },
         { key: 'Mee bezig', value: 'CCNA Routing & Switching' },
       ],
-      portraitAlt: 'Mehdi Oulad Khlie',
-      portraitPending: 'Portret',
     },
     work: {
       label: 'Een paar projecten',
@@ -323,7 +440,6 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
           description: 'Laat de Page Visibility API geloven dat een tabblad open en actief is, ook als het op de achtergrond staat, inclusief iframes die later pas laden.',
           href: 'https://github.com/yyyutakaaa/Visibility-Spoofer',
           external: true,
-          image: { ...SPOOFER_IMAGE, alt: 'De Visibility Spoofer-extensie, spoofing actief' },
           cta: 'Bekijk de code op GitHub',
         },
         {
@@ -333,7 +449,6 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
           description: 'Berekent wat een rit kost aan brandstof en hoeveel CO₂ daarbij vrijkomt. Begin een adres te typen en de suggesties staan er meteen.',
           href: 'https://github.com/yyyutakaaa/FuelTracker',
           external: true,
-          image: { ...FUELTRACKER_IMAGE, alt: 'FuelTracker terwijl een route tussen twee adressen wordt gepland' },
           cta: 'Bekijk de code op GitHub',
           secondaryHref: 'https://fueltracker.mehdioul.dev/',
           secondaryCta: 'Bekijk de website',
@@ -344,12 +459,17 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
           title: 'ShutItDown',
           stack: 'C# .NET 6 · ASP.NET Core',
           description: 'Zet je pc op afstand uit via een webpagina. Zit achter een pincode en draait verder onopvallend mee in de system tray.',
-          image: { ...SHUTITDOWN_IMAGE, alt: 'De ShutItDown-app met de draaiende server en de shutdown-link' },
           href: 'https://github.com/yyyutakaaa/ShutItDown',
           external: true,
           cta: 'Bekijk de code op GitHub',
         },
       ],
+      more: {
+        cta: 'Meer projecten',
+        label: 'Meer projecten',
+        heading: 'Kleinere dingen, vooral op GitHub.',
+        back: 'Terug naar home',
+      },
     },
     contact: {
       label: 'Contact',
@@ -362,14 +482,12 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
       infoTitle: 'Contactgegevens',
       socialTitle: 'Elders',
       emailLabel: 'E-mail',
-      phoneLabel: 'Telefoon',
       locationLabel: 'Locatie',
       location: 'Evergem, België',
       availability: 'Beschikbaarheid',
       availableText: 'Beschikbaar voor werk',
       responseTime: 'Ik laat meestal binnen een dag of twee iets weten.',
       email: EMAIL,
-      phone: PHONE,
       socials: SOCIALS,
       form: {
         name: 'Naam',
@@ -387,6 +505,112 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
         required: 'Dit veld mag niet leeg blijven',
         invalidEmail: 'Dit e-mailadres klopt niet',
       },
+    },
+    stage: {
+      cta: 'Mijn stageprojecten',
+      back: 'Terug naar home',
+      label: 'Voor mijn stage',
+      heading: 'Wat ik al opgezet heb.',
+      intro:
+        'Ik zoek een stage als systeem- en netwerkbeheerder. Dit zijn vijf projecten uit mijn opleiding, elk in een eigen lab opgebouwd en getest. Klik een project open voor het volledige verhaal.',
+      download: 'Download mijn stage-CV',
+      view: 'Bekijk mijn stage-CV',
+      contactLabel: 'Contact voor de stage',
+      skillsLabel: 'Waar ik mee gewerkt heb',
+      skills: [
+        'Active Directory',
+        'DNS & DHCP-failover',
+        'HAProxy',
+        'Palo Alto firewall',
+        'Proxmox & HA',
+        'StarWind vSAN',
+        'Zabbix',
+        'Kali Linux',
+      ],
+      watch: 'Bekijk de demo',
+      open: 'Lees het volledige verhaal',
+      close: 'Sluit',
+      groups: [
+        {
+          title: 'Netwerk & security',
+          projects: [
+            {
+              index: '01',
+              title: 'Palo Alto firewall',
+              stack: 'Palo Alto · PAN-OS · NAT · service routes',
+              summary:
+                'De basisconfiguratie van de Branch Office-firewall via SSH: internet, policies, DNS en NTP via WAN, licentie en automatische updates. Alles werkte en is getest vanaf een client in het LAN.',
+              details: [
+                'Ik heb eerst de internetconnectiviteit gecontroleerd: de WAN-kant kreeg via DHCP een adres, er stond een default route en een ping naar 8.8.8.8 kwam terug. Vanaf een Windows-client achter de firewall kon ik ook surfen, wat bewees dat mijn security policy en NAT-regel klopten.',
+                'Daarna maakte ik address objects aan voor LAN-HQ, LAN-BO, DMZ en SERVERS, zodat ik policies met namen kan schrijven in plaats van met IP-reeksen.',
+                'DNS en NTP moesten via WAN vertrekken, maar Palo Alto laat een DHCP-interface niet toe als bron voor service routes. Ik loste dat op met een loopback-interface met een vast IP-adres in de LAN-zone.',
+                'Na het activeren van de licentie draaiden Threat Prevention, URL Filtering, WildFire, DNS Security en SD-WAN. Ik haalde de signatures binnen via de CLI, leerde dat je de download moet laten afronden voor je installeert, en stelde een automatisch updateschema in.',
+              ],
+            },
+            {
+              index: '02',
+              title: 'Redundante netwerkinfrastructuur',
+              video: 'https://youtu.be/ZUK2rmJAkuE',
+              thumb: 'redundant',
+              stack: 'Active Directory · DHCP-failover · HAProxy · BIND9',
+              summary:
+                'Een infrastructuur zonder single point of failure: twee domain controllers, twee firewalls en twee webservers met load balancing. Bij het uitvallen van een webserver nam de andere het verkeer over.',
+              details: [
+                'DC1 en DC2 zijn allebei domain controller en de AD-replicatie werkt. DHCP staat in Hot Standby-failover en de scope en DNS-zone worden correct gerepliceerd.',
+                'Het netwerk loopt over twee firewalls: Firewall 1 is verbonden met internet, de DMZ en Firewall 2, en Firewall 2 beheert het servernetwerk en het clientnetwerk. Het verkeer naar de webservers wordt via HAProxy verdeeld.',
+                'In de demo wisselt de website tussen Web1 en Web2, en bij het uitvallen van één server blijft ze bereikbaar. Ik testte ook de domain join, de bereikbaarheid via beide firewalls, AD, DNS, BIND9 en DNS-lookups.',
+              ],
+            },
+            {
+              index: '03',
+              title: 'ARP poisoning & DNS spoofing',
+              video: 'https://youtu.be/TZJtIaS60t8',
+              thumb: 'arp',
+              stack: 'Kali Linux · iptables · Man-in-the-Middle',
+              summary:
+                'Een aanvalsdemo in een afgeschermd schoollab: met Kali Linux tussen een slachtoffer en het netwerk gaan zitten en verkeer omleiden. Bedoeld om te begrijpen hoe zulke aanvallen werken en hoe je ze tegenhoudt.',
+              details: [
+                'Eerst deed ik ARP poisoning. ARP heeft geen authenticatie, dus ik kon het slachtoffer (Ubuntu) wijsmaken dat ik de router was, waarna zijn verkeer via mij liep.',
+                'Daarna volgde DNS spoofing: in plaats van het echte IP-adres kreeg het slachtoffer een adres van mijn eigen server. Met iptables routeerde ik het onderschepte verkeer goed op mijn Kali-machine.',
+                'Toen het slachtoffer een bekende website opvroeg, kreeg het mijn eigen demopagina te zien. Dat was het bewijs dat de aanval werkte. Alles gebeurde in een geïsoleerd lab.',
+              ],
+            },
+          ],
+        },
+        {
+          title: 'Virtualisatie & monitoring',
+          projects: [
+            {
+              index: '04',
+              title: 'Proxmox HCI met shared storage',
+              video: 'https://youtu.be/ZMIf_8fFkLE',
+              thumb: 'proxmox',
+              stack: 'Proxmox · StarWind vSAN · iSCSI · HA',
+              summary:
+                'Shared storage op een Proxmox-cluster met StarWind vSAN, zodat VM’s zonder downtime tussen nodes kunnen bewegen. In de HA-test schakelde ik een node hardhandig uit en de VM startte automatisch op een andere.',
+              details: [
+                'Lokale storage volstaat niet als VM’s tussen nodes moeten kunnen bewegen. Ik importeerde op elke node een StarWind CVM met een extra netwerkinterface en een extra schijf, laadde de licentie in en maakte een HA-device met synchrone mirroring.',
+                'Documentatie voor StarWind op Proxmox bestaat nauwelijks, dus ik combineerde de gidsen voor Proxmox en VMware vSphere.',
+                'Een LXC-container op die gedeelde schijf lukte niet: een iSCSI-LUN is block storage zonder bestandssysteem, en containers hebben een filesystem nodig.',
+              ],
+            },
+            {
+              index: '05',
+              title: 'Zabbix monitoring lab',
+              video: 'https://youtu.be/lQUlKRPNc5U',
+              thumb: 'zabbix',
+              stack: 'Zabbix · SNMP · Zabbix-agent · dashboards',
+              summary:
+                'Zabbix zelf opgezet in een host-only netwerk en vijf hosts gemonitord op vijf verschillende manieren, met een eigen dashboard om alles in één oogopslag te zien.',
+              details: [
+                'De vijf hosts waren een Windows-server via SNMP, een Windows-server met de Zabbix-agent, een Ubuntu-server met snmpd, een Ubuntu-server met de agent, en mijn firewall.',
+                'Op het dashboard staan widgets voor het aantal verbindingspogingen op mijn website, de beschikbaarheid van de hosts, kritieke problemen in het netwerk en het schijfgebruik van een server.',
+                'Ik toonde in een video van maximaal vijf minuten dat alles werkt.',
+              ],
+            },
+          ],
+        },
+      ],
     },
     footer: { name: 'Mehdi Oulad Khlie', place: 'Evergem, BE' },
   },

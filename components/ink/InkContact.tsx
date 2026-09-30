@@ -68,12 +68,6 @@ const InkContact: React.FC<{ asPage?: boolean }> = ({ asPage = false }) => {
               <p className="ink-cap ink-contact__kicker">{c.infoTitle}</p>
               <dl className="ink-lines">
                 <div>
-                  <dt className="ink-cap">{c.phoneLabel}</dt>
-                  <dd>
-                    <a href={`tel:${c.phone.replace(/\s/g, '')}`}>{c.phone}</a>
-                  </dd>
-                </div>
-                <div>
                   <dt className="ink-cap">{c.locationLabel}</dt>
                   <dd>{c.location}</dd>
                 </div>

@@ -77,7 +77,10 @@ const InkNav = React.forwardRef<HTMLElement>((_props, ref) => {
 
     const update = () => {
       frame = 0;
-      setProgress(scrollable > 0 ? Math.min(Math.max(window.scrollY / scrollable, 0), 1) : 0);
+      /* Stepped to 0.5% so the nav re-renders a couple of hundred times over the
+         whole page instead of on every scroll frame. */
+      const next = scrollable > 0 ? Math.min(Math.max(window.scrollY / scrollable, 0), 1) : 0;
+      setProgress(Math.round(next * 200) / 200);
       setScrolled(window.scrollY > 24);
     };
 
@@ -142,6 +145,13 @@ const InkNav = React.forwardRef<HTMLElement>((_props, ref) => {
               {section.label}
             </button>
           ))}
+          <a
+            className="ink-cap ink-nav__link"
+            href="#/stage"
+            aria-current={pathname === '/stage' ? 'page' : undefined}
+          >
+            {copy.nav.stage}
+          </a>
           <a
             className="ink-cap ink-nav__link"
             href="#/resume"

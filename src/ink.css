@@ -35,6 +35,11 @@
 /* -------------------------------------------------------------- tokens --- */
 
 .ink-root {
+  /* The noise tiles, kept here so script can swap in pre-rendered PNGs (see
+     lib/rasterise.ts). Same artwork either way. */
+  --ink-grain-a: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23g)' opacity='0.24'/%3E%3C/svg%3E");
+  --ink-grain-b: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='380' height='380'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.55 0.06' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='380' height='380' filter='url(%23f)' opacity='0.1'/%3E%3C/svg%3E");
+
   /* Paper and ink. The greys are ink thinned with water, not neutral greys —
      they carry the same warmth as the paper. */
   --washi: #f4f1ea;
@@ -117,10 +122,11 @@ html.ink-cursor-on * {
   z-index: 1;
   pointer-events: none;
   opacity: 0.5;
-  mix-blend-mode: multiply;
-  background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23g)' opacity='0.24'/%3E%3C/svg%3E"),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='380' height='380'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.55 0.06' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='380' height='380' filter='url(%23f)' opacity='0.1'/%3E%3C/svg%3E");
+  /* No blend mode: `multiply` on a fixed full-screen layer forces the browser
+     to re-blend the entire page against it on every scroll frame. Grey noise at
+     this opacity reads the same under plain alpha. */
+  transform: translateZ(0);
+  background-image: var(--ink-grain-a), var(--ink-grain-b);
   background-size: 220px 220px, 380px 380px;
 }
 
@@ -593,34 +599,8 @@ html.ink-cursor-on * {
   row-gap: clamp(40px, 6vh, 64px);
 }
 
-.ink-about__portrait {
-  grid-column: 3 / span 3;
-}
-
 .ink-about__text {
-  grid-column: 7 / span 5;
-}
-
-.ink-portrait {
-  margin: 0;
-}
-
-.ink-portrait svg {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
-/* Ink has no colour. A little extra contrast keeps a photograph from going
-   flat once the hue is gone. */
-.ink-portrait__img {
-  filter: grayscale(1) contrast(1.06) brightness(1.02);
-}
-
-.ink-portrait__pending {
-  display: block;
-  margin-top: 14px;
-  color: var(--ink-2);
+  grid-column: 3 / span 7;
 }
 
 .ink-facts {
@@ -675,6 +655,200 @@ html.ink-cursor-on * {
   padding: clamp(30px, 4vh, 52px) 0;
   color: inherit;
   text-decoration: none;
+}
+
+.ink-work--plain .ink-work__text {
+  grid-column: 4 / span 7;
+}
+
+.ink-work--plain .ink-work__desc {
+  max-width: 56ch;
+}
+
+.ink-workmore {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: clamp(28px, 4vh, 44px);
+}
+
+.ink-workmore a {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 30px;
+  border: 1px solid var(--sumi);
+  color: var(--sumi);
+  font-size: 0.78rem;
+  text-decoration: none;
+  transition: background-color 500ms var(--settle), color 500ms var(--settle);
+}
+
+.ink-workmore a span {
+  display: inline-block;
+  transition: transform 550ms var(--settle);
+}
+
+.ink-workmore a:hover,
+.ink-workmore a:focus-visible {
+  background: var(--sumi);
+  color: var(--washi);
+}
+
+.ink-workmore a:hover span,
+.ink-workmore a:focus-visible span {
+  transform: translateX(4px);
+}
+
+.ink-stage__lead {
+  grid-column: 3 / span 7;
+}
+
+.ink-stage__cv {
+  margin-top: clamp(22px, 3vh, 32px);
+}
+
+.ink-stage__skillsLabel {
+  margin: clamp(28px, 4vh, 40px) 0 12px;
+  color: var(--ink-2);
+}
+
+.ink-stage__contact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 26px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--ink-1);
+}
+
+.ink-stage__skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ink-stage__skills li {
+  padding: 7px 14px;
+  border: 1px solid var(--rule-firm);
+  color: var(--ink-1);
+}
+
+.ink-stage__project .ink-work__desc {
+  max-width: 62ch;
+}
+
+.ink-stage__project .ink-work__text {
+  grid-column: 4 / span 4;
+}
+
+.ink-stage__thumb {
+  position: relative;
+  grid-column: 8 / span 5;
+  display: block;
+  align-self: start;
+  overflow: hidden;
+  border: 1px solid var(--rule-firm);
+  background: var(--sumi);
+  aspect-ratio: 16 / 9;
+}
+
+.ink-stage__thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 700ms var(--settle), opacity 500ms var(--settle);
+}
+
+.ink-stage__thumb:hover img,
+.ink-stage__thumb:focus-visible img {
+  transform: scale(1.03);
+  opacity: 0.86;
+}
+
+/* A plain play triangle in a ring — the plate is a link to a video, and
+   nothing else on it says so. */
+.ink-stage__play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 52px;
+  height: 52px;
+  margin: -26px 0 0 -26px;
+  border: 1px solid rgb(244 241 234 / 0.85);
+  border-radius: 50%;
+  background: rgb(28 27 25 / 0.35);
+}
+
+.ink-stage__play::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -7px 0 0 -4px;
+  border-style: solid;
+  border-width: 7px 0 7px 12px;
+  border-color: transparent transparent transparent rgb(244 241 234 / 0.95);
+}
+
+.ink-stage__watch {
+  align-self: flex-start;
+  color: var(--sumi);
+  text-decoration: none;
+}
+
+.ink-stage__watch:hover svg,
+.ink-stage__watch:focus-visible svg {
+  transform: translate(2px, -2px);
+}
+
+.ink-stage__details {
+  margin-top: 6px;
+}
+
+.ink-stage__details summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  color: var(--sumi);
+  list-style: none;
+}
+
+.ink-stage__details summary::-webkit-details-marker {
+  display: none;
+}
+
+.ink-stage__details summary::after {
+  content: "+";
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.ink-stage__details[open] summary::after {
+  content: "\2212";
+}
+
+.ink-stage__close,
+.ink-stage__details[open] .ink-stage__open {
+  display: none;
+}
+
+.ink-stage__details[open] .ink-stage__close {
+  display: inline;
+}
+
+.ink-stage__more {
+  margin-top: 18px;
+  max-width: 62ch;
+}
+
+.ink-workmore--hero {
+  margin-top: clamp(22px, 3.5vh, 36px);
 }
 
 .ink-work__index {
@@ -874,10 +1048,6 @@ html.ink-cursor-on * {
     grid-column: 2 / -1;
   }
 
-  .ink-about__portrait {
-    grid-column: 2 / span 5;
-  }
-
   .ink-about__text {
     grid-column: 2 / -1;
   }
@@ -904,14 +1074,12 @@ html.ink-cursor-on * {
   .ink-section__label,
   .ink-section__heading,
   .ink-about__text,
+  .ink-stage__lead,
+  .ink-stage__thumb,
+  .ink-stage__project .ink-work__text,
   .ink-work__text,
   .ink-work__frame {
     grid-column: 1 / -1;
-  }
-
-  .ink-about__portrait {
-    grid-column: 1 / -1;
-    max-width: 260px;
   }
 
   .ink-work__link {
@@ -979,7 +1147,7 @@ html.ink-cursor-on * {
 .ink-nav__logo {
   display: block;
   width: auto;
-  height: clamp(30px, 2.6vw, 38px);
+  height: clamp(36px, 3.1vw, 46px);
   overflow: visible;
   transition: opacity 500ms var(--settle), transform 700ms var(--settle);
 }
@@ -1792,7 +1960,7 @@ html.ink-cursor-on * {
   }
 
   .ink-nav__logo {
-    height: 28px;
+    height: 34px;
   }
 }
 
@@ -1833,6 +2001,8 @@ html.ink-cursor-on * {
 .ink-enso-large {
   position: relative;
   aspect-ratio: 1;
+  /* Lets the centre text size itself off the ring, not the viewport. */
+  container-type: inline-size;
 }
 
 .ink-enso-large svg {
@@ -1844,18 +2014,25 @@ html.ink-cursor-on * {
 
 .ink-enso-large__centre {
   position: absolute;
-  inset: 0;
+  /* The open middle of the ring only — the stroke takes the outer ~18%. */
+  inset: 22%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: 3cqw;
   text-align: center;
+  white-space: nowrap;
+}
+
+.ink-enso-large__centre .ink-cap {
+  font-size: max(9px, 4.4cqw);
+  letter-spacing: 0.08em;
 }
 
 .ink-letterbox__clock {
   font-family: var(--serif);
-  font-size: clamp(2rem, 1.2rem + 2.2vw, 3.3rem);
+  font-size: 19cqw;
   font-weight: 300;
   line-height: 1;
   letter-spacing: 0.01em;
@@ -1927,9 +2104,20 @@ html.ink-cursor-on * {
   position: relative;
   isolation: isolate;
   padding: clamp(28px, 4.2vw, 60px) clamp(24px, 4vw, 56px) clamp(30px, 4vw, 52px);
-  /* Lifted just off the page. The shadow is on the form and the deckle on
-     the sheet inside it, so the torn edge casts its own shadow. */
+}
+
+/* Lifted just off the page. The shadow follows the torn edge, and it lives on
+   a layer of its own behind the sheet: put on the form itself, the blur was
+   recomputed over every input on every keystroke and focus change. */
+.ink-letter::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background: var(--ink-deckle) 0 0 / 100% 100% no-repeat;
   filter: drop-shadow(0 22px 34px rgb(52 44 32 / 0.1)) drop-shadow(0 1px 1px rgb(52 44 32 / 0.06));
+  transform: translateZ(0);
+  pointer-events: none;
 }
 
 .ink-letter::before {
@@ -2127,5 +2315,17 @@ html.ink-cursor-on * {
   .ink-field::after,
   .ink-letterbox__email::after {
     transition: none;
+  }
+}
+
+@media (max-width: 899px) {
+  .ink-stage__project .ink-work__text {
+    grid-column: 3 / -1;
+  }
+
+  .ink-stage__thumb {
+    grid-column: 3 / -1;
+    grid-row: 2;
+    margin-top: 22px;
   }
 }

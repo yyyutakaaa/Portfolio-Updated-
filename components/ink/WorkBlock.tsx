@@ -30,7 +30,8 @@ const CtaArrow: React.FC = () => (
   </svg>
 );
 
-const WorkBlock: React.FC<{ item: WorkItem }> = ({ item }) => {
+/** `plain` drops the image plate entirely — the projects page is text only. */
+const WorkBlock: React.FC<{ item: WorkItem; plain?: boolean }> = ({ item, plain = false }) => {
   const external = item.external;
   const ratio = item.image?.ratio ?? DEFAULT_RATIO;
   const intrinsicWidth = 1400;
@@ -83,6 +84,7 @@ const WorkBlock: React.FC<{ item: WorkItem }> = ({ item }) => {
         )}
       </span>
 
+      {!plain && (
       <span className="ink-work__frame">
         {/* Sits behind the plate and opens outward, so it never crosses the
             description that has to be read. */}
@@ -124,11 +126,12 @@ const WorkBlock: React.FC<{ item: WorkItem }> = ({ item }) => {
           )}
         </span>
       </span>
+      )}
     </>
   );
 
   return (
-    <article className="ink-work">
+    <article className={plain ? 'ink-work ink-work--plain' : 'ink-work'}>
       <Wrapper
         className="ink-work__link"
         {...(hasSecondary

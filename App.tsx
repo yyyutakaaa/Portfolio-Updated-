@@ -10,6 +10,8 @@ const Contact = React.lazy(() => import('./pages/Contact'));
 const Privacy = React.lazy(() => import('./pages/Privacy'));
 const ProjectMuted = React.lazy(() => import('./pages/ProjectMuted'));
 const ProjectSets = React.lazy(() => import('./pages/ProjectSets'));
+const Projects = React.lazy(() => import('./pages/Projects'));
+const Stage = React.lazy(() => import('./pages/Stage'));
 const Ink = React.lazy(() => import('./pages/Ink'));
 
 /**
@@ -50,6 +52,8 @@ const App: React.FC = () => {
                 <Route path="/resume" element={<Resume />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/visibility-spoofer-privacy" element={<Privacy />} />
+                <Route path="/stage" element={<Stage />} />
+                <Route path="/projects" element={<Projects />} />
                 <Route path="/projects/muted" element={<ProjectMuted />} />
                 <Route path="/projects/sets" element={<ProjectSets />} />
                 <Route path="*" element={<Navigate to="/" replace />} />

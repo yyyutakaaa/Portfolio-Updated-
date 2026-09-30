@@ -3,6 +3,7 @@ import InkNav from './InkNav';
 import InkCursor from './InkCursor';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { inkContent } from '../../utils/inkContent';
+import { rasteriseInk } from '../../lib/rasterise';
 import '../../src/ink.css';
 
 /**
@@ -29,6 +30,11 @@ const InkLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   const navRef = React.useRef<HTMLElement>(null);
   const shell = React.useMemo(() => ({ navRef }), []);
+  const rootRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    if (rootRef.current) void rasteriseInk(rootRef.current);
+  }, []);
 
   /* The page ground is claimed on <html> too, so overscroll shows paper. */
   React.useEffect(() => {
@@ -38,7 +44,7 @@ const InkLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   return (
     <InkShellContext.Provider value={shell}>
-      <div className="ink-root" id="ink-top">
+      <div className="ink-root" id="ink-top" ref={rootRef}>
         <div className="ink-tone" aria-hidden="true" />
         <div className="ink-grain" aria-hidden="true" />
 

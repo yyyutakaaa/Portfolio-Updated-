@@ -79,10 +79,9 @@ const InkCursor: React.FC = () => {
     let pointerY = window.innerHeight / 2;
     let dotX = pointerX;
     let dotY = pointerY;
-    let lastX = pointerX;
-    let lastY = pointerY;
     let lastT = performance.now();
     let seen = false;
+    let lastWidth = 0;
     let frame = 0;
 
     const draw = (now: number) => {
@@ -90,32 +89,56 @@ const InkCursor: React.FC = () => {
 
       /* The dot lags a little, which is what makes it feel like weight rather
          than a sprite pinned to the pointer. */
-      dotX += (pointerX - dotX) * 0.35;
-      dotY += (pointerY - dotY) * 0.35;
+      const prevX = dotX;
+      const prevY = dotY;
+      /* Frame-rate independent, so the lag feels the same at 60 and 120Hz. */
+      const dtFrame = Math.min(Math.max(now - lastT, 1), 64);
+      const follow = 1 - Math.pow(1 - 0.35, dtFrame / 16.67);
+      dotX += (pointerX - dotX) * follow;
+      dotY += (pointerY - dotY) * follow;
       dot.style.transform = `translate3d(${dotX}px, ${dotY}px, 0)`;
+
+      /* The trail is laid down by the dot, not by the raw pointer, so the line
+         always ends exactly where the circle is instead of racing ahead of it. */
+      const travelled = Math.hypot(dotX - prevX, dotY - prevY);
+      if (seen && travelled > 0.05) {
+        const speed = (travelled / dtFrame) * 16.67;
+        const target =
+          Math.min(Math.max((speed - SPEED_FLOOR) / (SPEED_CEIL - SPEED_FLOOR), 0), 1) * MAX_WIDTH;
+        /* Eased toward the target so the stroke swells and thins gradually. */
+        lastWidth += (target - lastWidth) * 0.4;
+        samples.push({ x: dotX, y: dotY, t: now, w: lastWidth });
+        if (samples.length > 160) samples.shift();
+      }
+      lastT = now;
 
       while (samples.length && now - samples[0].t > LIFE) samples.shift();
 
       ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
-      for (let i = 1; i < samples.length; i += 1) {
-        const a = samples[i - 1];
-        const b = samples[i];
-        const k = 1 - (now - b.t) / LIFE;
+      /* Each stretch is a quadratic curve from the midpoint of one pair of
+         samples to the midpoint of the next, with the sample itself as the
+         control point. Joining midpoints keeps the tangent continuous, so the
+         line bends through the samples instead of kinking at each one. */
+      for (let i = 1; i < samples.length - 1; i += 1) {
+        const prev = samples[i - 1];
+        const cur = samples[i];
+        const next = samples[i + 1];
+        const k = 1 - (now - cur.t) / LIFE;
         if (k <= 0) continue;
 
         /* Squared so the tail disappears rather than dissolving evenly — wet
            ink on paper loses its edge before it loses its centre. */
         const fade = k * k;
-        const width = b.w * fade;
+        const width = cur.w * fade;
         if (width < 0.06) continue;
 
         ctx.globalAlpha = 0.62 * fade;
         ctx.lineWidth = width;
         ctx.strokeStyle = '#1c1b19';
         ctx.beginPath();
-        ctx.moveTo(a.x, a.y);
-        ctx.lineTo(b.x, b.y);
+        ctx.moveTo((prev.x + cur.x) / 2, (prev.y + cur.y) / 2);
+        ctx.quadraticCurveTo(cur.x, cur.y, (cur.x + next.x) / 2, (cur.y + next.y) / 2);
         ctx.stroke();
       }
       ctx.globalAlpha = 1;
@@ -133,7 +156,6 @@ const InkCursor: React.FC = () => {
     };
 
     const onMove = (event: PointerEvent) => {
-      const now = performance.now();
       pointerX = event.clientX;
       pointerY = event.clientY;
 
@@ -141,28 +163,10 @@ const InkCursor: React.FC = () => {
         seen = true;
         dotX = pointerX;
         dotY = pointerY;
-        lastX = pointerX;
-        lastY = pointerY;
         dot.style.opacity = '1';
       }
 
-      /* Normalise to a 60fps frame so the trail behaves the same on any
-         display refresh rate. */
-      const dt = Math.max(now - lastT, 1);
-      const distance = Math.hypot(pointerX - lastX, pointerY - lastY);
-      const speed = (distance / dt) * 16.67;
-
-      const drive = Math.min(
-        Math.max((speed - SPEED_FLOOR) / (SPEED_CEIL - SPEED_FLOOR), 0),
-        1,
-      );
-
-      samples.push({ x: pointerX, y: pointerY, t: now, w: drive * MAX_WIDTH });
-      if (samples.length > 90) samples.shift();
-
-      lastX = pointerX;
-      lastY = pointerY;
-      lastT = now;
+      if (!frame) lastT = performance.now();
       wake();
     };
 

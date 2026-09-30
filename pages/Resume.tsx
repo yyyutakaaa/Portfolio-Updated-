@@ -14,9 +14,13 @@ const Resume: React.FC = () => {
   const r = t.resume;
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
 
-  const handleDownload = async () => {
+  const generate = async (mode: 'download' | 'view') => {
     if (isGeneratingPdf) return;
     setIsGeneratingPdf(true);
+
+    /* Opened before the async work so the click still counts as a user
+       gesture — a window opened after the await gets blocked as a popup. */
+    const viewer = mode === 'view' ? window.open('', '_blank') : null;
 
     try {
       const [{ Font, pdf }, { default: ResumePdfDocument, registerResumePdfFonts }] = await Promise.all([
@@ -27,16 +31,22 @@ const Resume: React.FC = () => {
       registerResumePdfFonts();
       const blob = await pdf(<ResumePdfDocument content={r} />).toBlob();
       const url = URL.createObjectURL(blob);
-      const downloadLink = document.createElement('a');
+      if (mode === 'view' && viewer) {
+        viewer.location.href = url;
+      } else {
+        const downloadLink = document.createElement('a');
 
-      downloadLink.href = url;
-      downloadLink.download = 'CV - Mehdi Oulad Khlie.pdf';
-      document.body.appendChild(downloadLink);
-      downloadLink.click();
-      downloadLink.remove();
+        downloadLink.href = url;
+        downloadLink.download = 'CV - Mehdi Oulad Khlie.pdf';
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        downloadLink.remove();
+      }
 
-      window.setTimeout(() => URL.revokeObjectURL(url), 1_000);
+      /* A viewer tab keeps reading the blob after this returns. */
+      window.setTimeout(() => URL.revokeObjectURL(url), mode === 'view' ? 60_000 : 1_000);
     } catch (error) {
+      viewer?.close();
       console.error('Unable to generate the CV PDF.', error);
       window.alert(
         language === 'nl'
@@ -66,11 +76,19 @@ const Resume: React.FC = () => {
                 <button
                   type="button"
                   className="ink-btn"
-                  onClick={handleDownload}
+                  onClick={() => generate('view')}
                   disabled={isGeneratingPdf}
                   aria-busy={isGeneratingPdf}
                 >
-                  {isGeneratingPdf ? 'PDF…' : r.download}
+                  {isGeneratingPdf ? 'PDF…' : language === 'nl' ? 'Bekijk PDF' : 'View PDF'}
+                </button>
+                <button
+                  type="button"
+                  className="ink-btn ink-btn--quiet"
+                  onClick={() => generate('download')}
+                  disabled={isGeneratingPdf}
+                >
+                  {r.download}
                 </button>
               </div>
             </InkReveal>
@@ -139,13 +157,6 @@ const Resume: React.FC = () => {
                     <dd>
                       <a className="ink-inline-link" href="mailto:mehdi.ouladkhlie@outlook.be">
                         mehdi.ouladkhlie@<wbr />outlook.be
-                      </a>
-                    </dd>
-                  </div>
-                  <div className="ink-facts__row">
-                    <dd>
-                      <a className="ink-inline-link" href="tel:+32468549478">
-                        +32 468 54 94 78
                       </a>
                     </dd>
                   </div>

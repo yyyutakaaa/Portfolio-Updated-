@@ -122,8 +122,6 @@ sudo systemctl restart prometheus</code></pre>
 <figure><a href="img/interfaces-fout.webp"><img src="img/interfaces-fout.webp" loading="lazy" alt="Fout bij het toewijzen van de interfaces: em1 getypt als WAN-interface"></a><figcaption>Fout bij het toewijzen van de interfaces: em1 getypt als WAN-interface</figcaption></figure>
 <figure><a href="img/ssh-geen-hostkeys.webp"><img src="img/ssh-geen-hostkeys.webp" loading="lazy" alt="SSH-fout op een gekloonde VM: sshd meldt dat er geen hostkeys beschikbaar zijn"></a><figcaption>SSH-fout op een gekloonde VM: sshd meldt dat er geen hostkeys beschikbaar zijn</figcaption></figure>
 <figure><a href="img/ssh-keygen.webp"><img src="img/ssh-keygen.webp" loading="lazy" alt="Hostkeys opnieuw aangemaakt met ssh-keygen -A"></a><figcaption>Hostkeys opnieuw aangemaakt met ssh-keygen -A</figcaption></figure>
-<h2 id="nog">Wat nog komt</h2><p>De firewall en de servers werken nu zoals bedoeld. Dit wil ik nog doen:</p>
-<ul><li>Alertmanager toevoegen voor meldingen.</li></ul>
 <h2 id="samenvatting">Korte samenvatting</h2><p>Ik heb een monitoring-homelab gebouwd in VMware: Prometheus en Grafana bewaken een Ubuntu-server met node_exporter, en een alertregel meldt wanneer die server wegvalt. Daarna heb ik een pfSense-firewall toegevoegd en de monitoring en de server in twee aparte netwerken gezet. Het verkeer ertussen loopt nu via de firewall, en ik beheer alles vanop mijn Mac via mijn Windows-host. Daarna heb ik firewallregels geschreven en getest: de monitoring haalt gegevens op van de server, maar de server kan niet terug naar de monitoring. Ook de firewall zelf staat nu als target in Prometheus.</p>
 
 </main>

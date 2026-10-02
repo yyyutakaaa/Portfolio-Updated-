@@ -43,6 +43,8 @@ export interface StageProject {
   };
   /** A line of context that has to be read before the rest, e.g. that a demo was an isolated lab. */
   note?: string;
+  /** Full write-up with screenshots: a page in `public/`, path relative to the site root. */
+  document?: string;
   /** File stem of the demo's thumbnail in `public/stage/`, e.g. `arp` → `arp-560.webp`. */
   thumb?: string;
 }
@@ -66,6 +68,8 @@ export interface StageCopy {
   close: string;
   /** Label of the link to a project's demo video. */
   watch: string;
+  /** Label of the link to a project's full documentation. */
+  docLabel: string;
   problemsTitle: string;
   problemCols: { problem: string; cause: string; fix: string };
   learnedTitle: string;
@@ -299,7 +303,7 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
       label: 'For my internship',
       heading: 'What I have already built.',
       intro:
-        'I am looking for an internship as a system and network administrator. These are five projects from my degree, each built and tested in a lab of its own. Open a project for the full story.',
+        'I am looking for an internship as a system and network administrator. These are six projects from my degree, each built and tested in a lab of its own. Open a project for the full story.',
       download: 'Download my internship CV',
       view: 'View my internship CV',
       contactLabel: 'Contact for the internship',
@@ -315,6 +319,7 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
         'Kali Linux',
       ],
       watch: 'Watch the demo',
+      docLabel: 'View the full documentation',
       problemsTitle: 'What went wrong and how I fixed it',
       problemCols: { problem: 'Problem', cause: 'Cause', fix: 'Fix' },
       learnedTitle: 'What I learned',
@@ -432,6 +437,38 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
                 'The five hosts were a Windows server over SNMP, a Windows server with the Zabbix agent, an Ubuntu server with snmpd, an Ubuntu server with the agent, and my pfSense firewall.',
                 'The dashboard has widgets for connection attempts on my website, host availability, critical problems on the network and the disk usage of a server.',
                 'I showed in a video of at most five minutes that everything works.',
+              ],
+            },
+            {
+              index: '06',
+              title: 'Firewall between two networks',
+              document: 'homelab-documentatie/index.html',
+              thumb: 'firewall',
+              stack: 'pfSense · Prometheus · Grafana · VMware Workstation',
+              summary:
+                'A monitoring homelab with a pfSense firewall between the monitoring and the server. Prometheus pulls data from the server, but the server cannot reach back. Tested, and visible in the firewall log.',
+              evidence: {
+                problems: [
+                  { problem: 'My first block rule let traffic through.', cause: 'The action was set to Pass instead of Block, and I had not clicked Apply Changes yet.', fix: 'Set the action to Block and applied the changes. Check: a red cross next to the rule and no yellow bar any more.' },
+                  { problem: 'A block rule did nothing even though it was there.', cause: 'The block rule sat above the Pass rules for SSH and Prometheus, or just below them. pfSense reads rules from top to bottom.', fix: 'Dragged the Pass rules to the top and ran Apply Changes. Then tested with nc on port 9100 (works) and ping (no reply).' },
+                  { problem: 'The pfSense web interface was not reachable from the host.', cause: 'The VMnet2 adapter had 169.254.x.x, because DHCP is off.', fix: 'Set 10.10.10.1/24 by hand.' },
+                  { problem: 'SSH to a cloned VM failed with "no hostkeys available".', cause: 'The SSH host keys were missing after cloning the template.', fix: 'sudo ssh-keygen -A and then restart sshd.' },
+                  { problem: 'Memory, Swap and Pressure of the firewall show no data in Grafana.', cause: 'Probably the dashboard is made for Linux and FreeBSD uses other metric names. I did not look into it further.', fix: 'Not solved. CPU, network and disk do work.' },
+                ],
+                learned: [
+                  { skill: 'Writing and testing firewall rules', applied: 'Pass and Block rules in the right order, each tested against an expected result.' },
+                  { skill: 'Splitting networks', applied: 'Two separate host-only networks with all traffic between them going through pfSense.' },
+                  { skill: 'Extending monitoring', applied: 'Changed Prometheus targets and added the firewall itself as a target with node_exporter.' },
+                  { skill: 'Grafana alerts', applied: 'An alert rule on the up metric of the server, tested by making the server unreachable.' },
+                  { skill: 'Reading firewall logs', applied: 'Found the blocked attempts with the name of my own rule next to them.' },
+                  { skill: 'Managing remotely and safely', applied: 'RDP and port proxies over Tailscale, and netplan try so I could not lock myself out.' },
+                ],
+              },
+              details: [
+                'I use three virtual machines in VMware Workstation: fw-01 with pfSense CE 2.9.0, mon-01 with Prometheus 3.15.0 and Grafana 13.2.3, and srv-01 with node_exporter 1.12.1. MONITORING (10.10.10.0/24) and SERVERS (10.10.20.0/24) are two host-only networks. That is deliberate: traffic inside one VMnet never passes the firewall, so you cannot test rules on it.',
+                'On MONITORING there is SSH from the host to the servers, Prometheus to port 9100 of srv-01, and below those a block rule for everything else going to SERVERS. On SERVERS a block rule to MONITORING sits above the rule that allows internet.',
+                'From mon-01 a connection to port 9100 on srv-01 works, and a ping to srv-01 gets no reply. From srv-01 the firewall and the internet work, but the ping to mon-01 does not. In the pfSense firewall log I can see the blocked attempts.',
+                'Finally I added the firewall itself to Prometheus, with the pfSense node_exporter package that only listens on the MONITORING address.',
               ],
             },
           ],
@@ -574,7 +611,7 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
       label: 'Voor mijn stage',
       heading: 'Wat ik al opgezet heb.',
       intro:
-        'Ik zoek een stage als systeem- en netwerkbeheerder. Dit zijn vijf projecten uit mijn opleiding, elk in een eigen lab opgebouwd en getest. Klik een project open voor het volledige verhaal.',
+        'Ik zoek een stage als systeem- en netwerkbeheerder. Dit zijn zes projecten uit mijn opleiding, elk in een eigen lab opgebouwd en getest. Klik een project open voor het volledige verhaal.',
       download: 'Download mijn stage-CV',
       view: 'Bekijk mijn stage-CV',
       contactLabel: 'Contact voor de stage',
@@ -590,6 +627,7 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
         'Kali Linux',
       ],
       watch: 'Bekijk de demo',
+      docLabel: 'Bekijk de volledige documentatie',
       problemsTitle: 'Wat er misliep en hoe ik het oploste',
       problemCols: { problem: 'Probleem', cause: 'Oorzaak', fix: 'Oplossing' },
       learnedTitle: 'Wat ik hierbij geleerd heb',
@@ -707,6 +745,38 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
                 'De vijf hosts waren een Windows-server via SNMP, een Windows-server met de Zabbix-agent, een Ubuntu-server met snmpd, een Ubuntu-server met de agent, en mijn pfSense-firewall.',
                 'Op het dashboard staan widgets voor het aantal verbindingspogingen op mijn website, de beschikbaarheid van de hosts, kritieke problemen in het netwerk en het schijfgebruik van een server.',
                 'Ik toonde in een video van maximaal vijf minuten dat alles werkt.',
+              ],
+            },
+            {
+              index: '06',
+              title: 'Firewall tussen twee netwerken',
+              document: 'homelab-documentatie/index.html',
+              thumb: 'firewall',
+              stack: 'pfSense · Prometheus · Grafana · VMware Workstation',
+              summary:
+                'Een monitoring-homelab met een pfSense-firewall tussen de monitoring en de server. Prometheus haalt gegevens op bij de server, maar de server kan niet terug. Getest en terug te zien in het firewall-log.',
+              evidence: {
+                problems: [
+                  { problem: 'Mijn eerste blokregel liet verkeer door.', cause: 'De actie stond op Pass in plaats van Block, en ik had nog niet op Apply Changes geklikt.', fix: 'Actie op Block gezet en de wijzigingen toegepast. Controle: rood kruisje bij de regel en geen gele balk meer.' },
+                  { problem: 'Een blokregel deed niets, terwijl hij er wel stond.', cause: 'De blokregel stond boven de Pass-regels voor SSH en Prometheus, of net eronder. pfSense leest van boven naar onder.', fix: 'De Pass-regels naar boven gesleept en Apply Changes uitgevoerd. Daarna getest met nc op poort 9100 (lukt) en ping (geen antwoord).' },
+                  { problem: 'De webinterface van pfSense was niet bereikbaar vanaf de host.', cause: 'De VMnet2-adapter had 169.254.x.x, omdat DHCP uit staat.', fix: 'Handmatig 10.10.10.1/24 ingesteld.' },
+                  { problem: 'SSH naar een gekloonde VM faalde met "no hostkeys available".', cause: 'De SSH-hostkeys ontbraken na het klonen van de template.', fix: 'sudo ssh-keygen -A en daarna sshd herstarten.' },
+                  { problem: 'Memory, Swap en Pressure van de firewall tonen geen gegevens in Grafana.', cause: 'Waarschijnlijk is het dashboard voor Linux gemaakt en gebruikt FreeBSD andere metricnamen. Niet verder uitgezocht.', fix: 'Niet opgelost. CPU, netwerk en schijf werken wel.' },
+                ],
+                learned: [
+                  { skill: 'Firewallregels schrijven en testen', applied: 'Pass- en Block-regels in de juiste volgorde, elk getest met een verwachte uitkomst.' },
+                  { skill: 'Netwerken opdelen', applied: 'Twee aparte host-only netwerken met alle verkeer ertussen via pfSense.' },
+                  { skill: 'Monitoring uitbreiden', applied: 'Prometheus-targets aangepast en de firewall zelf als target toegevoegd met node_exporter.' },
+                  { skill: 'Grafana-alerts', applied: 'Een alertregel op de metric up van de server, getest door de server onbereikbaar te maken.' },
+                  { skill: 'Firewall-logs lezen', applied: 'Geblokkeerde pogingen teruggevonden met de naam van mijn eigen regel erbij.' },
+                  { skill: 'Veilig op afstand beheren', applied: 'RDP en portproxy\'s via Tailscale, en netplan try zodat ik mezelf niet kon buitensluiten.' },
+                ],
+              },
+              details: [
+                'Ik gebruik drie virtuele machines in VMware Workstation: fw-01 met pfSense CE 2.9.0, mon-01 met Prometheus 3.15.0 en Grafana 13.2.3, en srv-01 met node_exporter 1.12.1. MONITORING (10.10.10.0/24) en SERVERS (10.10.20.0/24) zijn twee host-only netwerken. Dat het er twee zijn is bewust: verkeer binnen één VMnet komt nooit langs de firewall, dus daar kan je ook geen regels op testen.',
+                'Op MONITORING staan SSH vanaf de host naar de servers, Prometheus naar poort 9100 van srv-01 en daaronder een blokregel voor al het andere naar SERVERS. Op SERVERS staat een blokregel naar MONITORING boven de regel die internet toelaat.',
+                'Vanaf mon-01 lukt een verbinding naar poort 9100 van srv-01, en een ping naar srv-01 krijgt geen antwoord. Vanaf srv-01 werken de firewall en internet, maar de ping naar mon-01 niet. In het firewall-log van pfSense zie ik de geblokkeerde pogingen terug.',
+                'Tot slot zette ik ook de firewall zelf in Prometheus, met het pfSense-pakket node_exporter dat enkel op het MONITORING-adres luistert.',
               ],
             },
           ],

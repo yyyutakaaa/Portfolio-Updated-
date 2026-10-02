@@ -89,6 +89,19 @@ const Stage: React.FC = () => {
                         <span className="ink-cap ink-work__stack">{project.stack}</span>
                         <p className="ink-work__desc">{project.summary}</p>
                         {project.note && <p className="ink-stage__note">{project.note}</p>}
+                        {project.document && (
+                          <a
+                            className="ink-cap ink-work__cta ink-stage__watch"
+                            href={`${import.meta.env.BASE_URL}${project.document}`}
+                            target="_blank"
+                            rel="noopener"
+                          >
+                            {stage.docLabel}
+                            <svg viewBox="0 0 12 12" aria-hidden="true" focusable="false">
+                              <path d="M1 11 11 1M4 1h7v7" fill="none" stroke="currentColor" strokeWidth="1.2" />
+                            </svg>
+                          </a>
+                        )}
                         {project.video && (
                           <a
                             className="ink-cap ink-work__cta ink-stage__watch"
@@ -103,13 +116,13 @@ const Stage: React.FC = () => {
                           </a>
                         )}
                       </div>
-                      {project.video && project.thumb && (
+                      {(project.video || project.document) && project.thumb && (
                         <a
                           className="ink-stage__thumb"
-                          href={project.video}
+                          href={project.video ?? `${import.meta.env.BASE_URL}${project.document}`}
                           target="_blank"
                           rel="noreferrer noopener"
-                          aria-label={`${stage.watch}: ${project.title}`}
+                          aria-label={`${project.video ? stage.watch : stage.docLabel}: ${project.title}`}
                         >
                           <img
                             src={`/stage/${project.thumb}-960.webp`}
@@ -121,7 +134,7 @@ const Stage: React.FC = () => {
                             width={960}
                             height={540}
                           />
-                          <span className="ink-stage__play" aria-hidden="true" />
+                          {project.video && <span className="ink-stage__play" aria-hidden="true" />}
                         </a>
                       )}
                       <details className="ink-stage__details">

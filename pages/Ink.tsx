@@ -6,6 +6,7 @@ import WorkBlock from '../components/ink/WorkBlock';
 import InkSectionHead from '../components/ink/InkSectionHead';
 import InkContact from '../components/ink/InkContact';
 import { useInkShell } from '../components/ink/InkLayout';
+import InkTopology from '../components/ink/InkTopology';
 import BrushName, { BrushNameHandle, PATH_UNITS } from '../components/ink/BrushName';
 import { scrollToId } from '../components/motion/SmoothScroll';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -217,49 +218,53 @@ const Ink: React.FC = () => {
                 </h1>
 
                 <div className="ink-tail" ref={tailRef}>
-                  {/* One brush stroke doing the work of a horizontal rule. */}
-                  <svg className="ink-brushrule" viewBox="0 0 170 10" aria-hidden="true" focusable="false">
-                    <defs>
-                      <clipPath id="ink-rule-clip">
-                        <rect ref={ruleClipRef} x="0" y="0" width="170" height="10" />
-                      </clipPath>
-                    </defs>
-                    <path
-                      clipPath="url(#ink-rule-clip)"
-                      d="M2 3C30 1.4 92 1.9 168 4.3 96 5.6 40 7.2 2 8.6 1.2 7 1.2 4.6 2 3Z"
-                    />
-                  </svg>
+                  <div className="ink-tail__copy">
+                    {/* One brush stroke doing the work of a horizontal rule. */}
+                    <svg className="ink-brushrule" viewBox="0 0 170 10" aria-hidden="true" focusable="false">
+                      <defs>
+                        <clipPath id="ink-rule-clip">
+                          <rect ref={ruleClipRef} x="0" y="0" width="170" height="10" />
+                        </clipPath>
+                      </defs>
+                      <path
+                        clipPath="url(#ink-rule-clip)"
+                        d="M2 3C30 1.4 92 1.9 168 4.3 96 5.6 40 7.2 2 8.6 1.2 7 1.2 4.6 2 3Z"
+                      />
+                    </svg>
 
-                  <p className="ink-lede">
-                    {copy.hero.ledeHead}
-                    <em>{copy.hero.ledeEm}</em>
-                    {copy.hero.ledeTail}
-                  </p>
+                    <p className="ink-lede">
+                      {copy.hero.ledeHead}
+                      <em>{copy.hero.ledeEm}</em>
+                      {copy.hero.ledeTail}
+                    </p>
 
-                  <dl className="ink-pitch">
-                    {copy.hero.internship.map((row) => (
-                      <div className="ink-pitch__row" key={row.key}>
-                        <dt className="ink-cap">{row.key}</dt>
-                        <dd>{row.value}</dd>
+                    <dl className="ink-pitch">
+                      {copy.hero.internship.map((row) => (
+                        <div className="ink-pitch__row" key={row.key}>
+                          <dt className="ink-cap">{row.key}</dt>
+                          <dd>{row.value}</dd>
+                        </div>
+                      ))}
+                    </dl>
+
+                    <div className="ink-hero__actions">
+                      <div className="ink-workmore ink-workmore--hero">
+                        <Link className="ink-cap" to="/stage">
+                          {copy.stage.cta} <span aria-hidden="true">→</span>
+                        </Link>
                       </div>
-                    ))}
-                  </dl>
-
-                  <div className="ink-hero__actions">
-                    <div className="ink-workmore ink-workmore--hero">
-                      <Link className="ink-cap" to="/stage">
-                        {copy.stage.cta} <span aria-hidden="true">→</span>
-                      </Link>
+                      <a
+                        className="ink-btn ink-btn--quiet"
+                        href={`${import.meta.env.BASE_URL}CV Stage - Mehdi Oulad Khlie.pdf`}
+                        target="_blank"
+                        rel="noopener"
+                      >
+                        {copy.stage.view}
+                      </a>
                     </div>
-                    <a
-                      className="ink-btn ink-btn--quiet"
-                      href={`${import.meta.env.BASE_URL}CV Stage - Mehdi Oulad Khlie.pdf`}
-                      target="_blank"
-                      rel="noopener"
-                    >
-                      {copy.stage.view}
-                    </a>
                   </div>
+
+                  <InkTopology variant="home" className="ink-tail__topo" />
                 </div>
               </div>
             </div>
@@ -324,14 +329,17 @@ const Ink: React.FC = () => {
             <InkSectionHead id="ink-work-heading" label={copy.work.label} heading={copy.work.heading} />
 
             <div className="ink-worklist">
-              {copy.work.items.slice(0, 2).map((item) => (
+              {copy.work.featured.map((item) => (
                 <InkReveal key={item.title} y={26}>
                   <WorkBlock item={item} />
                 </InkReveal>
               ))}
             </div>
 
-            <div className="ink-workmore">
+            <div className="ink-workmore ink-workmore--pair">
+              <Link className="ink-cap" to="/stage">
+                {copy.work.more.stageCta} <span aria-hidden="true">→</span>
+              </Link>
               <Link className="ink-cap" to="/projects">
                 {copy.work.more.cta} <span aria-hidden="true">→</span>
               </Link>

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import InkReveal from '../components/ink/InkReveal';
 import InkSectionHead from '../components/ink/InkSectionHead';
 import BrushDivider from '../components/ink/BrushDivider';
+import InkTopology from '../components/ink/InkTopology';
 import { useLanguage } from '../contexts/LanguageContext';
 import { inkContent, STAGE_EMAIL } from '../utils/inkContent';
 
@@ -136,6 +137,13 @@ const Stage: React.FC = () => {
                           />
                           {project.video && <span className="ink-stage__play" aria-hidden="true" />}
                         </a>
+                      )}
+                      {project.diagram && (
+                        <InkTopology
+                          variant={project.diagram}
+                          className="ink-stage__thumb ink-stage__thumb--diagram"
+                          label={`${project.title}, ${stage.diagramLabel}`}
+                        />
                       )}
                       <details className="ink-stage__details">
                         <summary className="ink-cap">

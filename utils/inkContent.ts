@@ -45,6 +45,8 @@ export interface StageProject {
   note?: string;
   /** Full write-up with screenshots: a page in `public/`, path relative to the site root. */
   document?: string;
+  /** Draw the lab topology as an ink diagram in place of a thumbnail (no screenshots exist). */
+  diagram?: 'paloalto';
   /** File stem of the demo's thumbnail in `public/stage/`, e.g. `arp` → `arp-560.webp`. */
   thumb?: string;
 }
@@ -70,6 +72,8 @@ export interface StageCopy {
   watch: string;
   /** Label of the link to a project's full documentation. */
   docLabel: string;
+  /** Accessible name of a drawn topology, after the project title. */
+  diagramLabel: string;
   problemsTitle: string;
   problemCols: { problem: string; cause: string; fix: string };
   learnedTitle: string;
@@ -112,12 +116,14 @@ export interface InkCopy {
     body: string[];
     facts: { key: string; value: string }[];
   };
-  /** The first two items live on the home page; the rest sit on the projects page, image-free. */
   work: {
     label: string;
     heading: string;
+    /** Lab projects from the internship page, shown on the home page because they are the strongest evidence for the job. */
+    featured: WorkItem[];
+    /** Own projects; they all live on the projects page. */
     items: WorkItem[];
-    more: { cta: string; label: string; heading: string; back: string };
+    more: { cta: string; stageCta: string; label: string; heading: string; back: string };
   };
   contact: {
     label: string;
@@ -154,14 +160,24 @@ const SETS_IMAGE = {
   ratio: '1731 / 909',
 };
 
+/** A demo thumbnail from `public/stage/`, reused as a plate on the home page. */
+const stageImage = (stem: string, alt: string) => ({
+  src: `/stage/${stem}-960.webp`,
+  srcSet: `/stage/${stem}-560.webp 560w, /stage/${stem}-960.webp 960w`,
+  ratio: '16 / 9',
+  alt,
+});
+
 const MUTED_IMAGE = {
   src: '/muted-screenshot-1400.webp',
   srcSet: '/muted-screenshot-800.webp 800w, /muted-screenshot-1400.webp 1400w',
 };
 
+/* One address across the whole site while the internship search is on, so a
+   recruiter never wonders which one is current. */
 export const STAGE_EMAIL = 'mehdi.ouladkhlie@student.hogent.be';
 
-export const EMAIL = 'mehdi.ouladkhlie@outlook.be';
+export const EMAIL = STAGE_EMAIL;
 
 const SOCIALS = [
   { label: 'LinkedIn', href: 'https://www.linkedin.com/in/mehdi-oulad-khlie-5a43aa30b/' },
@@ -201,8 +217,40 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
       ],
     },
     work: {
-      label: 'Some of my work',
-      heading: 'Things I made because I wanted them around.',
+      label: 'From the lab',
+      heading: 'What I have built and tested in the lab.',
+      featured: [
+        {
+          index: '01',
+          title: 'Redundant network infrastructure',
+          stack: 'Active Directory · DHCP failover · HAProxy · BIND9',
+          description: 'Two domain controllers, two firewalls and two web servers behind a load balancer. When one web server went down, the other took over.',
+          href: '#/stage',
+          external: false,
+          image: stageImage('redundant', 'Terminal output from the redundant infrastructure demo'),
+          cta: 'Read it on the internship page',
+        },
+        {
+          index: '02',
+          title: 'Proxmox HCI with shared storage',
+          stack: 'Proxmox · StarWind vSAN · iSCSI · HA',
+          description: 'Shared storage on a Proxmox cluster, so VMs move between nodes without downtime. I powered a node off hard and the VM restarted on another one by itself.',
+          href: '#/stage',
+          external: false,
+          image: stageImage('proxmox', 'The Proxmox cluster during the high-availability test'),
+          cta: 'Read it on the internship page',
+        },
+        {
+          index: '03',
+          title: 'Firewall between two networks',
+          stack: 'pfSense · Prometheus · Grafana',
+          description: 'A pfSense firewall between monitoring and a server: Prometheus can pull data from the server, the server cannot reach back. Tested, and visible in the firewall log.',
+          href: '#/stage',
+          external: false,
+          image: stageImage('firewall', 'The pfSense firewall rules for the monitoring network'),
+          cta: 'Read it on the internship page',
+        },
+      ],
       items: [
         {
           index: '01',
@@ -256,9 +304,10 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
         },
       ],
       more: {
-        cta: 'More projects',
-        label: 'More projects',
-        heading: 'Smaller things, mostly on GitHub.',
+        cta: 'My own projects',
+        stageCta: 'All six lab projects',
+        label: 'Own projects',
+        heading: 'Things I made because I wanted them around.',
         back: 'Back home',
       },
     },
@@ -320,6 +369,7 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
       ],
       watch: 'Watch the demo',
       docLabel: 'View the full documentation',
+      diagramLabel: 'diagram of the lab',
       problemsTitle: 'What went wrong and how I fixed it',
       problemCols: { problem: 'Problem', cause: 'Cause', fix: 'Fix' },
       learnedTitle: 'What I learned',
@@ -333,6 +383,7 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
             {
               index: '01',
               title: 'Palo Alto firewall',
+              diagram: 'paloalto',
               stack: 'Palo Alto · PAN-OS · NAT · service routes',
               summary:
                 'The base configuration of the Branch Office firewall over SSH: internet, policies, DNS and NTP over WAN, licensing and automatic updates. Everything worked and was tested from a LAN client.',
@@ -509,8 +560,40 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
       ],
     },
     work: {
-      label: 'Een paar projecten',
-      heading: 'Spullen die ik gebouwd heb omdat ik ze zelf nodig had.',
+      label: 'Uit het lab',
+      heading: 'Wat ik in het lab heb opgezet en getest.',
+      featured: [
+        {
+          index: '01',
+          title: 'Redundante netwerkinfrastructuur',
+          stack: 'Active Directory · DHCP-failover · HAProxy · BIND9',
+          description: 'Twee domain controllers, twee firewalls en twee webservers met load balancing. Bij het uitvallen van een webserver nam de andere het verkeer over.',
+          href: '#/stage',
+          external: false,
+          image: stageImage('redundant', 'Terminaluitvoer uit de demo van de redundante infrastructuur'),
+          cta: 'Lees het op de stagepagina',
+        },
+        {
+          index: '02',
+          title: 'Proxmox HCI met shared storage',
+          stack: 'Proxmox · StarWind vSAN · iSCSI · HA',
+          description: 'Shared storage op een Proxmox-cluster, zodat VM’s zonder downtime tussen nodes bewegen. Ik schakelde een node hardhandig uit en de VM startte vanzelf op een andere.',
+          href: '#/stage',
+          external: false,
+          image: stageImage('proxmox', 'De Proxmox-cluster tijdens de HA-test'),
+          cta: 'Lees het op de stagepagina',
+        },
+        {
+          index: '03',
+          title: 'Firewall tussen twee netwerken',
+          stack: 'pfSense · Prometheus · Grafana',
+          description: 'Een pfSense-firewall tussen de monitoring en een server: Prometheus haalt gegevens op, de server kan niet terug. Getest en terug te zien in het firewall-log.',
+          href: '#/stage',
+          external: false,
+          image: stageImage('firewall', 'De firewallregels van pfSense voor het monitoringnetwerk'),
+          cta: 'Lees het op de stagepagina',
+        },
+      ],
       items: [
         {
           index: '01',
@@ -564,9 +647,10 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
         },
       ],
       more: {
-        cta: 'Meer projecten',
-        label: 'Meer projecten',
-        heading: 'Kleinere dingen, vooral op GitHub.',
+        cta: 'Mijn eigen projecten',
+        stageCta: 'Alle zes labprojecten',
+        label: 'Eigen projecten',
+        heading: 'Spullen die ik gebouwd heb omdat ik ze zelf nodig had.',
         back: 'Terug naar home',
       },
     },
@@ -628,6 +712,7 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
       ],
       watch: 'Bekijk de demo',
       docLabel: 'Bekijk de volledige documentatie',
+      diagramLabel: 'schema van het lab',
       problemsTitle: 'Wat er misliep en hoe ik het oploste',
       problemCols: { problem: 'Probleem', cause: 'Oorzaak', fix: 'Oplossing' },
       learnedTitle: 'Wat ik hierbij geleerd heb',
@@ -641,6 +726,7 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
             {
               index: '01',
               title: 'Palo Alto firewall',
+              diagram: 'paloalto',
               stack: 'Palo Alto · PAN-OS · NAT · service routes',
               summary:
                 'De basisconfiguratie van de Branch Office-firewall via SSH: internet, policies, DNS en NTP via WAN, licentie en automatische updates. Alles werkte en is getest vanaf een client in het LAN.',

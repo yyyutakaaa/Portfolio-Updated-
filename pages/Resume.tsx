@@ -164,8 +164,8 @@ const Resume: React.FC = () => {
                   </div>
                   <div className="ink-facts__row">
                     <dd>
-                      <a className="ink-inline-link" href="mailto:mehdi.ouladkhlie@outlook.be">
-                        mehdi.ouladkhlie@<wbr />outlook.be
+                      <a className="ink-inline-link" href="mailto:mehdi.ouladkhlie@student.hogent.be">
+                        mehdi.ouladkhlie@<wbr />student.hogent.be
                       </a>
                     </dd>
                   </div>

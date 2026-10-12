@@ -396,7 +396,7 @@ const ResumePdfDocument: React.FC<ResumePdfDocumentProps> = ({ content }) => {
                 <Text style={styles.contactValue}>Evergem, België</Text>
               </View>
               <View style={styles.contactItem}>
-                <Text style={styles.contactValue}>mehdi.ouladkhlie@outlook.be</Text>
+                <Text style={styles.contactValue}>mehdi.ouladkhlie@student.hogent.be</Text>
               </View>
               <View>
                 <Text style={styles.contactValue}>+32 468 54 94 78</Text>

@@ -53,7 +53,8 @@ const InkContact: React.FC<{ asPage?: boolean }> = ({ asPage = false }) => {
             <p className="ink-prose">{c.line}</p>
             <p className="ink-cap ink-letterbox__direct">{c.direct}</p>
             <a className="ink-letterbox__email" href={`mailto:${c.email}`}>
-              {c.email}
+              {c.email.split('@')[0]}@<wbr />
+              {c.email.split('@')[1]}
             </a>
           </InkReveal>
         </div>

@@ -6,7 +6,7 @@ import WorkBlock from '../components/ink/WorkBlock';
 import { useLanguage } from '../contexts/LanguageContext';
 import { inkContent } from '../utils/inkContent';
 
-/** Everything that is not a full write-up, set as plain text with no plates. */
+/** Own projects: the ones with a screenshot get a plate, the rest are set as plain text. */
 const Projects: React.FC = () => {
   const { language } = useLanguage();
   const { work } = inkContent[language];
@@ -27,9 +27,9 @@ const Projects: React.FC = () => {
       <section className="ink-section ink-section--compact">
         <div className="ink-shell">
           <div className="ink-worklist">
-            {work.items.slice(2).map((item) => (
+            {work.items.map((item) => (
               <InkReveal key={item.title} y={26}>
-                <WorkBlock item={item} plain />
+                <WorkBlock item={item} plain={!item.image} />
               </InkReveal>
             ))}
           </div>

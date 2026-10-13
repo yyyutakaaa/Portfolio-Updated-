@@ -119,11 +119,11 @@ export interface InkCopy {
   work: {
     label: string;
     heading: string;
-    /** Lab projects from the internship page, shown on the home page because they are the strongest evidence for the job. */
-    featured: WorkItem[];
+    /** The two blocks on the home page: one to the internship page, one to my own projects. */
+    paths: { index: string; title: string; text: string; to: string; cta: string }[];
     /** Own projects; they all live on the projects page. */
     items: WorkItem[];
-    more: { cta: string; stageCta: string; label: string; heading: string; back: string };
+    more: { cta: string; label: string; heading: string; back: string };
   };
   contact: {
     label: string;
@@ -159,14 +159,6 @@ const SETS_IMAGE = {
      to `object-fit: cover` inside a box built for something narrower. */
   ratio: '1731 / 909',
 };
-
-/** A demo thumbnail from `public/stage/`, reused as a plate on the home page. */
-const stageImage = (stem: string, alt: string) => ({
-  src: `/stage/${stem}-960.webp`,
-  srcSet: `/stage/${stem}-560.webp 560w, /stage/${stem}-960.webp 960w`,
-  ratio: '16 / 9',
-  alt,
-});
 
 const MUTED_IMAGE = {
   src: '/muted-screenshot-1400.webp',
@@ -217,38 +209,22 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
       ],
     },
     work: {
-      label: 'From the lab',
-      heading: 'What I have built and tested in the lab.',
-      featured: [
+      label: 'Work',
+      heading: 'Where would you like to look?',
+      paths: [
         {
           index: '01',
-          title: 'Redundant network infrastructure',
-          stack: 'Active Directory · DHCP failover · HAProxy · BIND9',
-          description: 'Two domain controllers, two firewalls and two web servers behind a load balancer. When one web server went down, the other took over.',
-          href: '#/stage',
-          external: false,
-          image: stageImage('redundant', 'Terminal output from the redundant infrastructure demo'),
-          cta: 'Read it on the internship page',
+          title: 'Internship',
+          text: 'Six lab projects from my degree: networks, servers, virtualisation and monitoring.',
+          to: '/stage',
+          cta: 'To my internship projects',
         },
         {
           index: '02',
-          title: 'Proxmox HCI with shared storage',
-          stack: 'Proxmox · StarWind vSAN · iSCSI · HA',
-          description: 'Shared storage on a Proxmox cluster, so VMs move between nodes without downtime. I powered a node off hard and the VM restarted on another one by itself.',
-          href: '#/stage',
-          external: false,
-          image: stageImage('proxmox', 'The Proxmox cluster during the high-availability test'),
-          cta: 'Read it on the internship page',
-        },
-        {
-          index: '03',
-          title: 'Firewall between two networks',
-          stack: 'pfSense · Prometheus · Grafana',
-          description: 'A pfSense firewall between monitoring and a server: Prometheus can pull data from the server, the server cannot reach back. Tested, and visible in the firewall log.',
-          href: '#/stage',
-          external: false,
-          image: stageImage('firewall', 'The pfSense firewall rules for the monitoring network'),
-          cta: 'Read it on the internship page',
+          title: 'Projects',
+          text: 'Apps and tools I built for myself, such as Sets and Muted.',
+          to: '/projects',
+          cta: 'To my projects',
         },
       ],
       items: [
@@ -304,8 +280,7 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
         },
       ],
       more: {
-        cta: 'My own projects',
-        stageCta: 'All six lab projects',
+        cta: 'My projects',
         label: 'Own projects',
         heading: 'Things I made because I wanted them around.',
         back: 'Back home',
@@ -560,38 +535,22 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
       ],
     },
     work: {
-      label: 'Uit het lab',
-      heading: 'Wat ik in het lab heb opgezet en getest.',
-      featured: [
+      label: 'Werk',
+      heading: 'Waar wil je kijken?',
+      paths: [
         {
           index: '01',
-          title: 'Redundante netwerkinfrastructuur',
-          stack: 'Active Directory · DHCP-failover · HAProxy · BIND9',
-          description: 'Twee domain controllers, twee firewalls en twee webservers met load balancing. Bij het uitvallen van een webserver nam de andere het verkeer over.',
-          href: '#/stage',
-          external: false,
-          image: stageImage('redundant', 'Terminaluitvoer uit de demo van de redundante infrastructuur'),
-          cta: 'Lees het op de stagepagina',
+          title: 'Stage',
+          text: 'Zes labprojecten uit mijn opleiding: netwerken, servers, virtualisatie en monitoring.',
+          to: '/stage',
+          cta: 'Naar mijn stageprojecten',
         },
         {
           index: '02',
-          title: 'Proxmox HCI met shared storage',
-          stack: 'Proxmox · StarWind vSAN · iSCSI · HA',
-          description: 'Shared storage op een Proxmox-cluster, zodat VM’s zonder downtime tussen nodes bewegen. Ik schakelde een node hardhandig uit en de VM startte vanzelf op een andere.',
-          href: '#/stage',
-          external: false,
-          image: stageImage('proxmox', 'De Proxmox-cluster tijdens de HA-test'),
-          cta: 'Lees het op de stagepagina',
-        },
-        {
-          index: '03',
-          title: 'Firewall tussen twee netwerken',
-          stack: 'pfSense · Prometheus · Grafana',
-          description: 'Een pfSense-firewall tussen de monitoring en een server: Prometheus haalt gegevens op, de server kan niet terug. Getest en terug te zien in het firewall-log.',
-          href: '#/stage',
-          external: false,
-          image: stageImage('firewall', 'De firewallregels van pfSense voor het monitoringnetwerk'),
-          cta: 'Lees het op de stagepagina',
+          title: 'Projecten',
+          text: 'Apps en tools die ik voor mezelf gebouwd heb, zoals Sets en Muted.',
+          to: '/projects',
+          cta: 'Naar mijn projecten',
         },
       ],
       items: [
@@ -647,8 +606,7 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
         },
       ],
       more: {
-        cta: 'Mijn eigen projecten',
-        stageCta: 'Alle zes labprojecten',
+        cta: 'Mijn projecten',
         label: 'Eigen projecten',
         heading: 'Spullen die ik gebouwd heb omdat ik ze zelf nodig had.',
         back: 'Terug naar home',

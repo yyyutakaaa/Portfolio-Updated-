@@ -186,7 +186,7 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
       ledeEm: 'internship',
       ledeTail: ' from February 2027.',
       location: 'Evergem, BE',
-      status: 'Open to opportunities',
+      status: 'Looking for an internship',
       internship: [
         { key: 'Looking for', value: 'An internship in system & network administration: networks, servers and cloud' },
         { key: 'Period', value: '8 February to 27 May 2027 (60 days)' },
@@ -196,10 +196,10 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
     },
     about: {
       label: 'About',
-      heading: 'I feel most at home in a Windows environment.',
+      heading: 'I want to work as a sysadmin.',
       body: [
-        "I'm doing a degree in System and Network Administration, and I already know where I want to end up: as a sysadmin.",
-        "I've watched enough PCs and networks break down, and fixed just as many, a driver that gives up, a network fault that makes zero sense until you dig into it. Alongside my studies I'm working toward my CCNA and picking up Microsoft courses to build on that.",
+        "I'm doing a degree in System and Network Administration and mostly work with Windows Server and Active Directory.",
+        "I've fixed my share of broken PCs and networks: a driver that stops working, or a network fault you only understand once you dig into it. Alongside my studies I'm working toward my CCNA and picking up Microsoft courses to build on that.",
       ],
       facts: [
         { key: 'Studying', value: 'Associate Degree, System & Network Administration' },
@@ -512,7 +512,7 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
       ledeEm: 'stage',
       ledeTail: ' voor februari 2027.',
       location: 'Evergem, BE',
-      status: 'Op zoek naar werk',
+      status: 'Op zoek naar een stage',
       internship: [
         { key: 'Op zoek naar', value: 'Een stage in systeem- en netwerkbeheer: netwerk, servers en cloud' },
         { key: 'Periode', value: '8 februari tot 27 mei 2027 (60 dagen)' },
@@ -522,10 +522,10 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
     },
     about: {
       label: 'Over mij',
-      heading: 'In een Windows-omgeving voel ik me het meest thuis.',
+      heading: 'Ik wil systeembeheerder worden.',
       body: [
-        'Ik zit in de opleiding Systeem- en Netwerkbeheer, en ik weet nu al waar ik wil uitkomen: als systeembeheerder aan de slag.',
-        'Ik heb al genoeg pc\'s en netwerken zien crashen, en er evenveel weer aan de praat gekregen: een driver die ermee stopt, een netwerkfout waar je in het begin geen touw aan vastknoopt, dat werk. Naast mijn opleiding werk ik aan mijn CCNA en volg ik Microsoft-cursussen om dat verder uit te bouwen.',
+        'Ik zit in de opleiding Systeem- en Netwerkbeheer en werk vooral met Windows Server en Active Directory.',
+        'Ik heb al heel wat pc\'s en netwerken weer aan de praat gekregen: een driver die ermee stopt, of een netwerkfout die je pas snapt als je erin duikt. Naast mijn opleiding werk ik aan mijn CCNA en volg ik Microsoft-cursussen om dat verder uit te bouwen.',
       ],
       facts: [
         { key: 'Opleiding', value: 'Graduaat Systeem- en Netwerkbeheer' },

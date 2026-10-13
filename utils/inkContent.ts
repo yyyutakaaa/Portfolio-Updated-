@@ -525,7 +525,7 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
       heading: 'Ik wil systeembeheerder worden.',
       body: [
         'Ik zit in de opleiding Systeem- en Netwerkbeheer en werk vooral met Windows Server en Active Directory.',
-        'Ik heb al heel wat pc\'s en netwerken weer aan de praat gekregen: een driver die ermee stopt, of een netwerkfout die je pas snapt als je erin duikt. Naast mijn opleiding werk ik aan mijn CCNA en volg ik Microsoft-cursussen om dat verder uit te bouwen.',
+        'Ik heb al heel wat pc\'s en netwerken weer aan de praat gekregen: een driver die ermee stopt, of een netwerkfout die je pas snapt als je erin duikt. Naast mijn opleiding werk ik aan mijn CCNA en volg ik Microsoft-cursussen.',
       ],
       facts: [
         { key: 'Opleiding', value: 'Graduaat Systeem- en Netwerkbeheer' },
@@ -562,7 +562,7 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
           href: '#/projects/sets',
           external: false,
           image: { ...SETS_IMAGE, alt: 'De Sets-workoutapp op een gsm' },
-          cta: 'Lees het volledige verhaal',
+          cta: 'Lees meer',
         },
         {
           index: '02',
@@ -572,7 +572,7 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
           href: '#/projects/muted',
           external: false,
           image: { ...MUTED_IMAGE, alt: 'De Muted-app met het ruisfilter en de voice gate' },
-          cta: 'Lees het volledige verhaal',
+          cta: 'Lees meer',
         },
         {
           index: '03',
@@ -626,7 +626,7 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
       locationLabel: 'Locatie',
       location: 'Evergem, België',
       availability: 'Beschikbaarheid',
-      availableText: 'Beschikbaar voor werk',
+      availableText: 'Beschikbaar voor een stage',
       responseTime: 'Ik laat meestal binnen een dag of twee iets weten.',
       email: EMAIL,
       socials: SOCIALS,
@@ -653,7 +653,7 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
       label: 'Voor mijn stage',
       heading: 'Wat ik al opgezet heb.',
       intro:
-        'Ik zoek een stage als systeem- en netwerkbeheerder. Dit zijn zes projecten uit mijn opleiding, elk in een eigen lab opgebouwd en getest. Klik een project open voor het volledige verhaal.',
+        'Ik zoek een stage als systeem- en netwerkbeheerder. Dit zijn zes projecten uit mijn opleiding, elk in een eigen lab opgebouwd en getest. Klik op een project voor meer uitleg.',
       download: 'Download mijn stage-CV',
       view: 'Bekijk mijn stage-CV',
       contactLabel: 'Contact voor de stage',
@@ -675,7 +675,7 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
       problemCols: { problem: 'Probleem', cause: 'Oorzaak', fix: 'Oplossing' },
       learnedTitle: 'Wat ik hierbij geleerd heb',
       learnedCols: { skill: 'Vaardigheid', applied: 'Toepassing' },
-      open: 'Lees het volledige verhaal',
+      open: 'Lees meer',
       close: 'Sluit',
       groups: [
         {
@@ -764,7 +764,7 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
               thumb: 'zabbix',
               stack: 'Zabbix 7.4 · SNMP · pfSense · VMware Workstation',
               summary:
-                'Zabbix zelf opgezet in een host-only netwerk en vijf hosts gemonitord op vijf verschillende manieren, met een eigen dashboard om alles in één oogopslag te zien.',
+                'Zabbix zelf opgezet in een host-only netwerk. Ik monitorde vijf hosts op vijf verschillende manieren en maakte een eigen dashboard.',
               evidence: {
                 problems: [
                   { problem: 'Geen login op de appliance met Admin.', cause: 'De console-login is de Linux-gebruiker, niet de Zabbix-webgebruiker.', fix: 'Inloggen met de root-account van de appliance.' },

@@ -182,9 +182,9 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
     nav: { about: 'About', work: 'Work', stage: 'Internship', resume: 'CV', contact: 'Contact', home: 'Mehdi Oulad Khlie, home' },
     hero: {
       eyebrow: 'System and network administrator',
-      ledeHead: "If it's doing its job, you never ",
-      ledeEm: 'notice',
-      ledeTail: ' it.',
+      ledeHead: 'I study system and network administration and am looking for an ',
+      ledeEm: 'internship',
+      ledeTail: ' from February 2027.',
       location: 'Evergem, BE',
       status: 'Open to opportunities',
       internship: [
@@ -210,7 +210,7 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
     },
     work: {
       label: 'Work',
-      heading: 'Where would you like to look?',
+      heading: 'Internship and own projects.',
       paths: [
         {
           index: '01',
@@ -288,12 +288,12 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
     },
     contact: {
       label: 'Contact',
-      heading: 'Reach out.',
-      line: 'Have a question, or just feel like chatting? Fill in the letter below, or contact me directly through one of the channels next to it.',
+      heading: 'Send me a message.',
+      line: 'A question about an internship or one of my projects? Use the form below or email me directly.',
       direct: 'Prefer to skip the form?',
       letterTo: 'To',
       localTime: 'Evergem, now',
-      formTitle: 'A letter',
+      formTitle: 'Message',
       infoTitle: 'Contact details',
       socialTitle: 'Elsewhere',
       emailLabel: 'Email',
@@ -313,7 +313,7 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
         subjectPlaceholder: "What's this about?",
         message: 'Message',
         messagePlaceholder: 'Write your message here…',
-        send: 'Seal and send',
+        send: 'Send',
         sending: 'Sending…',
         success: "It's sent. I'll get back to you soon.",
         error: `Something went wrong there. Try again, or just email me directly at ${EMAIL}`,
@@ -508,9 +508,9 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
     nav: { about: 'Over mij', work: 'Werk', stage: 'Stage', resume: 'CV', contact: 'Contact', home: 'Mehdi Oulad Khlie, home' },
     hero: {
       eyebrow: 'Systeem- en netwerkbeheerder',
-      ledeHead: 'Werkt het zoals het moet, dan merk je er ',
-      ledeEm: 'niks',
-      ledeTail: ' van.',
+      ledeHead: 'Ik studeer systeem- en netwerkbeheer en zoek een ',
+      ledeEm: 'stage',
+      ledeTail: ' voor februari 2027.',
       location: 'Evergem, BE',
       status: 'Op zoek naar werk',
       internship: [
@@ -536,7 +536,7 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
     },
     work: {
       label: 'Werk',
-      heading: 'Waar wil je kijken?',
+      heading: 'Stage en eigen projecten.',
       paths: [
         {
           index: '01',
@@ -614,12 +614,12 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
     },
     contact: {
       label: 'Contact',
-      heading: 'Stuur gerust een berichtje.',
-      line: 'Heb je een vraag, of wil je gewoon babbelen? Vul hieronder een briefje in, of neem rechtstreeks contact op via een van de kanalen ernaast.',
+      heading: 'Stuur me een bericht.',
+      line: 'Een vraag over een stage of een van mijn projecten? Gebruik het formulier hieronder of mail me rechtstreeks.',
       direct: 'Liever meteen mailen?',
       letterTo: 'Aan',
       localTime: 'Evergem, nu',
-      formTitle: 'Een briefje',
+      formTitle: 'Bericht',
       infoTitle: 'Contactgegevens',
       socialTitle: 'Elders',
       emailLabel: 'E-mail',
@@ -639,7 +639,7 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
         subjectPlaceholder: 'Waar gaat het over?',
         message: 'Bericht',
         messagePlaceholder: 'Schrijf hier je bericht…',
-        send: 'Verzegelen en versturen',
+        send: 'Versturen',
         sending: 'Verzenden…',
         success: 'Verstuurd. Ik reageer zo snel mogelijk.',
         error: `Er liep iets mis. Probeer het nog eens, of mail me rechtstreeks op ${EMAIL}`,

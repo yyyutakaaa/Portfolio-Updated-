@@ -2269,6 +2269,13 @@ html.ink-cursor-on * {
   margin-bottom: clamp(28px, 4vh, 44px);
 }
 
+/* Keep the heading clear of the ensō beside it, whatever its length. */
+@media (min-width: 900px) {
+  .ink-letterbox__head .ink-section__heading {
+    max-width: 9ch;
+  }
+}
+
 .ink-letterbox__top .ink-letterbox__enso {
   position: absolute;
   top: 50%;

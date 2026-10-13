@@ -117,7 +117,7 @@ const BrushName: React.FC<BrushNameProps> = ({ onReady, frayed = true }) => {
       `<feDisplacementMap in="SourceGraphic" in2="n" scale="30" xChannelSelector="R" yChannelSelector="G" result="d"/>` +
       `<feGaussianBlur in="d" stdDeviation="3.4"/></filter></defs>` +
       `<g filter="url(#f)"><circle r="${bloomRadius}" fill="url(#b)"/>` +
-      `<circle r="${bloomRadius * 0.3}" fill="#1c1b19" opacity="0.8"/></g></svg>`;
+      `<circle r="${bloomRadius * 0.3}" fill="var(--sumi)" opacity="0.8"/></g></svg>`;
 
     renderSvg(svg, pixels, pixels)
       .then((url) => {
@@ -353,17 +353,17 @@ const BrushName: React.FC<BrushNameProps> = ({ onReady, frayed = true }) => {
         {/* Dense at the point of contact, nothing at all by the edge — the
             falloff is what makes it read as absorbency rather than as a shape. */}
         <radialGradient id={`bloom-${uid}`}>
-          <stop offset="0%" stopColor="#1c1b19" stopOpacity="0.95" />
-          <stop offset="30%" stopColor="#1c1b19" stopOpacity="0.72" />
-          <stop offset="58%" stopColor="#1c1b19" stopOpacity="0.32" />
-          <stop offset="82%" stopColor="#1c1b19" stopOpacity="0.09" />
-          <stop offset="100%" stopColor="#1c1b19" stopOpacity="0" />
+          <stop offset="0%" stopColor="var(--sumi)" stopOpacity="0.95" />
+          <stop offset="30%" stopColor="var(--sumi)" stopOpacity="0.72" />
+          <stop offset="58%" stopColor="var(--sumi)" stopOpacity="0.32" />
+          <stop offset="82%" stopColor="var(--sumi)" stopOpacity="0.09" />
+          <stop offset="100%" stopColor="var(--sumi)" stopOpacity="0" />
         </radialGradient>
 
         <radialGradient id={`wash-${uid}`}>
-          <stop offset="0%" stopColor="#1c1b19" stopOpacity="0.15" />
-          <stop offset="52%" stopColor="#1c1b19" stopOpacity="0.06" />
-          <stop offset="100%" stopColor="#1c1b19" stopOpacity="0" />
+          <stop offset="0%" stopColor="var(--sumi)" stopOpacity="0.15" />
+          <stop offset="52%" stopColor="var(--sumi)" stopOpacity="0.06" />
+          <stop offset="100%" stopColor="var(--sumi)" stopOpacity="0" />
         </radialGradient>
 
         {geometry?.masks.map((mask, i) => (
@@ -413,6 +413,7 @@ const BrushName: React.FC<BrushNameProps> = ({ onReady, frayed = true }) => {
       <g ref={bloomRef} opacity={0}>
         {bloomImage ? (
           <image
+            className="ink-raster"
             href={bloomImage}
             x={(geometry?.drop.x ?? 0) - bloomRadius * 2.4}
             y={(geometry?.drop.y ?? 0) - bloomRadius * 2.4}
@@ -422,7 +423,7 @@ const BrushName: React.FC<BrushNameProps> = ({ onReady, frayed = true }) => {
         ) : (
           <g filter={`url(#bleed-${uid})`} transform={`translate(${geometry?.drop.x ?? 0} ${geometry?.drop.y ?? 0})`}>
             <circle r={geometry?.drop.bloom ?? 0} fill={`url(#bloom-${uid})`} />
-            <circle r={(geometry?.drop.bloom ?? 0) * 0.3} fill="#1c1b19" opacity="0.8" />
+            <circle r={(geometry?.drop.bloom ?? 0) * 0.3} fill="var(--sumi)" opacity="0.8" />
           </g>
         )}
       </g>
@@ -432,7 +433,7 @@ const BrushName: React.FC<BrushNameProps> = ({ onReady, frayed = true }) => {
         cx={geometry?.drop.x ?? 0}
         cy={geometry?.drop.y ?? 0}
         r={geometry?.drop.r ?? 0}
-        fill="#1c1b19"
+        fill="var(--sumi)"
         opacity={0}
       />
 

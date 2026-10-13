@@ -169,7 +169,7 @@ const InkNav = React.forwardRef<HTMLElement>((_props, ref) => {
         </div>
 
         <div className="ink-nav__lang" role="group" aria-label="Language">
-          {(['nl', 'en'] as const).map((code) => (
+          {(['en', 'nl'] as const).map((code) => (
             <button
               key={code}
               type="button"

@@ -85,7 +85,7 @@ const InkEnso: React.FC<{ className?: string; children?: React.ReactNode }> = ({
           </mask>
         </defs>
         {bled ? (
-          <image href={bled} x="0" y="0" width="44" height="44" mask={`url(#enso-draw-${uid})`} />
+          <image className="ink-raster" href={bled} x="0" y="0" width="44" height="44" mask={`url(#enso-draw-${uid})`} />
         ) : (
           <path
             d={ENSO_SHAPE}

@@ -74,6 +74,15 @@ const InkCursor: React.FC = () => {
     };
     resize();
 
+    /* The trail is drawn in whatever the page's ink is, which flips at night. */
+    let inkColour = '#1c1b19';
+    const readInk = () => {
+      inkColour = getComputedStyle(canvas).getPropertyValue('--sumi').trim() || '#1c1b19';
+    };
+    readInk();
+    const scheme = window.matchMedia('(prefers-color-scheme: dark)');
+    scheme.addEventListener('change', readInk);
+
     const samples: Sample[] = [];
     let pointerX = window.innerWidth / 2;
     let pointerY = window.innerHeight / 2;
@@ -135,7 +144,7 @@ const InkCursor: React.FC = () => {
 
         ctx.globalAlpha = 0.62 * fade;
         ctx.lineWidth = width;
-        ctx.strokeStyle = '#1c1b19';
+        ctx.strokeStyle = inkColour;
         ctx.beginPath();
         ctx.moveTo((prev.x + cur.x) / 2, (prev.y + cur.y) / 2);
         ctx.quadraticCurveTo(cur.x, cur.y, (cur.x + next.x) / 2, (cur.y + next.y) / 2);
@@ -208,6 +217,7 @@ const InkCursor: React.FC = () => {
       document.removeEventListener('pointerenter', onEnter);
       window.removeEventListener('resize', resize);
       document.removeEventListener('visibilitychange', onVisibility);
+      scheme.removeEventListener('change', readInk);
       if (frame) window.cancelAnimationFrame(frame);
       root.classList.remove('ink-cursor-on');
     };

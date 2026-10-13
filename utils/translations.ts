@@ -400,7 +400,7 @@ export const translations = {
       badge: "PWA",
       title: "Sets",
       tagline: "An app for logging your workouts afterwards.",
-      intro: "Sets is a straightforward app for tracking what you do at the gym, both lifting and cardio. You train first, then type in what you did afterward. There is no subscription, screens load straight away, and it takes a couple of taps and it's on your phone, ready to go.",
+      intro: "Sets is a straightforward app for tracking what you do at the gym, both lifting and cardio. You train first, then type in what you did afterward. There is no subscription, screens load straight away, and you can put it on your phone in a couple of taps.",
       deepDive: {
         title: "Behind the scenes",
         intro: "None of this is required reading to use the app. It's here for anyone curious about what's happening underneath.",

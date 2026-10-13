@@ -4,7 +4,7 @@ export const translations = {
       back: "Terug naar home",
       badge: "WINDOWS APP",
       title: "Muted",
-      tagline: "Minder ruis, dezelfde stem.",
+      tagline: "Ruisfilter voor je micro op Windows.",
       screenshotAlt: "Screenshot van Muted met het RNNoise-filter, de voice gate en de instellingen van de virtuele kabel",
       intro: "Muted is een Windows-app die ik in elkaar heb gezet omdat ik er genoeg van had dat mijn ventilator via Discord meeluisterde. Ze filtert achtergrondgeluid uit je micro voor het bij Discord, Teams of je game terechtkomt. Dat gebeurt allemaal lokaal op je pc: niks gaat naar een server, en er wordt niks opgenomen.",
       deepDive: {
@@ -22,7 +22,7 @@ export const translations = {
         points: [
           {
             title: "Zonder eigen driver",
-            body: "Windows laat een gewone app niet zomaar een nieuwe micro toevoegen aan de lijst die Discord ziet. Daarvoor is een ondertekende kernel-driver nodig, met het hele certificeringsproces erbij. Muted omzeilt dat gewoon: het leent een virtuele audiokabel die je toch al hebt staan, en stuurt daar proper geluid naartoe. Het geheel blijft één gewone user-mode app, er draait niks in de kernel."
+            body: "Windows laat een gewone app niet zomaar een nieuwe micro toevoegen aan de lijst die Discord ziet. Daarvoor is een ondertekende kernel-driver nodig, met het hele certificeringsproces erbij. Muted omzeilt dat: het leent een virtuele audiokabel die je toch al hebt staan, en stuurt daar proper geluid naartoe. Het geheel blijft één gewone user-mode app, er draait niks in de kernel."
           },
           {
             title: "De opnamethread heeft weinig te doen",
@@ -38,24 +38,24 @@ export const translations = {
           },
           {
             title: "Het start niet als het naar je boxen zou gaan",
-            body: "Eén van de controles heeft niks te maken met geluidskwaliteit. Zou de uitgang van Muted op je boxen staan in plaats van op een virtuele kabel, dan komt je eigen stem terug in je micro en krijg je een lus. Daarom checkt de app eerst of de uitgang echt een virtuele kabel is, en weigert hij gewoon te starten als dat niet het geval is."
+            body: "Eén van de controles heeft niks te maken met geluidskwaliteit. Zou de uitgang van Muted op je boxen staan in plaats van op een virtuele kabel, dan komt je eigen stem terug in je micro en krijg je een lus. Daarom controleert de app eerst of de uitgang echt een virtuele kabel is, en start ze niet als dat niet zo is."
           }
         ]
       },
       howItWorksTitle: "In grote lijnen",
       howItWorks: [
         "De app neemt je micro op in 48kHz mono, via WASAPI.",
-        "Elk blokje van 480 samples, 20ms, gaat door het RNNoise-model van Xiph, getraind om stem van ruis te onderscheiden.",
+        "Elk blokje van 480 samples (10 ms) gaat door het RNNoise-model van Xiph, getraind om stem van ruis te onderscheiden.",
         "Zet je de voice gate aan, dan worden stiltes nog strakker weggeknipt, zodat een tikkend toetsenbord of een zoemende ventilator er niet doorkomt.",
         "Ondertussen corrigeert de app klokdrift, zodat alles ook na een lange sessie nog synchroon loopt.",
         "Het eindresultaat komt op een virtuele audiokabel terecht, en die stel je in als micro in Discord, Teams of je game."
       ],
-      featuresTitle: "Wat je krijgt",
+      featuresTitle: "Functies",
       features: [
         "Filtert ruis terwijl je praat, met het officiële RNNoise-model",
         "Draait volledig lokaal: geen account, geen cloud, geen opnames",
         "Bepaal zelf hoeveel filtering je wil via de dry/wet-mix",
-        "Voice gate zodat stilte ook echt stil is",
+        "Een voice gate die stiltes wegknipt",
         "Herkent zelf welke audioapparaten aangesloten zijn",
         "Verdwijnt in de systeemtray en kan mee opstarten met Windows"
       ],
@@ -78,65 +78,65 @@ export const translations = {
       back: "Terug naar home",
       badge: "PWA",
       title: "Sets",
-      tagline: "Eerst trainen, dan pas noteren.",
-      intro: "Sets is een eenvoudige app om bij te houden wat je in de gym doet, zowel krachttraining als cardio. Je traint eerst, en typt achteraf in wat je gedaan hebt. Geen abonnement, geen laadschermen die je ophouden. In een paar tikken staat hij op je gsm en kan je aan de slag.",
+      tagline: "Een app om je trainingen achteraf bij te houden.",
+      intro: "Sets is een eenvoudige app om bij te houden wat je in de gym doet, zowel krachttraining als cardio. Je traint eerst, en typt achteraf in wat je gedaan hebt. Er is geen abonnement, de schermen laden meteen en je zet de app in een paar tikken op je gsm.",
       deepDive: {
         title: "Achter de schermen",
-        intro: "Om de app te gebruiken moet je dit niet lezen. Het is er voor wie graag weet hoe het er vanbinnen aan toegaat.",
+        intro: "Dit moet je niet lezen om de app te gebruiken. Het is voor wie wil weten hoe ze vanbinnen werkt.",
         signalPathTitle: "Wat er gebeurt als je een sessie opslaat",
-        signalPathIntro: "Wat je intikt wordt eerst op je gsm zelf opgeslagen, dus het staat meteen vast en het scherm moet niet wachten op een reactie van waar dan ook. Pas daarna gaat de sessie naar de cloud, zodat je data ook op je andere toestellen belandt zonder dat je daar zelf iets voor moet doen.",
+        signalPathIntro: "Wat je intikt wordt eerst op je gsm zelf opgeslagen, dus het staat meteen vast en het scherm moet nergens op wachten. Pas daarna gaat de sessie naar de cloud, zodat je data ook op je andere toestellen belandt zonder dat je daar zelf iets voor moet doen.",
         signalPath: ["Workout", "Lokale write (localStorage)", "Supabase (cloud sync)"],
-        frameMathTitle: "Wat je daar dagelijks van voelt",
+        frameMathTitle: "Wat je daarvan merkt",
         frameMath: [
           { value: "Meteen", label: "geen wachttijd voor je data" },
-          { value: "Sync", label: "je sessies volgen je overal" },
-          { value: "Live", label: "je 1RM update terwijl je typt" },
+          { value: "Sync", label: "je sessies op al je toestellen" },
+          { value: "Live", label: "je 1RM past zich aan terwijl je typt" },
           { value: "Auto", label: "je workout slaat zichzelf op" }
         ],
         points: [
           {
-            title: "Niks houdt je op",
+            title: "Schermen laden meteen",
             body: "Elk scherm toont je gegevens onmiddellijk, omdat de app een eigen kopie op je gsm bijhoudt in plaats van steeds alles opnieuw op te halen. Die kopie wordt op de achtergrond bijgewerkt zodra je inlogt."
           },
           {
-            title: "Crashen kost je niks",
-            body: "De workout waar je middenin zit wordt bij elke aanpassing bewaard. Sluit iOS de app af tijdens je sessie, dan vraagt Sets de volgende keer gewoon of je wil verdergaan waar je gebleven was."
+            title: "Een crash kost geen data",
+            body: "De workout waar je middenin zit wordt bij elke aanpassing bewaard. Sluit iOS de app af tijdens je sessie, dan vraagt Sets de volgende keer of je wil verdergaan waar je gebleven was."
           },
           {
             title: "Trainen zonder account kan gewoon",
-            body: "Train je zonder in te loggen, dan blijft dat gewoon op je gsm staan. Maak je later toch een account, dan neemt de app die eerdere workouts mee in plaats van ze te laten vallen."
+            body: "Train je zonder in te loggen, dan blijft dat op je gsm staan. Maak je later toch een account, dan neemt de app die eerdere workouts mee in plaats van ze te laten vallen."
           }
         ]
       },
       howItWorksTitle: "Snel noteren",
       howItWorks: [
         "De app zet je gewichten en reps van de vorige keer al klaar als placeholder.",
-        "Bij elke set berekent hij meteen je geschatte 1RM met de Epley-formule. Verbreek je je record, dan licht het veld goud op.",
+        "Bij elke set berekent de app meteen je geschatte 1RM met de Epley-formule. Verbreek je je record, dan licht het veld goud op.",
         "Voor cardio zijn er apart velden voor tijd, afstand en calorieën.",
         "Tik op het setnummer om hem te taggen als warm-up, working set, drop set of tot falen. Warm-ups tellen niet mee voor je volume of je PR's.",
         "RPE per set is optioneel, en maakt je 1RM-schatting nauwkeuriger op basis van je reps in reserve."
       ],
-      featuresTitle: "Wat je krijgt",
+      featuresTitle: "Functies",
       features: [
         "Een dashboard met je volume, je PR's en grafieken van je laatste 7 sessies",
         "Bronzen, zilveren en gouden badges die oplichten zodra je ze verdient",
         "Een plaatcalculator die je per gym en per eenheid instelt",
-        "Kg of lbs, jouw keuze, de app rekent zelf om",
-        "Licht of donker thema, volledig vertaald naar het Nederlands en Engels",
+        "Kg of lbs, de app rekent zelf om",
+        "Licht of donker thema, in het Nederlands en het Engels",
         "Eén tik in de instellingen maakt een backup van al je data"
       ],
       stackTitle: "Gebouwd met",
       stack: [
         "Vanilla ES6+ JavaScript, zonder bundler",
-        "Tailwind CSS, op voorhand gecompileerd tot één static bestand",
+        "Tailwind CSS, op voorhand gecompileerd tot één statisch bestand",
         "Supabase voor login, database en cloud sync (met row-level security)",
         "PWA met een localStorage-cache, zodat schermen meteen laden"
       ],
-      installTitle: "Zo krijg je hem op je gsm",
+      installTitle: "Zo zet je de app op je gsm",
       installSteps: [
         "Open sets.ink in Safari (iOS) of Chrome (Android).",
         "Tik op het deel-icoon en kies 'Zet op beginscherm'.",
-        "Vanaf dan opent hij op volledig scherm, zonder browserbalk, net als een normale app."
+        "Daarna opent Sets op volledig scherm, zonder browserbalk, net als een gewone app."
       ],
       limitationsTitle: "Goed om te weten",
       limitations: "Train je zonder account, dan bestaat die data alleen op je gsm. Verwijder je de app voor je inlogt, dan is die geschiedenis weg. En pas je dezelfde training aan op twee toestellen, dan wint de versie die het laatst gesynct is.",
@@ -159,10 +159,7 @@ export const translations = {
           description: [
             "Ik controleer de binnengekomen producten op aantal en kwaliteit.",
             "Ik sorteer de kratten per klant en rit, en verwerk dat in het WMS.",
-            "Ik zorg dat alles klaarstaat voor de chauffeurs, tijdens de nachtdienst.",
-            "Komt er veel tegelijk binnen, dan werk ik onder tijdsdruk maar blijf ik het overzicht houden.",
-            "Ik werk in een team dat er samen voor zorgt dat de nacht vlot verloopt.",
-            "Zo krijgen klanten hun bestelling volledig en op tijd binnen."
+            "Ik zorg dat alles klaarstaat voor de chauffeurs, tijdens de nachtdienst."
           ]
         },
         {
@@ -172,8 +169,8 @@ export const translations = {
           description: [
             "Ik telde de stock in het magazijn en vergeleek dat met de cijfers in het systeem.",
             "Klopte er iets niet, dan meldde ik dat meteen en zocht ik mee naar waar het fout ging.",
-            "Ik hield het magazijn geordend en noteerde alles nauwkeurig, zodat fouten zich niet verder doorzetten.",
-            "Omdat het om verse producten gaat, moest alles snel en correct verlopen."
+            "Ik hield het magazijn op orde en noteerde alles nauwkeurig.",
+            "Het ging om verse producten, dus de telling moest snel gebeuren."
           ]
         },
         {
@@ -182,10 +179,10 @@ export const translations = {
           period: "JUL 2024 - JUL 2026",
           description: [
             "'s Nachts kreeg ik pallets met kranten binnen, die ik verdeelde over de juiste ritten.",
-            "Daarnaast deed ik er ook dispatcher-werk bij: pallets met magazines en tijdschriften verdelen over de verschillende sites.",
+            "Ik deed ook dispatching: pallets met tijdschriften verdelen over de verschillende sites.",
             "Ik hielp ook mee met het verwerken van retourzendingen.",
             "Ik controleerde de leveringen en hield het magazijn netjes.",
-            "Dat gebeurde vroeg in de nacht, ergens tussen 1 en 6 uur."
+            "Dat was 's nachts, ergens tussen 1 en 6 uur."
           ]
         },
         {
@@ -196,8 +193,7 @@ export const translations = {
             "Ik hielp lange rijen aan de kassa wegwerken.",
             "Ik hield de winkel proper, onder andere met de poetsmachine door de gangen.",
             "Ik beantwoordde vragen van klanten en hield de groente- en fruitafdeling in de gaten.",
-            "'s Ochtends bakte ik de croissants af, en af en toe begeleidde ik nieuwe collega's.",
-            "Dat deden we als team: snel schakelen tussen taken en toch vriendelijk blijven tegen klanten."
+            "'s Ochtends bakte ik de croissants af, en af en toe begeleidde ik nieuwe collega's."
           ]
         },
         {
@@ -206,10 +202,9 @@ export const translations = {
           period: "JUN 2021 - SEP 2021",
           description: [
             "Ik verwelkomde gasten en hielp hen aan de kassa.",
-            "Ik verwerkte de bestellingen nauwkeurig en zorgde dat elke order klopte.",
+            "Ik verwerkte de bestellingen en zorgde dat ze klopten.",
             "Ik hielp mee in de keuken bij het klaarmaken van de gerechten.",
-            "Ik hield de zaak netjes en volgde de hygiëne- en veiligheidsregels op.",
-            "Dat deed ik samen met een team, tijdens het hoogseizoen."
+            "Ik hield de zaak netjes en volgde de hygiëne- en veiligheidsregels."
           ]
         }
       ],
@@ -218,7 +213,7 @@ export const translations = {
           school: "HOGENT",
           degree: "Graduaat Systeem- en Netwerkbeheer",
           period: "2025 - 2027 (Verwacht)",
-          description: "Hier zit ik nu, met vooral bedrijfsnetwerken, serverbeheer en cloud."
+          description: "Mijn huidige opleiding, met vooral bedrijfsnetwerken, serverbeheer en cloud."
         },
         {
           school: "Vrij Instituut voor Secundair Onderwijs (VISO)",
@@ -330,7 +325,7 @@ export const translations = {
       back: "Back to home",
       badge: "WINDOWS APP",
       title: "Muted",
-      tagline: "Less noise, same voice.",
+      tagline: "A noise filter for your microphone on Windows.",
       screenshotAlt: "Screenshot of Muted showing the RNNoise filter, the voice gate, and the virtual cable settings",
       intro: "Muted is a Windows app I put together after getting tired of Discord picking up the sound of my cooling fan. It filters the background noise out of your microphone before it ever reaches Discord, Teams, or whatever game you're in. Everything runs locally on your PC: nothing is sent to a server, and nothing gets recorded.",
       deepDive: {
@@ -371,17 +366,17 @@ export const translations = {
       howItWorksTitle: "The gist",
       howItWorks: [
         "It captures your mic through WASAPI at 48kHz mono.",
-        "Every chunk of 480 samples, 20 ms, gets run through Xiph's RNNoise model, trained to separate voice from noise.",
+        "Every chunk of 480 samples (10 ms) gets run through Xiph's RNNoise model, trained to separate voice from noise.",
         "Switch on the voice gate and the gaps get trimmed even further, so keyboard clatter or a humming fan won't slip through.",
         "It corrects for clock drift along the way, so everything's still in sync after a long session.",
         "The cleaned-up result lands on a virtual audio cable, which you then select as your mic in Discord, Teams, or your game."
       ],
-      featuresTitle: "What you get",
+      featuresTitle: "Features",
       features: [
         "Removes noise while you're talking, using the official RNNoise model",
         "Runs completely on your own PC, no account, no cloud, nothing recorded",
         "Lets you control how much filtering happens with a dry/wet mix",
-        "A voice gate that actually keeps silence silent",
+        "A voice gate that cuts out the silences",
         "Detects your connected audio devices on its own",
         "Tucks itself into the system tray and can launch with Windows"
       ],
@@ -404,8 +399,8 @@ export const translations = {
       back: "Back to home",
       badge: "PWA",
       title: "Sets",
-      tagline: "Train first, log it after.",
-      intro: "Sets is a straightforward app for tracking what you do at the gym, both lifting and cardio. You train first, then type in what you did afterward. No subscription, no loading screens getting in your way. A couple of taps and it's on your phone, ready to go.",
+      tagline: "An app for logging your workouts afterwards.",
+      intro: "Sets is a straightforward app for tracking what you do at the gym, both lifting and cardio. You train first, then type in what you did afterward. There is no subscription, screens load straight away, and you can put it on your phone in a couple of taps.",
       deepDive: {
         title: "Behind the scenes",
         intro: "None of this is required reading to use the app. It's here for anyone curious about what's happening underneath.",
@@ -421,11 +416,11 @@ export const translations = {
         ],
         points: [
           {
-            title: "Nothing makes you wait",
+            title: "Screens load straight away",
             body: "Every screen loads your data instantly, because the app keeps its own copy on your phone rather than fetching everything fresh each time. That local copy gets refreshed in the background whenever you log in."
           },
           {
-            title: "Crashing costs you nothing",
+            title: "A crash loses no data",
             body: "Whatever workout you're partway through gets saved with every change you make. If iOS kills the app mid-session, Sets simply asks the next time you open it whether you'd like to pick up where you left off."
           },
           {
@@ -447,7 +442,7 @@ export const translations = {
         "A dashboard showing your volume, your PRs, and charts of your last 7 sessions",
         "Bronze, silver, and gold badges that light up as you earn them",
         "A plate calculator you configure per gym and per unit",
-        "Kg or lbs, your choice, the app handles the conversion",
+        "Kg or lbs, and the app converts between them",
         "A light or dark theme, fully translated into Dutch and English",
         "A single tap in Settings backs up all of your data"
       ],
@@ -485,10 +480,7 @@ export const translations = {
           description: [
             "I check everything that comes in for quantity and quality.",
             "I sort the crates by customer and route, and log that in the WMS.",
-            "I make sure everything's ready for the drivers, on the night shift.",
-            "When a lot comes in at once, it gets busy fast, but I keep track of everything.",
-            "I work as part of a team that keeps the whole night running smoothly.",
-            "That way customers get their order complete and on time."
+            "I make sure everything is ready for the drivers on the night shift."
           ]
         },
         {
@@ -499,7 +491,7 @@ export const translations = {
             "I counted stock in the warehouse and checked it against what the system showed.",
             "When something didn't match, I flagged it right away and helped trace where it went wrong.",
             "I kept the warehouse organized and logged everything precisely, so mistakes didn't carry over further down the line.",
-            "Since it's fresh produce, speed and accuracy both mattered at once."
+            "It was fresh produce, so the counts had to be done quickly."
           ]
         },
         {
@@ -522,8 +514,7 @@ export const translations = {
             "I helped clear long lines at the register.",
             "I kept the store clean, including running the scrubber machine through the aisles.",
             "I answered customer questions and kept an eye on the fruit and vegetable section.",
-            "In the mornings I'd finish baking the croissants, and sometimes helped guide new colleagues.",
-            "All of that as a team: switching between tasks fast while staying friendly with customers."
+            "In the mornings I'd finish baking the croissants, and sometimes helped guide new colleagues."
           ]
         },
         {
@@ -534,8 +525,7 @@ export const translations = {
             "I welcomed guests and helped out at the register.",
             "I processed orders accurately and made sure each one came out right.",
             "I helped prepare food in the kitchen.",
-            "I kept the place clean and followed the hygiene and safety rules.",
-            "All of that as part of a team, during peak season."
+            "I kept the place clean and followed the hygiene and safety rules."
           ]
         }
       ],

@@ -119,11 +119,11 @@ export interface InkCopy {
   work: {
     label: string;
     heading: string;
-    /** Lab projects from the internship page, shown on the home page because they are the strongest evidence for the job. */
-    featured: WorkItem[];
+    /** The two blocks on the home page: one to the internship page, one to my own projects. */
+    paths: { index: string; title: string; text: string; to: string; cta: string }[];
     /** Own projects; they all live on the projects page. */
     items: WorkItem[];
-    more: { cta: string; stageCta: string; label: string; heading: string; back: string };
+    more: { cta: string; label: string; heading: string; back: string };
   };
   contact: {
     label: string;
@@ -160,14 +160,6 @@ const SETS_IMAGE = {
   ratio: '1731 / 909',
 };
 
-/** A demo thumbnail from `public/stage/`, reused as a plate on the home page. */
-const stageImage = (stem: string, alt: string) => ({
-  src: `/stage/${stem}-960.webp`,
-  srcSet: `/stage/${stem}-560.webp 560w, /stage/${stem}-960.webp 960w`,
-  ratio: '16 / 9',
-  alt,
-});
-
 const MUTED_IMAGE = {
   src: '/muted-screenshot-1400.webp',
   srcSet: '/muted-screenshot-800.webp 800w, /muted-screenshot-1400.webp 1400w',
@@ -190,11 +182,11 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
     nav: { about: 'About', work: 'Work', stage: 'Internship', resume: 'CV', contact: 'Contact', home: 'Mehdi Oulad Khlie, home' },
     hero: {
       eyebrow: 'System and network administrator',
-      ledeHead: "If it's doing its job, you never ",
-      ledeEm: 'notice',
-      ledeTail: ' it.',
+      ledeHead: 'I study system and network administration and am looking for an ',
+      ledeEm: 'internship',
+      ledeTail: ' from February 2027.',
       location: 'Evergem, BE',
-      status: 'Open to opportunities',
+      status: 'Looking for an internship',
       internship: [
         { key: 'Looking for', value: 'An internship in system & network administration: networks, servers and cloud' },
         { key: 'Period', value: '8 February to 27 May 2027 (60 days)' },
@@ -204,10 +196,10 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
     },
     about: {
       label: 'About',
-      heading: 'I feel most at home in a Windows environment.',
+      heading: 'I want to work as a sysadmin.',
       body: [
-        "I'm doing a degree in System and Network Administration, and I already know where I want to end up: as a sysadmin.",
-        "I've watched enough PCs and networks break down, and fixed just as many, a driver that gives up, a network fault that makes zero sense until you dig into it. Alongside my studies I'm working toward my CCNA and picking up Microsoft courses to build on that.",
+        "I'm doing a degree in System and Network Administration and mostly work with Windows Server and Active Directory.",
+        "I've fixed my share of broken PCs and networks: a driver that stops working, or a network fault you only understand once you dig into it. Alongside my studies I'm working toward my CCNA and picking up Microsoft courses to build on that.",
       ],
       facts: [
         { key: 'Studying', value: 'Associate Degree, System & Network Administration' },
@@ -217,38 +209,22 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
       ],
     },
     work: {
-      label: 'From the lab',
-      heading: 'What I have built and tested in the lab.',
-      featured: [
+      label: 'Work',
+      heading: 'Internship and own projects.',
+      paths: [
         {
           index: '01',
-          title: 'Redundant network infrastructure',
-          stack: 'Active Directory · DHCP failover · HAProxy · BIND9',
-          description: 'Two domain controllers, two firewalls and two web servers behind a load balancer. When one web server went down, the other took over.',
-          href: '#/stage',
-          external: false,
-          image: stageImage('redundant', 'Terminal output from the redundant infrastructure demo'),
-          cta: 'Read it on the internship page',
+          title: 'Internship',
+          text: 'Six lab projects from my degree: networks, servers, virtualisation and monitoring.',
+          to: '/stage',
+          cta: 'To my internship projects',
         },
         {
           index: '02',
-          title: 'Proxmox HCI with shared storage',
-          stack: 'Proxmox · StarWind vSAN · iSCSI · HA',
-          description: 'Shared storage on a Proxmox cluster, so VMs move between nodes without downtime. I powered a node off hard and the VM restarted on another one by itself.',
-          href: '#/stage',
-          external: false,
-          image: stageImage('proxmox', 'The Proxmox cluster during the high-availability test'),
-          cta: 'Read it on the internship page',
-        },
-        {
-          index: '03',
-          title: 'Firewall between two networks',
-          stack: 'pfSense · Prometheus · Grafana',
-          description: 'A pfSense firewall between monitoring and a server: Prometheus can pull data from the server, the server cannot reach back. Tested, and visible in the firewall log.',
-          href: '#/stage',
-          external: false,
-          image: stageImage('firewall', 'The pfSense firewall rules for the monitoring network'),
-          cta: 'Read it on the internship page',
+          title: 'Projects',
+          text: 'Apps and tools I built for myself, such as Sets and Muted.',
+          to: '/projects',
+          cta: 'To my projects',
         },
       ],
       items: [
@@ -304,8 +280,7 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
         },
       ],
       more: {
-        cta: 'My own projects',
-        stageCta: 'All six lab projects',
+        cta: 'My projects',
         label: 'Own projects',
         heading: 'Things I made because I wanted them around.',
         back: 'Back home',
@@ -313,12 +288,12 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
     },
     contact: {
       label: 'Contact',
-      heading: 'Reach out.',
-      line: 'Have a question, or just feel like chatting? Fill in the letter below, or contact me directly through one of the channels next to it.',
+      heading: 'Send me a message.',
+      line: 'A question about an internship or one of my projects? Use the form below or email me directly.',
       direct: 'Prefer to skip the form?',
       letterTo: 'To',
       localTime: 'Evergem, now',
-      formTitle: 'A letter',
+      formTitle: 'Message',
       infoTitle: 'Contact details',
       socialTitle: 'Elsewhere',
       emailLabel: 'Email',
@@ -338,7 +313,7 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
         subjectPlaceholder: "What's this about?",
         message: 'Message',
         messagePlaceholder: 'Write your message here…',
-        send: 'Seal and send',
+        send: 'Send',
         sending: 'Sending…',
         success: "It's sent. I'll get back to you soon.",
         error: `Something went wrong there. Try again, or just email me directly at ${EMAIL}`,
@@ -347,7 +322,7 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
       },
     },
     stage: {
-      cta: 'My internship projects',
+      cta: 'My internship projects and CV',
       back: 'Back home',
       label: 'For my internship',
       heading: 'What I have already built.',
@@ -533,11 +508,11 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
     nav: { about: 'Over mij', work: 'Werk', stage: 'Stage', resume: 'CV', contact: 'Contact', home: 'Mehdi Oulad Khlie, home' },
     hero: {
       eyebrow: 'Systeem- en netwerkbeheerder',
-      ledeHead: 'Werkt het zoals het moet, dan merk je er ',
-      ledeEm: 'niks',
-      ledeTail: ' van.',
+      ledeHead: 'Ik studeer systeem- en netwerkbeheer en zoek een ',
+      ledeEm: 'stage',
+      ledeTail: ' voor februari 2027.',
       location: 'Evergem, BE',
-      status: 'Op zoek naar werk',
+      status: 'Op zoek naar een stage',
       internship: [
         { key: 'Op zoek naar', value: 'Een stage in systeem- en netwerkbeheer: netwerk, servers en cloud' },
         { key: 'Periode', value: '8 februari tot 27 mei 2027 (60 dagen)' },
@@ -547,10 +522,10 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
     },
     about: {
       label: 'Over mij',
-      heading: 'In een Windows-omgeving voel ik me het meest thuis.',
+      heading: 'Ik wil systeembeheerder worden.',
       body: [
-        'Ik zit in de opleiding Systeem- en Netwerkbeheer, en ik weet nu al waar ik wil uitkomen: als systeembeheerder aan de slag.',
-        'Ik heb al genoeg pc\'s en netwerken zien crashen, en er evenveel weer aan de praat gekregen: een driver die ermee stopt, een netwerkfout waar je in het begin geen touw aan vastknoopt, dat werk. Naast mijn opleiding werk ik aan mijn CCNA en volg ik Microsoft-cursussen om dat verder uit te bouwen.',
+        'Ik zit in de opleiding Systeem- en Netwerkbeheer en werk vooral met Windows Server en Active Directory.',
+        'Ik heb al heel wat pc\'s en netwerken weer aan de praat gekregen: een driver die ermee stopt, of een netwerkfout die je pas snapt als je erin duikt. Naast mijn opleiding werk ik aan mijn CCNA en volg ik Microsoft-cursussen.',
       ],
       facts: [
         { key: 'Opleiding', value: 'Graduaat Systeem- en Netwerkbeheer' },
@@ -560,38 +535,22 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
       ],
     },
     work: {
-      label: 'Uit het lab',
-      heading: 'Wat ik in het lab heb opgezet en getest.',
-      featured: [
+      label: 'Werk',
+      heading: 'Stage en eigen projecten.',
+      paths: [
         {
           index: '01',
-          title: 'Redundante netwerkinfrastructuur',
-          stack: 'Active Directory · DHCP-failover · HAProxy · BIND9',
-          description: 'Twee domain controllers, twee firewalls en twee webservers met load balancing. Bij het uitvallen van een webserver nam de andere het verkeer over.',
-          href: '#/stage',
-          external: false,
-          image: stageImage('redundant', 'Terminaluitvoer uit de demo van de redundante infrastructuur'),
-          cta: 'Lees het op de stagepagina',
+          title: 'Stage',
+          text: 'Zes labprojecten uit mijn opleiding: netwerken, servers, virtualisatie en monitoring.',
+          to: '/stage',
+          cta: 'Naar mijn stageprojecten',
         },
         {
           index: '02',
-          title: 'Proxmox HCI met shared storage',
-          stack: 'Proxmox · StarWind vSAN · iSCSI · HA',
-          description: 'Shared storage op een Proxmox-cluster, zodat VM’s zonder downtime tussen nodes bewegen. Ik schakelde een node hardhandig uit en de VM startte vanzelf op een andere.',
-          href: '#/stage',
-          external: false,
-          image: stageImage('proxmox', 'De Proxmox-cluster tijdens de HA-test'),
-          cta: 'Lees het op de stagepagina',
-        },
-        {
-          index: '03',
-          title: 'Firewall tussen twee netwerken',
-          stack: 'pfSense · Prometheus · Grafana',
-          description: 'Een pfSense-firewall tussen de monitoring en een server: Prometheus haalt gegevens op, de server kan niet terug. Getest en terug te zien in het firewall-log.',
-          href: '#/stage',
-          external: false,
-          image: stageImage('firewall', 'De firewallregels van pfSense voor het monitoringnetwerk'),
-          cta: 'Lees het op de stagepagina',
+          title: 'Projecten',
+          text: 'Apps en tools die ik voor mezelf gebouwd heb, zoals Sets en Muted.',
+          to: '/projects',
+          cta: 'Naar mijn projecten',
         },
       ],
       items: [
@@ -603,7 +562,7 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
           href: '#/projects/sets',
           external: false,
           image: { ...SETS_IMAGE, alt: 'De Sets-workoutapp op een gsm' },
-          cta: 'Lees het volledige verhaal',
+          cta: 'Lees meer',
         },
         {
           index: '02',
@@ -613,7 +572,7 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
           href: '#/projects/muted',
           external: false,
           image: { ...MUTED_IMAGE, alt: 'De Muted-app met het ruisfilter en de voice gate' },
-          cta: 'Lees het volledige verhaal',
+          cta: 'Lees meer',
         },
         {
           index: '03',
@@ -647,8 +606,7 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
         },
       ],
       more: {
-        cta: 'Mijn eigen projecten',
-        stageCta: 'Alle zes labprojecten',
+        cta: 'Mijn projecten',
         label: 'Eigen projecten',
         heading: 'Spullen die ik gebouwd heb omdat ik ze zelf nodig had.',
         back: 'Terug naar home',
@@ -656,19 +614,19 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
     },
     contact: {
       label: 'Contact',
-      heading: 'Stuur gerust een berichtje.',
-      line: 'Heb je een vraag, of wil je gewoon babbelen? Vul hieronder een briefje in, of neem rechtstreeks contact op via een van de kanalen ernaast.',
+      heading: 'Stuur me een bericht.',
+      line: 'Een vraag over een stage of een van mijn projecten? Gebruik het formulier hieronder of mail me rechtstreeks.',
       direct: 'Liever meteen mailen?',
       letterTo: 'Aan',
       localTime: 'Evergem, nu',
-      formTitle: 'Een briefje',
+      formTitle: 'Bericht',
       infoTitle: 'Contactgegevens',
       socialTitle: 'Elders',
       emailLabel: 'E-mail',
       locationLabel: 'Locatie',
       location: 'Evergem, België',
       availability: 'Beschikbaarheid',
-      availableText: 'Beschikbaar voor werk',
+      availableText: 'Beschikbaar voor een stage',
       responseTime: 'Ik laat meestal binnen een dag of twee iets weten.',
       email: EMAIL,
       socials: SOCIALS,
@@ -681,7 +639,7 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
         subjectPlaceholder: 'Waar gaat het over?',
         message: 'Bericht',
         messagePlaceholder: 'Schrijf hier je bericht…',
-        send: 'Verzegelen en versturen',
+        send: 'Versturen',
         sending: 'Verzenden…',
         success: 'Verstuurd. Ik reageer zo snel mogelijk.',
         error: `Er liep iets mis. Probeer het nog eens, of mail me rechtstreeks op ${EMAIL}`,
@@ -690,12 +648,12 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
       },
     },
     stage: {
-      cta: 'Mijn stageprojecten',
+      cta: 'Mijn stageprojecten en CV',
       back: 'Terug naar home',
       label: 'Voor mijn stage',
       heading: 'Wat ik al opgezet heb.',
       intro:
-        'Ik zoek een stage als systeem- en netwerkbeheerder. Dit zijn zes projecten uit mijn opleiding, elk in een eigen lab opgebouwd en getest. Klik een project open voor het volledige verhaal.',
+        'Ik zoek een stage als systeem- en netwerkbeheerder. Dit zijn zes projecten uit mijn opleiding, elk in een eigen lab opgebouwd en getest. Klik op een project voor meer uitleg.',
       download: 'Download mijn stage-CV',
       view: 'Bekijk mijn stage-CV',
       contactLabel: 'Contact voor de stage',
@@ -717,7 +675,7 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
       problemCols: { problem: 'Probleem', cause: 'Oorzaak', fix: 'Oplossing' },
       learnedTitle: 'Wat ik hierbij geleerd heb',
       learnedCols: { skill: 'Vaardigheid', applied: 'Toepassing' },
-      open: 'Lees het volledige verhaal',
+      open: 'Lees meer',
       close: 'Sluit',
       groups: [
         {
@@ -806,7 +764,7 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
               thumb: 'zabbix',
               stack: 'Zabbix 7.4 · SNMP · pfSense · VMware Workstation',
               summary:
-                'Zabbix zelf opgezet in een host-only netwerk en vijf hosts gemonitord op vijf verschillende manieren, met een eigen dashboard om alles in één oogopslag te zien.',
+                'Zabbix zelf opgezet in een host-only netwerk. Ik monitorde vijf hosts op vijf verschillende manieren en maakte een eigen dashboard.',
               evidence: {
                 problems: [
                   { problem: 'Geen login op de appliance met Admin.', cause: 'De console-login is de Linux-gebruiker, niet de Zabbix-webgebruiker.', fix: 'Inloggen met de root-account van de appliance.' },

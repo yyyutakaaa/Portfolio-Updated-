@@ -159,13 +159,17 @@ const InkNav = React.forwardRef<HTMLElement>((_props, ref) => {
           >
             {copy.nav.resume}
           </a>
-          <button type="button" className="ink-cap ink-nav__link" onClick={() => goTo('ink-contact')}>
+          <a
+            className="ink-cap ink-nav__link"
+            href="#/contact"
+            aria-current={pathname === '/contact' ? 'page' : undefined}
+          >
             {copy.nav.contact}
-          </button>
+          </a>
         </div>
 
         <div className="ink-nav__lang" role="group" aria-label="Language">
-          {(['nl', 'en'] as const).map((code) => (
+          {(['en', 'nl'] as const).map((code) => (
             <button
               key={code}
               type="button"

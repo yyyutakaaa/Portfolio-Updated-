@@ -2,11 +2,8 @@ import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import InkReveal from '../components/ink/InkReveal';
 import BrushDivider from '../components/ink/BrushDivider';
-import WorkBlock from '../components/ink/WorkBlock';
 import InkSectionHead from '../components/ink/InkSectionHead';
-import InkContact from '../components/ink/InkContact';
 import { useInkShell } from '../components/ink/InkLayout';
-import InkTopology from '../components/ink/InkTopology';
 import BrushName, { BrushNameHandle, PATH_UNITS } from '../components/ink/BrushName';
 import { scrollToId } from '../components/motion/SmoothScroll';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -247,24 +244,15 @@ const Ink: React.FC = () => {
                       ))}
                     </dl>
 
+                    {/* One way in: the internship page holds the projects and the CV. */}
                     <div className="ink-hero__actions">
                       <div className="ink-workmore ink-workmore--hero">
                         <Link className="ink-cap" to="/stage">
                           {copy.stage.cta} <span aria-hidden="true">→</span>
                         </Link>
                       </div>
-                      <a
-                        className="ink-btn ink-btn--quiet"
-                        href={`${import.meta.env.BASE_URL}CV Stage - Mehdi Oulad Khlie.pdf`}
-                        target="_blank"
-                        rel="noopener"
-                      >
-                        {copy.stage.view}
-                      </a>
                     </div>
                   </div>
-
-                  <InkTopology variant="home" className="ink-tail__topo" />
                 </div>
               </div>
             </div>
@@ -328,27 +316,25 @@ const Ink: React.FC = () => {
             <BrushDivider />
             <InkSectionHead id="ink-work-heading" label={copy.work.label} heading={copy.work.heading} />
 
-            <div className="ink-worklist">
-              {copy.work.featured.map((item) => (
-                <InkReveal key={item.title} y={26}>
-                  <WorkBlock item={item} />
+            {/* Two doors, nothing else: the internship work and my own projects. */}
+            <div className="ink-grid ink-doors">
+              {copy.work.paths.map((path, i) => (
+                <InkReveal key={path.to} className="ink-door" y={26} delay={i * 0.08}>
+                  <Link className="ink-door__link" to={path.to}>
+                    <span className="ink-door__index" aria-hidden="true">
+                      {path.index}
+                    </span>
+                    <span className="ink-door__title">{path.title}</span>
+                    <span className="ink-door__text">{path.text}</span>
+                    <span className="ink-cap ink-door__cta">
+                      {path.cta} <span aria-hidden="true">→</span>
+                    </span>
+                  </Link>
                 </InkReveal>
               ))}
             </div>
-
-            <div className="ink-workmore ink-workmore--pair">
-              <Link className="ink-cap" to="/stage">
-                {copy.work.more.stageCta} <span aria-hidden="true">→</span>
-              </Link>
-              <Link className="ink-cap" to="/projects">
-                {copy.work.more.cta} <span aria-hidden="true">→</span>
-              </Link>
-            </div>
           </div>
         </section>
-
-        {/* ------------------------------------------------------ contact -- */}
-        <InkContact />
     </div>
   );
 };

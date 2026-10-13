@@ -322,7 +322,7 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
       },
     },
     stage: {
-      cta: 'My internship projects',
+      cta: 'My internship projects and CV',
       back: 'Back home',
       label: 'For my internship',
       heading: 'What I have already built.',
@@ -648,7 +648,7 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
       },
     },
     stage: {
-      cta: 'Mijn stageprojecten',
+      cta: 'Mijn stageprojecten en CV',
       back: 'Terug naar home',
       label: 'Voor mijn stage',
       heading: 'Wat ik al opgezet heb.',

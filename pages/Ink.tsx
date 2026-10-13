@@ -3,7 +3,6 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import InkReveal from '../components/ink/InkReveal';
 import BrushDivider from '../components/ink/BrushDivider';
 import InkSectionHead from '../components/ink/InkSectionHead';
-import InkContact from '../components/ink/InkContact';
 import { useInkShell } from '../components/ink/InkLayout';
 import BrushName, { BrushNameHandle, PATH_UNITS } from '../components/ink/BrushName';
 import { scrollToId } from '../components/motion/SmoothScroll';
@@ -245,20 +244,13 @@ const Ink: React.FC = () => {
                       ))}
                     </dl>
 
+                    {/* One way in: the internship page holds the projects and the CV. */}
                     <div className="ink-hero__actions">
                       <div className="ink-workmore ink-workmore--hero">
                         <Link className="ink-cap" to="/stage">
                           {copy.stage.cta} <span aria-hidden="true">→</span>
                         </Link>
                       </div>
-                      <a
-                        className="ink-btn ink-btn--quiet"
-                        href={`${import.meta.env.BASE_URL}CV Stage - Mehdi Oulad Khlie.pdf`}
-                        target="_blank"
-                        rel="noopener"
-                      >
-                        {copy.stage.view}
-                      </a>
                     </div>
                   </div>
                 </div>
@@ -343,9 +335,6 @@ const Ink: React.FC = () => {
             </div>
           </div>
         </section>
-
-        {/* ------------------------------------------------------ contact -- */}
-        <InkContact />
     </div>
   );
 };

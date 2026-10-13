@@ -223,7 +223,7 @@ const InkCaseStudy: React.FC<InkCaseStudyProps> = ({ content: c, actions, note, 
               {language === 'nl' ? 'Een project te bespreken?' : 'Got a project to talk about?'}
             </InkTitle>
             <InkReveal className="ink-next__actions">
-              <Link className="ink-btn" to="/" state={{ scrollTo: 'ink-contact' }}>
+              <Link className="ink-btn" to="/contact">
                 {language === 'nl' ? 'Neem contact op' : 'Get in touch'}
               </Link>
               <Link className="ink-btn ink-btn--quiet" to="/" state={{ scrollTo: 'ink-work' }}>

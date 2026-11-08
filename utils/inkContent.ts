@@ -160,9 +160,12 @@ const SETS_IMAGE = {
   ratio: '1731 / 909',
 };
 
+/* The home screen and the Studio Voice settings side by side: two tall windows
+   make a wide plate, so it carries its own ratio. */
 const MUTED_IMAGE = {
-  src: '/muted-screenshot-1400.webp',
-  srcSet: '/muted-screenshot-800.webp 800w, /muted-screenshot-1400.webp 1400w',
+  src: '/muted/card-1400.webp',
+  srcSet: '/muted/card-800.webp 800w, /muted/card-1400.webp 1400w',
+  ratio: '1754 / 1009',
 };
 
 /* One address across the whole site while the internship search is on, so a
@@ -242,10 +245,10 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
           index: '02',
           title: 'Muted',
           stack: 'Windows app · C# .NET 9',
-          description: "My microphone kept catching the sound of my PC fan, so I built a fix. RNNoise cleans up the noise locally, before your voice ever reaches Discord.",
+          description: "My microphone kept catching the sound of my PC fan, so I built a fix. Muted cleans up your mic locally, and with Studio Voice it removes the echo of your room too.",
           href: '#/projects/muted',
           external: false,
-          image: { ...MUTED_IMAGE, alt: 'The Muted desktop app showing its noise filter and voice gate' },
+          image: { ...MUTED_IMAGE, alt: 'The Muted app: the home screen and the Studio Voice settings' },
           cta: 'Read the write-up',
         },
         {
@@ -568,10 +571,10 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
           index: '02',
           title: 'Muted',
           stack: 'Windows-app · C# .NET 9',
-          description: 'Mijn micro nam constant mijn pc-ventilator mee op, dus loste ik het zelf op. RNNoise filtert die ruis er lokaal uit, nog voor je stem bij Discord binnenkomt.',
+          description: 'Mijn micro nam constant mijn pc-ventilator mee op, dus loste ik het zelf op. Muted maakt je micro lokaal proper, en met Studio Voice haalt het ook de galm van je kamer weg.',
           href: '#/projects/muted',
           external: false,
-          image: { ...MUTED_IMAGE, alt: 'De Muted-app met het ruisfilter en de voice gate' },
+          image: { ...MUTED_IMAGE, alt: 'De Muted-app: het startscherm en de instellingen van Studio Voice' },
           cta: 'Lees meer',
         },
         {

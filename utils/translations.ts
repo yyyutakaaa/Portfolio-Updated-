@@ -4,20 +4,80 @@ export const translations = {
       back: "Terug naar home",
       badge: "WINDOWS APP",
       title: "Muted",
-      tagline: "Ruisfilter voor je micro op Windows.",
-      screenshotAlt: "Screenshot van Muted met het RNNoise-filter, de voice gate en de instellingen van de virtuele kabel",
-      intro: "Muted is een Windows-app die ik in elkaar heb gezet omdat ik er genoeg van had dat mijn ventilator via Discord meeluisterde. Ze filtert achtergrondgeluid uit je micro voor het bij Discord, Teams of je game terechtkomt. Dat gebeurt allemaal lokaal op je pc: niks gaat naar een server, en er wordt niks opgenomen.",
+      tagline: "Ruisfilter voor je micro op Windows, nu met Studio Voice.",
+      intro: "Muted is een Windows-app die ik gemaakt heb omdat mijn micro in Discord constant mijn pc-ventilator mee opnam. Ze filtert achtergrondgeluid uit je micro voor het bij Discord, Teams of je game terechtkomt. Alles gebeurt lokaal op je pc. Er gaat niks naar een server en er wordt niks opgenomen. Wat begon als een kleine pre-release is ondertussen een volledige app, met echo-onderdrukking, sneltoetsen, profielen en sinds versie 0.9 ook Studio Voice.",
+      galleryTitle: "In de app",
+      gallery: ["Startscherm met Studio Voice", "Een model kiezen", "Fine-tune", "Processing"],
+      galleryAlt: [
+        "Het startscherm van Muted met de aan-knop, de keuze van je micro en de schakelaar voor Studio Voice",
+        "De pagina Sound met Studio Voice aan en de drie modellen Classic, Balanced en Maximum",
+        "De pagina Fine-tune met sliders voor input gain, output gain, ruisonderdrukking en de voice gate",
+        "De pagina Processing met ruisonderdrukking, echo-onderdrukking, de voice gate en Tune to my voice"
+      ],
+      spotlight: {
+        title: "Studio Voice",
+        intro: "Studio Voice is de feature waar ik het meest trots op ben. RNNoise haalt vooral ruis weg, zoals een ventilator of gesis. Studio Voice gaat verder en haalt ook de galm van je kamer weg. Je klinkt dan alsof je in een kleine studio zit, ook al zit je gewoon aan je bureau. Je zet het aan met één schakelaar op het startscherm.",
+        modelsTitle: "Drie modellen, jij kiest",
+        models: [
+          {
+            title: "Classic",
+            body: "DeepFilterNet3. Het lichtste model, en voor de meeste pc's ruim genoeg."
+          },
+          {
+            title: "Balanced",
+            body: "DPDFNet 2. Dit model werkt met dual-path recurrente blokken. Daardoor haalt het ook ruis weg die in dezelfde frequenties zit als je stem, iets waar een gewone filter moeite mee heeft."
+          },
+          {
+            title: "Maximum",
+            body: "DPDFNet 8. Het sterkste van de drie. Het vraagt het meeste van je processor, maar houdt ook het meeste detail in je stem."
+          }
+        ],
+        statsTitle: "Wat het kost",
+        stats: [
+          { value: "3", label: "AI-modellen" },
+          { value: "50 ms", label: "vertraging" },
+          { value: "6 ms", label: "rekentijd per 10 ms audio, op Maximum" },
+          { value: "1", label: "processorthread" }
+        ],
+        pointsTitle: "Hoe ik het gebouwd heb",
+        points: [
+          {
+            title: "Wisselen zonder dat je micro wegvalt",
+            body: "Kies je een ander model, dan laadt Muted dat op de achtergrond, naast het model dat nog aan het filteren is. Het nieuwe model draait eerst 0,3 seconden mee zonder dat je het hoort, zodat het je kamer al kent. Daarna gaat Muted in 0,1 seconde vloeiend over. Je micro valt dus nooit stil, ook niet midden in een call."
+          },
+          {
+            title: "Alle drie dezelfde vertraging",
+            body: "Ik heb ervoor gezorgd dat de drie modellen exact dezelfde 50 ms vertraging hebben. Zo verschuift je stem niet als je van model wisselt, en blijft de rest van de keten in sync."
+          },
+          {
+            title: "Studio Voice neemt het volledig over",
+            body: "Staat Studio Voice aan, dan doet het alle ruisonderdrukking alleen. Er wordt niks van het originele geluid terug bijgemengd. Je gate, je niveau, de high-pass en de limiter blijven wel werken zoals je ze had ingesteld."
+          },
+          {
+            title: "Een gate die naar twee modellen luistert",
+            body: "De voice gate gaat pas open als zowel Studio Voice als RNNoise een stem horen. Een klik van je muis of toetsenbord laat de gate dus niet meer openspringen."
+          },
+          {
+            title: "Een waakhond voor het model",
+            body: "Een AI-model kan soms in een rare toestand vastraken, en dan laat het de ruis gewoon door. Muted houdt dat in het oog. Haalt het model twee seconden lang minder dan 6 dB weg terwijl je stil bent, dan start Muted het zelf opnieuw. Vroeger moest je daarvoor Studio Voice uit en terug aan zetten."
+          },
+          {
+            title: "Altijd een plan B",
+            body: "Zolang een model nog laadt, of als het op jouw pc niet kan draaien, blijft RNNoise de ruis wegfilteren. Je zit dus nooit zonder ruisonderdrukking."
+          }
+        ]
+      },
       deepDive: {
         title: "Achter de schermen",
         signalPathTitle: "Waar je stem eigenlijk langsgaat",
         signalPathIntro: "Windows laat een app gebruikmaken van micro's en boxen die al geïnstalleerd staan, maar een nieuw apparaat toevoegen mag alleen met een ondertekende kernel-driver. Muted werkt dus met wat er al is: het neemt je echte micro, maakt het geluid proper, en stuurt dat resultaat naar een virtuele kabel waar andere apps naar kunnen luisteren.",
-        signalPath: ["Microfoon", "Muted (gain · RNNoise · mix · gate · drift)", "Virtuele kabel in", "Gekoppelde kabel-uitgang", "Discord / Teams / game"],
+        signalPath: ["Microfoon", "Muted (echo · RNNoise of Studio Voice · gate · limiter · drift)", "Virtuele kabel in", "Gekoppelde kabel-uitgang", "Discord / Teams / game"],
         frameMathTitle: "De cijfers in detail",
         frameMath: [
           { value: "48 kHz", label: "samplerate" },
           { value: "480", label: "samples per frame" },
-          { value: "10 ms", label: "per frame" },
-          { value: "20 ms", label: "RNNoise-vertraging" }
+          { value: "20 ms", label: "vertraging met RNNoise" },
+          { value: "50 ms", label: "vertraging met Studio Voice" }
         ],
         points: [
           {
@@ -26,15 +86,15 @@ export const translations = {
           },
           {
             title: "De opnamethread heeft weinig te doen",
-            body: "De thread die je micro uitleest heeft maar één taak: de audio in een buffer zetten en doorgaan. Geen filtering, geen locks, geen geheugen dat daar wordt vrijgemaakt. Een tweede thread haalt er telkens exact 480 samples uit, 10 ms aan audio, omdat dat de framegrootte is waarop RNNoise rekent."
+            body: "De thread die je micro uitleest heeft maar één taak: de audio in een buffer zetten en doorgaan. Geen filtering, geen locks, geen geheugen dat daar wordt vrijgemaakt. Een tweede thread haalt er telkens exact 480 samples uit, 10 ms aan audio, en doet daar al het rekenwerk op."
           },
           {
-            title: "Eén frame, stap voor stap",
-            body: "Elk frame krijgt eerst input-gain en wordt dan in twee gesplitst. De ene kopie blijft onaangeroerd, de andere gaat door RNNoise. Omdat RNNoise zelf ongeveer 20 ms vertraging toevoegt, wordt die onaangeroerde kopie precies zo lang opgehouden, zodat ze sample per sample synchroon blijven. Daarna worden ze gemengd volgens de verhouding die jij kiest, knipt een optionele voice gate de stiltes weg op basis van RNNoise's eigen stemdetectie, en komt de output-gain er als laatste over."
+            title: "Echo-onderdrukking zonder headset",
+            body: "Muted luistert via loopback mee met wat je boxen afspelen. Een adaptief filter leert hoe dat geluid in je micro terechtkomt en trekt het er terug af. Praat je zelf terwijl er iets uit je boxen komt, dan merkt de app dat en past ze het filter even niet aan. Anders zou het filter je eigen stem leren wegfilteren."
           },
           {
             title: "Twee klokken die uit elkaar lopen",
-            body: "Je micro en de virtuele kabel zijn twee losse apparaten met elk hun eigen klok, en tijdens een lange call lopen die stilaan uit elkaar. Schrijft Muted exact evenveel samples weg als het inleest, dan raakt de buffer op een gegeven moment leeg of net vol. Daarom stuurt het honderd keer per seconde één sample meer of minder door, naargelang hoe vol de buffer op dat moment is. Eén sample hoor je nooit, maar op die manier blijft alles urenlang synchroon."
+            body: "Je micro en de virtuele kabel zijn twee losse apparaten met elk hun eigen klok, en tijdens een lange call lopen die stilaan uit elkaar. Schrijft Muted exact evenveel samples weg als het inleest, dan raakt de buffer op een gegeven moment leeg of net vol. Daarom stuurt het af en toe één sample meer of minder door, naargelang hoe vol de buffer op dat moment is. Eén sample hoor je nooit, maar op die manier blijft alles urenlang synchroon."
           },
           {
             title: "Het start niet als het naar je boxen zou gaan",
@@ -44,34 +104,39 @@ export const translations = {
       },
       howItWorksTitle: "In grote lijnen",
       howItWorks: [
-        "De app neemt je micro op in 48kHz mono, via WASAPI.",
-        "Elk blokje van 480 samples (10 ms) gaat door het RNNoise-model van Xiph, getraind om stem van ruis te onderscheiden.",
-        "Zet je de voice gate aan, dan worden stiltes nog strakker weggeknipt, zodat een tikkend toetsenbord of een zoemende ventilator er niet doorkomt.",
-        "Ondertussen corrigeert de app klokdrift, zodat alles ook na een lange sessie nog synchroon loopt.",
-        "Het eindresultaat komt op een virtuele audiokabel terecht, en die stel je in als micro in Discord, Teams of je game."
+        "De app neemt je micro op in 48 kHz mono, via WASAPI.",
+        "Zet je echo-onderdrukking aan, dan haalt Muted eerst weg wat je boxen afspelen. Zo heb je geen headset meer nodig.",
+        "Elk blokje van 10 ms gaat dan door RNNoise, of door Studio Voice als je dat aan hebt staan.",
+        "Een voice gate, automatisch niveau, een shout guard en een limiter zorgen dat je stil bent als je niet praat en nooit te luid binnenkomt.",
+        "Het resultaat gaat naar een virtuele audiokabel, en die kies je als micro in Discord, Teams of je game."
       ],
       featuresTitle: "Functies",
       features: [
-        "Filtert ruis terwijl je praat, met het officiële RNNoise-model",
-        "Draait volledig lokaal: geen account, geen cloud, geen opnames",
-        "Bepaal zelf hoeveel filtering je wil via de dry/wet-mix",
-        "Een voice gate die stiltes wegknipt",
-        "Herkent zelf welke audioapparaten aangesloten zijn",
-        "Verdwijnt in de systeemtray en kan mee opstarten met Windows"
+        "Studio Voice, met drie AI-modellen die ruis en de galm van je kamer weghalen",
+        "Ruisonderdrukking met het officiële RNNoise-model",
+        "Echo-onderdrukking, zodat je met boxen kan bellen in plaats van met een headset",
+        "Voice gate, automatisch niveau, high-pass, limiter en een shout guard",
+        "Tune to my voice, een kalibratie van 24 seconden die alles op jouw stem afstelt",
+        "Profielen die zelf wisselen als je een game of call-app opent",
+        "Push to talk en andere sneltoetsen die ook in fullscreen games werken",
+        "Ook het geluid van anderen proper maken",
+        "Draait volledig lokaal, zonder account, cloud of telemetrie",
+        "Indicator in je game, bediening vanuit de systeemtray en automatische updates"
       ],
       stackTitle: "Gebouwd met",
-      stack: ["C# (.NET 9 Desktop Runtime)", "WPF voor de interface", "NAudio + native RNNoise DLL voor de audio", "PowerShell / Visual Studio 2022 C++ build pipeline"],
+      stack: ["C# en .NET 9", "WPF voor de interface", "NAudio en WASAPI voor de audio", "RNNoise als native DLL", "ONNX Runtime voor Studio Voice", "DeepFilterNet3 en DPDFNet"],
       installTitle: "Zo installeer je het",
       installSteps: [
-        "Installeer eerst een ondertekende virtuele audiokabel, VB-CABLE bijvoorbeeld.",
-        "Herstart Windows als daar om gevraagd wordt.",
-        "Open Muted en stel je micro in als input en de kabel als output.",
-        "Kies daarna in Discord, Teams of je game de opnamekant van die kabel als micro."
+        "Installeer een virtuele audiokabel, bijvoorbeeld de gratis VB-CABLE, en herstart Windows als dat gevraagd wordt.",
+        "Download de installer van de laatste release. Via Scoop of als portable zip kan ook.",
+        "Bij de eerste start helpt een korte setup van vier stappen je op weg.",
+        "Kies je micro en de kabel, en druk op de aan-knop.",
+        "Kies daarna in Discord, Teams of je game de opnamekant van de kabel als micro."
       ],
       limitationsTitle: "Goed om te weten",
-      limitations: "RNNoise haalt ruis weg, maar geen echo. In een kamer die galmt kom je verder met een headset of iets dat wel echt aan echo-onderdrukking doet.",
-      downloadCta: "Haal de pre-release binnen (.exe)",
-      downloadNote: "v0.1.0, enkel Windows, en nog volop in ontwikkeling",
+      limitations: "Muted heeft nog altijd een virtuele kabel nodig, want Windows laat alleen ondertekende drivers een nieuwe micro toevoegen. De installer is ook niet code signed, dus Windows SmartScreen kan een waarschuwing tonen. Studio Voice voegt 50 ms vertraging toe en vraagt meer van je processor dan RNNoise. Op een tragere pc kies je dus best Classic.",
+      downloadCta: "Download Muted",
+      downloadNote: "Gratis en open source, voor Windows 10 en 11",
       githubCta: "Bekijk de broncode op GitHub"
     },
     setsPage: {
@@ -325,20 +390,80 @@ export const translations = {
       back: "Back to home",
       badge: "WINDOWS APP",
       title: "Muted",
-      tagline: "A noise filter for your microphone on Windows.",
-      screenshotAlt: "Screenshot of Muted showing the RNNoise filter, the voice gate, and the virtual cable settings",
-      intro: "Muted is a Windows app I put together after getting tired of Discord picking up the sound of my cooling fan. It filters the background noise out of your microphone before it ever reaches Discord, Teams, or whatever game you're in. Everything runs locally on your PC: nothing is sent to a server, and nothing gets recorded.",
+      tagline: "Noise filter for your mic on Windows, now with Studio Voice.",
+      intro: "Muted is a Windows app I built because my mic kept picking up my PC fan in Discord. It filters the background noise out of your microphone before it reaches Discord, Teams or your game. Everything happens locally on your PC. Nothing is sent to a server and nothing gets recorded. What started as a small pre-release is now a full app, with echo cancellation, shortcuts, profiles and, since version 0.9, Studio Voice.",
+      galleryTitle: "Inside the app",
+      gallery: ["Home screen with Studio Voice", "Picking a model", "Fine-tune", "Processing"],
+      galleryAlt: [
+        "Muted's home screen with the power button, the microphone picker and the Studio Voice switch",
+        "The Sound page with Studio Voice on and the three models Classic, Balanced and Maximum",
+        "The Fine-tune page with sliders for input gain, output gain, noise reduction and the voice gate",
+        "The Processing page with noise suppression, echo cancellation, the voice gate and Tune to my voice"
+      ],
+      spotlight: {
+        title: "Studio Voice",
+        intro: "Studio Voice is the feature I'm most proud of. RNNoise mainly removes noise, like a fan or hiss. Studio Voice goes further and also removes the echo of your room. You sound like you're in a small studio, even though you're just sitting at your desk. You turn it on with one switch on the home screen.",
+        modelsTitle: "Three models, you pick",
+        models: [
+          {
+            title: "Classic",
+            body: "DeepFilterNet3. The lightest model, and plenty for most PCs."
+          },
+          {
+            title: "Balanced",
+            body: "DPDFNet 2. This model uses dual-path recurrent blocks. That lets it remove noise that sits in the same frequencies as your voice, something a regular filter struggles with."
+          },
+          {
+            title: "Maximum",
+            body: "DPDFNet 8. The strongest of the three. It asks the most of your processor, but it also keeps the most detail in your voice."
+          }
+        ],
+        statsTitle: "What it costs",
+        stats: [
+          { value: "3", label: "AI models" },
+          { value: "50 ms", label: "delay" },
+          { value: "6 ms", label: "processing per 10 ms of audio, on Maximum" },
+          { value: "1", label: "processor thread" }
+        ],
+        pointsTitle: "How I built it",
+        points: [
+          {
+            title: "Switching without your mic dropping out",
+            body: "When you pick another model, Muted loads it in the background, next to the model that is still filtering. The new model first runs for 0.3 seconds without you hearing it, so it already knows your room. Then Muted crossfades over in 0.1 seconds. Your mic never goes silent, not even in the middle of a call."
+          },
+          {
+            title: "All three have the same delay",
+            body: "I made sure the three models have exactly the same 50 ms of delay. That way your voice doesn't shift when you switch models, and the rest of the chain stays in sync."
+          },
+          {
+            title: "Studio Voice takes over completely",
+            body: "When Studio Voice is on, it does all the noise removal by itself. Nothing of the original sound is mixed back in. Your gate, your level, the high-pass and the limiter keep working the way you set them."
+          },
+          {
+            title: "A gate that listens to two models",
+            body: "The voice gate only opens when both Studio Voice and RNNoise hear a voice. A mouse or keyboard click no longer pops the gate open."
+          },
+          {
+            title: "A watchdog for the model",
+            body: "An AI model can sometimes get stuck in a strange state, and then it just lets the noise through. Muted keeps an eye on that. If the model removes less than 6 dB for two seconds while you're quiet, Muted restarts it by itself. That used to take turning Studio Voice off and on again."
+          },
+          {
+            title: "Always a plan B",
+            body: "While a model is still loading, or if it can't run on your PC, RNNoise keeps filtering the noise. So you're never left without noise suppression."
+          }
+        ]
+      },
       deepDive: {
         title: "Behind the scenes",
         signalPathTitle: "Where your voice actually goes",
         signalPathIntro: "Windows will let an app use whatever mics and speakers are already installed, but adding a brand new device needs a signed kernel driver. Muted sidesteps that: it grabs your actual mic, cleans up what it hears, and passes the result to a virtual cable that other apps can pick up as their input.",
-        signalPath: ["Microphone", "Muted (gain · RNNoise · mix · gate · drift)", "Virtual cable in", "Cable's paired output", "Discord / Teams / game"],
+        signalPath: ["Microphone", "Muted (echo · RNNoise or Studio Voice · gate · limiter · drift)", "Virtual cable in", "Cable's paired output", "Discord / Teams / game"],
         frameMathTitle: "What that looks like in numbers",
         frameMath: [
           { value: "48 kHz", label: "sample rate" },
           { value: "480", label: "samples per frame" },
-          { value: "10 ms", label: "per frame" },
-          { value: "20 ms", label: "RNNoise delay" }
+          { value: "20 ms", label: "delay with RNNoise" },
+          { value: "50 ms", label: "delay with Studio Voice" }
         ],
         points: [
           {
@@ -347,15 +472,15 @@ export const translations = {
           },
           {
             title: "The thread reading your mic barely does anything",
-            body: "The thread that reads your mic has exactly one job: copy the audio into a buffer and get out of the way. No filtering, no locking, no memory allocation happening there. A separate thread then pulls out exactly 480 samples at a time, 10 ms worth of audio, since that's the frame size RNNoise expects."
+            body: "The thread that reads your mic has exactly one job: put the audio in a buffer and move on. No filtering, no locks, no memory being freed there. A second thread takes out exactly 480 samples at a time, 10 ms of audio, and does all the processing on that."
           },
           {
-            title: "Following one frame from start to finish",
-            body: "Every frame first gets input gain applied, then splits into two copies. One is left alone, the other runs through RNNoise. Since RNNoise itself adds roughly 20 ms of delay, the untouched copy gets held back by the same amount so both stay in sync sample for sample. After that they're blended at whatever ratio you've chosen, an optional voice gate cuts out the silences using RNNoise's own voice detection, and output gain is applied last."
+            title: "Echo cancellation without a headset",
+            body: "Muted listens along to what your speakers play, through loopback. An adaptive filter learns how that sound ends up in your mic and subtracts it again. When you talk while something comes out of your speakers, the app notices and stops adapting the filter for a moment. Otherwise the filter would learn to remove your own voice."
           },
           {
             title: "Two clocks that drift apart",
-            body: "Your microphone and the virtual cable are separate devices, each running on its own clock, and during a long call those clocks slowly drift apart. If Muted wrote out exactly the number of samples it read in, the buffer would eventually empty out or overflow. Instead, a hundred times per second, it adds or drops a single sample depending on how full the buffer currently is. One sample is inaudible, but doing this constantly keeps everything in sync for hours at a stretch."
+            body: "Your microphone and the virtual cable are separate devices, each running on its own clock, and during a long call those clocks slowly drift apart. If Muted wrote out exactly the number of samples it read in, the buffer would eventually empty out or overflow. Instead, every now and then, it adds or drops a single sample depending on how full the buffer currently is. One sample is inaudible, but doing this keeps everything in sync for hours at a stretch."
           },
           {
             title: "It refuses to start if it's pointed at your speakers",
@@ -365,34 +490,39 @@ export const translations = {
       },
       howItWorksTitle: "The gist",
       howItWorks: [
-        "It captures your mic through WASAPI at 48kHz mono.",
-        "Every chunk of 480 samples (10 ms) gets run through Xiph's RNNoise model, trained to separate voice from noise.",
-        "Switch on the voice gate and the gaps get trimmed even further, so keyboard clatter or a humming fan won't slip through.",
-        "It corrects for clock drift along the way, so everything's still in sync after a long session.",
-        "The cleaned-up result lands on a virtual audio cable, which you then select as your mic in Discord, Teams, or your game."
+        "The app records your mic at 48 kHz mono, through WASAPI.",
+        "With echo cancellation on, Muted first removes what your speakers play. So you no longer need a headset.",
+        "Each 10 ms block then goes through RNNoise, or through Studio Voice if you have it on.",
+        "A voice gate, automatic level, a shout guard and a limiter keep you silent when you're not talking and never too loud.",
+        "The result goes to a virtual audio cable, and you pick that as your mic in Discord, Teams or your game."
       ],
       featuresTitle: "Features",
       features: [
-        "Removes noise while you're talking, using the official RNNoise model",
-        "Runs completely on your own PC, no account, no cloud, nothing recorded",
-        "Lets you control how much filtering happens with a dry/wet mix",
-        "A voice gate that cuts out the silences",
-        "Detects your connected audio devices on its own",
-        "Tucks itself into the system tray and can launch with Windows"
+        "Studio Voice, with three AI models that remove noise and the echo of your room",
+        "Noise suppression with the official RNNoise model",
+        "Echo cancellation, so you can call with speakers instead of a headset",
+        "Voice gate, automatic level, high-pass, limiter and a shout guard",
+        "Tune to my voice, a 24-second calibration that sets everything up for your voice",
+        "Profiles that switch by themselves when you open a game or call app",
+        "Push to talk and other shortcuts that also work in full-screen games",
+        "Cleaning up other people's audio too",
+        "Runs fully locally, without an account, cloud or telemetry",
+        "An in-game indicator, controls in the system tray and automatic updates"
       ],
       stackTitle: "Built with",
-      stack: ["C# (.NET 9 Desktop Runtime)", "WPF for the interface", "NAudio + native RNNoise DLL for the audio", "PowerShell / Visual Studio 2022 C++ build pipeline"],
+      stack: ["C# and .NET 9", "WPF for the interface", "NAudio and WASAPI for the audio", "RNNoise as a native DLL", "ONNX Runtime for Studio Voice", "DeepFilterNet3 and DPDFNet"],
       installTitle: "Setting it up",
       installSteps: [
-        "Install a signed virtual audio cable, VB-CABLE works fine.",
-        "Restart Windows if it prompts you to.",
-        "Open Muted and point it at your mic as input and the cable as output.",
-        "In Discord, Teams, or your game, select that cable's recording side as your microphone."
+        "Install a virtual audio cable, for example the free VB-CABLE, and restart Windows if it asks.",
+        "Download the installer from the latest release. Scoop or a portable zip work too.",
+        "On first start, a short four-step setup gets you going.",
+        "Pick your mic and the cable, and hit the power button.",
+        "Then pick the cable's recording side as your mic in Discord, Teams or your game."
       ],
       limitationsTitle: "Good to know",
-      limitations: "RNNoise deals with noise, not echo. In a room with a lot of echo, you'll want a headset or something with real echo cancellation instead.",
-      downloadCta: "Get the pre-release (.exe)",
-      downloadNote: "v0.1.0, Windows only, and still very much in progress",
+      limitations: "Muted still needs a virtual cable, because Windows only lets signed drivers add a new microphone. The installer isn't code signed either, so Windows SmartScreen may show a warning. Studio Voice adds 50 ms of delay and asks more of your processor than RNNoise. On a slower PC, Classic is the best pick.",
+      downloadCta: "Download Muted",
+      downloadNote: "Free and open source, for Windows 10 and 11",
       githubCta: "See the source on GitHub"
     },
     setsPage: {

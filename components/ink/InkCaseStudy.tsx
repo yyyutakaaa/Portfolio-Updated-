@@ -21,6 +21,18 @@ interface Stat {
   label: string;
 }
 
+/** An optional section for the one feature a project is really about. */
+export interface CaseStudySpotlight {
+  title: string;
+  intro: string;
+  modelsTitle: string;
+  models: { title: string; body: string }[];
+  statsTitle: string;
+  stats: Stat[];
+  pointsTitle: string;
+  points: { title: string; body: string }[];
+}
+
 export interface CaseStudyContent {
   back: string;
   badge: string;
@@ -29,6 +41,7 @@ export interface CaseStudyContent {
   intro: string;
   howItWorksTitle: string;
   howItWorks: string[];
+  spotlight?: CaseStudySpotlight;
   deepDive: {
     title: string;
     intro?: string;
@@ -89,8 +102,35 @@ const Part: React.FC<{ index: number; title: string; children: React.ReactNode }
   </section>
 );
 
+/** Title-and-body rows, as used under the hood and in the spotlight. */
+const Points: React.FC<{ points: { title: string; body: string }[] }> = ({ points }) => (
+  <div className="ink-case__block ink-points">
+    {points.map((point) => (
+      <InkReveal key={point.title} className="ink-points__row">
+        <h3 className="ink-points__title">{point.title}</h3>
+        <p className="ink-prose">{point.body}</p>
+      </InkReveal>
+    ))}
+  </div>
+);
+
+/** A row of figures with a label under each. */
+const Stats: React.FC<{ stats: Stat[] }> = ({ stats }) => (
+  <InkReveal as="dl" className="ink-stats" stagger={0.08}>
+    {stats.map((stat) => (
+      <div key={stat.label} className="ink-stats__cell">
+        <dt className="ink-stats__value">{stat.value}</dt>
+        <dd className="ink-cap">{stat.label}</dd>
+      </div>
+    ))}
+  </InkReveal>
+);
+
 const InkCaseStudy: React.FC<InkCaseStudyProps> = ({ content: c, actions, note, visual }) => {
   const { language } = useLanguage();
+  const sp = c.spotlight;
+  /* The spotlight, when there is one, comes first and pushes the rest down a number. */
+  const n = (i: number) => (sp ? i + 1 : i);
 
   return (
     <article className="ink-page ink-case">
@@ -121,13 +161,43 @@ const InkCaseStudy: React.FC<InkCaseStudyProps> = ({ content: c, actions, note, 
         <div className="ink-shell">{visual}</div>
       </div>
 
+      {/* ------------------------------------------------------- spotlight -- */}
+      {sp && (
+        <Part index={1} title={sp.title}>
+          <InkReveal>
+            <p className="ink-prose">{sp.intro}</p>
+          </InkReveal>
+
+          <div className="ink-case__block">
+            <InkTitle as="h3" className="ink-case__subtitle">
+              {sp.modelsTitle}
+            </InkTitle>
+            <Points points={sp.models} />
+          </div>
+
+          <div className="ink-case__block">
+            <InkTitle as="h3" className="ink-case__subtitle">
+              {sp.statsTitle}
+            </InkTitle>
+            <Stats stats={sp.stats} />
+          </div>
+
+          <div className="ink-case__block">
+            <InkTitle as="h3" className="ink-case__subtitle">
+              {sp.pointsTitle}
+            </InkTitle>
+            <Points points={sp.points} />
+          </div>
+        </Part>
+      )}
+
       {/* ---------------------------------------------------- how it works -- */}
-      <Part index={1} title={c.howItWorksTitle}>
+      <Part index={n(1)} title={c.howItWorksTitle}>
         <Steps steps={c.howItWorks} />
       </Part>
 
       {/* --------------------------------------------------- under the hood -- */}
-      <Part index={2} title={c.deepDive.title}>
+      <Part index={n(2)} title={c.deepDive.title}>
         {c.deepDive.intro && (
           <InkReveal>
             <p className="ink-prose ink-prose--quiet">{c.deepDive.intro}</p>
@@ -162,28 +232,14 @@ const InkCaseStudy: React.FC<InkCaseStudyProps> = ({ content: c, actions, note, 
           <InkTitle as="h3" className="ink-case__subtitle">
             {c.deepDive.frameMathTitle}
           </InkTitle>
-          <InkReveal as="dl" className="ink-stats" stagger={0.08}>
-            {c.deepDive.frameMath.map((stat) => (
-              <div key={stat.label} className="ink-stats__cell">
-                <dt className="ink-stats__value">{stat.value}</dt>
-                <dd className="ink-cap">{stat.label}</dd>
-              </div>
-            ))}
-          </InkReveal>
+          <Stats stats={c.deepDive.frameMath} />
         </div>
 
-        <div className="ink-case__block ink-points">
-          {c.deepDive.points.map((point) => (
-            <InkReveal key={point.title} className="ink-points__row">
-              <h3 className="ink-points__title">{point.title}</h3>
-              <p className="ink-prose">{point.body}</p>
-            </InkReveal>
-          ))}
-        </div>
+        <Points points={c.deepDive.points} />
       </Part>
 
       {/* -------------------------------------------------------- features -- */}
-      <Part index={3} title={c.featuresTitle}>
+      <Part index={n(3)} title={c.featuresTitle}>
         <InkReveal as="ul" className="ink-bullets" stagger={0.05}>
           {c.features.map((feature) => (
             <li key={feature}>{feature}</li>
@@ -192,7 +248,7 @@ const InkCaseStudy: React.FC<InkCaseStudyProps> = ({ content: c, actions, note, 
       </Part>
 
       {/* ----------------------------------------------------------- stack -- */}
-      <Part index={4} title={c.stackTitle}>
+      <Part index={n(4)} title={c.stackTitle}>
         <InkReveal as="ul" className="ink-stack" stagger={0.04}>
           {c.stack.map((tech) => (
             <li key={tech} className="ink-cap">
@@ -203,12 +259,12 @@ const InkCaseStudy: React.FC<InkCaseStudyProps> = ({ content: c, actions, note, 
       </Part>
 
       {/* --------------------------------------------------------- install -- */}
-      <Part index={5} title={c.installTitle}>
+      <Part index={n(5)} title={c.installTitle}>
         <Steps steps={c.installSteps} />
       </Part>
 
       {/* ----------------------------------------------------- limitations -- */}
-      <Part index={6} title={c.limitationsTitle}>
+      <Part index={n(6)} title={c.limitationsTitle}>
         <InkReveal>
           <p className="ink-prose">{c.limitations}</p>
         </InkReveal>

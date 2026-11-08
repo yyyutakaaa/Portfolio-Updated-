@@ -1714,6 +1714,15 @@ html.ink-cursor-on * {
   scroll-snap-align: start;
 }
 
+/* Desktop app screenshots are wider than a phone, so they get wider frames. */
+.ink-strip--wide .ink-strip__item {
+  flex-basis: clamp(240px, 24vw, 340px);
+}
+
+.ink-plate--app {
+  border-radius: 14px;
+}
+
 .ink-strip figure {
   margin: 0;
 }

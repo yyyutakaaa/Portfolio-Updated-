@@ -4,7 +4,10 @@ import InkReveal from '../components/ink/InkReveal';
 import { useLanguage } from '../contexts/LanguageContext';
 
 const GITHUB_URL = 'https://github.com/yyyutakaaa/Muted';
-const DOWNLOAD_URL = 'https://github.com/yyyutakaaa/Muted/releases/download/v0.1.0/Muted-Setup-0.1.0.exe';
+/* The latest release, so the button never points at an old installer. */
+const DOWNLOAD_URL = 'https://github.com/yyyutakaaa/Muted/releases/latest';
+
+const SCREENS = ['home', 'sound', 'finetune', 'processing'];
 
 const ProjectMuted: React.FC = () => {
   const { t } = useLanguage();
@@ -16,8 +19,8 @@ const ProjectMuted: React.FC = () => {
       note={m.downloadNote}
       actions={
         <>
-          <a href={DOWNLOAD_URL} className="ink-btn">
-            {m.downloadCta}
+          <a href={DOWNLOAD_URL} target="_blank" rel="noopener noreferrer" className="ink-btn">
+            {m.downloadCta} <span aria-hidden="true">↗</span>
           </a>
           <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="ink-btn ink-btn--quiet">
             {m.githubCta} <span aria-hidden="true">↗</span>
@@ -25,20 +28,36 @@ const ProjectMuted: React.FC = () => {
         </>
       }
       visual={
-        <div className="ink-grid">
-          <InkReveal className="ink-case__visual">
-            <div className="ink-plate" style={{ aspectRatio: '1573 / 978' }}>
-              <picture>
-                <source
-                  type="image/webp"
-                  srcSet="/muted-screenshot-800.webp 800w, /muted-screenshot-1400.webp 1400w"
-                  sizes="(max-width: 899px) 92vw, 70vw"
-                />
-                <img src="/muted-screenshot.png" width="1573" height="978" alt={m.screenshotAlt} decoding="async" />
-              </picture>
-            </div>
+        <>
+          <div className="ink-grid">
+            <p className="ink-cap ink-case__kicker">{m.galleryTitle}</p>
+          </div>
+
+          <InkReveal as="ul" className="ink-strip ink-strip--wide" stagger={0.06}>
+            {SCREENS.map((screen, i) => (
+              <li key={screen} className="ink-strip__item">
+                <figure>
+                  <div className="ink-plate ink-plate--app">
+                    <img
+                      src={`/muted/${screen}-992.webp`}
+                      srcSet={`/muted/${screen}-640.webp 640w, /muted/${screen}-992.webp 992w`}
+                      sizes="(max-width: 899px) 80vw, 340px"
+                      width="992"
+                      height="1092"
+                      alt={m.galleryAlt[i]}
+                      loading={i === 0 ? 'eager' : 'lazy'}
+                      decoding="async"
+                    />
+                  </div>
+                  <figcaption>
+                    <span className="ink-strip__num">{String(i + 1).padStart(2, '0')}</span>
+                    {m.gallery[i]}
+                  </figcaption>
+                </figure>
+              </li>
+            ))}
           </InkReveal>
-        </div>
+        </>
       }
     />
   );

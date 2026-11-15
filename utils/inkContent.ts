@@ -515,9 +515,9 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
               document: 'hpe-labo/index.html',
               thumb: 'hpe',
               stack: 'HPE VM Essentials · Ubuntu 24.04 · iSCSI · Rocky Linux · Cisco',
-              note: 'Group project with three others. Status of 22 October 2026: the datastore and the VMs are still to come.',
+              note: 'Group project with three others. The project is finished.',
               summary:
-                'A small virtualisation setup on a Dell and a Fujitsu server, as an alternative to Nutanix. Both hosts are installed, the Manager runs on one of them and the cluster is up. The storage is an iSCSI target on an old desktop with Rocky Linux.',
+                'A small virtualisation setup on a Dell and a Fujitsu server, as an alternative to Nutanix. Both hosts are installed, the Manager runs on one of them and the cluster is up. The storage is an iSCSI target on an old desktop with Rocky Linux. The project is finished.',
               evidence: {
                 problems: [
                   { problem: 'The installer crashed on wipefs of md127.', cause: 'An old fakeRAID from the onboard LSI controller was still on the disks.', fix: 'Stopped md126 and md127, wiped the superblocks and set SATA to AHCI.' },
@@ -884,9 +884,9 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
               document: 'hpe-labo/index.html',
               thumb: 'hpe',
               stack: 'HPE VM Essentials · Ubuntu 24.04 · iSCSI · Rocky Linux · Cisco',
-              note: 'Groepsopdracht met drie anderen. Stand van 22 oktober 2026, de datastore en de VM\'s moeten nog komen.',
+              note: 'Groepsopdracht met drie anderen. Het project is afgerond.',
               summary:
-                'Een kleine virtualisatieomgeving op een Dell- en een Fujitsu-server, als alternatief voor Nutanix. Beide hosts zijn geïnstalleerd, de Manager draait op een ervan en het cluster staat. De opslag is een iSCSI-target op een oude desktop met Rocky Linux.',
+                'Een kleine virtualisatieomgeving op een Dell- en een Fujitsu-server, als alternatief voor Nutanix. Beide hosts zijn geïnstalleerd, de Manager draait op een ervan en het cluster staat. De opslag is een iSCSI-target op een oude desktop met Rocky Linux. Het project is afgerond.',
               evidence: {
                 problems: [
                   { problem: 'De installer crashte op wipefs van md127.', cause: 'Er stond nog een oude fakeRAID van de onboard LSI-controller op de schijven.', fix: 'md126 en md127 gestopt, de superblocks gewist en SATA op AHCI gezet.' },

@@ -185,9 +185,9 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
     nav: { about: 'About', work: 'Work', stage: 'Internship', resume: 'CV', contact: 'Contact', home: 'Mehdi Oulad Khlie, home' },
     hero: {
       eyebrow: 'System and network administrator',
-      ledeHead: 'I study system and network administration and am looking for an ',
-      ledeEm: 'internship',
-      ledeTail: ' from February 2027.',
+      ledeHead: 'I study system and network administration and build ',
+      ledeEm: 'my own tools',
+      ledeTail: ' on the side.',
       location: 'Evergem, BE',
       status: 'Looking for an internship',
       internship: [
@@ -213,7 +213,7 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
     },
     work: {
       label: 'Work',
-      heading: 'Internship and own projects.',
+      heading: 'Things I built.',
       paths: [
         {
           index: '01',
@@ -233,22 +233,22 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
       items: [
         {
           index: '01',
-          title: 'Sets',
-          stack: 'PWA · Vanilla JS + Supabase',
-          description: "Built for logging your training after the fact, not mid-set. Whatever you type saves to your phone instantly, then syncs to the cloud by itself.",
-          href: '#/projects/sets',
-          external: false,
-          image: { ...SETS_IMAGE, alt: 'The Sets workout app on a phone' },
-          cta: 'Read the write-up',
-        },
-        {
-          index: '02',
           title: 'Muted',
           stack: 'Windows app · C# .NET 9',
           description: "My microphone kept catching the sound of my PC fan, so I built a fix. Muted cleans up your mic locally, and with Studio Voice it removes the echo of your room too.",
           href: '#/projects/muted',
           external: false,
           image: { ...MUTED_IMAGE, alt: 'The Muted app: the home screen and the Studio Voice settings' },
+          cta: 'Read the write-up',
+        },
+        {
+          index: '02',
+          title: 'Sets',
+          stack: 'PWA · Vanilla JS + Supabase',
+          description: "Built for logging your training after the fact, not mid-set. Whatever you type saves to your phone instantly, then syncs to the cloud by itself.",
+          href: '#/projects/sets',
+          external: false,
+          image: { ...SETS_IMAGE, alt: 'The Sets workout app on a phone' },
           cta: 'Read the write-up',
         },
         {
@@ -520,9 +520,9 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
     nav: { about: 'Over mij', work: 'Werk', stage: 'Stage', resume: 'CV', contact: 'Contact', home: 'Mehdi Oulad Khlie, home' },
     hero: {
       eyebrow: 'Systeem- en netwerkbeheerder',
-      ledeHead: 'Ik studeer systeem- en netwerkbeheer en zoek een ',
-      ledeEm: 'stage',
-      ledeTail: ' voor februari 2027.',
+      ledeHead: 'Ik studeer systeem- en netwerkbeheer en bouw ernaast ',
+      ledeEm: 'mijn eigen tools',
+      ledeTail: '.',
       location: 'Evergem, BE',
       status: 'Op zoek naar een stage',
       internship: [
@@ -548,7 +548,7 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
     },
     work: {
       label: 'Werk',
-      heading: 'Stage en eigen projecten.',
+      heading: 'Wat ik gemaakt heb.',
       paths: [
         {
           index: '01',
@@ -568,22 +568,22 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
       items: [
         {
           index: '01',
-          title: 'Sets',
-          stack: 'PWA · Vanilla JS + Supabase',
-          description: 'Gemaakt om je training achteraf in te typen, niet halverwege een set. Wat je intikt staat direct op je gsm en gaat vanzelf mee naar de cloud.',
-          href: '#/projects/sets',
-          external: false,
-          image: { ...SETS_IMAGE, alt: 'De Sets-workoutapp op een gsm' },
-          cta: 'Lees meer',
-        },
-        {
-          index: '02',
           title: 'Muted',
           stack: 'Windows-app · C# .NET 9',
           description: 'Mijn micro nam constant mijn pc-ventilator mee op, dus loste ik het zelf op. Muted maakt je micro lokaal proper, en met Studio Voice haalt het ook de galm van je kamer weg.',
           href: '#/projects/muted',
           external: false,
           image: { ...MUTED_IMAGE, alt: 'De Muted-app: het startscherm en de instellingen van Studio Voice' },
+          cta: 'Lees meer',
+        },
+        {
+          index: '02',
+          title: 'Sets',
+          stack: 'PWA · Vanilla JS + Supabase',
+          description: 'Gemaakt om je training achteraf in te typen, niet halverwege een set. Wat je intikt staat direct op je gsm en gaat vanzelf mee naar de cloud.',
+          href: '#/projects/sets',
+          external: false,
+          image: { ...SETS_IMAGE, alt: 'De Sets-workoutapp op een gsm' },
           cta: 'Lees meer',
         },
         {

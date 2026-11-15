@@ -864,6 +864,10 @@ html.ink-cursor-on * {
   max-width: 56ch;
 }
 
+.ink-spotlight {
+  margin: 0 0 1rem;
+}
+
 .ink-workmore {
   display: flex;
   justify-content: flex-start;
@@ -2754,21 +2758,6 @@ html.ink-cursor-on * {
 .ink-btn--quiet:hover::after,
 .ink-workmore a:not(.ink-workmore--hero a):hover::after {
   transform: scaleX(0.7);
-}
-
-/* The internship link in the nav: an ordinary item, marked by a brush stroke
-   in the seal's red instead of a box. */
-.ink-nav__link--stage {
-  color: var(--sumi);
-}
-
-.ink-nav__link--stage::after {
-  height: 5px;
-  bottom: -3px;
-  background: var(--hanko);
-  -webkit-mask: var(--ink-stroke) 0 0 / 100% 100% no-repeat;
-  mask: var(--ink-stroke) 0 0 / 100% 100% no-repeat;
-  transform: scaleX(1);
 }
 
 /* ------------------------------------------------- lab evidence tables --- */

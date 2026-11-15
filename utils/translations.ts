@@ -144,9 +144,9 @@ export const translations = {
       "badge": "Homelab",
       "title": "Thuisrouter",
       "tagline": "Een gewone ASUS-router die ik ombouwde tot een kleine firewall met VPN.",
-      "intro": "In mijn kamer stond een ASUS RT-AX53U die alleen als access point achter de modem hing. Ik wilde van overal veilig aan mijn desktop kunnen, met een sterkere firewall en een filter tegen malware en reclame. De ASUS-software kon dat niet, dus heb ik er OpenWrt op gezet en alles zelf ingesteld. Hieronder staat wat ik gedaan heb, wat misliep en wat ik nog wil oplossen.",
+      "intro": "Mijn ASUS RT-AX53U hing als access point achter de modem. Ik wilde van overal aan mijn desktop kunnen, met een betere firewall en een filter tegen malware en reclame. Daarom zette ik er OpenWrt op en stelde ik alles zelf in.",
       "openCta": "OpenWrt voor deze router",
-      "openNote": "Gedaan in één nacht, met OpenWrt 25.12.5",
+      "openNote": "OpenWrt 25.12.5, in één nacht opgezet",
       "galleryTitle": "Mijn eigen dashboard",
       "gallery": [
         "Overzicht",
@@ -155,20 +155,16 @@ export const translations = {
       ],
       "howItWorksTitle": "Wat ik gedaan heb",
       "howItWorks": [
-        "Eerst moest ik de router terugvinden in mijn netwerk. Met nmap en het MAC-adres op het label vond ik zijn IP-adres tussen de andere toestellen.",
-        "Op de originele ASUS-firmware zette ik SSH aan. Zo kon ik het OpenWrt-image rechtstreeks op de router downloaden en de SHA256-hash nakijken voor ik iets flashte.",
-        "Met mtd-write schreef ik het image naar de Kernel-partitie. Na een reboot draaide OpenWrt 25.12.5.",
-        "De router staat nu in routermodus achter de modem. Hardware flow offloading staat aan, zodat de extra NAT de snelheid niet naar beneden haalt.",
-        "Tailscale draait op de router als subnet router. Van op mijn gsm kan ik zo via 5G mijn hele kamernetwerk bereiken, zonder één poort open te zetten.",
-        "Alle DNS gaat versleuteld naar Quad9. Daarbovenop filteren banIP en adblock bekende slechte IP-adressen, reclame en trackers.",
-        "Mijn desktop zet ik van op afstand aan met Wake-on-LAN. De router stuurt het pakket en ik geef het commando via Tailscale.",
-        "Ik bouwde ook een eigen dashboard dat op de router zelf draait, zodat ik alles op mijn gsm kan volgen."
+        "Via SSH op de ASUS-firmware het OpenWrt-image gedownload, de hash nagekeken en met mtd-write geflasht.",
+        "De router in routermodus gezet, met hardware flow offloading aan.",
+        "Tailscale ingesteld als subnet router, zodat ik via 5G mijn kamernetwerk bereik zonder open poorten.",
+        "DNS versleuteld naar Quad9 gestuurd, met banIP en adblock erbovenop.",
+        "Wake-on-LAN en een eigen dashboard op de router gezet, zodat ik alles van op mijn gsm doe."
       ],
       "deepDive": {
         "title": "Achter de schermen",
-        "intro": "Een paar dingen die ik onderweg geleerd heb, vooral door ze eerst fout te doen.",
         "signalPathTitle": "Wat er gebeurt als een toestel een website opzoekt",
-        "signalPathIntro": "Elke DNS-vraag uit mijn netwerk komt eerst bij dnsmasq op de router. Daar kijkt adblock of het domein op een lijst staat. Staat het er niet op, dan gaat de vraag via DNS over HTTPS naar Quad9, dat zelf nog malware- en phishingdomeinen tegenhoudt. Mijn provider ziet dus niet welke sites ik opzoek.",
+        "signalPathIntro": "Adblock op de router kijkt eerst of het domein op een lijst staat. Zo niet, dan gaat de vraag versleuteld naar Quad9, dat zelf nog malware tegenhoudt.",
         "signalPath": [
           "Toestel",
           "dnsmasq + adblock",
@@ -179,76 +175,53 @@ export const translations = {
         "frameMath": [
           {
             "value": "520.000+",
-            "label": "domeinen geblokkeerd door adblock"
+            "label": "domeinen geblokkeerd"
           },
           {
             "value": "16.000+",
-            "label": "IP-adressen geblokkeerd door banIP"
+            "label": "IP-adressen geblokkeerd"
           },
           {
             "value": "256 MB",
-            "label": "geheugen in de hele router"
-          },
-          {
-            "value": "67 MB",
-            "label": "nog vrij met alles ingeladen"
+            "label": "geheugen in de router"
           }
         ],
         "points": [
           {
-            "title": "Eén vergeten /24 en alles lag plat",
-            "body": "Ik veranderde het LAN-adres van de router naar een eigen subnet, maar vergat de prefix. OpenWrt 25.12 nam het adres over als /32, dus zonder netwerk eromheen. DHCP gaf geen adressen meer en ook ping werkte niet. Ik kwam terug binnen via failsafe-modus, deed mount_root en zette het adres juist met /24 erachter."
+            "title": "Eén vergeten /24",
+            "body": "Ik gaf de router een nieuw LAN-adres zonder prefix. Hij nam het over als /32, waardoor DHCP en ping stopten. Via failsafe-modus kwam ik terug binnen en zette ik het juist."
           },
           {
-            "title": "Tailscale en nftables",
-            "body": "Tailscale wil standaard zelf firewallregels maken met iptables. OpenWrt gebruikt nu nftables, dus dat lukte niet. Ik zette netfilter-mode uit en maakte in de firewall zelf een zone voor tailscale0, met forwarding van en naar het LAN."
-          },
-          {
-            "title": "Wake-on-LAN gaat niet door een tunnel",
-            "body": "Een magic packet is een broadcast, en broadcasts gaan niet door Tailscale. Daarom laat ik de router het pakket sturen, want die zit in hetzelfde netwerk als mijn desktop. In het BIOS moest ik ook ErP uitzetten en Resume By PCI-E Device aanzetten. Anders kreeg de netwerkkaart geen stroom als de pc uit stond."
-          },
-          {
-            "title": "Waarom adblock niets doet tegen YouTube",
-            "body": "Een DNS-filter ziet alleen domeinnamen. YouTube levert de video en de reclame via dezelfde servers, en steeds vaker zit de reclame in de stream zelf. Blokkeer je dat domein, dan werkt YouTube gewoon niet meer. Daarvoor heb je iets op het toestel zelf nodig, zoals uBlock Origin."
-          },
-          {
-            "title": "Een dashboard zonder framework",
-            "body": "Op de router draait een klein shellscript als CGI. Het leest de status van internet, Quad9, banIP, adblock, Tailscale en het geheugen uit en geeft dat terug als JSON. Eén HTML-pagina toont het op mijn gsm. Websites aan adblock toevoegen kan ook, maar alleen met een toegangscode die op de router staat."
+            "title": "Wake-on-LAN via de router",
+            "body": "Een magic packet gaat niet door Tailscale, omdat het een broadcast is. Daarom stuurt de router het, want die zit in hetzelfde netwerk als mijn desktop."
           }
         ]
       },
       "featuresTitle": "Wat de router nu doet",
       "features": [
-        "Routeren en NAT met hardware flow offloading",
-        "Een eigen netwerk in mijn kamer, met een firewall tussen dat netwerk en de rest van het huis",
-        "Tailscale als subnet router, bereikbaar van overal zonder open poorten",
+        "Routeren met een firewall tussen mijn kamer en de rest van het huis",
+        "Tailscale als subnet router",
         "Versleutelde DNS via Quad9",
-        "banIP met lijsten van botnetservers en gehackte hosts, die elke nacht bijgewerkt worden",
-        "Adblock op DNS-niveau tegen reclame, trackers en phishing",
-        "Wake-on-LAN voor mijn desktop, ook via 5G",
-        "Een eigen dashboard op mijn gsm om de status te volgen en websites te blokkeren"
+        "banIP en adblock tegen malware, reclame en trackers",
+        "Wake-on-LAN en een eigen dashboard op mijn gsm"
       ],
       "stackTitle": "Gebruikt",
       "stack": [
-        "ASUS RT-AX53U met een MediaTek MT7621 en 256 MB RAM",
-        "OpenWrt 25.12.5 met nftables (fw4)",
+        "ASUS RT-AX53U",
+        "OpenWrt 25.12.5",
         "Tailscale",
-        "https-dns-proxy met Quad9",
+        "Quad9",
         "banIP en adblock",
-        "etherwake en luci-app-wol",
-        "Shell CGI op uhttpd, HTML en JavaScript zonder framework",
-        "Argon als thema voor LuCI"
+        "Shell CGI, HTML en JavaScript"
       ],
       "installTitle": "Zelf proberen",
       "installSteps": [
-        "Kijk eerst in de Table of Hardware van OpenWrt of je router ondersteund wordt en welk image je nodig hebt.",
-        "Download de originele firmware en de herstel-tool van de fabrikant, zodat je altijd terug kan.",
-        "Volg de stappen op de wikipagina van je model en controleer de hash van het image voor je flasht.",
-        "Verander daarna één ding per keer en maak telkens een back-up met sysupgrade -b.",
-        "Zoek op hoe je failsafe-modus start voor je aan het netwerk begint. Dat heeft mij die nacht gered."
+        "Kijk in de Table of Hardware van OpenWrt of je router ondersteund wordt.",
+        "Hou de originele firmware en de herstel-tool van de fabrikant bij de hand.",
+        "Verander één ding per keer en maak telkens een back-up met sysupgrade -b."
       ],
       "limitationsTitle": "Wat nog niet goed is",
-      "limitations": "De router kan zelf geen HTTPS-verbinding maken met github.com, terwijl ping wel werkt. Waarom weet ik nog niet, dus pakketten van GitHub zet ik er voorlopig via mijn pc op. Met 256 MB RAM zit ik ook aan de grens van wat de router aankan, en voor echte inspectie van verkeer met Suricata is de processor te zwak. Wil ik dat later, dan wordt het een kleine x86-pc met OPNsense en blijft deze router alleen access point. En de firewall beschermt alleen de toestellen achter deze router, niet de rest van het huis."
+      "limitations": "De router zelf geraakt niet via HTTPS bij github.com, al werkt ping wel. Met 256 MB RAM zit ik ook aan de grens, en voor zwaardere dingen zoals Suricata is de processor te traag."
     },
     setsPage: {
       back: "Terug naar home",
@@ -641,9 +614,9 @@ export const translations = {
       "badge": "Homelab",
       "title": "Home router",
       "tagline": "A regular ASUS router I turned into a small firewall with a VPN.",
-      "intro": "My room had an ASUS RT-AX53U that only worked as an access point behind the modem. I wanted safe access to my desktop from anywhere, a stronger firewall and a filter against malware and ads. The ASUS software couldn't do that, so I put OpenWrt on it and set everything up myself. Below is what I did, what went wrong and what I still want to fix.",
+      "intro": "My ASUS RT-AX53U was just an access point behind the modem. I wanted access to my desktop from anywhere, a better firewall and a filter against malware and ads. So I put OpenWrt on it and set everything up myself.",
       "openCta": "OpenWrt for this router",
-      "openNote": "Done in one night, on OpenWrt 25.12.5",
+      "openNote": "OpenWrt 25.12.5, set up in one night",
       "galleryTitle": "My own dashboard",
       "gallery": [
         "Overview",
@@ -652,20 +625,16 @@ export const translations = {
       ],
       "howItWorksTitle": "What I did",
       "howItWorks": [
-        "First I had to find the router on my network again. With nmap and the MAC address on the label I found its IP address between the other devices.",
-        "On the stock ASUS firmware I turned on SSH. That let me download the OpenWrt image straight onto the router and check the SHA256 hash before flashing anything.",
-        "With mtd-write I wrote the image to the Kernel partition. After a reboot it was running OpenWrt 25.12.5.",
-        "The router now runs in router mode behind the modem. Hardware flow offloading is on, so the extra NAT doesn't drag the speed down.",
-        "Tailscale runs on the router as a subnet router. From my phone on 5G I can reach my whole room network, without opening a single port.",
-        "All DNS goes encrypted to Quad9. On top of that, banIP and adblock filter known bad IP addresses, ads and trackers.",
-        "I turn my desktop on remotely with Wake-on-LAN. The router sends the packet and I give the command over Tailscale.",
-        "I also built my own dashboard that runs on the router itself, so I can keep an eye on everything from my phone."
+        "Downloaded the OpenWrt image over SSH on the ASUS firmware, checked the hash and flashed it with mtd-write.",
+        "Put the router in router mode, with hardware flow offloading on.",
+        "Set up Tailscale as a subnet router, so I reach my room network over 5G without open ports.",
+        "Sent DNS encrypted to Quad9, with banIP and adblock on top.",
+        "Added Wake-on-LAN and my own dashboard on the router, so I do everything from my phone."
       ],
       "deepDive": {
         "title": "Behind the scenes",
-        "intro": "A few things I learned along the way, mostly by getting them wrong first.",
         "signalPathTitle": "What happens when a device looks up a website",
-        "signalPathIntro": "Every DNS query on my network first reaches dnsmasq on the router. There adblock checks whether the domain is on a list. If it isn't, the query goes over DNS over HTTPS to Quad9, which blocks malware and phishing domains itself. So my ISP can't see which sites I look up.",
+        "signalPathIntro": "Adblock on the router first checks whether the domain is on a list. If not, the query goes encrypted to Quad9, which blocks malware itself.",
         "signalPath": [
           "Device",
           "dnsmasq + adblock",
@@ -676,76 +645,53 @@ export const translations = {
         "frameMath": [
           {
             "value": "520,000+",
-            "label": "domains blocked by adblock"
+            "label": "domains blocked"
           },
           {
             "value": "16,000+",
-            "label": "IP addresses blocked by banIP"
+            "label": "IP addresses blocked"
           },
           {
             "value": "256 MB",
-            "label": "memory in the whole router"
-          },
-          {
-            "value": "67 MB",
-            "label": "still free with everything loaded"
+            "label": "memory in the router"
           }
         ],
         "points": [
           {
-            "title": "One missing /24 and everything went down",
-            "body": "I changed the router's LAN address to a subnet of my own, but forgot the prefix. OpenWrt 25.12 took the address as a /32, so with no network around it. DHCP stopped handing out addresses and even ping failed. I got back in through failsafe mode, ran mount_root and set the address again with /24 behind it."
+            "title": "One missing /24",
+            "body": "I gave the router a new LAN address without a prefix. It took it as a /32, so DHCP and ping stopped. I got back in through failsafe mode and fixed it."
           },
           {
-            "title": "Tailscale and nftables",
-            "body": "By default Tailscale wants to create its own firewall rules with iptables. OpenWrt uses nftables now, so that didn't work. I turned netfilter mode off and made a zone for tailscale0 in the firewall itself, with forwarding to and from the LAN."
-          },
-          {
-            "title": "Wake-on-LAN doesn't go through a tunnel",
-            "body": "A magic packet is a broadcast, and broadcasts don't travel through Tailscale. That's why the router sends the packet, since it sits on the same network as my desktop. In the BIOS I also had to turn off ErP and turn on Resume By PCI-E Device. Otherwise the network card got no power while the PC was off."
-          },
-          {
-            "title": "Why adblock does nothing against YouTube",
-            "body": "A DNS filter only sees domain names. YouTube serves the video and the ads from the same servers, and more and more the ads are part of the stream itself. Block that domain and YouTube simply stops working. For that you need something on the device itself, like uBlock Origin."
-          },
-          {
-            "title": "A dashboard without a framework",
-            "body": "A small shell script runs on the router as CGI. It reads the status of the internet connection, Quad9, banIP, adblock, Tailscale and memory, and returns it as JSON. One HTML page shows it on my phone. I can add websites to adblock from there too, but only with an access code that lives on the router."
+            "title": "Wake-on-LAN through the router",
+            "body": "A magic packet doesn't go through Tailscale because it's a broadcast. So the router sends it, since it sits on the same network as my desktop."
           }
         ]
       },
       "featuresTitle": "What the router does now",
       "features": [
-        "Routing and NAT with hardware flow offloading",
-        "A separate network in my room, with a firewall between it and the rest of the house",
-        "Tailscale as a subnet router, reachable from anywhere without open ports",
+        "Routing with a firewall between my room and the rest of the house",
+        "Tailscale as a subnet router",
         "Encrypted DNS through Quad9",
-        "banIP with lists of botnet servers and compromised hosts, updated every night",
-        "DNS-level adblock against ads, trackers and phishing",
-        "Wake-on-LAN for my desktop, also over 5G",
-        "My own dashboard on my phone to follow the status and block websites"
+        "banIP and adblock against malware, ads and trackers",
+        "Wake-on-LAN and my own dashboard on my phone"
       ],
       "stackTitle": "Built with",
       "stack": [
-        "ASUS RT-AX53U with a MediaTek MT7621 and 256 MB RAM",
-        "OpenWrt 25.12.5 with nftables (fw4)",
+        "ASUS RT-AX53U",
+        "OpenWrt 25.12.5",
         "Tailscale",
-        "https-dns-proxy with Quad9",
+        "Quad9",
         "banIP and adblock",
-        "etherwake and luci-app-wol",
-        "Shell CGI on uhttpd, HTML and JavaScript without a framework",
-        "Argon as the LuCI theme"
+        "Shell CGI, HTML and JavaScript"
       ],
       "installTitle": "Try it yourself",
       "installSteps": [
-        "Check the OpenWrt Table of Hardware first to see if your router is supported and which image you need.",
-        "Download the stock firmware and the recovery tool from the manufacturer, so you can always go back.",
-        "Follow the steps on the wiki page for your model and check the image hash before you flash.",
-        "After that, change one thing at a time and make a backup with sysupgrade -b each time.",
-        "Look up how to start failsafe mode before you touch the network settings. It saved me that night."
+        "Check the OpenWrt Table of Hardware to see if your router is supported.",
+        "Keep the stock firmware and the manufacturer's recovery tool at hand.",
+        "Change one thing at a time and make a backup with sysupgrade -b each time."
       ],
       "limitationsTitle": "What isn't right yet",
-      "limitations": "The router itself can't make an HTTPS connection to github.com, while ping works fine. I don't know why yet, so for now I put packages from GitHub on it through my PC. With 256 MB of RAM I'm also at the limit of what the router can handle, and the CPU is too weak for real traffic inspection with Suricata. If I want that later, it becomes a small x86 box with OPNsense and this router goes back to being an access point. And the firewall only protects the devices behind this router, not the rest of the house."
+      "limitations": "The router itself can't reach github.com over HTTPS, although ping works. With 256 MB of RAM I'm also at the limit, and the CPU is too slow for heavier things like Suricata."
     },
     setsPage: {
       back: "Back to home",

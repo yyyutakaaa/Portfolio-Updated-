@@ -1,7 +1,8 @@
 import React from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import InkReveal from '../components/ink/InkReveal';
 import BrushDivider from '../components/ink/BrushDivider';
+import WorkBlock from '../components/ink/WorkBlock';
 import InkSectionHead from '../components/ink/InkSectionHead';
 import { useInkShell } from '../components/ink/InkLayout';
 import BrushName, { BrushNameHandle, PATH_UNITS } from '../components/ink/BrushName';
@@ -235,21 +236,18 @@ const Ink: React.FC = () => {
                       {copy.hero.ledeTail}
                     </p>
 
-                    <dl className="ink-pitch">
-                      {copy.hero.internship.map((row) => (
-                        <div className="ink-pitch__row" key={row.key}>
-                          <dt className="ink-cap">{row.key}</dt>
-                          <dd>{row.value}</dd>
-                        </div>
-                      ))}
-                    </dl>
-
-                    {/* One way in: the internship page holds the projects and the CV. */}
                     <div className="ink-hero__actions">
                       <div className="ink-workmore ink-workmore--hero">
-                        <Link className="ink-cap" to="/stage">
-                          {copy.stage.cta} <span aria-hidden="true">→</span>
-                        </Link>
+                        <a
+                          className="ink-cap"
+                          href="#ink-work"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            scrollToId('ink-work');
+                          }}
+                        >
+                          {language === 'nl' ? 'Bekijk mijn werk' : 'See my work'} <span aria-hidden="true">↓</span>
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -316,20 +314,15 @@ const Ink: React.FC = () => {
             <BrushDivider />
             <InkSectionHead id="ink-work-heading" label={copy.work.label} heading={copy.work.heading} />
 
-            {/* Two doors, nothing else: the internship work and my own projects. */}
-            <div className="ink-grid ink-doors">
-              {copy.work.paths.map((path, i) => (
-                <InkReveal key={path.to} className="ink-door" y={26} delay={i * 0.08}>
-                  <Link className="ink-door__link" to={path.to}>
-                    <span className="ink-door__index" aria-hidden="true">
-                      {path.index}
-                    </span>
-                    <span className="ink-door__title">{path.title}</span>
-                    <span className="ink-door__text">{path.text}</span>
-                    <span className="ink-cap ink-door__cta">
-                      {path.cta} <span aria-hidden="true">→</span>
-                    </span>
-                  </Link>
+            {/* Muted leads as the spotlight, the rest follows as one list.
+                The internship work keeps its own page in the nav. */}
+            <div className="ink-worklist">
+              {copy.work.items.map((item, i) => (
+                <InkReveal key={item.title} y={26}>
+                  {i === 0 && (
+                    <p className="ink-cap ink-spotlight">{language === 'nl' ? 'In de kijker' : 'Spotlight'}</p>
+                  )}
+                  <WorkBlock item={item} plain={!item.image} />
                 </InkReveal>
               ))}
             </div>

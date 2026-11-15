@@ -36,10 +36,10 @@ footer{margin-top:56px;padding-top:16px;border-top:1px solid var(--line);font:14
 <h1>HPE VM Essentials op oude servers: wat we bouwden en wat misliep</h1>
 <div class="meta">Werkplek 3, HardwareLabo &middot; Mehdi Oulad Khlie &middot; 15 november 2026</div>
 </header>
-<nav><a href="#doel">Doel</a><a href="#opstelling">Opstelling</a><a href="#router-switch">Router en switch</a><a href="#ds2">DS2</a><a href="#irmc">iRMC op FS16</a><a href="#fs16">FS16 installeren</a><a href="#fs16-netwerk">Netwerk op FS16</a><a href="#manager">VME Manager</a><a href="#cluster">Storage en cluster</a><a href="#problemen">Problemen</a><a href="#nog">Nog te doen</a></nav>
+<nav><a href="#doel">Doel</a><a href="#opstelling">Opstelling</a><a href="#router-switch">Router en switch</a><a href="#ds2">DS2</a><a href="#irmc">iRMC op FS16</a><a href="#fs16">FS16 installeren</a><a href="#fs16-netwerk">Netwerk op FS16</a><a href="#manager">VME Manager</a><a href="#cluster">Storage en cluster</a><a href="#problemen">Problemen</a><a href="#afronding">Afronding</a></nav>
 <main>
 <h2 id="doel">Doel</h2>
-<p>In WP3 bouwen we met HPE VM Essentials een kleine virtualisatieomgeving op oude servers. Het is een proefopstelling als alternatief voor Nutanix. We zijn met vier en elk van ons moet alles kunnen uitleggen. Hier staat wat we deden, wat vastliep en hoe ik het oploste. De stand is die van 22 oktober 2026.</p>
+<p>In WP3 bouwen we met HPE VM Essentials een kleine virtualisatieomgeving op oude servers. Het is een proefopstelling als alternatief voor Nutanix. We zijn met vier en elk van ons moet alles kunnen uitleggen. Hier staat wat we deden, wat vastliep en hoe ik het oploste. Het project is afgerond.</p>
 
 <h2 id="opstelling">Opstelling</h2>
 <p>Het labo bestaat uit een Cisco router R1, een switch S1, twee servers en een oude desktop voor de opslag. DS2 is een Dell PowerEdge R630 en FS16 is een Fujitsu PRIMERGY RX2530 M1. De desktop draait Rocky Linux.</p>
@@ -89,7 +89,7 @@ footer{margin-top:56px;padding-top:16px;border-top:1px solid var(--line);font:14
 <p>Daarna lukte de setup en loopt de trial van 60 dagen. In de GUI kreeg ik een foutmelding over <code>removeChild</code>. Dat kwam door de vertaalfunctie van Chrome. Ik vertaal de pagina dus niet.</p>
 <figure><img src="img/manager-removechild.webp" loading="lazy" alt="Oops-pagina met de foutmelding removeChild"><figcaption>De GUI breekt als Chrome de pagina vertaalt.</figcaption></figure>
 
-<h2 id="cluster">22 oktober: RAID, storage en cluster</h2>
+<h2 id="cluster">RAID, storage en cluster</h2>
 <p>FS16 kreeg software-RAID 1 zonder herinstallatie. De md0 loopt over sda2 en sdb2 en de EFI-partitie staat ook op sdb1. De bootvolgorde bevat beide schijven. De beheerkabel op Fa0/12 zat nog los. Daarna was alles up en werkte SSH vanaf mijn Mac.</p>
 <p>De kabels van DS2 zijn omgekeerd ten opzichte van FS16. Bij DS2 zit storage op eno2 met 192.168.40.11, bij FS16 op eno3 met 192.168.40.12. Voor DS2 staat dat in <code>60-storage.yaml</code>.</p>
 <p>Voor de opslag wilden we TrueNAS, maar dat werkt niet op een pc met een schijf. De docent vroeg daarom Rocky Linux op de desktop en de schijf te delen via iSCSI. Met targetcli maakte ik een fileio-backstore van 300G en ACL's voor beide hosts. Beide hosts zien nu een schijf van 300G als sdc. Het design noemt nog NFS, dat wijkt dus af.</p>
@@ -117,8 +117,8 @@ footer{margin-top:56px;padding-top:16px;border-top:1px solid var(--line);font:14
 <tr><td>Cluster aanmaken gaf <code>SSH Host IP cannot be blank</code>.</td><td>Het tweede hostveld was leeg.</td><td>Beide hosts invullen.</td></tr>
 </tbody></table></div>
 
-<h2 id="nog">Nog te doen</h2>
-<p>Als volgende maak ik in de Manager een datastore als GFS2 op de schijf sdc. Die formatteer ik niet zelf. Daarna komen de Linux VM in VLAN 20 en de Windows VM in VLAN 30, en een live migratie tussen de twee hosts. Dan volgen het advies en de demo.</p>
+<h2 id="afronding">Afronding</h2>
+<p>Daarna maakten we in de Manager de datastore op de iSCSI-schijf en de virtuele machines. Het project is afgerond.</p>
 
 </main>
 <footer><a href="../#/stage">&larr; Terug naar mijn stageprojecten</a></footer>

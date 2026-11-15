@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="index,follow">
+<title>HPE VM Essentials op oude servers: wat we bouwden en wat misliep</title>
+<meta name="description" content="Documentatie met screenshots en foto's van een HPE VM Essentials cluster op een Dell en een Fujitsu server, met een Cisco router en switch en iSCSI-opslag op Rocky Linux.">
+<style>
+:root{--bg:#f6f4ef;--fg:#1c1b19;--mut:#5f5b54;--line:#d8d3c8;--card:#fffdf8;--acc:#8a3b12;--code:#ece8de}
+@media(prefers-color-scheme:dark){:root{--bg:#141413;--fg:#ebe8e0;--mut:#a19c90;--line:#34322e;--card:#1c1c1a;--acc:#e0915f;--code:#242421}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:17px/1.65 Georgia,"Times New Roman",serif}
+.wrap{max-width:860px;margin:0 auto;padding:0 16px 80px}
+header{padding:40px 0 16px;border-bottom:1px solid var(--line)}
+header a.back{font:14px/1 system-ui,sans-serif;color:var(--acc);text-decoration:none}
+h1{font-size:clamp(26px,5vw,38px);line-height:1.2;margin:18px 0 6px}
+.meta{font:14px system-ui,sans-serif;color:var(--mut)}
+nav{display:flex;flex-wrap:wrap;gap:6px 14px;font:13px system-ui,sans-serif;padding:14px 0;border-bottom:1px solid var(--line)}
+nav a{color:var(--mut);text-decoration:none} nav a:hover{color:var(--acc)}
+h2{font-size:24px;margin:48px 0 8px;scroll-margin-top:12px}
+p{margin:12px 0} ul{padding-left:22px} li{margin:6px 0}
+code{font:0.88em ui-monospace,Menlo,Consolas,monospace;background:var(--code);padding:1px 5px;border-radius:4px}
+.tw{overflow-x:auto;margin:16px 0}
+table{border-collapse:collapse;width:100%;font:14px/1.5 system-ui,sans-serif;min-width:520px}
+th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top} th{background:var(--card)}
+figure{margin:22px 0} figure img{width:100%;height:auto;display:block;border:1px solid var(--line);border-radius:6px;background:var(--card)}
+figcaption{font:13px/1.4 system-ui,sans-serif;color:var(--mut);margin-top:6px}
+footer{margin-top:56px;padding-top:16px;border-top:1px solid var(--line);font:14px system-ui,sans-serif} footer a{color:var(--acc)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+<a class="back" href="../#/stage">&larr; Terug naar mijn stageprojecten</a>
+<h1>HPE VM Essentials op oude servers: wat we bouwden en wat misliep</h1>
+<div class="meta">Werkplek 3, HardwareLabo &middot; Mehdi Oulad Khlie &middot; 15 november 2026</div>
+</header>
+<nav><a href="#doel">Doel</a><a href="#opstelling">Opstelling</a><a href="#router-switch">Router en switch</a><a href="#ds2">DS2</a><a href="#irmc">iRMC op FS16</a><a href="#fs16">FS16 installeren</a><a href="#fs16-netwerk">Netwerk op FS16</a><a href="#manager">VME Manager</a><a href="#cluster">Storage en cluster</a><a href="#problemen">Problemen</a><a href="#nog">Nog te doen</a></nav>
+<main>
+<h2 id="doel">Doel</h2>
+<p>In WP3 bouwen we met HPE VM Essentials een kleine virtualisatieomgeving op oude servers. Het is een proefopstelling als alternatief voor Nutanix. We zijn met vier en elk van ons moet alles kunnen uitleggen. Hier staat wat we deden, wat vastliep en hoe ik het oploste. De stand is die van 22 oktober 2026.</p>
+
+<h2 id="opstelling">Opstelling</h2>
+<p>Het labo bestaat uit een Cisco router R1, een switch S1, twee servers en een oude desktop voor de opslag. DS2 is een Dell PowerEdge R630 en FS16 is een Fujitsu PRIMERGY RX2530 M1. De desktop draait Rocky Linux.</p>
+<p>Het netwerk heeft vijf VLAN's. VLAN 10 is voor beheer, VLAN 20 voor de Linux VM, VLAN 30 voor de Windows VM, VLAN 40 voor storage en VLAN 99 voor de iDRAC en iRMC. VLAN 999 is de ongebruikte native VLAN op de trunk.</p>
+<figure><img src="img/netwerkschema.webp" loading="lazy" alt="Netwerkschema met R1, S1, de twee hosts en de storage-node"><figcaption>Het netwerkschema uit het begin. De storage-node draait ondertussen Rocky Linux.</figcaption></figure>
+
+<h2 id="router-switch">Router en switch</h2>
+<p>R1 doet router on a stick. Er zijn subinterfaces op Gi0/0/0 met 802.1Q en een trunk naar poort 1 van S1. Verder heeft R1 NAT, DHCP voor VLAN 20 en 30 en een ACL zodat VLAN 99 enkel bereikbaar is vanuit VLAN 10. SSH versie 2 staat aan op beide toestellen. De WAN krijgt R1 via DHCP van de muur. Daar is geen login voor nodig, al zocht ik eerst een inlogpagina.</p>
+<p>De configuratie slaan we bewust niet op. S1 is ze dus kwijt na een herstart. Daarom staat alles in tekstbestanden.</p>
+<p>In het begin liep dit mis. De fiche tekent G0/0 en G0/1, maar onze router heeft Gi0/0/0 en Gi0/0/1. We hielden de echte poorten aan. Op de console kreeg ik dubbele tekens, omdat er twee screen-sessies op dezelfde poort draaiden. Ik stopte ze allebei en startte er een nieuwe. Op S1 reageerde de console niet, omdat ik een gewone netwerkkabel gebruikte in plaats van de consolekabel.</p>
+<p>Mijn Mac kreeg op de USB-adapter een 169.254-adres, waardoor ping een timeout gaf. Een vast IP loste dat op. SSH gaf nog <code>no matching key exchange method found</code>. De Mac is strenger dan de oude Cisco-software, dus gaf ik in het ssh-commando twee extra opties mee.</p>
+<figure><img src="img/internet-sharing-fout.webp" loading="lazy" alt="Foutmelding van macOS over Internet Sharing en 802.1X"><figcaption>Ik wilde eerst het internet van mijn Mac delen. Dat lukt niet met de schoolwifi, want die gebruikt 802.1X.</figcaption></figure>
+
+<h2 id="ds2">DS2, de Dell</h2>
+<p>De iDRAC van DS2 staat op 192.168.99.11 in VLAN 99. Eerst was hij niet bereikbaar. De kabel zat in een gewone netwerkpoort in plaats van in de iDRAC-poort. De logingegevens waren waarschijnlijk veranderd door vorige gebruikers.</p>
+<p>Daarna vergeleek ik de firmware met de Dell-pagina voor deze server. BIOS 2.19.0 en de netwerkkaart waren al actueel. De iDRAC zette ik van 2.85 naar 2.86.86.86.</p>
+<figure><img src="img/ds2-firmware.webp" loading="lazy" alt="Firmware-inventaris van DS2 in de Lifecycle Controller"><figcaption>De firmware-inventaris van DS2 in de Lifecycle Controller.</figcaption></figure>
+<p>Voor de opslag maakten we een RAID 1 voor het besturingssysteem op twee schijven van 125 GB. Dan een RAID 10 voor data met vier schijven van 875 GB. Schijf 6 meldt predictive failure, dus die gebruiken we niet.</p>
+
+<h2 id="irmc">FS16 en de iRMC</h2>
+<p>Op FS16 verloor ik ongeveer drie uur aan de iRMC-login. Kanaal 1 gaf een fout bij ipmitool en bij de gebruiker admin stonden callin en link auth uit. Ik startte Ubuntu live van een Ventoy-stick, gebruikte kanaal 2 en zette de rechten aan. Daarna werkte inloggen enkel in Google Chrome. Achteraf hadden we de iRMC niet nodig voor de installatie.</p>
+<p>Ik probeerde ook de installer via virtual media te laden over HTTP op poort 8000. Dat werkte niet. De oplossing was een USB-stick die ik met <code>dd</code> maakte.</p>
+<figure><img src="img/irmc-share-type.webp" loading="lazy" alt="Remote CD/DVD-scherm van de iRMC met HTTP, CIFS en NFS als bron"><figcaption>De iRMC laat HTTP, CIFS of NFS kiezen als bron voor de iso.</figcaption></figure>
+<figure><img src="img/irmc-error-opening-source.webp" loading="lazy" alt="Foutmelding Error opening source bij het openen van de iso"><figcaption>Deze foutmelding kreeg ik toen ik de iso op mijn Mac opende.</figcaption></figure>
+
+<h2 id="fs16">FS16 installeren op 15 oktober</h2>
+<p>Eerst moest de server van de USB-stick booten. In de BIOS zette ik de stick bovenaan de bootvolgorde. Booten in legacy gaf een zwart scherm, dus zette ik de CSM-optie op UEFI only.</p>
+<figure><img src="img/fs16-bios-bootvolgorde.webp" loading="lazy" alt="BIOS-scherm met de bootvolgorde"><figcaption>De bootvolgorde in de BIOS van FS16.</figcaption></figure>
+<figure><img src="img/fs16-bios-csm.webp" loading="lazy" alt="BIOS-scherm met de CSM-instellingen"><figcaption>De CSM-instellingen. Hier schakelde ik over op UEFI only.</figcaption></figure>
+<p>Dan crashte de installer. FS16 heeft enkel een onboard LSI software-RAID, geen hardware-RAID-kaart, en de installer heeft daar geen driver voor. Er stond nog een oude fakeRAID op de schijven als md126 en md127. De wipefs-opdracht faalde met <code>device or resource busy</code>.</p>
+<figure><img src="img/fs16-installer-crash.webp" loading="lazy" alt="Installer die crasht op wipefs van md127"><figcaption>De installer crasht op wipefs van md127.</figcaption></figure>
+<p>In de shell van de installer stopte ik eerst md126 en dan md127. Daarna wiste ik de superblocks van sda en sdb met mdadm en voerde ik wipefs opnieuw uit. In de BIOS zette ik SATA op AHCI. Toen lukte de installatie van Ubuntu 24.04.5 met de HPE HVM-installer 9.1.0.</p>
+<figure><img src="img/fs16-mdadm-busy.webp" loading="lazy" alt="Installer-shell met mdadm en wipefs"><figcaption>In de installer-shell stopte ik de oude RAID en wiste ik de schijven.</figcaption></figure>
+
+<h2 id="fs16-netwerk">Netwerk op FS16</h2>
+<p>In het menu van de HPE VM Console gaf Configure Network enkel een lege Error. Het netwerk zette ik dan zelf in via netplan. Nano bestond niet, dus schreef ik het bestand met <code>tee</code>. Het eerste <code>netplan apply</code> faalde door een typfout in het commando. Daarna was het netwerk nog steeds unreachable, omdat alle poorten down waren.</p>
+<figure><img src="img/hpe-console-error.webp" loading="lazy" alt="Lege Error-melding in de HPE VM Console"><figcaption>Configure Network gaf enkel deze lege Error.</figcaption></figure>
+<figure><img src="img/hpe-vm-console.webp" loading="lazy" alt="Menu van de HPE VM Console"><figcaption>Het menu van de HPE VM Console.</figcaption></figure>
+<p>De beheerkabel zat in eno4 en niet in eno1. Ik zette de poorten aan met <code>ip link set up</code> en schakelde systemd-networkd in. Met <code>networkctl</code> zag ik welke poort leefde. Daarna pingde 192.168.10.12 wel naar de gateway.</p>
+<figure><img src="img/fs16-networkctl.webp" loading="lazy" alt="Uitvoer van networkctl op FS16"><figcaption>Uitvoer van networkctl. Enkel eno4 was bezig.</figcaption></figure>
+
+<h2 id="manager">De VME Manager op DS2</h2>
+<p>Ons design noemt versie 9.0.2, maar het portaal toonde enkel 9.1.0. De 9.0.2 iso's stonden er niet meer. Beide hosts moeten dezelfde versie draaien, dus gebruiken we 9.1.0.</p>
+<figure><img src="img/hpe-software-center.webp" loading="lazy" alt="My HPE Software Center met de downloads van VM Essentials"><figcaption>My HPE Software Center met de 60-daagse evaluatie.</figcaption></figure>
+<p>De Manager draait als VM op DS2 met de naam vmemanager op 192.168.10.10. Hij heeft 31 GB RAM en 98 GB schijf. De eerste start bleef hangen op <code>Waiting for changelog lock</code>. Ik gaf de <code>DATABASECHANGELOGLOCK</code> vrij in MySQL met de gebruiker morpheus. Root mocht niet in de database.</p>
+<figure><img src="img/manager-loading.webp" loading="lazy" alt="Scherm Morpheus is Loading"><figcaption>De Manager bleef eerst hangen op dit scherm.</figcaption></figure>
+<p>Daarna lukte de setup en loopt de trial van 60 dagen. In de GUI kreeg ik een foutmelding over <code>removeChild</code>. Dat kwam door de vertaalfunctie van Chrome. Ik vertaal de pagina dus niet.</p>
+<figure><img src="img/manager-removechild.webp" loading="lazy" alt="Oops-pagina met de foutmelding removeChild"><figcaption>De GUI breekt als Chrome de pagina vertaalt.</figcaption></figure>
+
+<h2 id="cluster">22 oktober: RAID, storage en cluster</h2>
+<p>FS16 kreeg software-RAID 1 zonder herinstallatie. De md0 loopt over sda2 en sdb2 en de EFI-partitie staat ook op sdb1. De bootvolgorde bevat beide schijven. De beheerkabel op Fa0/12 zat nog los. Daarna was alles up en werkte SSH vanaf mijn Mac.</p>
+<p>De kabels van DS2 zijn omgekeerd ten opzichte van FS16. Bij DS2 zit storage op eno2 met 192.168.40.11, bij FS16 op eno3 met 192.168.40.12. Voor DS2 staat dat in <code>60-storage.yaml</code>.</p>
+<p>Voor de opslag wilden we TrueNAS, maar dat werkt niet op een pc met een schijf. De docent vroeg daarom Rocky Linux op de desktop en de schijf te delen via iSCSI. Met targetcli maakte ik een fileio-backstore van 300G en ACL's voor beide hosts. Beide hosts zien nu een schijf van 300G als sdc. Het design noemt nog NFS, dat wijkt dus af.</p>
+<p>Dan het cluster. Ik koos layout HVM 1.3 op Ubuntu 24.04 met de VLAN's 20 en 30. De eerste poging gaf <code>SSH Host IP cannot be blank</code>, omdat het tweede hostveld leeg was. Met beide hosts ingevuld kreeg wp3-hvm-cluster status Ok met twee workers, FS16 en DS2.</p>
+<figure><img src="img/cluster-layout.webp" loading="lazy" alt="Cluster aanmaken met de keuze van de layout"><figcaption>De layout kiezen bij het aanmaken van het cluster.</figcaption></figure>
+<figure><img src="img/cluster-ssh-host-fout.webp" loading="lazy" alt="Foutmelding SSH Host IP cannot be blank"><figcaption>De foutmelding bij een leeg tweede hostveld.</figcaption></figure>
+<figure><img src="img/cluster-status-ok.webp" loading="lazy" alt="Het cluster wp3-hvm-cluster met status Ok"><figcaption>Het cluster wp3-hvm-cluster staat op Ok.</figcaption></figure>
+
+<h2 id="problemen">Problemen en oplossingen</h2>
+<div class="tw"><table><thead><tr><th>Probleem</th><th>Oorzaak</th><th>Oplossing</th></tr></thead><tbody>
+<tr><td>Dubbele tekens en een trage console op R1 en S1.</td><td>Twee screen-sessies op dezelfde poort.</td><td>Alle sessies stoppen en een nieuwe starten.</td></tr>
+<tr><td>De console van S1 reageerde niet.</td><td>Een gewone netwerkkabel in plaats van de consolekabel.</td><td>Consolekabel in de Console-poort.</td></tr>
+<tr><td>Ping naar R1 en S1 gaf een timeout.</td><td>De USB-adapter stond op DHCP en had 169.254.x.x.</td><td>Vast IP met de gateway van R1.</td></tr>
+<tr><td>SSH gaf <code>no matching key exchange method found</code>.</td><td>De Mac is strenger dan de oude Cisco-software.</td><td>Twee extra opties in het ssh-commando.</td></tr>
+<tr><td>iRMC-login van FS16 lukte niet, ongeveer drie uur.</td><td>Kanaal 1 gaf een fout en callin en link auth stonden uit.</td><td>Kanaal 2, rechten aanzetten en Google Chrome gebruiken.</td></tr>
+<tr><td>Installer laden via virtual media over HTTP.</td><td>Het werkte niet.</td><td>USB-stick met <code>dd</code>.</td></tr>
+<tr><td>Zwart scherm bij het booten van de stick.</td><td>Legacy boot.</td><td>CSM op UEFI only.</td></tr>
+<tr><td>De installer crashte op <code>wipefs</code> van md127.</td><td>Oude fakeRAID van de onboard LSI-controller.</td><td>md126 en md127 stoppen, superblocks wissen en SATA op AHCI.</td></tr>
+<tr><td>Configure Network gaf een lege Error.</td><td>Onbekend, de melding was leeg.</td><td>Het netwerk zelf instellen met netplan.</td></tr>
+<tr><td>Netwerk unreachable op FS16.</td><td>Alle poorten down en de kabel zat in eno4.</td><td><code>ip link set up</code>, systemd-networkd en de poort controleren met networkctl.</td></tr>
+<tr><td>De Manager bleef hangen op <code>Waiting for changelog lock</code>.</td><td>Een blijvende lock in de database.</td><td><code>DATABASECHANGELOGLOCK</code> vrijgeven in MySQL.</td></tr>
+<tr><td>De GUI van de Manager brak met <code>removeChild</code>.</td><td>De vertaalfunctie van Chrome.</td><td>De pagina niet vertalen.</td></tr>
+<tr><td>Design noemt 9.0.2 en het portaal had enkel 9.1.0.</td><td>De oudere iso's staan niet meer online.</td><td>Beide hosts op 9.1.0.</td></tr>
+<tr><td>TrueNAS werkt niet op de desktop.</td><td>De desktop heeft maar een schijf.</td><td>Rocky Linux en iSCSI met targetcli.</td></tr>
+<tr><td>Cluster aanmaken gaf <code>SSH Host IP cannot be blank</code>.</td><td>Het tweede hostveld was leeg.</td><td>Beide hosts invullen.</td></tr>
+</tbody></table></div>
+
+<h2 id="nog">Nog te doen</h2>
+<p>Als volgende maak ik in de Manager een datastore als GFS2 op de schijf sdc. Die formatteer ik niet zelf. Daarna komen de Linux VM in VLAN 20 en de Windows VM in VLAN 30, en een live migratie tussen de twee hosts. Dan volgen het advies en de demo.</p>
+
+</main>
+<footer><a href="../#/stage">&larr; Terug naar mijn stageprojecten</a></footer>
+</div>
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "b50205e3659c4074a3c2a30f4450323e"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>

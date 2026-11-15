@@ -253,6 +253,15 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
         },
         {
           index: '03',
+          title: 'Home router',
+          stack: 'Homelab · OpenWrt + Tailscale',
+          description: "An ASUS router I rebuilt with OpenWrt. It filters DNS, ads and known bad IP addresses, and through Tailscale I can wake my desktop from anywhere.",
+          href: '#/projects/router',
+          external: false,
+          cta: 'Read the write-up',
+        },
+        {
+          index: '04',
           title: 'Visibility Spoofer',
           stack: 'JavaScript · Chrome extension',
           description: "Tricks the Page Visibility API into reporting a tab as open and focused even while it sits in the background, including iframes that load in afterward.",
@@ -261,7 +270,7 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
           cta: 'See it on GitHub',
         },
         {
-          index: '04',
+          index: '05',
           title: 'FuelTracker',
           stack: 'Vue.js · Tailwind · PWA',
           description: "Calculates what a drive costs in fuel and how much CO₂ it produces. Start typing an address and the suggestions pop up right away.",
@@ -273,7 +282,7 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
           secondaryExternal: true,
         },
         {
-          index: '05',
+          index: '06',
           title: 'ShutItDown',
           stack: 'C# .NET 6 · ASP.NET Core',
           description: "Lets you shut your PC down remotely from a web page. Locked behind a PIN, and otherwise it just sits quietly in the system tray.",
@@ -579,6 +588,15 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
         },
         {
           index: '03',
+          title: 'Thuisrouter',
+          stack: 'Homelab · OpenWrt + Tailscale',
+          description: 'Een ASUS-router die ik ombouwde met OpenWrt. Hij filtert DNS, reclame en bekende slechte IP-adressen, en via Tailscale zet ik van overal mijn desktop aan.',
+          href: '#/projects/router',
+          external: false,
+          cta: 'Lees meer',
+        },
+        {
+          index: '04',
           title: 'Visibility Spoofer',
           stack: 'JavaScript · Chrome-extensie',
           description: 'Laat de Page Visibility API geloven dat een tabblad open en actief is, ook als het op de achtergrond staat, inclusief iframes die later pas laden.',
@@ -587,7 +605,7 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
           cta: 'Bekijk de code op GitHub',
         },
         {
-          index: '04',
+          index: '05',
           title: 'FuelTracker',
           stack: 'Vue.js · Tailwind · PWA',
           description: 'Berekent wat een rit kost aan brandstof en hoeveel CO₂ daarbij vrijkomt. Begin een adres te typen en de suggesties staan er meteen.',
@@ -599,7 +617,7 @@ export const inkContent: Record<'en' | 'nl', InkCopy> = {
           secondaryExternal: true,
         },
         {
-          index: '05',
+          index: '06',
           title: 'ShutItDown',
           stack: 'C# .NET 6 · ASP.NET Core',
           description: 'Zet je pc op afstand uit via een webpagina. Zit achter een pincode en draait verder onopvallend mee in de system tray.',
